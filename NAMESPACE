@@ -1,0 +1,81 @@
+
+
+useDynLib(sirt)
+
+export(   
+    ccov.np,
+    detect.index,
+    conf.detect,
+    expl.detect,
+    dif.logistic.regression,
+    dif.variance,
+    dif.strata.variance,
+    equating.rasch,
+    equating.rasch.jackknife,
+    greenyang.reliability,
+    reliability.nonlinearSEM,
+    lsdm,
+    np.dich,
+    personfit.stat ,
+    plausible.value.imputation.raschtype,
+    latent.regression.em.raschtype,
+    prmse.subscores.scales,
+    rasch.copula2,
+    person.parameter.rasch.copula,
+    rasch.jml,
+    jackknife.rasch.jml , 
+    rasch.mml2 , 
+    sim.qm.ramsay,
+    pgenlogis,
+    sim.raschtype,
+    rasch.pairwise,
+    rasch.pairwise.itemcluster,
+    rasch.pml2 , 
+    rasch.pml3 , 
+    rasch.prox,
+    rasch.testlet.glmer,
+    sim.rasch.dep,
+    stratified.cronbach.alpha,
+    wle.rasch,
+    wle.rasch.jackknife,
+    yen.q3,
+    testlet.yen.q3      ,
+    prob.guttman ,
+    rasch.jml.biascorr ,
+    class.accuracy.rasch ,
+    rasch.mirtlc  ,
+    modelfit.sirt ,
+    marginal.truescore.reliability ,
+    eigenvalues.manymatrices ,
+    rm.facets ,
+    rm.hrm ,
+    dirichlet.simul,
+    dirichlet.mle ,
+    gom.jml ,
+    smirt ,
+    qmc.nodes ,
+    rasch.va ,
+    gom.em  ,
+    tetrachoric2 ,
+    pbivnorm2
+        )
+
+
+importFrom(utils,packageDescription)
+
+S3method(summary , rasch.mml )
+S3method(summary , rasch.pml )
+S3method(summary , rasch.copula )
+S3method(summary,lsdm)
+S3method(summary,rasch.copula2)
+S3method(summary, rasch.jml)
+S3method(summary,rasch.pairwise)
+S3method(summary,prob.guttman)
+S3method(summary,rasch.mirtlc)
+S3method(summary,rm.facets)
+S3method(summary,rm.hrm)
+S3method(summary,gom.jml)
+S3method(summary,smirt)
+S3method(summary,gom)
+
+S3method(plot , np.dich)
