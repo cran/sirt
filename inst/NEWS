@@ -1,0 +1,167 @@
+------------------- sirt NEWS ------------------------
+
+++++++++++++++++++++++++++++++++++++++++++++++
+
+sirt: Supplementary Item Response Theory
+
+Alexander Robitzsch
+Federal Institute for Educational Research, Innovation and 
+Development of the Austrian School System (BIFIE)
+Salzburg (Austria)
+http://www.bifie.at
+
+++++++++++++++++++++++++++++++++++++++++++++++
+
+Questions or suggestions about sirt can be send to
+
+a.robitzsch/-\bifie.at
+
+See also URL: 
+https://sites.google.com/site/alexanderrobitzsch/software
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CHANGELOG sirt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+---
+Version 0.31 -- 2013-05-27
+---
+x speeded rasch.pml2 a bit
+x fixed a bug in smirt function (thanks to Izanloo Balal)
+x included function tetrachoric2 for a quick calculation
+   of the tetrachoric correlation matrix
+x included pbivnorm2 for the bivariate normal integral
+x included rasch.pml3, a bit faster version than rasch.pml2
+x eliminated warning statements in smirt and fixed a bug in 
+  estimation of a and b parameters in smirt (thanks to Izanloo Balal)
+
+---
+Version 0.30  -- 2013-04-30
+---
+x included a C file for faster calculations in rm.hrm
+  (now there is a dependency of Rcpp and RcppArmadillo)
+x included smirt function for estimating the multdimensional
+   noncompensatory and compensatory models
+x included variational approximation for the Rasch model
+x included the (Rasch) grade of membership model
+
+---
+Version 0.29  -- 2013-04-08
+---
+x efficient computation of eigenvalues and inverses of
+  many matrices
+x included facets models with item/rater intercepts and
+  slopes
+x initial version of the hierarchical rater model based on
+  signal detection theory (DeCarlo et al., 2011)
+x included function for simulating and estimating the
+  Dirichlet distribution
+x included grade of membership model with joint maximum 
+  likelihood estimation -> gom.jml
+
+---
+Version 0.28  -- 2013-03-24
+---
+x included standard errors in rasch.mml2
+x included marginal true score reliability for binary item 
+  response data (Dimitrov, 2003; thanks to Ulrich Schroeders)
+
+---
+Version 0.27  -- 2013-02-26
+---
+x included classification accuracy in the Rasch model
+x implemented multidimensional latent class Rasch model
+   (Bartolucci, 2007)
+x cleaning of help files, included several datasets and
+  examples
+x included log-linear smoothing of the theta distribution
+   in rasch.mirtlc
+x included 2PL estimation in rasch.mirtlc
+x included global fit statistics in modelfit.sirt
+x included log-linear smoothing of the ability distribution
+   in rasch.mml2
+x accelerated rasch.pml function and renamed it into rasch.pml2
+x allowed for linear constraints for residual correlations
+   in rasch.pml2
+x accelerated latent.regression.em.raschtype and 
+  plausible value routines
+
+---
+Version 0.26  -- 2013-01-17
+---
+x restructured rasch.mml2 function into a bit more compact code
+x do not export rasch.mml and rasch.copula anymore via namespace
+x included nonparametric IRT function estimation in rasch.mml2
+  -> argument irtmodel='npirt' (Rossi, Wang & Ramsay, 2002)
+x included multidimensional models in rasch.mml2
+x added corrected AIC (AICc) in rasch.mml2 and rasch.copula2
+x corrected mean and SD estimation in rasch.mml2
+x fixed a bug in the calculation of the number of estimated parameters
+   in rasch.copula2
+x corrected rasch.mml2 function in case of fixed weights of
+  trait distribution
+x corrected a bug in wle.rasch
+x included probabilistic Guttman model
+x analytical bias correction method for JML estimation of the Rasch model
+x accelerated PMML estimation algorithm
+x 2PL estimation in rasch.pml
+
+---
+Version 0.25  -- 2012-10-16
+---
+x fixed bad numerical behavior in rasch.copula2 for Cook-Johnson
+  and Frank copula models
+x improved speed in yen.q3 and extended output
+x speed improvement in rasch.mml and rasch.copula2
+x included version rasch.mml2 with substantial speed improvements
+x speed improvements for rasch.jml function
+
+---
+Version 0.24 -- 2012-09-20
+---
+x changed algorithms behavior of rasch.copula2 
+  (parameter increments depend on number of iterations)
+x corrected deviance calculation in rasch.copula
+
+---
+Version 0.23  -- 2012-08-31
+---
+x removed functions for running ConQuest from this package
+x included Cook-Johnson and Frank copula in rasch.copula2 function
+x included examples for wle.rasch.jackknife
+x removed a minor printing bug in rasch.copula
+x fixed a bug in jackknife.rasch.jml
+x included item parameter constraints in jackknife.rasch.jml
+x corrected handling of extreme responses in rasch.prox
+
+---
+Version 0.22 -- 2012-07-17
+---
+x included estimation of residual error correlations in rasch.pml
+x restructured rasch.testlet.glmer function
+x included data set reading data.read
+x set a different default in rasch.mml (estimation of trait SD seemed incorrect)
+x rasch.testlet.glmer: output EAPs and EAP reliability
+x included loglog and cloglog link functions in rasch.testlet.glmer
+x included jackknife estimation of the joint maximum likelihood
+  Rasch model
+x included a speeded version of rasch.copula and labelled it 
+  as rasch.copula2 -> The old version rasch.copula remains in the
+  package.
+x output posterior distribition, EAP estimates and
+  EAP reliability in rasch.copula    
+x introduced probit and logit version of rasch.pml: pairwise marginal 
+  likelihood estimation
+x removed slight bugs (or inefficiencies) in numerical differentiation 
+  in rasch.mml and rasch.copula
+x renamed sim.rasch.copula into sim.rasch.dep
+x included function rasch.pairwise.itemcluster for the conditional 
+  pairwise estimation method for locally dependent items   
+x package structure of sirtr is created
+x included simulation function for Rasch copula model 
+   (sim.rasch.copula)
+
+
+

@@ -1,0 +1,212 @@
+
+\name{lsdm}
+\alias{lsdm}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+Least Square Distance Method of Cognitive Validation
+}
+\description{
+This function estimates the least square distance method
+of cognitive validation (Dimitrov, 2007) which assumes
+a multiplicative relationship of attribute response
+probabilities to explain item response probabilities.
+The function also estimates the classical linear logistic test 
+model (LLTM; Fischer, 1973) which assumes an additive relationship
+for item difficulties in the Rasch model.
+}
+\usage{
+lsdm(data, Qmatrix, theta=qnorm(seq(5e-04,0.9995,len=100)), 
+    quant.list=c(0.5,0.65,0.8), b=NULL, a=rep(1,nrow(Qmatrix)), 
+    c=rep(0,nrow(Qmatrix)) )
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{data}{
+An \eqn{I} times \eqn{L} matrix of dichotomous item responses.
+The \code{data} consists of \eqn{I} item response functions
+(parametrically or nonparametrically estimated) which are
+evaluated at a discrete grid of \eqn{L} \code{theta} values 
+(person parameters)
+and are specified in the argument \code{theta}.
+ }
+  \item{Qmatrix}{
+An \eqn{I} times \eqn{K} matrix where the allocation of items 
+to attributes is coded. Values between zero and one are permitted.
+There must not be any items with only zero \eqn{Q} matrix entries
+in a row.
+}
+  \item{theta}{
+The discrete grid points where item response fuctions
+are evaluated for doing the LSDM method.
+}
+  \item{quant.list}{
+A vector of quantiles where attribute response functions are
+evaluated.
+}
+  \item{b}{
+An optional vector of item difficulties. If it is specified,
+then no \code{data} input is necessary.
+}
+  \item{a}{
+An optional vector of item discriminations.
+}
+  \item{c}{
+An optional vector of guessing parameters.
+}
+}
+%\details{
+%%  ~~ If necessary, more details than the description above ~~
+%}
+\value{
+A list with following entries
+\item{mean.mad.lsdm0}{Mean of \eqn{MAD} statistics for LSDM}
+\item{mean.mad.lltm}{Mean of \eqn{MAD} statistics for LLTM}
+\item{attr.curves}{Estimated attribute response curves evaluated at \code{theta}}
+\item{attr.pars}{Estimated attribute parameters for LSDM and LLTM}
+\item{data.fitted}{LSDM-fitted item reponse functions evaluated at \code{theta}}
+\item{theta}{Grid of ability distributions at which 
+functions are evaluated}
+\item{item}{Item statistics (p value, \eqn{MAD}, ...)}
+\item{data}{Estimated or fixed item reponse functions evaluated at \code{theta}}
+\item{Qmatrix}{Used \eqn{Q} matrix}
+\item{lltm}{Model output of LLTM (\code{lm} values)}
+}
+\references{
+  DiBello, L. V., Roussos, L. A. & Stout, W. F. (2007). Review of
+  cognitively diagnostic assessment and a summary of psychometric models.
+  In C. R. Rao and S. Sinharay (Eds.), \emph{Handbook of Statistics},
+  Vol. 26 (pp. 979-1030). Amsterdam: Elsevier.
+  
+  Dimitrov, D. M. (2007). Least squares distance method of cognitive validation 
+  and analysis for binary items using their item response theory parameters. 
+  \emph{Applied Psychological Measurement}, \bold{31}, 367-387.
+   
+  Fischer, G. H. (1973). The linear logistic test model as an instrument 
+  in educational research. \emph{Acta Psychologica}, \bold{37}, 359-374.
+}
+\author{
+Alexander Robitzsch
+}
+\note{
+This function needs the \pkg{ic.infer} package.
+}
+
+%% ~Make other sections like Warning with \section{Warning }{....} ~
+
+\seealso{
+Get a summary of the LSDM analysis with \code{\link{summary.lsdm}}.
+
+See the \pkg{CDM} package for the estimation of related
+cognitive diagnostic models (DiBello, Roussos & Stout, 2007).
+}
+
+\examples{
+###################################################################
+# EXAMPLE 1: DATA FISCHER (see Dimitrov, 2007)
+###################################################################
+
+# item difficulties
+b <- c( 0.171,-1.626,-0.729,0.137,0.037,-0.787,-1.322,-0.216,1.802,
+    0.476,1.19,-0.768,0.275,-0.846,0.213,0.306,0.796,0.089,
+    0.398,-0.887,0.888,0.953,-1.496,0.905,-0.332,-0.435,0.346,
+    -0.182,0.906)
+# read Q matrix
+Qmatrix <- c( 1,1,0,1,0,0,0,0,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,
+    1,0,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,1,0,0,1,0,1,0,1,0,0,0,
+    1,0,1,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,0,1,0,1,0,0,1,0,1,1,1,0,0,0,
+    1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,1,0,1,1,0,1,0,1,1,0,
+    1,0,1,1,0,0,1,0,1,0,0,1,0,0,0,1,1,0,1,1,0,0,0,1,1,0,0,1,0,0,0,1,
+    0,1,0,0,0,1,0,1,1,1,0,1,0,1,0,1,1,0,0,1,0,1,0,0,1,1,0,0,1,0,0,0,
+    1,0,0,1,1,0,0,0,1,1,0,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,1,1,0,1,0,0,
+    1,1,0,1,0,0,0,0,1,0,1,1,1,1,0,0 )
+Qmatrix <- matrix( Qmatrix , nrow=29, byrow=TRUE )
+colnames(Qmatrix) <- paste("A",1:8,sep="")
+rownames(Qmatrix) <- paste("Item",1:29,sep="")
+
+# Perform a LSDM analysis
+lsdm.res <- lsdm( b = b, Qmatrix = Qmatrix )
+summary(lsdm.res)
+## Model Fit
+## Model Fit LSDM   -  Mean MAD:  0.071     Median MAD:   0.07 
+## Model Fit LLTM   -  Mean MAD:  0.079     Median MAD:  0.063    R^2= 0.615 
+## ................................................................................ 
+## Attribute Parameter
+##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
+## A1      27 -2.101 1.615 -2.664   -1.168   0.404     0.009
+## A2       8 -3.736 3.335 -5.491   -0.645   0.284     0.034
+## A3      12 -5.491 0.360 -2.685   -0.013   0.284     0.963
+## A4      22 -0.081 0.744 -0.059    1.495   0.350     0.000
+## A5       7 -2.306 0.580 -1.622    0.243   0.301     0.428
+## A6      10 -1.946 0.542 -1.306    0.447   0.243     0.080
+## A7       5 -4.247 1.283 -4.799   -0.147   0.316     0.646
+## A8       5 -2.670 0.663 -2.065    0.077   0.310     0.806
+## [...]
+
+###################################################################
+# EXAMPLE 2 DATA HENNING (see Dimitrov, 2007)
+###################################################################
+
+# item difficulties
+b <- c(-2.03,-1.29,-1.03,-1.58,0.59,-1.65,2.22,-1.46,2.58,-0.66)
+# item slopes
+a <- c(0.6,0.81,0.75,0.81,0.62,0.75,0.54,0.65,0.75,0.54)
+# Qmatrix
+Qmatrix <- c(1,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,1,0,0,0,0,1,1,0,0,
+    0,0,0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,1,1,0,1,0,0 )
+Qmatrix <- matrix( Qmatrix , nrow=10, byrow=TRUE )
+colnames(Qmatrix) <- paste("A",1:5,sep="")
+rownames(Qmatrix) <- paste("Item",1:10,sep="")
+
+# LSDM analysis
+lsdm.res <- lsdm( b = b, a=a , Qmatrix = Qmatrix )
+summary(lsdm.res)
+## Model Fit LSDM   -  Mean MAD:  0.061     Median MAD:   0.06 
+## Model Fit LLTM   -  Mean MAD:  0.069     Median MAD:  0.069    R^2= 0.902 
+## ................................................................................ 
+## Attribute Parameter
+##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
+## A1       2 -2.727 0.786 -2.367   -1.592   0.478     0.021
+## A2       5 -2.099 0.794 -1.834   -0.934   0.295     0.025
+## A3       2 -0.763 0.401 -0.397    1.260   0.507     0.056
+## A4       4 -1.459 0.638 -1.108   -0.738   0.309     0.062
+## A5       2  2.410 0.509  1.564    2.673   0.451     0.002
+## [...]
+
+###################################################################
+# EXAMPLE 3: PISA mathematics
+#   Using nonparametrically estimated item response functions
+###################################################################
+
+data(data.pisaRead)
+# response data
+dat <- data.pisaRead$data
+dat <- dat[ , substring( colnames(dat),1,1)=="R" ]
+# define Q matrix
+pars <- data.pisaRead$item
+Qmatrix <- data.frame( 
+    "A0" = 1*(pars$ItemFormat=="MC" ) , 
+    "A1" = 1*(pars$ItemFormat=="CR" ) )
+
+# Nonparametric estimation of item response functions
+mod <- rasch.mml2( dat )
+theta <- wle.rasch( dat=dat ,b = mod$item$b )$theta
+mod2 <- np.dich( dat=dat , theta=theta , 
+    thetagrid = seq(-3,3,len=100) )
+
+# LSDM analysis
+lsdm.res <- lsdm( data=mod2$estimate , Qmatrix=Qmatrix ,
+        theta=mod2$thetagrid)
+summary(lsdm.res)
+## Model Fit
+## Model Fit LSDM   -  Mean MAD:  0.215     Median MAD:  0.151 
+## Model Fit LLTM   -  Mean MAD:  0.193     Median MAD:  0.119    R^2= 0.285 
+## ................................................................................ 
+## Attribute Parameter
+##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
+## A0       5  1.326 0.705  1.289   -0.455   0.965     0.648
+## A1       7 -1.271 1.073 -1.281   -1.585   0.816     0.081
+}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{Least Squares Distance Method (LSDM)}
+%% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

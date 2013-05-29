@@ -1,0 +1,276 @@
+
+########################################################
+# calculation of probabilities in the partial credit model
+.rm.pcm.calcprobs <- function( a , b , Qmatrix , theta.k , I , K , TP ){
+    probs <- array( 0 , dim=c(I,K+1,TP) )   # categories 0 , ... , K´	
+    for (kk in 1:K){
+        l0 <- matrix( - b[,kk] , nrow=I,ncol=TP)
+        l0 <- l0 + outer( a * Qmatrix[ , kk] , theta.k )
+        probs[,kk+1,] <- l0
+                }
+    probs <- exp( probs )
+    probs1 <- probs[,1,]
+    for (kk in 2:(K+1)){ probs1 <- probs1 + probs[,kk,] }
+    for (kk in 1:(K+1)){ 
+            probs[,kk,] <- probs[,kk,] / probs1 
+                        }
+   return(probs)
+    }
+######################
+sumtau <- function(tau.item){
+	K <- ncol(tau.item)
+	matr <- tau.item
+	for (kk in 2:K){
+		matr[,kk] <- rowSums( tau.item[,1:kk] )
+				}
+	return(matr)
+			}
+#############################################################################
+# calculation of probabilities in the facet model
+.rm.facets.calcprobs <- function( b.item , b.rater , Qmatrix , tau.item ,
+        VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
+		theta.k , RR ){
+    # b parameter
+	pcm.param <- FALSE
+	if (pcm.param){
+		b.item0 <- b.item
+		b <- matrix( b.item0 , nrow= VV , ncol=K ) * Qmatrix + sumtau(tau.item)
+		b <- b[ item.index , ]
+		b0 <- ( matrix( b.rater , nrow= RR , ncol=K) )[ rater.index , ] * 
+				Qmatrix[ item.index ,]
+	
+		b <- b + b0				
+				} else { 
+		b <- tau.item[ item.index , ]
+		b0 <- ( matrix( b.rater , nrow= RR , ncol=K) )[ rater.index , ] * 	Qmatrix[ item.index ,]	 
+		b <- b + b0
+			}
+	# a parameter
+	a <- a.item[ item.index ] * a.rater[ rater.index ]
+    res <- .rm.pcm.calcprobs( a , b , Qmatrix=Qmatrix[item.index,] , theta.k , I , K , TP )
+	return(res)
+    }
+#############################################################################	
+	
+#######################################################
+# calculate posterior and counts
+.rm.posterior <- function( dat2 , dat2.resp , TP , pi.k ,
+	K, I , probs ){
+	# calculate likelihood
+	f.yi.qk <- matrix( 1 , nrow(dat2) , TP )
+	for (ii in 1:ncol(dat2)){
+		 #   ii <- 1
+		ind.ii <- which( dat2.resp[,ii] == 1 )
+		f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * probs[ ii , dat2[ind.ii,ii]+1 , ]
+							}
+	# calculate posterior
+	prior <- matrix( pi.k , nrow=nrow(dat2) , ncol=TP , byrow =T )
+	f.qk.yi <- f.yi.qk * prior
+	f.qk.yi <- f.qk.yi / rowSums( f.qk.yi )
+	# expected counts
+	n.ik <- array( 0 , dim =c(TP , I , K+1 ) )
+	N.ik <- array( 0 , dim=c(TP , I ) )
+	for (kk in 1:(K+1) ){
+		# kk <- 1
+		n.ik[,,kk] <- t( t(dat2.resp*(dat2==(kk-1)) ) %*% f.qk.yi )
+		N.ik <- N.ik + n.ik[,,kk]
+						}
+				
+    ll <- sum( log( rowSums( f.yi.qk * outer( rep(1,nrow(f.yi.qk)) , pi.k) ) ) )
+					
+	# compute pi.k
+	pi.k <- colMeans( f.qk.yi )
+	res <- list( "f.yi.qk" = f.yi.qk , "f.qk.yi" = f.qk.yi , 
+			"n.ik" = n.ik , "N.ik" = N.ik , "pi.k" = pi.k , "ll"=ll)
+	return(res)
+	}
+#####################################################
+# estimation of slope parameter for items
+.rm.facets.est.a.item <- function( b.item , b.rater , Qmatrix , tau.item ,
+        VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
+        n.ik , numdiff.parm=.001 , max.b.increment=1,theta.k , msteps ,
+		mstepconv){
+    h <- numdiff.parm
+	diffindex <- item.index
+	RR <- length(b.rater)
+	cat("  M steps a.item parameter   |")
+	it <- 0 ;	conv1 <- 1000	
+	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
+		a.item0 <- a.item	
+		pjk <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+				VV , K , I , TP , a.item , a.rater , diffindex , rater.index , theta.k,RR)
+		pjk1 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+				VV , K , I , TP , a.item+h , a.rater , diffindex , rater.index , theta.k,RR)
+		pjk2 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+				VV , K , I , TP , a.item-h , a.rater , diffindex , rater.index , theta.k,RR)
+		# numerical differentiation			
+		res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
+				max.increment=max.b.increment , numdiff.parm )					
+		a.item <- a.item + res$increment
+		a.item[ a.item < .05 ] <- .05
+#		a.item <- a.item - mean(a.item ) + 1
+		b1 <- mean( log( a.item ) )
+		a.item <- a.item / exp( b1 )
+		conv1 <- max( abs( a.item - a.item0 ) )
+		it <- it+1
+		cat("-") # ; flush.console()
+			}
+	cat(" " , it , "Step(s) \n")	#; flush.console()	
+    res <- list("a.item" = a.item , "se.a.item" = sqrt( -1/res$d2 ) , 
+			"ll" = sum(res$ll0) )
+    return(res)
+			}			
+#####################################################
+# estimation of tau.item parameters
+.rm.facets.est.tau.item <- function( b.item , b.rater , Qmatrix , tau.item ,
+        VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
+        n.ik , numdiff.parm=.001 , max.b.increment=1,theta.k , msteps ,
+		mstepconv , tau.item.fixed ){
+    h <- numdiff.parm
+	diffindex <- item.index
+	RR <- length(b.rater)	
+	Q0 <- matrix(0,nrow=VV, ncol=K)
+	se.tau.item <- Q0
+	cat("  M steps tau.item parameter |")
+	it <- 0 ;	conv1 <- 1000
+	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
+		tau.item0 <- tau.item
+		for (kk in 1:K){
+	#		kk <- 1
+			Q1 <- Q0
+			Q1[,kk] <- 1
+			pjk <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+					VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
+			pjk1 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item+h*Q1 ,
+					VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
+			pjk2 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item-h*Q1 ,
+					VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
+			# numerical differentiation			
+			res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
+					max.increment=max.b.increment , numdiff.parm )					
+			increment <- Q1*matrix( res$increment , nrow=VV , ncol=K)	
+			tau.item <- tau.item + increment
+			se.tau.item[,kk] <- sqrt(-1/res$d2)		
+					}
+		conv1 <- max( abs( tau.item - tau.item0 ) )
+		it <- it+1
+		cat("-") # ; flush.console()
+		if (!is.null(tau.item.fixed)){
+			tau.item[ tau.item.fixed[,1:2,drop=FALSE] ] <- tau.item.fixed[,3]
+								}
+			}
+	cat(" " , it , "Step(s) \n")	#; flush.console()
+	res <- list("tau.item" = tau.item , "se.tau.item" = se.tau.item , 
+			"ll" = sum(res$ll0) )
+    return(res)
+			}
+			
+			
+#########################################
+# estimation of rater severity
+.rm.facets.est.b.rater <- function( b.item , b.rater , Qmatrix , tau.item ,
+        VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
+        n.ik , numdiff.parm=.001 , max.b.increment=1 , theta.k , msteps ,
+		mstepconv ){
+    h <- numdiff.parm
+	diffindex <- rater.index
+	RR <- length(b.rater)	
+	cat("  M steps b.rater parameter  |")
+	it <- 0 ;	conv1 <- 1000
+	while( ( it < msteps ) & ( conv1 > mstepconv ) ){
+		b0 <- b.rater
+		pjk <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+				VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
+		pjk1 <- .rm.facets.calcprobs( b.item , b.rater+h , Qmatrix , tau.item ,
+				VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
+		pjk2 <- .rm.facets.calcprobs( b.item , b.rater-h , Qmatrix , tau.item ,
+				VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
+		# numerical differentiation			
+		res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
+				max.increment=max.b.increment , numdiff.parm )					
+		b.rater <- b.rater + res$increment	
+		# centering
+		brc <- mean( b.rater )
+		b.rater <- b.rater - brc
+#		max.b.increment <- abs( b.rater - b0 )
+		conv1 <- max( abs( b.rater - b0 ) )
+		it <- it+1
+		cat("-")  #; flush.console()
+			}
+	cat(" " , it , "Step(s) \n")	
+    res <- list("b.rater" = b.rater , "se.b.rater" = sqrt( -1/res$d2 ) , 
+			"ll" = sum(res$ll0)  , "brc" = brc 
+				)
+    return(res)
+			}	
+
+#####################################################
+# estimation of slope parameter for rater
+.rm.facets.est.a.rater <- function( b.item , b.rater , Qmatrix , tau.item ,
+        VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
+        n.ik , numdiff.parm=.001 , max.b.increment=1,theta.k , msteps ,
+		mstepconv){
+    h <- numdiff.parm
+	diffindex <- rater.index
+	RR <- length(b.rater)
+	cat("  M steps a.rater parameter  |")
+	it <- 0 ;	conv1 <- 1000	
+	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
+		a.rater0 <- a.rater	
+		pjk <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+				VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
+		pjk1 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+				VV , K , I , TP , a.item , a.rater+h , item.index , rater.index , theta.k,RR)
+		pjk2 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+				VV , K , I , TP , a.item , a.rater-h , item.index , rater.index , theta.k,RR)
+		# numerical differentiation			
+		res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
+				max.increment=max.b.increment , numdiff.parm )					
+		a.rater <- a.rater + res$increment
+		a.rater[ a.rater < .05 ] <- .05
+#		a.rater <- a.rater - mean(a.rater ) + 1
+		b1 <- mean( log( a.rater ) )
+		a.rater <- a.rater / exp( b1 )
+		conv1 <- max( abs( a.rater - a.rater0 ) )
+		it <- it+1
+		cat("-") # ; flush.console()
+			}
+	cat(" " , it , "Step(s) \n")	#; flush.console()	
+    res <- list("a.rater" = a.rater , "se.a.rater" = sqrt( -1/res$d2 ) , 
+			"ll" = sum(res$ll0) )
+    return(res)
+			}				
+			
+####################################################################
+# general function for numerical differentiation
+# diffindex aggregates across super items
+.rm.numdiff.index <- function( pjk , pjk1 , pjk2 , n.ik , diffindex , 
+		max.increment , numdiff.parm , eps=10^(-80) ){					
+	h <- numdiff.parm
+    an.ik <- aperm( n.ik , c(2,3,1) )
+    ll0 <- rowSums( an.ik * log(pjk+eps) )
+    ll1 <- rowSums( an.ik * log(pjk1+eps) )
+    ll2 <- rowSums( an.ik * log(pjk2+eps) )
+    ll0 <- aggregate( ll0 , list(diffindex) , sum )[,2]
+    ll1 <- aggregate( ll1 , list(diffindex) , sum )[,2]
+    ll2 <- aggregate( ll2 , list(diffindex) , sum )[,2]
+    d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?
+    # second order derivative
+    # f(x+h)+f(x-h) = 2*f(x) + f''(x)*h^2
+    d2 <- ( ll1 + ll2 - 2*ll0 ) / h^2
+    # change in item difficulty
+    d2[ abs(d2) < 10^(-10) ] <- 10^(-10)
+    increment <- - d1 / d2
+	ci <- ceiling( abs(increment) / ( abs( max.increment) + 10^(-10) ) )
+    increment <- ifelse( abs( increment) > abs(max.increment)  , 
+                                 increment/(2*ci) , increment )	
+#    increment <- ifelse( abs( increment) > max.increment , 
+#            max.increment*sign(increment) , increment ) 
+	res <- list("increment"=increment , "d2"=d2 , "ll0"=ll0)
+	return(res)
+		}
+
+		
+		
+		
+		

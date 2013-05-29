@@ -1,0 +1,334 @@
+\name{smirt}
+\alias{smirt}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+Multidimensional Noncompensatory and Compensatory Item
+Response Model
+}
+\description{
+This function estimates the noncompensatory and compensatory multidimensional
+item response model (Reckase, 2009).
+}
+\usage{
+smirt(dat, Qmatrix, irtmodel="noncomp" , est.b = NULL, est.a = NULL, 
+     est.c = NULL, est.d = NULL, b.init = NULL, a.init = NULL, c.init = NULL,
+     d.init=NULL, Sigma.init=NULL , theta.k=seq(-6,6,len=20), theta.kDES=NULL, 
+     qmcnodes=0 , mu.fixed = NULL, variance.fixed = NULL,  est.corr = FALSE, 
+     max.increment = 1, numdiff.parm = 0.001, maxdevchange = 0.1, 
+     globconv = 0.001, maxiter = 1000, msteps = 4, mstepconv = 0.001)
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{dat}{
+Data frame with dichotomous item responses
+}
+  \item{Qmatrix}{
+The \eqn{Q} matrix which specifies the loadings to be estimated
+}
+  \item{irtmodel}{
+The item response model. Options are the noncompensatory model (\code{"noncomp"})
+and the compensatory model (\code{"comp"}). See Details for more explanations.
+}
+  \item{est.b}{
+An integer matrix (if \code{irtmodel="noncomp"}) or integer vector 
+(if \code{irtmodel="comp"}) for \eqn{b} parameters to be estimated
+}
+  \item{est.a}{
+An integer matrix for \eqn{a} parameters to be estimated. 
+If \code{est.a="2PL"}, then all item loadings will be estimated and the
+variances are set to one (and therefore \code{est.corr=TRUE}).
+}
+  \item{est.c}{
+An integer vector for \eqn{c} parameters to be estimated
+}
+  \item{est.d}{
+An integer vector for \eqn{d} parameters to be estimated
+}
+  \item{b.init}{
+Initial \eqn{b} coefficients
+}
+  \item{a.init}{
+Initial \eqn{a} coefficients
+}
+  \item{c.init}{
+Initial \eqn{c} coefficients
+}
+  \item{d.init}{
+Initial \eqn{d} coefficients
+}
+\item{Sigma.init}{
+Initial covariance matrix \eqn{\Sigma}
+}
+  \item{theta.k}{
+Vector of discretized trait distribution. This vector is expanded in all
+dimensions by using the \code{expand.grid} function. If a user specifies
+a design matrix \code{theta.kDES} of transformed \eqn{\bold{\theta}_p}
+values (see Details and Examples), then \code{theta.k} must be a matrix, too.
+}
+  \item{theta.kDES}{
+An optional design matrix. This matrix will differ from the ordinary
+theta grid in case of nonlinear item response models.
+}
+  \item{qmcnodes}{
+Number of integration nodes for quasi Monte Carlo integration (see Pan & 
+Thompson, 2007). Integration points are obtained by using the function 
+\code{\link{qmc.nodes}}. Note that when using quasi Monte Carlo nodes, 
+no theta design matrix \code{theta.kDES} can be specified. 
+See Example 1, Model 11.
+}
+  \item{mu.fixed}{
+Matrix with fixed entries in the mean vector. By default, all means
+are set to zero.
+}
+  \item{variance.fixed}{
+Matrix with fixed entries in the covariance matrix (see Examples).
+}
+  \item{est.corr}{
+Should only a correlation matrix instead of a covariance matrix
+be estimated?
+}
+  \item{max.increment}{
+Maximum increment
+}
+  \item{numdiff.parm}{
+Numerical differentiation parameter
+}
+  \item{maxdevchange}{
+Convergence criterion for change in relative deviance
+}
+  \item{globconv}{
+Global convergence criterion for parameter change
+}
+  \item{maxiter}{
+Maximum number of iterations
+}
+  \item{msteps}{
+Number of iterations within a M step
+}
+  \item{mstepconv}{
+Convergence criterion within a M step
+}
+}
+\details{
+The noncompensatory item response model (\code{irtmodel="noncomp"}) 
+is defined by
+\deqn{P(X_{pi}=1 | \bold{\theta}_p ) = c_i + (d_i - c_i ) 
+\prod_l invlogit( a_{il} q_{il}  \theta_{pl} - b_{il} ) }
+where \eqn{i}, \eqn{p}, \eqn{l} denote items, persons and dimensions 
+respectively. 
+
+The compensatory item response model (\code{irtmodel="comp"}) 
+is defined by
+\deqn{P(X_{pi}=1 | \bold{\theta}_p ) = c_i + (d_i - c_i ) 
+invlogit( \sum_l  a_{il}  q_{il} \theta_{pl} - b_{i} ) }
+Using a design matrix \code{theta.kDES} the model can be made even more general
+in a model which is linear in item parameters
+\deqn{P(X_{pi}=1 | \bold{\theta}_p ) = c_i + (d_i - c_i ) 
+invlogit( \sum_l  a_{il}  q_{il} t_l ( \bold{ \theta_{p} } )   - b_{i} ) }
+with known functions \eqn{t_l} of the trait vector \eqn{\bold{\theta}_p}.
+Fixed values of the functions \eqn{t_l} are specified in the 
+\eqn{\bold{\theta}_p} design matrix \code{theta.kDES}.
+
+The models are estimated by an EM algorithm employing marginal maximum
+likelihood.
+}
+\value{
+A list with following entries:
+\item{deviance}{Deviance}
+\item{ic}{Information criteria}
+\item{item}{Data frame with item parameters}
+\item{person}{Data frame with person parameters}
+\item{EAP.rel}{EAP reliability}
+\item{mean.trait}{Means of trait}
+\item{sd.trait}{Standard deviations of trait}
+\item{Sigma}{Trait covariance matrix}
+\item{cor.trait}{Trait correlation matrix}
+\item{b}{Matrix (vector) of \eqn{b} parameters}
+\item{se.b}{Matrix (vector) of standard errors \eqn{b} parameters}
+\item{a}{Matrix of \eqn{a} parameters}
+\item{se.a}{Matrix of standard errors of \eqn{a} parameters}
+\item{c}{Vector of \eqn{c} parameters}
+\item{se.c}{Vector of standard errors of \eqn{c} parameters}
+\item{d}{Vector of \eqn{d} parameters}
+\item{se.d}{Vector of standard errors of \eqn{d} parameters}
+\item{f.yi.qk}{Individual likelihood}
+\item{f.qk.yi}{Individual posterior}
+\item{probs}{Probabilities of item response functions evaluated at \code{theta.k}}
+\item{n.ik}{Expected counts}
+\item{iter}{Number of iterations}
+\item{dat2}{Processed data set}
+\item{dat2.resp}{Data set of response indicators}
+\item{I}{Number of items}
+\item{D}{Number of dimensions}
+\item{K}{Maximum item response score}
+\item{theta.k}{Used theta integration grid}
+\item{pi.k}{Distribution function evaluated at \code{theta.k}}
+\item{irtmodel}{Used IRT model}
+%%  If it is a LIST, use
+%%  \item{comp1 }{Description of 'comp1'}
+%%  \item{comp2 }{Description of 'comp2'}
+%% ...
+}
+\references{
+Pan, J. & Thompson, R. (2007). Quasi-Monte Carlo estimation in
+generalized linear mixed models. \emph{Computational Statistics &
+Data Analysis}, \bold{51}, 5765-5775.
+	
+Reckase, M.D. (2009). \emph{Multidimensional item response theory}.
+New York: Springer.
+%% ~put references to the literature/web site here ~
+}
+\author{
+Alexander Robitzsch
+}
+%\note{
+%%  ~~further notes~~
+%}
+
+%% ~Make other sections like Warning with \section{Warning }{....} ~
+
+\seealso{
+Other multidimensional IRT models can also be estimated
+with \code{\link{rasch.mml2}} and \code{\link{rasch.mirtlc}}.
+
+See also the \pkg{mirt} and \pkg{TAM} packages for estimation of
+multidimensional models.
+%% ~~objects to See Also as \code{\link{help}}, ~~~
+}
+\examples{
+############################
+## SIMULATED EXAMPLE 1: Noncompensatory and compensatory IRT models
+set.seed(997)
+
+# (1) simulate data from a two-dimensional noncompensatory
+#     item response model
+ 
+N <- 1000	# number of persons
+I <- 10		# number of items
+theta0 <- rnorm( N , sd= 1 )
+theta1 <- theta0 + rnorm(N , sd = .7 )
+theta2 <- theta0 + rnorm(N , sd = .7 )
+Q <- matrix( 1 , nrow=I,ncol=2 )
+Q[ 1:(I/2) , 2 ] <- 0
+Q[ I,1] <- 0
+b <- matrix( rnorm( I*2 ) , I , 2 )
+a <- matrix( 1 , I  , 2 )
+
+# simulate data                                     
+prob <- dat <- matrix(0 , nrow=N , ncol=I )
+for (ii in 1:I){
+prob[,ii] <- ( plogis( theta1 - b[ii,1]  ) )^Q[ii,1]
+prob[,ii] <- prob[,ii] * ( plogis( theta2 - b[ii,2]  ) )^Q[ii,2]
+            }
+dat[ prob > matrix(runif( N*I),N,I) ] <- 1
+colnames(dat) <- paste0("I",1:I)
+
+#***
+# Model 1: Noncompensatory 1PL model
+mod1 <- smirt(dat, Qmatrix=Q , maxiter=30 )
+summary(mod1)
+
+\dontrun{
+#***
+# Model 2: Noncompensatory 2PL model
+mod2 <- smirt(dat,Qmatrix=Q , est.a="2PL" , maxiter=30 )
+summary(mod2)
+
+#***
+# Model 3: some fixed c and d parameters different from zero or one
+c.init <- rep(0,I)
+c.init[ c(3,7)] <- .2
+d.init <- rep(1,I)
+d.init[c(4,8)] <- .95
+mod3 <- smirt( dat , Qmatrix=Q , c.init=c.init , d.init=d.init )
+summary(mod3)
+
+#***
+# Model 4: some estimated c and d parameters (in parameter groups)
+est.c <- c.init <- rep(0,I)
+c.estpars <- c(3,6,7)
+c.init[ c.estpars ] <- .2
+est.c[c.estpars] <- 1
+est.d <- rep(0,I)
+d.init <- rep(1,I)
+d.estpars <- c(6,9)
+d.init[ d.estpars ] <- .95
+est.d[ d.estpars ] <- d.estpars   # different d parameters
+mod4 <- smirt(dat,Qmatrix=Q , est.c=est.c , c.init=c.init ,
+    est.d=est.d , d.init=d.init  )
+summary(mod4)
+
+#***
+# Model 5: Unidimensional 1PL model
+Qmatrix <- matrix( 1 , nrow=I , ncol=1 )
+mod5 <- smirt( dat , Qmatrix=Qmatrix )
+summary(mod5)
+
+#***
+# Model 6: Unidimensional 2PL model
+mod6 <- smirt( dat , Qmatrix=Qmatrix , est.a="2PL" )
+summary(mod6)
+
+#***
+# Model 7: Compensatory model with between item dimensionality
+# between-item dimensionality
+# Note that the data is simulated under the noncompensatory condition
+# Therefore Model 7 should have a worse model fit than Model 1
+Q1 <- Q
+Q1[ 6:10 , 1] <- 0
+mod7 <- smirt(dat,Qmatrix=Q1 , irtmodel="comp" , maxiter=30)
+summary(mod7)
+
+#***
+# Model 8: Compensatory model with within item dimensionality
+# 		assuming zero correlation between dimensions
+variance.fixed <- as.matrix( cbind( 1,2,0) )
+mod8 <- smirt(dat,Qmatrix=Q , irtmodel="comp" , variance.fixed=variance.fixed ,
+	maxiter=30)
+summary(mod8)
+
+#***
+# Model 9: Unidimensional model with quadratic item response functions
+# define theta
+theta.k <- seq( - 6 , 6 , len=15 )
+theta.k <- as.matrix( theta.k , ncol=1 )
+# define design matrix
+theta.kDES <- cbind( theta.k[,1] , theta.k[,1]^2 )
+# define Q matrix
+Qmatrix <- matrix( 0 , I , 2 )
+Qmatrix[,1] <- 1
+Qmatrix[ c(3,6,7) , 2 ] <- 1
+colnames(Qmatrix) <- c("F1" , "F1sq" )
+# estimate model
+mod9 <- smirt(dat,Qmatrix=Qmatrix , maxiter=50 , irtmodel="comp" , 
+	theta.k=theta.k , theta.kDES=theta.kDES , est.a="2PL" )           
+summary(mod9)
+
+#***
+# Model 10: Two-dimensional item response model with latent interaction
+#           between dimensions
+theta.k <- seq( - 6 , 6 , len=15 )
+theta.k <- expand.grid( theta.k , theta.k )	# expand theta to 2 dimensions
+# define design matrix
+theta.kDES <- cbind( theta.k , theta.k[,1]*theta.k[,2] )
+# define Q matrix
+Qmatrix <- matrix( 0 , I , 3 )
+Qmatrix[,1] <- 1
+Qmatrix[ 6:10 , c(2,3) ] <- 1
+colnames(Qmatrix) <- c("F1" , "F2" , "F1iF2" )
+# estimate model
+mod10 <- smirt(dat,Qmatrix=Qmatrix ,irtmodel="comp" , theta.k=theta.k , 
+            theta.kDES= theta.kDES , est.a="2PL" )           
+summary(mod10)
+
+#****
+# Model 11: Quasi Monte Carlo integration
+Qmatrix <- matrix( 1 , I , 1 )
+mod11 <- smirt( dat , irtmodel="comp" , Qmatrix=Qmatrix ,
+            qmcnodes=1000 )
+summary(mod11) }
+}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{Multidimensional item response model}
+%% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
