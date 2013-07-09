@@ -57,7 +57,7 @@ Object of class \code{rasch.pairwise} with elements
 %    Humphry, S. M. (2011). The role of the unit in physics and psychometrics.
 %    \emph{Measurement: Interdisciplinary Research & Perspective}, \bold{9}, 1-24.
 
-    van der Linden, W. J. & Eggen, T. J. H. M. (1986). \emph{An empirical
+    van der Linden, W. J., & Eggen, T. J. H. M. (1986). \emph{An empirical
     Bayes approach to item banking}. Research Report 86-6, University of Twente.
 
     Zwinderman, A. H. (1995). Pairwise parameter estimation in Rasch models.

@@ -1,5 +1,6 @@
 \name{gom.em}
 \alias{gom.em}
+\alias{summary.gom}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Discrete (Rasch) Grade of Membership Model
@@ -13,6 +14,8 @@ distribution.
 gom.em(dat, K=NULL, problevels=NULL, model="GOM", theta0.k=seq(-5, 5, len=15), 
     xsi0.k=exp(seq(-6, 3, len=15)), max.increment=0.3, numdiff.parm=0.001, 
     maxdevchange=10^(-5), globconv=0.001, maxiter=1000, msteps=4, mstepconv=0.001)
+
+\method{summary}{gom}(object,...)    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -56,6 +59,12 @@ Number of iterations within a M step
 }
   \item{mstepconv}{
 Convergence criterion within a M step
+}
+  \item{object}{
+Object of class \code{gom}
+}
+  \item{\dots}{
+Further arguments to be passed
 }
 }
 \details{
@@ -113,13 +122,9 @@ A list with following entries:
 \item{TP}{Number of discrete integration points for \eqn{(g_{p1},...,g_{pK})}}
 \item{theta.k}{Used grid of membership functions}
 \item{\dots}{Further values}
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
 }
 \references{
-Erosheva, E. A., Fienberg, S. E. & Joutard, C. (2007).
+Erosheva, E. A., Fienberg, S. E., & Joutard, C. (2007).
 Describing disability through individual-level mixture models 
 for multivariate binary data. \emph{Annals of Applied Statistics},
 \bold{1}, 502-537.
@@ -136,7 +141,6 @@ Alexander Robitzsch
 \seealso{
 For joint maximum likelihood estimation of the grade of membership model
 see \code{\link{gom.jml}}.
-%% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
 #########################################################
@@ -173,3 +177,4 @@ summary(mod4)
 % R documentation directory.
 \keyword{Grade of membership model}
 \keyword{Rasch grade of membership model}
+\keyword{summary}

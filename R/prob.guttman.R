@@ -9,6 +9,7 @@ prob.guttman <- function( dat , pid = NULL , guess.equal=FALSE ,
 		slip.equal=FALSE , itemlevel = NULL , conv1 = .001 , 
 		glob.conv = .001 , mmliter = 500 ){
 	# data prep
+	dat <- as.matrix(dat)
 	I <- ncol(dat)
 	dat2.resp <- 1 - is.na( dat )
 	dat2 <- dat
@@ -192,19 +193,17 @@ summary.prob.guttman <- function( object , ... ){
     guessM <- matrix( guess , byrow=T , nrow=length(theta.k) , ncol=I )
     slipM <- matrix( slip , byrow=T , nrow=length(theta.k) , ncol=I )   
     pjk <- itemdes * ( 1 - slipM ) +  (  1 - itemdes ) * guessM   
+	TP <- dim(pjk)[1]
 #    pjk <- t(pjk)
         #***
-        # array notation of probabilities
-        pjkL <- array( NA , dim=c(2 , nrow(pjk) , ncol(pjk) ) )
-        pjkL[1,,] <- 1 - pjk
-        pjkL[2,,] <- pjk    
-        f.yi.qk <- matrix( 1 , nrow(dat2) , length(theta.k) )
-        for (ii in 1:ncol(dat2)){
-        #   ii <- 1
-            ind.ii <- which( dat2.resp[,ii] == 1 )
-            f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * pjkL[ dat2[ind.ii,ii]+1 , ,ii]
-                        }
-        #******
+        pjkt <- t(pjk)
+		pjkL <- array( NA , dim=c( I , 2 , TP  ) )
+		pjkL[,1,] <- 1 - pjkt
+		pjkL[,2,] <- pjkt	
+		probsM <- matrix( aperm( pjkL , c(2,1,3) ) , nrow=I*2 , ncol=TP )
+		f.yi.qk <- mml_calc_like( dat2=dat2 , dat2resp = dat2.resp , 
+					probs = probsM )$fyiqk
+	#******
     f.qk.yi <- 0 * f.yi.qk
     pi.k <- matrix( pi.k , ncol=1 )
     f.qk.yi <- f.yi.qk * outer( rep( 1 , nrow(dat2) ) , pi.k[,1] )        
@@ -218,13 +217,23 @@ summary.prob.guttman <- function( object , ... ){
     group <- rep(1,nrow(dat2))
     dat1 <- matrix( 1 , nrow=nrow(dat2) , ncol=2 )
     for (gg in 1:G){ 
-        n.k[,gg] <- colSums( dat1[group==gg,2] * f.qk.yi[group==gg,]  )
+		ind.gg <- which( group == gg )
+	    res <- mml_raschtype_counts( dat2=dat2[ind.gg,] , dat2resp=dat2.resp[ind.gg,] , 
+					dat1=dat1[ind.gg,2] , fqkyi=f.qk.yi[ind.gg,] ,
+					pik=pi.k[,gg] , fyiqk=f.yi.qk[ind.gg,]  )
+		n.k[,gg] <- res$nk
+		n.jk[,,gg] <- res$njk
+        r.jk[,,gg] <- res$rjk
+		ll[gg] <- res$ll
+#        n.k[,gg] <- colSums( dat1[group==gg,2] * f.qk.yi[group==gg,]  )
         # expected counts at theta.k and item j
-        n.jk[,,gg] <- ( t(dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[group==gg, ]
+#        n.jk[,,gg] <- ( t(dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[group==gg, ]
         # compute r.jk (expected counts for correct item responses at theta.k for item j
-        r.jk[,,gg] <- ( t(dat2[group==gg,]) * t( dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[ group==gg,]
+#        r.jk[,,gg] <- ( t(dat2[group==gg,]) * t( dat2.resp[group==gg,]) 
+#			* outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[ group==gg,]
         # compute log-Likelihood
-        ll[gg] <- sum( dat1[group==gg,2] * log( rowSums( f.yi.qk[group==gg,] * outer( rep(1,nrow(f.yi.qk[group==gg,])) , pi.k[,gg] ) ) ) )
+#        ll[gg] <- sum( dat1[group==gg,2] * log( rowSums( f.yi.qk[group==gg,] 
+#    * outer( rep(1,nrow(f.yi.qk[group==gg,])) , pi.k[,gg] ) ) ) )
         }       
     res <- list( "n.k" = n.k , "n.jk" = n.jk , "r.jk" = r.jk , 
             "f.qk.yi" = f.qk.yi , "pjk" = pjk  ,

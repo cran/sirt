@@ -105,7 +105,7 @@ arraymult1 <- function (A,dimA,B,dimB){
 					max.increment=max.b.increment , numdiff.parm )				
 					
 			c.rater[,kk] <- c.rater[,kk] + res$increment[diffindex]
-			se.c.rater[,kk] <- ( sqrt( -1/res$d2 ) )[diffindex ]
+			se.c.rater[,kk] <- ( sqrt( abs(-1/res$d2) ) )[diffindex ]
 			if (kk>1){ 
 				ind <- which( c.rater[,kk] < c.rater[,kk-1] )
 				if (length(ind)>0){
@@ -168,7 +168,7 @@ arraymult1 <- function (A,dimA,B,dimB){
 		cat("-")  #; flush.console()
 			}
 	cat(" " , it , "Step(s) \n")	
-    res <- list("d.rater" = d.rater , "se.d.rater" = sqrt( -1/res$d2 ) , 
+    res <- list("d.rater" = d.rater , "se.d.rater" = sqrt( abs(-1/res$d2) ) , 
 			"ll" = sum(res$ll0) 
 				)
     return(res)
@@ -210,7 +210,7 @@ arraymult1 <- function (A,dimA,B,dimB){
 					max.increment=max.b.increment , numdiff.parm )					
 			increment <- Q1*matrix( res$increment , nrow=VV , ncol=K)	
 			tau.item <- tau.item + increment
-			se.tau.item[,kk] <- sqrt(-1/res$d2)		
+			se.tau.item[,kk] <- sqrt(abs(-1/res$d2)	)
 					}
 		conv1 <- max( abs( tau.item - tau.item0 ) )
 		it <- it+1
@@ -259,7 +259,7 @@ arraymult1 <- function (A,dimA,B,dimB){
 		cat("-") # ; flush.console()	
 			}
 	cat(" " , it , "Step(s) \n")	#; flush.console()	
-    res <- list("a.item" = a.item , "se.a.item" = sqrt( -1/res$d2 ) , 
+    res <- list("a.item" = a.item , "se.a.item" = sqrt( abs(-1/res$d2 )) , 
 			"ll" = sum(res$ll0) , "prob.item" = r1$prob.item )
     return(res)
 			}			

@@ -39,6 +39,7 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
     # burnin ... number of burn-in iterations    
     #...........................................................................
     # indexes for PV estimation
+	data <- as.matrix(data)
     if (is.null(colnames(data)) ){ colnames(data) <- paste( "item" , seq(1 , ncol(data)) , sep="") }
     dfrout <- data.frame( "item" = colnames(data) , "b" = b , "a" = a , "c" = c , "d" = d )  
     cat("\nIRT Plausible Value Imputation - Rasch type model\n")

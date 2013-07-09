@@ -1,5 +1,6 @@
 \name{rasch.pairwise}
 \alias{rasch.pairwise}
+\alias{summary.rasch.pairwise}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Pairwise Estimation Method of the Rasch Model
@@ -12,6 +13,8 @@ which is a pairwise conditional likelihood estimation.
 \usage{
 rasch.pairwise(dat, conv = 1e-04, maxiter = 3000, progress = TRUE, 
         b.init = NULL)
+
+\method{summary}{rasch.pairwise}(object,...)        
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,6 +32,12 @@ Display iteration progress?
 }
   \item{b.init}{
 An optional vector of length \eqn{I} of item difficulties
+}
+  \item{object}{
+Object of class \code{rasch.pairwise}
+}
+  \item{\dots}{
+Further arguments to be passed
 }
 }
 %\details{
@@ -76,4 +85,5 @@ summary(mod)
 % R documentation directory.
 \keyword{Pairwise conditional maximum likelihood (PCML)}
 \keyword{Minchi method}
+\keyword{summary}
 

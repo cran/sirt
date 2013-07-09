@@ -27,6 +27,7 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
     # maxiter       ... maximum number of iterations                                      #
     #.....................................................................................#
     X <- as.matrix(X)   # matrix format
+	data <- as.matrix(data)
     # init parameters
     beta0 <- beta.init
     sig0 <- sigma.init

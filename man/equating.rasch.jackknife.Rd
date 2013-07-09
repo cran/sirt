@@ -45,7 +45,7 @@ A list with following entries:
 \code{linkingerror.jackknife} is the estimated linking error.}
 }
 \references{
-Monseur, C. & Berezner, A. (2007). The computation of equating errors 
+Monseur, C., & Berezner, A. (2007). The computation of equating errors 
 in international surveys in education. 
 \emph{Journal of Applied Measurement}, \bold{8}, 323-335.
 }

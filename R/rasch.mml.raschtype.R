@@ -1,15 +1,16 @@
 
+################################################
+# calculation of the likelihood
+mml_calc_like <- function (dat2,dat2resp,probs){ 
+	.Call("MML2_CALCPOST_V1", dat2,dat2resp,probs, PACKAGE = "sirt")
+					}
+# calculation of counts					
+mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){ 
+	.Call("MML2_RASCHTYPE_COUNTS", dat2,dat2resp,dat1,fqkyi,pik,fyiqk, PACKAGE = "sirt")
+					}
 
-
-# 1.01  2012-11-yy	O collect all raschtype function into this file
-
-
-
-# 1.0x  2012-11-yy
-################################################################
-
-
-
+					
+					
 #*************************************************************************************
 # E Step Rasch Model                                                        #
 .e.step.rasch <- function( dat1 , dat2 , dat2.resp , theta.k , pi.k , I , n , b ,
@@ -45,46 +46,62 @@
         alpha1 , alpha2 , group , f.qk.yi=NULL ){
     #...................................                    
     # arrange groups
+#vv0 <- Sys.time()	
     if ( is.null(group) ){ group <- rep( 1 , nrow(dat1)) }
-    G <- length( unique( group) )    
-    # probabilities of correct item at theta_k
+    G <- length( unique( group) ) 
+    TP <- length(theta.k)	
+    # probabilities of correct item at theta_k	
     pjk <- .prob.raschtype.genlogis( theta.k , b , alpha1 , alpha2 , fixed.a )
+#cat("   probs") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1		
     fixed.c.M <- outer( rep(1,nrow(pjk)) , fixed.c )
     fixed.d.M <- outer( rep(1,nrow(pjk)) , fixed.d )
     pjk <- fixed.c.M + ( fixed.d.M - fixed.c.M) * pjk
+#cat("   probs compute") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1			
 	if ( is.null( f.qk.yi ) ){
 		#***
 		# array notation of probabilities
-		pjkL <- array( NA , dim=c(2 , nrow(pjk) , ncol(pjk) ) )
-		pjkL[1,,] <- 1 - pjk
-		pjkL[2,,] <- pjk	
-		f.yi.qk <- matrix( 1 , nrow(dat2) , length(theta.k) )
-		for (ii in 1:ncol(dat2)){
+#		pjkL <- array( NA , dim=c(2 , nrow(pjk) , ncol(pjk) ) )
+#		pjkL[1,,] <- 1 - pjk
+#		pjkL[2,,] <- pjk	
+#		f.yi.qk <- matrix( 1 , nrow(dat2) , length(theta.k) )
+#		for (ii in 1:ncol(dat2)){
 		#	ii <- 1
-			ind.ii <- which( dat2.resp[,ii] == 1 )
-			f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * pjkL[ dat2[ind.ii,ii]+1 , ,ii]
-						}
+#			ind.ii <- which( dat2.resp[,ii] == 1 )
+#			f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * pjkL[ dat2[ind.ii,ii]+1 , ,ii]
+#						}
 		#******
-    f.qk.yi <- 0 * f.yi.qk
-    if ( G==1 ){ pi.k <- matrix( pi.k , ncol=1 ) }
-    for ( gg in 1:G){ 
-        f.qk.yi[ group == gg , ] <- f.yi.qk[ group == gg , ] * outer( rep( 1 , nrow(dat2[ group==gg,]) ) , pi.k[,gg] )
+        pjkt <- t(pjk)
+		pjkL <- array( NA , dim=c( I , 2 , TP  ) )
+		pjkL[,1,] <- 1 - pjkt
+		pjkL[,2,] <- pjkt	
+		probsM <- matrix( aperm( pjkL , c(2,1,3) ) , nrow=I*2 , ncol=TP )
+		f.yi.qk <- mml_calc_like( dat2=dat2 , dat2resp = dat2.resp , 
+					probs = probsM )$fyiqk
+#cat("   calc likelihood") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1				
+       f.qk.yi <- 0 * f.yi.qk
+       if ( G==1 ){ pi.k <- matrix( pi.k , ncol=1 ) }
+       for ( gg in 1:G){ 
+           f.qk.yi[ group == gg , ] <- f.yi.qk[ group == gg , ] * 
+				outer( rep( 1 , nrow(dat2[ group==gg,]) ) , pi.k[,gg] )
                     }				
-    f.qk.yi <- f.qk.yi / rowSums( f.qk.yi )		
+           f.qk.yi <- f.qk.yi / rowSums( f.qk.yi )		
 				}
+#cat("   calc posterior") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1								
     # expected counts at theta.k
     n.k <- matrix( 0 , length(theta.k) , G )
     r.jk <- n.jk <- array( 0 , dim=c( ncol(dat2) , length(theta.k) , G) )
     ll <- rep(0,G)
     for (gg in 1:G){ 
-        n.k[,gg] <- colSums( dat1[group==gg,2] * f.qk.yi[group==gg,]  )
-        # expected counts at theta.k and item j
-        n.jk[,,gg] <- ( t(dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[group==gg, ]
-        # compute r.jk (expected counts for correct item responses at theta.k for item j
-        r.jk[,,gg] <- ( t(dat2[group==gg,]) * t( dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[ group==gg,]
-        # compute log-Likelihood
-        ll[gg] <- sum( dat1[group==gg,2] * log( rowSums( f.yi.qk[group==gg,] * outer( rep(1,nrow(f.yi.qk[group==gg,])) , pi.k[,gg] ) ) ) )
+		ind.gg <- which( group == gg )
+	    res <- mml_raschtype_counts( dat2=dat2[ind.gg,] , dat2resp=dat2.resp[ind.gg,] , 
+					dat1=dat1[ind.gg,2] , fqkyi=f.qk.yi[ind.gg,] ,
+					pik=pi.k[,gg] , fyiqk=f.yi.qk[ind.gg,]  )
+		n.k[,gg] <- res$nk
+		n.jk[,,gg] <- res$njk
+        r.jk[,,gg] <- res$rjk
+		ll[gg] <- res$ll
         }
+#cat("   calc expected counts") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1										
     res <- list( "n.k" = n.k , "n.jk" = n.jk , "r.jk" = r.jk , "f.qk.yi" = f.qk.yi , "pjk" = pjk  ,
             "f.yi.qk" = f.yi.qk , "ll" = sum(ll) )
     return(res)
@@ -596,17 +613,16 @@ plot.rasch.mml <- function( object , plottitle = "Person-Item-Map" , itemcex = 1
     fixed.c.M <- outer( rep(1,nrow(pjk)) , fixed.c )
     fixed.d.M <- outer( rep(1,nrow(pjk)) , fixed.d )
     pjk <- fixed.c.M + ( fixed.d.M - fixed.c.M) * pjk
+	TP <- dim(pjk)[1]
 	#***
 	# array notation of probabilities
-	pjkL <- array( NA , dim=c(2 , nrow(pjk) , ncol(pjk) ) )
-	pjkL[1,,] <- 1 - pjk
-	pjkL[2,,] <- pjk
-	f.yi.qk <- matrix( 1 , nrow(dat2) , nrow(theta.k) )
-	for (ii in 1:ncol(dat2)){
-	#	ii <- 1
-		ind.ii <- which( dat2.resp[,ii] == 1 )
-		f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * pjkL[ dat2[ind.ii,ii]+1 , ,ii]
-					}			
+        pjkt <- t(pjk)
+		pjkL <- array( NA , dim=c( I , 2 , TP  ) )
+		pjkL[,1,] <- 1 - pjkt
+		pjkL[,2,] <- pjkt	
+		probsM <- matrix( aperm( pjkL , c(2,1,3) ) , nrow=I*2 , ncol=TP )
+		f.yi.qk <- mml_calc_like( dat2=dat2 , dat2resp = dat2.resp , 
+					probs = probsM )$fyiqk
 					
 	#******
     f.qk.yi <- 0 * f.yi.qk
@@ -622,13 +638,14 @@ plot.rasch.mml <- function( object , plottitle = "Person-Item-Map" , itemcex = 1
     r.jk <- n.jk <- array( 0 , dim=c( ncol(dat2) , nrow(theta.k) , G) )
     ll <- rep(0,G)
     for (gg in 1:G){ 
-        n.k[,gg] <- colSums( dat1[group==gg,2] * f.qk.yi[group==gg,]  )
-        # expected counts at theta.k and item j
-        n.jk[,,gg] <- ( t(dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[group==gg, ]
-        # compute r.jk (expected counts for correct item responses at theta.k for item j
-        r.jk[,,gg] <- ( t(dat2[group==gg,]) * t( dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[ group==gg,]
-        # compute log-Likelihood
-        ll[gg] <- sum( dat1[group==gg,2] * log( rowSums( f.yi.qk[group==gg,] * outer( rep(1,nrow(f.yi.qk[group==gg,])) , pi.k[,gg] ) ) ) )
+		ind.gg <- which( group == gg )
+	    res <- mml_raschtype_counts( dat2=dat2[ind.gg,] , dat2resp=dat2.resp[ind.gg,] , 
+					dat1=dat1[ind.gg,2] , fqkyi=f.qk.yi[ind.gg,] ,
+					pik=pi.k[,gg] , fyiqk=f.yi.qk[ind.gg,]  )
+		n.k[,gg] <- res$nk
+		n.jk[,,gg] <- res$njk
+        r.jk[,,gg] <- res$rjk
+		ll[gg] <- res$ll
         }
     res <- list( "n.k" = n.k , "n.jk" = n.jk , "r.jk" = r.jk , "f.qk.yi" = f.qk.yi , "pjk" = pjk  ,
             "f.yi.qk" = f.yi.qk , "ll" = sum(ll) )

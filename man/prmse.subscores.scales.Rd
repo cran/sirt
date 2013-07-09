@@ -40,7 +40,7 @@ Haberman, S. J. (2008). When can subscores have value?
 \emph{Journal of Educational and Behavioral Statistics}, 
 \bold{33}, 204-229.
 
-Haberman, S., Sinharay, S. & Puhan, G. (2008).
+Haberman, S., Sinharay, S., & Puhan, G. (2008).
 Reporting subscores for institutions.
 \emph{British Journal of Mathematical and Statistical Psychology},
 \bold{62}, 79-95.

@@ -46,7 +46,7 @@ A list with following entries
 \item{sigma.n}{Person standard deviations}
 }
 \references{
-Wright, B. & Stone, W. (1999). \emph{Measurement Essentials}.
+Wright, B., & Stone, W. (1999). \emph{Measurement Essentials}.
 Wilmington: Wide Range.
 }
 \author{

@@ -639,35 +639,6 @@ rasch.copula <- function( dat , itemcluster , group = NULL ,
 
 
 
-#*******************************************************
-# Summary for rasch.copula object                         *
-##NS S3method(summary,rasch.copula)
-summary.rasch.copula <- function( object , ...){
-    # object      ... object from rasch.copula                #
-        cat("---------------------------------------------------------------------------------------------------------- \n")
-        cat("Marginal Maximum Likelihood Estimation \n")
-        cat(paste( "Raschtype Copula Model with generalized logistic link function: Estimation of alpha1 and alpha2 \n") )
-		cat("alpha1=",round(object$alpha1,3)," alpha2=" , round(object$alpha2,3) , " \n")
-		cat("Function rasch.copula\n")		
-    cat("---------------------------------------------------------------------------------------------------------- \n")
-    cat( "Deviance = " , round( object$deviance , 2 ) , "\n" )
-    cat( "Number of persons = " , object$ic$n , " (" , nrow(object$pattern) , " Response Patterns)\n" )    
-    cat( "Number of estimated parameters = " , object$ic$np , "\n" )    
-    cat( "AIC = " , round( object$ic$AIC , 2 ) , " ; penalty =" , round( object$ic$AIC - object$ic$deviance ,2 ) , "\n" )    
-    cat( "BIC = " , round( object$ic$BIC , 2 ) , " ; penalty =" , round( object$ic$BIC - object$ic$deviance ,2 ) , "\n" )  
-    cat( "CAIC = " , round( object$ic$CAIC , 2 ) ," ; penalty =" , round( object$ic$CAIC - object$ic$deviance ,2 ) , "\n\n" )         
-    cat( "Trait Distribution (" , length(object$theta.k) , " Knots )\n" , 
-              "Mean=" , 0 , " SD=" , 1 , "\n") 
-    cat("---------------------------------------------------------------------------------------------------------- \n")
-    cat("Item Parameter \n")
-    .pr( object$item , 3 )                
-                }
-#*******************************************************
-
-
-
-
-
 #----------------------------------------------------------------------------------------------
 .update.ll.rasch.copula <- function( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
 		CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 

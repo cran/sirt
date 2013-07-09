@@ -39,7 +39,7 @@ A list with following entries:
 %%			"item"=item , "xsi.ij"=xsi.ij , "mu.i"=mu.i , "sigma2.i" = sigma2.i )
 }
 \references{
-Rijmen, F. & Vomlel, J. (2008). Assessing the performance of
+Rijmen, F., & Vomlel, J. (2008). Assessing the performance of
 variational methods for mixed logistic regression models.
 \emph{Journal of Statistical Computation and Simulation},
 \bold{78}, 765-779.

@@ -2,6 +2,8 @@
 ##########################################
 # Modelfit in sirt
 modelfit.sirt <- function( object ){
+	#*****
+	# rasch.mml
 	if (class(object)=="rasch.mml"){
 		mod <- object
 		posterior <- mod$f.qk.yi
@@ -11,6 +13,8 @@ modelfit.sirt <- function( object ){
 			probs[ , 1 , ] <- 1 - t(prob1)
 		dat <- mod$dat
 					}
+	#*****
+	# rasch.mirtlc
 	if (class(object)=="rasch.mirtlc"){
 		mod <- object$estep.res
 		posterior <- mod$f.qk.yi
@@ -20,13 +24,26 @@ modelfit.sirt <- function( object ){
 			probs[ , 1 , ] <- 1 - t(prob1)
 		dat <- object$dat
 					}	
+	#******
+	# rasch.pml
 	if ( class(object) !="rasch.pml"){ pmlobject <- NULL } else {
 		data <- NULL ; posterior <- NULL ; probs <- NULL ; pmlobject <- object }
+	#*******
+	# smirt	
+	if (class(object) == "smirt"){
+		# note that for polytomous response data some adaptations are
+		# necessary: see modelfit in the CDM package
+		mod <- object
+		probs <- mod$probs
+		posterior <- mod$f.qk.yi
+		dat <- mod$dat
+					}	
+	# calculate modelfit.cor	
 	res <- modelfit.cor( data = dat , posterior =posterior , probs = probs ,
 			pmlobject=pmlobject)
 	return(res)
 	}
-##########################################
+################################################################################
 
 #############################################################################
 modelfit.cor <-
@@ -48,12 +65,12 @@ function( data=NULL , posterior=NULL , probs=NULL , pmlobject=NULL ){
 		# expected counts
 		exp1 <- rep(NA, I )
 		for (ii in 1:I){
-			# ii <- 1
-			pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-			p3ii <-  pr.ii1 * posterior
-			exp1[ii] <- sum( rowSums( p3ii ) * data.resp[,ii ] ) / sum( data.resp[,ii] )
+			# ii <- 1		
+#			pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
+#			p3ii <-  pr.ii1 * posterior
+#			exp1[ii] <- sum( rowSums( p3ii ) * data.resp[,ii ] ) / sum( data.resp[,ii] )
+			exp1[ii] <- sum( colSums( posterior * data.resp[,ii] ) * probs[ii,2,] ) / sum( data.resp[,ii] )
 					}
-		
 		#********************************
 		# covariances 
 		
@@ -94,32 +111,44 @@ function( data=NULL , posterior=NULL , probs=NULL , pmlobject=NULL ){
 	itempairs$RESIDCOV <- NA		
 	itempairs$Q3 <- NA			
 	
+	#***
+	# calculate expected score for every person and every item
+	exp.ii.jj <- posterior %*% t( probs[,2,] )
+	#***
+	
     for (ii in 1:(I-1) ){
         for (jj in (ii+1):I){
     # ii <- 1
     # jj <- 2
-        ii1 <- which ( itempairs$item1 == ii &  itempairs$item2 == jj )	
+        ii1 <- which ( itempairs$item1 == ii &  itempairs$item2 == jj )
+		ps.iijj <- colSums( posterior[ data.resp[,ii]*data.resp[,jj]>0 , ] )
+		
 	if ( is.null( pmlobject)){
         diijj <- data.resp[,ii ]*data.resp[,jj ]
-        pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-        pr.jj1 <- matrix( probs[jj,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
-        p3ii <-  pr.ii1 * pr.jj1 * posterior
-        itempairs[ii1,"Exp11"] <- sum( rowSums( p3ii ) * diijj )
+#        pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
+#        pr.jj1 <- matrix( probs[jj,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
+#        p3ii <-  pr.ii1 * pr.jj1 * posterior
+#        itempairs[ii1,"Exp11"] <- sum( rowSums( p3ii ) * diijj )    
+		itempairs[ii1,"Exp11"] <- sum( probs[ii,2,]*probs[jj,2,] * ps.iijj )
+	
+#        pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
+#        pr.jj1 <- matrix( probs[jj,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
+#        p3ii <-  pr.ii1 * pr.jj1 * posterior
+#        itempairs[ii1,"Exp10"] <- sum( rowSums( p3ii ) * diijj )
+		itempairs[ii1,"Exp10"] <- sum( probs[ii,2,]*probs[jj,1,] * ps.iijj )
     
-        pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-        pr.jj1 <- matrix( probs[jj,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
-        p3ii <-  pr.ii1 * pr.jj1 * posterior
-        itempairs[ii1,"Exp10"] <- sum( rowSums( p3ii ) * diijj )
+#        pr.ii1 <- matrix( probs[ii,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
+#        pr.jj1 <- matrix( probs[jj,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
+#        p3ii <-  pr.ii1 * pr.jj1 * posterior
+#        itempairs[ii1,"Exp01"] <- sum( rowSums( p3ii ) * diijj )
+		itempairs[ii1,"Exp01"] <- sum( probs[ii,1,]*probs[jj,2,] * ps.iijj )		
     
-        pr.ii1 <- matrix( probs[ii,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-        pr.jj1 <- matrix( probs[jj,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
-        p3ii <-  pr.ii1 * pr.jj1 * posterior
-        itempairs[ii1,"Exp01"] <- sum( rowSums( p3ii ) * diijj )
-    
-        pr.ii1 <- matrix( probs[ii,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-        pr.jj1 <- matrix( probs[jj,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
-        p3ii <-  pr.ii1 * pr.jj1 * posterior
-        itempairs[ii1,"Exp00"] <- sum( rowSums( p3ii ) * diijj )
+#        pr.ii1 <- matrix( probs[ii,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
+#        pr.jj1 <- matrix( probs[jj,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
+#        p3ii <-  pr.ii1 * pr.jj1 * posterior
+#        itempairs[ii1,"Exp00"] <- sum( rowSums( p3ii ) * diijj )
+		itempairs[ii1,"Exp00"] <- sum( probs[ii,1,]*probs[jj,1,] * ps.iijj )				
+		
 							}
 							
         itempairs[ii1, "corObs"]  <-   .corr.wt( x = m1[,1,drop=FALSE] ,  y = m1[,2,drop=FALSE] , 
@@ -130,18 +159,23 @@ function( data=NULL , posterior=NULL , probs=NULL , pmlobject=NULL ){
 		#***
 		# Q3 statistic
 	if ( is.null( pmlobject)){		
-        pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-        pr.jj1 <- matrix( probs[jj,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
-        p3ii <-  pr.ii1 * posterior
-		expii <- rowSums( p3ii )
-        p3jj <-  pr.jj1 * posterior
-		expjj <- rowSums( p3jj )
+#        pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
+#        pr.jj1 <- matrix( probs[jj,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
+#        p3ii <-  pr.ii1 * posterior
+#		expii <- rowSums( p3ii )
+#        p3jj <-  pr.jj1 * posterior
+#		expjj <- rowSums( p3jj )
 		# calculate residuals
-		data.res <- data[, c(ii,jj) ] - cbind( expii , expjj )
+#		data.res <- data[, c(ii,jj) ] - cbind( expii , expjj )
+#		data.res <- data.res[ diijj == 1 , ]
+#		itempairs[ii1,"Q3"] <- cor(data.res)[1,2]
+		data.res <- data[, c(ii,jj) ] - exp.ii.jj[ , c(ii,jj) ]
 		data.res <- data.res[ diijj == 1 , ]
-		itempairs[ii1,"Q3"] <- cor(data.res)[1,2]
+		itempairs[ii1,"Q3"] <- cor(data.res)[1,2]		
+		
 								}
                             }
+# print(ii) ; flush.console()							
                 }
     
 	##############################
@@ -179,9 +213,7 @@ function( data=NULL , posterior=NULL , probs=NULL , pmlobject=NULL ){
     }
 
 #######################################################################	
-	
-
-
+# auxiliary function: weighted correlation	
 .corr.wt <- function( x, y, w = rep(1,length(x))) {
 #  stopifnot(length(x) == dim(y)[2] )
   w <- w / sum(w)
@@ -196,3 +228,4 @@ function( data=NULL , posterior=NULL , probs=NULL , pmlobject=NULL ){
   # Compute the correlation
   vxy / sqrt(vx * vy)
 }
+##################################################################################

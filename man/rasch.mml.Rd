@@ -1,5 +1,6 @@
 \name{rasch.mml2}
 \alias{rasch.mml2}
+\alias{summary.rasch.mml}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Estimation of the Generalized Logistic Item Response Model, 
@@ -26,10 +27,12 @@ rasch.mml2( dat , theta.k=seq(-6,6,len=21) , group=NULL , weights=NULL ,
    est.c=NULL , est.d=NULL , min.c=0 , max.c=1 , min.d=0 , max.d=1 ,
    est.K=NULL , min.K=1 , max.K=20 , pid=1:(nrow(dat)) , trait.weights=NULL ,
    center.trait=TRUE , alpha1=0 , alpha2=0 ,est.alpha=FALSE , equal.alpha=FALSE , 
-   designmatrix=NULL , alpha.conv=parm.conv , numdiff.parm=0.00001 ,
+   designmatrix=NULL , alpha.conv=parm.conv , numdiff.parm=0.001 ,
    numdiff.alpha.parm= numdiff.parm , distribution.trait="normal" , Qmatrix=NULL , 
    variance.fixed=NULL , mu.fixed=cbind(seq(1,ncol(Qmatrix)),rep(0,ncol(Qmatrix))) ,
    irtmodel="raschtype" , npformula=NULL , use.freqpatt = is.null(group)  , ... )
+   
+\method{summary}{rasch.mml}(object,...)   
 }
 %- maybe also 'usage' for other objects documented here.
 
@@ -180,7 +183,7 @@ trait distribution is also possible (\code{"smooth2"},
 2, 3 or 4 moments repectively).
 }
   \item{Qmatrix}{
-The \eqn{Q} matrix
+The Q-matrix
 }
   \item{variance.fixed}{
 Matrix for fixing covariance matrix (See Examples)
@@ -209,7 +212,10 @@ grid of \eqn{\theta} values is estimated.
 	group analyses, frequency patterns are used but not for multiple
 	groups. If data processing times are large, then \code{use.freqpatt=FALSE}
 	is recommended.}
-\item{\dots}{
+  \item{object}{  	  
+Object of class \code{rasch.mml}
+}
+  \item{\dots}{
 Further arguments to be passed
 }
 }
@@ -226,7 +232,7 @@ The item response function of the generalized item response model
 where \eqn{g} is the generalized logistic link function depending
 on parameters \eqn{\alpha_1} and \eqn{\alpha_2}. 
 The logistic link function corresponds to \eqn{\alpha_1=0} and \eqn{\alpha_2=0}.
-A \eqn{D}-dimensional model can be estimated 
+A \eqn{D}-dimensional model can also be specified 
 but only allows for between item dimensionality 
 (one item loads on one and only dimension). 
 Setting \eqn{c_i=0}, \eqn{d_i=1} and  \eqn{a_i=1} for all items \eqn{i},
@@ -236,8 +242,8 @@ is estimated.
 
 Ramsay's quotient model (\code{irtmodel="qm.ramsay"}) uses 
 the item response function
-\deqn{P( X_{pi} = 1 | \theta_p ) = \frac{ exp(\theta_p / b_i)}
-	{ K_i + exp(\theta_p / b_i )} }
+\deqn{P( X_{pi} = 1 | \theta_p ) = \frac{ \exp(\theta_p / b_i)}
+	{ K_i + \exp (\theta_p / b_i )} }
 
 Quite general unidimensional item response models can be estimated
 in a nonparametric framework (\code{irtmodel="npirt"}). The response
@@ -262,8 +268,7 @@ A list with following entries
 \item{item}{Estimated item parameters in the generalized
 	item response model}
 \item{item2}{Estimted item parameters for Ramsay's quotient model}
-\item{trait.distr}{Discretized ability distribution points a
-	nd probabilities}
+\item{trait.distr}{Discretized ability distribution points and probabilities}
 \item{mean.trait}{Estimated mean vector}
 \item{sd.trait}{Estimated standard deviations}
 \item{skewness.trait}{Estimated skewnesses}
@@ -307,14 +312,14 @@ A list with following entries
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \references{
-Loken, E. & Rulison, K. L. (2010). Estimation of a four-parameter 
+Loken, E., & Rulison, K. L. (2010). Estimation of a four-parameter 
 item response theory model. \emph{British Journal of Mathematical 
 and Statistical Psychology}, \bold{63}, 509-525.
 
 Ramsay, J. O. (1989). A comparison of three simple test theory models. 
 \emph{Psychometrika}, \bold{54}, 487-499.
 
-Rossi, N., Wang, X. & Ramsay, J. O. (2002). Nonparametric item response 
+Rossi, N., Wang, X., & Ramsay, J. O. (2002). Nonparametric item response 
 function estimates with the EM algorithm. 
 \emph{Journal of Educational and Behavioral Statistics}, \bold{27}, 291-317. 
 
@@ -322,7 +327,7 @@ Stukel, T. A. (1988). Generalized logistic models.
 \emph{Journal of the American Statistical Association},
 \bold{83}, 426-431.
 
-van der Maas, H. J. L., Molenaar, D., Maris, G., Kievit, R. A. & 
+van der Maas, H. J. L., Molenaar, D., Maris, G., Kievit, R. A., & 
 Borsboom, D. (2011).
 Cognitive psychology meets psychometric theory: On the relation between 
 process models for decision making and latent variable models for 
@@ -456,7 +461,7 @@ summary(mod1)}
 # SIMULATED EXAMPLE 3
 #  one group, estimation of alpha parameter 
 #		in generalized logistic model
-###############################################################
+##############################################################
 
 # simulate theta values
 set.seed(786)
@@ -475,6 +480,7 @@ summary(mod1)
 mod1b <- rasch.mml2( dat , est.alpha = FALSE , alpha1=0 , alpha2=-.3 , mmliter=30)
 summary(mod1b)
 
+\dontrun{
 # estimation with equal alpha parameters
 mod1c <- rasch.mml2( dat , est.alpha = TRUE , equal.alpha=TRUE , mmliter=30)
 summary(mod1c)
@@ -487,12 +493,9 @@ summary(mod2a)
 mod2b <- rasch.mml2( dat , irtmodel ="ramsay.qm" , est.K=1:15 , mmliter=30)
 summary(mod2b)
 
-\dontrun{
 # nonparametric estimation of item response curves
 mod3a <- rasch.mml2( dat , irtmodel ="npirt" , mmliter =500 ,
-            theta.k = seq( -3 , 3 , len=10) 
-            # evaluations at 10 theta grid points
-        )
+            theta.k = seq( -3 , 3 , len=10) ) # evaluations at 10 theta grid points
 # nonparametric ICC of first 4 items
 round( t(mod3a$pjk)[1:4,] , 3 ) 
 summary(mod3a)
@@ -521,10 +524,10 @@ summary(mod3b)
 mod4 <- rasch.mml2( dat ,  est.a=1:15)
 summary(mod4)
 
-################################################################
+##############################################################
 # SIMULATED EXAMPLE 4
 #  two groups, estimation of generalized logistic model
-################################################################
+##############################################################
 
 # simulate generalized logistic Rasch model in two groups
 set.seed(8765)
@@ -541,10 +544,10 @@ mod1 <-  rasch.mml2( dat1 , parm.conv=.0001 , group=group ,
 			est.alpha = TRUE , mmliter = 30 )
 summary(mod1)
 
-###################################################
+##############################################################
 # SIMULATED EXAMPLE 5
 # Multidimensional model
-###################################################
+##############################################################
 
 #***
 # (1) simulate data
@@ -564,7 +567,7 @@ resp <- cbind(resp1,resp2)
 colnames(resp) <- paste("I" , 1:(2*I), sep="")
 dat <- resp
 
-# define Q matrix
+# define Q-matrix
 Qmatrix <- matrix( 0 , 2*I , 2 )
 Qmatrix[1:I,1] <- 1
 Qmatrix[1:I+I,2] <- 1
@@ -602,4 +605,5 @@ summary(mod4) }
 \keyword{Marginal maximum likelihood (MML)}
 \keyword{Ramsay's quotient model}
 \keyword{Nonparametric item response theory}
+\keyword{summary}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -36,11 +36,11 @@ Display progress?
 }
 
 \references{
-Stout, W., Habing, B., Douglas, J. & Kim, H. R. (1996). 
+Stout, W., Habing, B., Douglas, J., & Kim, H. R. (1996). 
 Conditional covariance-based nonparametric multidimensionality assessment. 
 \emph{Applied Psychological Measurement}, \bold{20}, 331-354.
 
-Zhang, J. & Stout, W. (1999). Conditional covariance structure 
+Zhang, J., & Stout, W. (1999). Conditional covariance structure 
 of generalized compensatory multidimensional items, 
 \emph{Psychometrika}, \bold{64}, 129-152.
 }

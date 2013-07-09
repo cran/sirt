@@ -1,12 +1,14 @@
 \name{rm.hrm}
 \alias{rm.hrm}
+\alias{summary.rm.hrm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Hierachical Rater Model Based on Signal Detection Theory
 }
 \description{
 This function estimates a version of the hierarchical rater
-model based on signal detection theory (DeCarlo, Kim & Johnson, 2011).
+model based on signal detection theory (DeCarlo, 2005; 
+DeCarlo, Kim & Johnson, 2011).
 }
 
 
@@ -19,6 +21,8 @@ rm.hrm(dat, pid, rater, Qmatrix = NULL, theta.k = seq(-9, 9, len = 30),
     est.a.item = FALSE, est.c.rater = "n", est.d.rater = "n", 
     d.min = 0.5, d.max = 100, d.start = 3, max.increment = 1, numdiff.parm = 0.001, 
     maxdevchange = 0.1, globconv = .001, maxiter = 1000, msteps = 4, mstepconv = 0.001)
+
+\method{summary}{rm.hrm}(object,...)    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,7 +37,7 @@ Person identifier.
 Rater identifier
 }
   \item{Qmatrix}{
-An optional \eqn{Q} matrix. If this matrix is not provided,
+An optional Q-matrix. If this matrix is not provided,
 then by default the ordinary scoring of categories
 (from 0 to the maximum score of \eqn{K}) is used.
 }
@@ -84,6 +88,12 @@ Maximum number of iterations during an M step
 }
   \item{mstepconv}{
 Convergence criterion in an M step
+}
+  \item{object}{
+Object of class \code{rm.hrm}
+}
+  \item{\dots}{
+Further arguments to be passed
 }
 }
 
@@ -148,7 +158,12 @@ A list with following entries:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \references{
-DeCarlo, T., Kim, Y. & Johnson, M. S. (2011).
+	
+DeCarlo, L. T. (2005). A model of rater behavior in essay grading 
+based on signal detection theory. 
+\emph{Journal of Educational Measurement}, \bold{42}, 53-76.	
+	
+DeCarlo, T., Kim, Y., & Johnson, M. S. (2011).
 A hierarchical rater model for constructed responses,
 with a signal detection rater model.
 \emph{Journal of Educational Measurement},
@@ -211,3 +226,4 @@ summary(mod4)}
 % R documentation directory.
 \keyword{Rater model}
 \keyword{Signal detection model}
+\keyword{summary}

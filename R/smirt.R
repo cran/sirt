@@ -12,7 +12,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001){
 	#..........................................................
 	s1 <- Sys.time()
-	dat <- as.matrix(dat)
+	dat0 <- dat <- as.matrix(dat)
 	N <- nrow(dat)
 	#***
 	# process data
@@ -72,15 +72,17 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	if ( is.null(b.init)){ 
 		if (irtmodel=="noncomp"){
 			b <- Qmatrix * matrix( - qlogis( colMeans(dat , na.rm =TRUE ) ) ,I , D )
-				} else {
+				} else {	# irtmodel="comp"s
 			b <-  - qlogis( colMeans(dat , na.rm =TRUE ) )
 						}
-					} else { b <- b.init }
+					} else { 
+				b <- b.init 
+					}
 	e1 <- matrix( 1:I , I , ncol(Qmatrix) )
 	if ( is.null(est.b)){ 	
 		if (irtmodel=="noncomp"){ est.b <- Qmatrix*e1  }
 		if (irtmodel!="noncomp"){ est.b <- 1:I  }		
-				}
+				}			
 	#****
 	# init a parameters
 	if ( is.null(a.init)){ a <- matrix( 1 , I , ncol(Qmatrix) )
@@ -343,6 +345,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		"c"=c , "se.c" = se.c , "d"=d , "se.d"=se.d ,		
 		"f.yi.qk"=f.yi.qk , "f.qk.yi"=f.qk.yi , "probs"=probs ,
 		"n.ik"=n.ik ,  "iter"=iter , "dat2"=dat2 , "dat2.resp"=dat2.resp , 
+		"dat" = dat0 , 
 		"I"=I , "D"=D , "K"=K ,  "theta.k" = theta.k , "pi.k"=pi.k , 
 		"irtmodel"=irtmodel , "s1"=s1 , "s2"=s2 
 				)

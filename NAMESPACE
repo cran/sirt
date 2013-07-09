@@ -23,7 +23,7 @@ export(
     rasch.copula2,
     person.parameter.rasch.copula,
     rasch.jml,
-    jackknife.rasch.jml , 
+    rasch.jml.jackknife1 , 
     rasch.mml2 , 
     sim.qm.ramsay,
     pgenlogis,
@@ -57,8 +57,15 @@ export(
     rasch.va ,
     gom.em  ,
     tetrachoric2 ,
-    pbivnorm2
+    pbivnorm2 , 
+    mcmc.2pno ,
+    mcmc.list.descriptives ,
+    mcmclist2coda ,
+    mcmc.2pnoh ,
+    mcmc.3pno.testlet   ,
+    mcmc.2pno.ml    
         )
+
 
 
 importFrom(utils,packageDescription)
@@ -77,5 +84,18 @@ S3method(summary,rm.hrm)
 S3method(summary,gom.jml)
 S3method(summary,smirt)
 S3method(summary,gom)
+S3method(summary,mcmc.sirt)
 
 S3method(plot , np.dich)
+S3method(plot , mcmc.sirt )
+
+
+export(   
+    R2noharm,
+    summary.R2noharm,
+    R2noharm.jackknife    ,
+    R2noharm.EAP
+    )
+
+S3method(summary,R2noharm)
+S3method(summary,R2noharm.jackknife)
