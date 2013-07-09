@@ -525,7 +525,7 @@ summary.rasch.jml <- function( object , ... ){
 #*******************************************************
 
 ##########################################################################################
-jackknife.rasch.jml <- function( jmlobj  ){
+rasch.jml.jackknife1 <- function( jmlobj  ){
 	# , jackunits=NULL
 	jackunits <- NULL
     mod <- jmlobj

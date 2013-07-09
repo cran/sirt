@@ -6,7 +6,7 @@ Person Fit Statistics for the Rasch Model
 }
 \description{
 This function collects some person fit statistics 
-for the Rasch model.
+for the Rasch model (Karabatsos, 2003; Meijer & Sijtsma, 2001).
 }
 \usage{
 personfit.stat(dat, abil, b)
@@ -51,7 +51,11 @@ and item p values}
 and item difficulties \code{b}}
 \item{U3}{Fit statistic \eqn{U_3}}
 }
-\references{
+\references{	
+Karabatsos, G. (2003). Comparing the aberrant response detection performance 
+of thirty-six person-fit statistics. \emph{Applied Measurement in Education},
+\bold{16}, 277-298.	
+	
 Meijer, R. R., & Sijtsma, K. (2001). Methodology
 review: Evaluating person fit. \emph{Applied Psychological
 Measurement}, \bold{25}, 107-135.

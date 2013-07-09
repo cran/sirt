@@ -2,16 +2,17 @@
 \alias{plausible.value.imputation.raschtype}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Plausible Value Imputation in Generalized Logistic Item Response Model
+Plausible Value Imputation in Generalized Logistic Item 
+Response Model
 }
 \description{
 This function performs unidimensional plausible value imputation
-(Adams & Wu, 2007).
+(Adams & Wu, 2007; Mislevy, 1991).
 }
 \usage{
 plausible.value.imputation.raschtype(data=NULL, f.yi.qk=NULL, X, 
    Z=NULL, beta0=rep(0, ncol(X)), sig0=1, b=rep(1, ncol(X)), 
-   a=rep(1, length(b)), c=rep(0, length(b)), d=1 + 0 * b, 
+   a=rep(1, length(b)), c=rep(0, length(b)), d=1+0*b, 
    alpha1=0, alpha2=0, theta.list=seq(-5, 5, len=50), 
    cluster=NULL, iter, burnin, nplausible=1, printprogress=TRUE)
 }
@@ -88,9 +89,9 @@ Print progress?
 \details{
 Plausible values are drawn from the latent regression model with
 heterogeneous variances:
-\deqn{\theta_p = X_p \beta + \epsilon_p  ,
-\epsilon_p \sim N( 0 , \sigma_p^2 ) ,
-log( \sigma_p ) = Z_p \gamma + \nu_p }
+\deqn{\theta_p = X_p \beta + \epsilon_p  \quad , \quad
+\epsilon_p \sim N( 0 , \sigma_p^2 ) \quad , \quad
+\log( \sigma_p ) = Z_p \gamma + \nu_p }
 }
 \value{
 A list with following entries:
@@ -105,11 +106,14 @@ for covariates \eqn{Z}}
 values were drawn}
 }
 \references{
-Adams, R. & Wu. M. (2007). The mixed-coefficients multinomial 
+Adams, R., & Wu. M. (2007). The mixed-coefficients multinomial 
 logit model: A generalized form of the Rasch model. 
-In M. von Davier & C. H. Carstensen: \emph{Multivariate and mixture
-distribution Rasch models: Extensions and applications} (pp. 57-76). 
+In M. von Davier & C. H. Carstensen: \emph{Multivariate and Mixture
+Distribution Rasch Models: Extensions and Applications} (pp. 57-76). 
 New York: Springer.
+
+Mislevy, R. J. (1991). Randomization-based inference about latent 
+variables from complex samples. \emph{Psychometrika}, \bold{56}, 177-196.
 }
 \author{
 Alexander Robitzsch

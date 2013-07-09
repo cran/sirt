@@ -1,5 +1,5 @@
-\name{jackknife.rasch.jml}
-\alias{jackknife.rasch.jml}
+\name{rasch.jml.jackknife1}
+\alias{rasch.jml.jackknife1}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Jackknifing the IRT Model Estimated by Joint Maximum Likelihood (JML)
@@ -9,7 +9,7 @@ Jackknife estimation is an alternative to other ad hoc proposed
 methods for bias correction (Hahn & Newey, 2004).
 }
 \usage{
-jackknife.rasch.jml(jmlobj)
+rasch.jml.jackknife1(jmlobj)
 }
 \arguments{
   \item{jmlobj}{
@@ -41,7 +41,7 @@ A list with following entries
   \item{jack.itemdiff}{A matrix containing all item difficulties obtained by Jackknife}
 }
 \references{
-Hahn, J. & Newey, W. (2004). Jackknife and analytical bias reduction for 
+Hahn, J., & Newey, W. (2004). Jackknife and analytical bias reduction for 
 nonlinear panel models. \emph{Econometrica}, \bold{72}, 1295-1319.
 }
 \author{
@@ -67,7 +67,7 @@ mod <- rasch.jml( dat  )
 summary(mod)
 
 # reestimate the Rasch model using Jackknife
-mod2 <- jackknife.rasch.jml( mod )
+mod2 <- rasch.jml.jackknife1( mod )
 
 ##   
 ##   Joint Maximum Likelihood Estimation 

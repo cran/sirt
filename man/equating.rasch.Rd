@@ -50,7 +50,7 @@ calculated under the assumption of simple random sampling of items}
 \item{transf.par}{Original and transformed item parameters of all items}
 }
 \references{
-Kolen, M. J. & Brennan, R. L. (2004). \emph{Test equating, Scaling, and Linking:
+Kolen, M. J., & Brennan, R. L. (2004). \emph{Test equating, Scaling, and Linking:
 Methods and Practices}. New York: Springer.
 }
 \author{

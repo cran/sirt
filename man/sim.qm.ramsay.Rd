@@ -25,8 +25,8 @@ Vector of length \eqn{I} of guessing parameters (must be positive)
 }
 \details{
 Ramsay's quotient model (Ramsay, 1989) is defined by the equation 
-\eqn{P(X_{pi} = 1 | \theta_p ) = \frac{ exp{ ( \theta_p / b_i ) } }
-	{ K_i + exp{ ( \theta_p / b_i ) } }}
+\eqn{P(X_{pi} = 1 | \theta_p ) = \frac{ \exp { ( \theta_p / b_i ) } }
+	{ K_i + \exp { ( \theta_p / b_i ) } }}
 }
 \value{
 An \eqn{N} times \eqn{I}  data frame with dichotomous item responses.
@@ -35,7 +35,7 @@ An \eqn{N} times \eqn{I}  data frame with dichotomous item responses.
 Ramsay, J. O. (1989). A comparison of three simple test theory models. 
 \emph{Psychometrika}, \bold{54}, 487-499.
 
-van der Maas, H. J. L., Molenaar, D., Maris, G., Kievit, R. A. & 
+van der Maas, H. J. L., Molenaar, D., Maris, G., Kievit, R. A., & 
 Borsboom, D. (2011).
 Cognitive psychology meets psychometric theory: On the relation between 
 process models for decision making and latent variable models for 

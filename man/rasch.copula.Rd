@@ -1,5 +1,6 @@
 \name{rasch.copula2}
 \alias{rasch.copula2}
+\alias{summary.rasch.copula2}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Rasch Copula Model
@@ -18,7 +19,9 @@ rasch.copula2(dat, itemcluster, copula.type ="bound.mixt" ,
     numdiff.parm = 1e-06,  est.b = seq(1, ncol(dat)), 
     est.a = rep(1, ncol(dat)), est.delta = NULL, b.init = NULL , a.init = NULL ,  
     est.alpha = FALSE, glob.conv = 0.001, alpha.conv = 1e-04, conv1 = 0.001,
-    dev.crit=.2)    
+    dev.crit=.2) 
+
+\method{summary}{rasch.copula2}(object,...)	    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -43,8 +46,7 @@ types: \code{bound.mixt} (boundary mixture copula),
 The vector \code{copula.type} must match the number of different
 itemclusters. For every itemcluster, a different copula type
 may be specified (see examples).
-}
-
+}  %% elaborate this further in the Details section
   \item{progress}{
 Print progress? Default is \code{TRUE}.
 }
@@ -58,8 +60,9 @@ An optional vector of starting values for the dependency parameter \code{delta}.
 Discretized trait distribution
 }
   \item{alpha1}{
-\code{alpha1} parameter in the generalized logistic item reponse model (Stukel, 1988). 
-The default is 0 which leads together with \code{alpha2=0} to the logistic link function.
+\code{alpha1} parameter in the generalized logistic item reponse model 
+(Stukel, 1988). The default is 0 which leads together with \code{alpha2=0} 
+to the logistic link function.
 }
   \item{alpha2}{
 \code{alpha2} parameter in the generalized logistic item reponse model
@@ -99,8 +102,12 @@ Maximal change in item parameters for convergence
   \item{dev.crit}{
 Maximal change in the deviance. Default is \code{.2}.
 }
-
-
+  \item{object}{
+Object of class \code{rasch.copula2}
+}
+  \item{\dots}{
+Further arguments to be passed
+}
 }
 %\details{
 %% Details about alpha1 and alpha2 for generalized logistic function?
@@ -134,7 +141,8 @@ A list with following entries
     Braeken, J. (2011). A boundary mixture approach to violations 
     of conditional independence. \emph{Psychometrika}, \bold{76}, 57-76.
 
-    Braeken, J., Tuerlinckx, F. & De Boeck, P. (2007). Copulas for residual dependencies. 
+    Braeken, J., Tuerlinckx, F., & De Boeck, P. (2007). 
+    Copulas for residual dependencies. 
     \emph{Psychometrika}, \bold{72}, 393-411.
 
     Stukel, T. A. (1988). Generalized logistic models. 
@@ -185,7 +193,6 @@ mod1 <- rasch.copula2( dat=dat , itemcluster=itemcluster)
 # estimate Rasch model
 mod2 <- rasch.copula2( dat=dat , itemcluster=itemcluster , 
         delta=rep(0,3) , est.delta=rep(0,3 ) )
-
 summary(mod1)
 summary(mod2)
 
@@ -276,4 +283,5 @@ summary(mod2) }
 % R documentation directory.
 \keyword{IRT copula models}
 \keyword{Local dependence}
+\keyword{summary}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

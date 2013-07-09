@@ -39,9 +39,10 @@ Item stratum
 Number of items in an item stratum of the finite item population.
 }
 }
-%\details{
-%%  ~~ If necessary, more details than the description above ~~
-%}
+\details{
+The idea of Jackknife in item response models can be found in
+Wainer and Wright (1980).
+}
 \value{
 A list with following entries:
   \item{wle}{Data frame with some estimated statistics. The column
@@ -54,9 +55,12 @@ A list with following entries:
 Adams, R. J. (2005). Reliability as a measurement design effect. 
 \emph{Studies in Educational Evaluation}, \bold{31}, 162-172.
 
-Gershunskaya, J., Jiang, J. & Lahiri, P. (2009). Resampling methods in surveys. 
+Gershunskaya, J., Jiang, J., & Lahiri, P. (2009). Resampling methods in surveys. 
 In D. Pfeffermann and C.R. Rao (Eds.). \emph{Handbook of Statistics 29B; Sample
 Surveys: Inference and Analysis} (pp. 121-151). Amsterdam: North Holland.
+
+Wainer, H., & Wright, B. D. (1980). Robust estimation of ability in the Rasch 
+model. \emph{Psychometrika}, \bold{45}, 373-391.
 
 Warm, T. A. (1989). Weighted likelihood estimation of ability in item response theory.
 \emph{Psychometrika}, \bold{54}, 427-450.

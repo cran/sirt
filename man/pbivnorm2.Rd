@@ -37,7 +37,7 @@ Vector of probabilities
 %% ...
 }
 \references{
-Cox, D. R. & Wermuth, N. (1991). A simple approximation for bivariate and
+Cox, D. R., & Wermuth, N. (1991). A simple approximation for bivariate and
 trivariate normal integrals. 
 \emph{International Statistical Review}, \bold{59}, 263-269.
 

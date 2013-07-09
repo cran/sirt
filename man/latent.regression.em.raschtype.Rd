@@ -102,10 +102,10 @@ A list with following entries
   \item{rsquared}{Explained variance \eqn{R^2} in latent regression}
 }
 \references{
-Adams, R. & Wu. M. (2007). The mixed-coefficients multinomial 
+Adams, R., & Wu. M. (2007). The mixed-coefficients multinomial 
 logit model: A generalized form of the Rasch model. 
-In M. von Davier & C. H. Carstensen: \emph{Multivariate and mixture
-distribution Rasch models: Extensions and applications} (pp. 57-76). 
+In M. von Davier & C. H. Carstensen: \emph{Multivariate and Mixture
+Distribution Rasch Models: Extensions and Applications} (pp. 57-76). 
 New York: Springer.
 
 Stukel, T. A. (1988). Generalized logistic models. 

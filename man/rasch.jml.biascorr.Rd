@@ -36,7 +36,7 @@ corresponds to Method 2.}
     correction}
 }
 \references{
-Arellano, M & Hahn, J. (2007). Understanding bias in nonlinear panel 
+Arellano, M., & Hahn, J. (2007). Understanding bias in nonlinear panel 
 models: Some recent developments. In R. Blundell, W. Newey &
 T. Persson (Eds.): \emph{Advances in Economics and
 Econometrics, Ninth World Congress}, Cambridge University Press.
@@ -51,7 +51,7 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-See \code{\link{jackknife.rasch.jml}} for bias correction based on
+See \code{\link{rasch.jml.jackknife1}} for bias correction based on
 Jackknife.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }

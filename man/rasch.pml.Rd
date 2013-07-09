@@ -3,6 +3,8 @@
 \name{rasch.pml2}
 \alias{rasch.pml2}
 \alias{rasch.pml3}
+\alias{summary.rasch.pml}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Pairwise Marginal Likelihood Estimation for the Probit Rasch Model
@@ -24,13 +26,16 @@ rasch.pml2(dat, est.b = seq(1, ncol(dat)), est.a=rep(0,ncol(dat)) ,
     error.corr = 0*diag( 1 , ncol(dat) ) ,
     err.constraintM=NULL , err.constraintV=NULL ,
     glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE)
+    
 rasch.pml3(dat, est.b = seq(1, ncol(dat)), est.a=rep(0,ncol(dat)) ,
     est.sigma = TRUE, itemcluster = NULL, 
     weight = rep(1, nrow(dat)), numdiff.parm = 0.001, 
     b.init = NULL, a.init=NULL ,  sigma.init = NULL, 
     error.corr = 0*diag( 1 , ncol(dat) ) ,
     err.constraintM=NULL , err.constraintV=NULL ,
-    glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE)    
+    glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE)   
+    
+\method{summary}{rasch.pml}(object,...)	    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -76,8 +81,6 @@ Initial or fixed trait standard deviation
   \item{error.corr}{
 An optional \eqn{I} times \eqn{I} integer matrix
 which defines the estimation of residual correlations. 
-%% where residual correlations are specified 
-%% which should be estimated. 
 Entries of zero indicate that the corresponding 
 residual correlation should not be estimated. 
 Integers which differ from zero indicate correlations to be estimated.
@@ -112,10 +115,16 @@ Maximum number of iterations
   \item{progress}{
 Display progress?
 }
+  \item{object}{
+Object of class \code{rasch.pml}
+}
+  \item{\dots}{
+Further arguments to be passed
+}
 }
 \details{
 The probit item response model can be estimated with this function:
-\deqn{P(X_{pi}=1|\theta_p ) = \Phi( a_i  \theta_p - b_i ) , 
+\deqn{P(X_{pi}=1|\theta_p ) = \Phi( a_i  \theta_p - b_i ) \quad , \quad 
 	\theta_p \sim N ( 0 , \sigma^2 )}{%
 P(X_pi=1|\theta_p ) = \Phi( a_i  \theta_p - b_i ) , \theta_p ~ N ( 0 , \sigma^2 )
     }
@@ -160,20 +169,15 @@ information criterion \code{PLIC})}
 \item{\dots}{}
 }
 \references{
-% Feddag, M.-L., Hardouin, J.-B. & Sebille, V. (2012). 
-% Pairwise- and marginal likelihood estimation for the mixed Rasch model
-% with binary data. \emph{Journal of Statistical Computation and Simulation},
-%  \bold{82}, 419-430.
-
 Neuhaus, W. (1995). \emph{Optimal Estimation Under
 Linear Constraints}. Technical Report,
 Kobenhavns Universitet, Forsikringsmatematisk Laboratorium.
 
-Renard, D., Molenberghs, G. & Geys, H. (2004). A pairwise likelihood
+Renard, D., Molenberghs, G., & Geys, H. (2004). A pairwise likelihood
 approach to estimation in multilevel probit models. \emph{Computational Statistics
 & Data Analysis}, \bold{44}, 649-667.
 
-Stanford, D. C. & Raftery, A. E. (2002).
+Stanford, D. C., & Raftery, A. E. (2002).
 Approximate Bayes factors for image segmentation: 
 The pseudolikelihood information criterion (PLIC).
 \emph{IEEE Transactions on Pattern Analysis and
@@ -481,5 +485,5 @@ summary(mod4) }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{Pairwise marginal maximum likelihood (PMML)}
-%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
 \keyword{Local dependence}
+\keyword{summary}

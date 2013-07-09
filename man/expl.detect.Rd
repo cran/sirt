@@ -49,20 +49,20 @@ proportionally to sample sizes of item pairs.}
 \item{itemcluster}{Cluster allocations}
 }
 \references{
-Roussos, L. A., Stout, W. F. & Marden, J. I. (1998). Using new proximity 
+Roussos, L. A., Stout, W. F., & Marden, J. I. (1998). Using new proximity 
 measures with hierarchical cluster analysis to detect multidimensionality. 
 \emph{Journal of Educational Measurement},
 \bold{35}, 1-30.
 
-Stout, W., Habing, B., Douglas, J. & Kim, H. R. (1996). 
+Stout, W., Habing, B., Douglas, J., & Kim, H. R. (1996). 
 Conditional covariance-based nonparametric multidimensionality assessment. 
 \emph{Applied Psychological Measurement}, \bold{20}, 331-354.
 
-Zhang, J. & Stout, W. (1999a). Conditional covariance structure 
+Zhang, J., & Stout, W. (1999a). Conditional covariance structure 
 of generalized compensatory multidimensional items, 
 \emph{Psychometrika}, \bold{64}, 129-152.
 
-Zhang, J. & Stout, W. (1999b). The theoretical DETECT index of 
+Zhang, J., & Stout, W. (1999b). The theoretical DETECT index of 
 dimensionality and its application to approximate simple structure, 
 \emph{Psychometrika}, \bold{64}, 213-249. 
 }

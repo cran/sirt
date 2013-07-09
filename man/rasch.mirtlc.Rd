@@ -1,5 +1,6 @@
 \name{rasch.mirtlc}
 \alias{rasch.mirtlc}
+\alias{summary.rasch.mirtlc}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Multidimensional Latent Class 1PL and 2PL Model
@@ -15,6 +16,8 @@ rasch.mirtlc(dat, Nclasses=NULL, modeltype="LC", dimensions=NULL ,
     distribution.trait= FALSE ,  range.b =c(-8,8), range.a=c(.2 , 6 ) ,  
     progress=TRUE, glob.conv=10^(-5), conv1=10^(-5), mmliter=1000, 
     mstep.maxit=3, seed=0, nstarts=1)
+
+\method{summary}{rasch.mirtlc}(object,...)	    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -86,6 +89,12 @@ the function will generate a random seed.
 	If a positive integer is provided, then a \code{nstarts}
 	starts with different starting values are conducted.
 }
+  \item{object}{
+Object of class \code{rasch.mirtlc}
+}
+  \item{\dots}{
+Further arguments to be passed
+}
 }
 \details{
 The multidimensional latent class Rasch model (Bartolucci, 2007)
@@ -138,7 +147,7 @@ Goodman, L. A. (1974). Exploratory latent structure
 analysis using both identifiable and unidentifiable 
 models. \emph{Biometrika}, \bold{61}, 215-231.
 
-Xu, X. & von Davier, M. (2008). \emph{Fitting the structured general 
+Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general 
 diagnostic model to NAEP data}. ETS Research Report ETS RR-08-27. 
 Princeton, ETS.
 }
@@ -158,7 +167,10 @@ in \R.
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
+%% \link[CDM]{\code{gdm}}
 \seealso{
+See also the \link[CDM]{gdm} function in the \pkg{CDM} package.	
+	
 For an assessment of global model fit see \code{\link{modelfit.sirt}}.
 
 The estimation of the multidimensional latent class item response
@@ -305,4 +317,5 @@ summary(mod3)}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{Multidimensional Latent Class Rasch Model}
+\keyword{summary}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

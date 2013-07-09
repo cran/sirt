@@ -24,7 +24,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
                         center.trait = TRUE , alpha1 = 0 , alpha2 = 0 ,
                         est.alpha = FALSE , equal.alpha = FALSE , 
                         designmatrix = NULL , alpha.conv = parm.conv , 
-						numdiff.parm = 0.00001 , numdiff.alpha.parm= numdiff.parm , 
+						numdiff.parm = 0.001 , numdiff.alpha.parm= numdiff.parm , 
 						distribution.trait = "normal" , 
 						Qmatrix = NULL , 
 						variance.fixed = NULL , 
@@ -163,7 +163,6 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 	# est.b parameters
 	if (! is.null(est.b) ){
 #		bG <- unique( est.b ) 
-# print("HALLOO!")
 		bG <- unique( setdiff( est.b ,0 )) 
 		if ( is.null( b.init) ){ b <- rep(0 , I ) }
 
@@ -305,10 +304,12 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		  cat(disp)	
 		  cat("Iteration" , iter+1 , "   " , paste( Sys.time() ) , "\n" )
           flush.console()
-					}		
+					}
+#zz0 <- Sys.time()					
 				b0 <- b
                 dev0 <- dev    		
                 # perform E Step
+
                if ( ramsay.qm ){ 
 					e1 <- .e.step.ramsay( dat1 , dat2 , dat2.resp , theta.k , pi.k , I , n , b ,
 									fixed.K , group , pow.qm = pow.qm , ind.ii.list )
@@ -338,7 +339,8 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
                 f.qk.yi <- e1$f.qk.yi
 				f.yi.qk <- e1$f.yi.qk
                 dev <- -2*e1$ll		
-
+#cat("e step") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+		
                 # perform M Step
 				#****
 				# Ramsay QM
@@ -361,6 +363,9 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 							est.b=est.b )
 					se.b <- m1$se.b							
                                 }
+#cat("m step raschtype") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+
+								
 				# nonparametric IRT model
 				 if (npirt ){
 				    pjk0 <- pjk
@@ -389,7 +394,6 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 				  if (is.matrix(mu.fixed) ){	
 				    mu0 <- mu
 					mu[ mu.fixed[,1] ] <- mu.fixed[,2]
-# print( as.vector(mu.fixed[1,1:2])  )
 					if ( sum( as.vector(mu.fixed[1,1:2]) - c(1,0))==0 ){ 
 						mu[-1] <- -mu0[1] + mu[-1]
 											}
@@ -655,7 +659,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 						se.alpha <- sqrt( 1 / abs(d2) )
                             }
 						}
-
+# cat("distribution / rest") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 						
             ############################
                 # possibly incorrect deviance calculated at the M step

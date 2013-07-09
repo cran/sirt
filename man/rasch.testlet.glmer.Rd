@@ -64,7 +64,7 @@ A list with the following entries
 Adams, R. J. (2005). Reliability as a measurement design effect.
 \emph{Studies in Educational Evaluation}, \bold{31}, 162-172.
 
-De Boeck, P., Bakker, M., Zwitser, R., Nivard, M., Hofman, A., Tuerlinckx, F. 
+De Boeck, P., Bakker, M., Zwitser, R., Nivard, M., Hofman, A., Tuerlinckx, F., 
 & Partchev, I. (2011). The estimation of item response models with the lmer function 
 from the lme4 package in R. \emph{Journal of Statistical Software}, \bold{39(12)}, 1-28.
 
@@ -72,7 +72,7 @@ Goldstein, H. (1980). Dimensionality, bias, independence and measurement scale p
 in latent trait test score models.
 \emph{British Journal of Mathematical and Statistical Psychology}, \bold{33}, 234-246.
 
-Wang, W.-C. & Wilson, M. (2005). The Rasch testlet model.
+Wang, W.-C., & Wilson, M. (2005). The Rasch testlet model.
 \emph{Applied Psychological Measurement}, \bold{29}, 126-149.
 }
 \author{
@@ -85,6 +85,8 @@ This function needs the \pkg{lme4} library.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+For MCMC estimation of 3PNO testlet models see \code{\link{mcmc.3pno.testlet}}.	
+	
 For estimating marginal item response models which account for deviations
 of local independence see \code{\link{rasch.copula2}}, \code{\link{rasch.pml3}}
 or \code{\link{rasch.pairwise.itemcluster}}.

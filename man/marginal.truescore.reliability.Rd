@@ -6,7 +6,7 @@ True-Score Reliability for Dichotomous Data
 }
 \description{
 This function computes the marginal true-score reliability for
-dichotous data (Dimitrov, 2003; May & Nicewander, 1994) for 
+dichotomous data (Dimitrov, 2003; May & Nicewander, 1994) for 
 the four-parameter logistic item response model.
 }
 \usage{
@@ -49,7 +49,7 @@ A list with following entries:
     }
   \item{pi}{Average proportion correct for all items and persons}
   \item{sig2.tau}{True score variance \eqn{\sigma^2_{\tau}}
-  (calculated by the formula in May and Nicewander, 1994)}
+  (calculated by the formula in May & Nicewander, 1994)}
   \item{sig2.error}{Error variance \eqn{\sigma^2_{e}}}
 }
 \references{
@@ -57,7 +57,7 @@ Dimitrov, D. (2003). Marginal true-score measures and reliability
 for binary items as a function of their IRT parameters.
 \emph{Applied Psychological Measurement}, \bold{27}, 440-458.
 
-May, K. & Nicewander, W. A. (1994). Reliability and information
+May, K., & Nicewander, W. A. (1994). Reliability and information
 functions for percentile ranks. \emph{Journal of Educational
 Mesaurement}, \bold{31}, 313-325.
 }
@@ -93,6 +93,7 @@ marginal.truescore.reliability( b=b , a =a )
 # Example 2: Dimitrov (2003) Table 2
 #  3PL model: Poetry items (4 items)
 
+# slopes, difficulties and guessing parameters
 a <- 1.7*c(1.169,0.724,0.554,0.706 )
 b <- c(0.468,-1.541,-0.042,0.698 )
 c <- c(0.159,0.211,0.197,0.177 )

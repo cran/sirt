@@ -49,7 +49,7 @@ Vector of lower item asymototes \eqn{d}
 %% ...
 %}
 \references{
-Loken, E. & Rulison, K. L. (2010). Estimation of a four-parameter 
+Loken, E., & Rulison, K. L. (2010). Estimation of a four-parameter 
 item response theory model. \emph{British Journal of Mathematical 
 and Statistical Psychology}, \bold{63}, 509-525.
 

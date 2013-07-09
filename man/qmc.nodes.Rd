@@ -30,7 +30,7 @@ Number of dimensions
 %% ...
 }
 \references{
-Pan, J. & Thompson, R. (2007). Quasi-Monte Carlo estimation in
+Pan, J., & Thompson, R. (2007). Quasi-Monte Carlo estimation in
 generalized linear mixed models. \emph{Computational Statistics &
 Data Analysis}, \bold{51}, 5765-5775.
 }

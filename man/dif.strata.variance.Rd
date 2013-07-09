@@ -31,9 +31,12 @@ A list with following entries:
 \item{weighted.DIFSD}{Weighted DIF standard deviation}
 \item{unweigted.DIFSD}{DIF standard deviation}
 }
-%\references{
-%% ~put references to the literature/web site here ~
-%}
+\references{
+Longford, N. T., Holland, P. W., & Thayer, D. T. (1993).
+Stability of the MH D-DIF statistics across populations.
+In P. W. Holland & H. Wainer (Eds.). \emph{Differential
+Item Functioning} (pp. 171-196). Hillsdale, NJ: Erlbaum.
+}
 \author{
 Alexander Robitzsch
 }

@@ -1,4 +1,4 @@
-------------------- sirt NEWS ------------------------
+---------------- sirt NEWS -------------------
 
 ++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -12,7 +12,7 @@ http://www.bifie.at
 
 ++++++++++++++++++++++++++++++++++++++++++++++
 
-Questions or suggestions about sirt can be send to
+Questions or suggestions about sirt can be sent to
 
 a.robitzsch/-\bifie.at
 
@@ -24,6 +24,29 @@ https://sites.google.com/site/alexanderrobitzsch/software
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+---
+Version 0.33 -- 2013-07-09
+---
+x included R2NOHARM functions into this package for running
+  NOHARM from within R
+x modelfit.sirt allows objects of class smirt
+x speeded calculation of modelfit.sirt
+x speeded rasch.mml2, prob.guttman, rasch.mirtlc, rm.facets, rm.hrm
+
+
+---
+Version 0.32 -- 2013-06-28
+---
+x included the estimation  of the 2PL model via MCMC (mcmc.2pno)
+x included a function for estimating Rhat and MAP from MCMC output
+   (mcmc.list.descriptives)
+x included a function for writing coda files (mcmclist2coda)
+x renamed jacknife.rasch.jml into rasch.jml.jackknife1
+x included mcmc.2pnoh for estimating a hierarchical IRT model
+x included mcmc.3pno.testlet for estimating IRT testlet and
+  bifactor models for dichotomous data
+x included mcmc.2pno.ml function for estimating a multilevel
+  IRT model for dichotomous and normally distributed data
 
 ---
 Version 0.31 -- 2013-05-27
@@ -154,7 +177,7 @@ x output posterior distribition, EAP estimates and
   EAP reliability in rasch.copula    
 x introduced probit and logit version of rasch.pml: pairwise marginal 
   likelihood estimation
-x removed slight bugs (or inefficiencies) in numerical differentiation 
+x removed some bugs (or inefficiencies) in numerical differentiation 
   in rasch.mml and rasch.copula
 x renamed sim.rasch.copula into sim.rasch.dep
 x included function rasch.pairwise.itemcluster for the conditional 
@@ -162,6 +185,3 @@ x included function rasch.pairwise.itemcluster for the conditional
 x package structure of sirtr is created
 x included simulation function for Rasch copula model 
    (sim.rasch.copula)
-
-
-

@@ -54,34 +54,32 @@ sim.qm.ramsay <- function( theta , b , K  ){
 	if ( is.null( pjk )){
 		pjk <- .prob.ramsay( theta.k , b ,  fixed.K , pow = pow.qm )
 					}
+	TP <- dim(pjk)[1]
+					
 	#***
 	# array notation of probabilities
-	pjkL <- array( NA , dim=c(2 , nrow(pjk) , ncol(pjk) ) )
-	pjkL[1,,] <- 1 - pjk
-	pjkL[2,,] <- pjk
-	#* original version
-#    f.yi.qk <- sapply( 1:( length(theta.k) ) , FUN = function(vv){
-			# vv <- 7	
-#            pjk.vv <- outer( rep(1,nrow(dat2)) , pjk[vv,] ) ;
-#			#            rowProds2( ( pjk.vv^dat2 * ( 1 - pjk.vv )^(1-dat2 ) )^(dat2.resp) )
-#	            l1 <- rowProds2( ( pjk.vv^dat2 * ( 1 - pjk.vv )^(1-dat2 ) )^(dat2.resp) )			
-#			m1 <- rep(1 , nrow(dat2) )
-#			for (ii in 1:( ncol(dat2) ) ){
-#				g1 <- dat2[ , ii ] * pjk[vv,ii] + ( 1 - dat2[,ii] ) * ( 1 - pjk[vv,ii] )
-#				m1 <- m1 * ( g1^dat2.resp[,ii] )
+#	pjkL <- array( NA , dim=c(2 , nrow(pjk) , ncol(pjk) ) )
+#	pjkL[1,,] <- 1 - pjk
+#	pjkL[2,,] <- pjk
+#	f.yi.qk <- matrix( 1 , nrow(dat2) , length(theta.k) )
+#	for (ii in 1:ncol(dat2)){
+#	#	ii <- 1
+#		ind.ii <- ind.ii.list[[ii]]
+#		if ( length(ind.ii) == nrow(dat2) ){ 
+#			f.yi.qk <- f.yi.qk * pjkL[ dat2[,ii]+1 , ,ii]
+#					} else { 
+#			f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * pjkL[ dat2[ind.ii,ii]+1 , ,ii]
+#							}
 #					}
-#			m1
-#                } )		
-	f.yi.qk <- matrix( 1 , nrow(dat2) , length(theta.k) )
-	for (ii in 1:ncol(dat2)){
-	#	ii <- 1
-		ind.ii <- ind.ii.list[[ii]]
-		if ( length(ind.ii) == nrow(dat2) ){ 
-			f.yi.qk <- f.yi.qk * pjkL[ dat2[,ii]+1 , ,ii]
-					} else { 
-			f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * pjkL[ dat2[ind.ii,ii]+1 , ,ii]
-							}
-					}
+        pjkt <- t(pjk)
+		pjkL <- array( NA , dim=c( I , 2 , TP  ) )
+		pjkL[,1,] <- 1 - pjkt
+		pjkL[,2,] <- pjkt	
+		probsM <- matrix( aperm( pjkL , c(2,1,3) ) , nrow=I*2 , ncol=TP )
+		f.yi.qk <- mml_calc_like( dat2=dat2 , dat2resp = dat2.resp , 
+					probs = probsM )$fyiqk
+#cat("   calc likelihood") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1				
+
 	#******	
     f.qk.yi <- 0 * f.yi.qk
     if ( G==1 ){ pi.k <- matrix( pi.k , ncol=1 ) }
@@ -90,17 +88,19 @@ sim.qm.ramsay <- function( theta , b , K  ){
                     }
     f.qk.yi <- f.qk.yi / rowSums( f.qk.yi )
     # expected counts at theta.k
-    n.k <- matrix( 0 , length(theta.k) , G )
-    r.jk <- n.jk <- array( 0 , dim=c( ncol(dat2) , length(theta.k) , G) )
+    n.k <- matrix( 0 , TP , G )
+    r.jk <- n.jk <- array( 0 , dim=c( ncol(dat2) , TP , G) )
     ll <- rep(0,G)
     for (gg in 1:G){ 
-        n.k[,gg] <- colSums( dat1[group==gg,2] * f.qk.yi[group==gg,]  )
-        # expected counts at theta.k and item j
-        n.jk[,,gg] <- ( t(dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[group==gg, ]
-        # compute r.jk (expected counts for correct item responses at theta.k for item j
-        r.jk[,,gg] <- ( t(dat2[group==gg,]) * t( dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[ group==gg,]
-        # compute log-Likelihood
-        ll[gg] <- sum( dat1[group==gg,2] * log( rowSums( f.yi.qk[group==gg,] * outer( rep(1,nrow(f.yi.qk[group==gg,])) , pi.k[,gg] ) ) ) )
+		ind.gg <- which( group == gg )
+	    res <- mml_raschtype_counts( dat2=dat2[ind.gg,] , dat2resp=dat2.resp[ind.gg,] , 
+					dat1=dat1[ind.gg,2] , fqkyi=f.qk.yi[ind.gg,] ,
+					pik=pi.k[,gg] , fyiqk=f.yi.qk[ind.gg,]  )
+		n.k[,gg] <- res$nk
+		n.jk[,,gg] <- res$njk
+        r.jk[,,gg] <- res$rjk
+		ll[gg] <- res$ll
+
         }
     res <- list( "n.k" = n.k , "n.jk" = n.jk , "r.jk" = r.jk , "f.qk.yi" = f.qk.yi , "pjk" = pjk  ,
             "f.yi.qk" = f.yi.qk , "ll" = sum(ll) )

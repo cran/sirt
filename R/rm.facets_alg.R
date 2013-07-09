@@ -1,8 +1,14 @@
 
+################################################
+# calculation of the likelihood
+rm_calclike <- function (dat2,dat2resp,probs,K){ 
+	.Call("RM_CALCPOST", dat2,dat2resp,probs,K, PACKAGE = "sirt")
+					}
+
 ########################################################
 # calculation of probabilities in the partial credit model
 .rm.pcm.calcprobs <- function( a , b , Qmatrix , theta.k , I , K , TP ){
-    probs <- array( 0 , dim=c(I,K+1,TP) )   # categories 0 , ... , K´	
+    probs <- array( 0 , dim=c(I,K+1,TP) )   # categories 0 , ... , K	
     for (kk in 1:K){
         l0 <- matrix( - b[,kk] , nrow=I,ncol=TP)
         l0 <- l0 + outer( a * Qmatrix[ , kk] , theta.k )
@@ -57,14 +63,20 @@ sumtau <- function(tau.item){
 .rm.posterior <- function( dat2 , dat2.resp , TP , pi.k ,
 	K, I , probs ){
 	# calculate likelihood
-	f.yi.qk <- matrix( 1 , nrow(dat2) , TP )
-	for (ii in 1:ncol(dat2)){
+#	f.yi.qk <- matrix( 1 , nrow(dat2) , TP )
+#	for (ii in 1:ncol(dat2)){
 		 #   ii <- 1
-		ind.ii <- which( dat2.resp[,ii] == 1 )
-		f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * probs[ ii , dat2[ind.ii,ii]+1 , ]
-							}
-	# calculate posterior
-	prior <- matrix( pi.k , nrow=nrow(dat2) , ncol=TP , byrow =T )
+#		ind.ii <- which( dat2.resp[,ii] == 1 )
+#		f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * probs[ ii , dat2[ind.ii,ii]+1 , ]
+#							}
+	probsM <- matrix( aperm( probs , c(2,1,3) ) , nrow=I*(K+1) , ncol=TP )
+	f.yi.qk <- rm_calclike( dat2=dat2 , dat2resp = dat2.resp , 
+					probs = probsM , K=K)$fyiqk
+							
+							
+	####################							
+	# calculate posterior and expected counts
+	prior <- matrix( pi.k , nrow=nrow(dat2) , ncol=TP , byrow =TRUE )
 	f.qk.yi <- f.yi.qk * prior
 	f.qk.yi <- f.qk.yi / rowSums( f.qk.yi )
 	# expected counts
@@ -116,7 +128,7 @@ sumtau <- function(tau.item){
 		cat("-") # ; flush.console()
 			}
 	cat(" " , it , "Step(s) \n")	#; flush.console()	
-    res <- list("a.item" = a.item , "se.a.item" = sqrt( -1/res$d2 ) , 
+    res <- list("a.item" = a.item , "se.a.item" = sqrt( abs(-1/res$d2 )) , 
 			"ll" = sum(res$ll0) )
     return(res)
 			}			
@@ -150,7 +162,7 @@ sumtau <- function(tau.item){
 					max.increment=max.b.increment , numdiff.parm )					
 			increment <- Q1*matrix( res$increment , nrow=VV , ncol=K)	
 			tau.item <- tau.item + increment
-			se.tau.item[,kk] <- sqrt(-1/res$d2)		
+			se.tau.item[,kk] <- sqrt(abs(-1/res$d2)	)
 					}
 		conv1 <- max( abs( tau.item - tau.item0 ) )
 		it <- it+1
@@ -198,7 +210,7 @@ sumtau <- function(tau.item){
 		cat("-")  #; flush.console()
 			}
 	cat(" " , it , "Step(s) \n")	
-    res <- list("b.rater" = b.rater , "se.b.rater" = sqrt( -1/res$d2 ) , 
+    res <- list("b.rater" = b.rater , "se.b.rater" = sqrt( abs(-1/res$d2 ) ) , 
 			"ll" = sum(res$ll0)  , "brc" = brc 
 				)
     return(res)
@@ -236,7 +248,7 @@ sumtau <- function(tau.item){
 		cat("-") # ; flush.console()
 			}
 	cat(" " , it , "Step(s) \n")	#; flush.console()	
-    res <- list("a.rater" = a.rater , "se.a.rater" = sqrt( -1/res$d2 ) , 
+    res <- list("a.rater" = a.rater , "se.a.rater" = sqrt( abs(-1/res$d2 )) , 
 			"ll" = sum(res$ll0) )
     return(res)
 			}				

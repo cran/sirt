@@ -65,7 +65,7 @@ tetrachoric2 <- function( dat , delta=.007 , maxit = 1000000 ,
 	if (cor.smooth){ 
 		library(psych)
 		TC <- cor.smooth(TC) 
-			}
+			    }
 	res <- list("tau"=tau , "rho" = TC )
 	return(res)
 	}

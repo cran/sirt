@@ -20,16 +20,25 @@
 			aPred <- matrix( a , nrow=nrow(theta.k) , ncol= I , byrow=TRUE)
 			pjk <- plogis( aPred*(thetaPred - bPred ) )
 				}
-		pjkL <- array( NA , dim=c(2 , nrow(pjk) , ncol(pjk) ) )
-		pjkL[1,,] <- 1 - pjk
-		pjkL[2,,] <- pjk	
+#		pjkL <- array( NA , dim=c(2 , nrow(pjk) , ncol(pjk) ) )
+#		pjkL[1,,] <- 1 - pjk
+#		pjkL[2,,] <- pjk	
 		if (D==1){ NT <- length(theta.k)  } else {NT <- nrow(theta.k) }
-		f.yi.qk <- matrix( 1 , nrow(dat2) , NT )
-		for (ii in 1:ncol(dat2)){
+		TP <- NT
+        pjkt <- t(pjk)
+		pjkL <- array( NA , dim=c( I , 2 , TP  ) )
+		pjkL[,1,] <- 1 - pjkt
+		pjkL[,2,] <- pjkt	
+		probsM <- matrix( aperm( pjkL , c(2,1,3) ) , nrow=I*2 , ncol=TP )
+		f.yi.qk <- mml_calc_like( dat2=dat2 , dat2resp = dat2.resp , 
+					probs = probsM )$fyiqk		
+				
+#		f.yi.qk <- matrix( 1 , nrow(dat2) , NT )
+#		for (ii in 1:ncol(dat2)){
 		#	ii <- 1
-			ind.ii <- which( dat2.resp[,ii] == 1 )
-			f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * pjkL[ dat2[ind.ii,ii]+1 , ,ii]
-						}
+#			ind.ii <- which( dat2.resp[,ii] == 1 )
+#			f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * pjkL[ dat2[ind.ii,ii]+1 , ,ii]
+#						}
 		#******
     f.qk.yi <- 0 * f.yi.qk
     if ( G==1 ){ pi.k <- matrix( pi.k , ncol=1 ) }
@@ -43,17 +52,15 @@
     n.k <- matrix( 0 , NT , G )
     r.jk <- n.jk <- array( 0 , dim=c( ncol(dat2) , NT , G) )
     ll <- rep(0,G)
-    for (gg in 1:G){ 
-        n.k[,gg] <- colSums( dat1[group==gg,2] * f.qk.yi[group==gg,,drop=FALSE]  )
-        # expected counts at theta.k and item j
-        n.jk[,,gg] <- ( t(dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% 
-					f.qk.yi[group==gg, ]
-        # compute r.jk (expected counts for correct item responses at theta.k for item j
-        r.jk[,,gg] <- ( t(dat2[group==gg,]) * t( dat2.resp[group==gg,]) * 
-						outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[ group==gg,]
-        # compute log-Likelihood
-        ll[gg] <- sum( dat1[group==gg,2] * log( rowSums( f.yi.qk[group==gg,] * 
-					outer( rep( 1,nrow(f.yi.qk[group==gg,,drop=FALSE]) ) , pi.k[,gg] ) ) ) )
+    for (gg in 1:G){
+		ind.gg <- which( group == gg )
+	    res <- mml_raschtype_counts( dat2=dat2[ind.gg,] , dat2resp=dat2.resp[ind.gg,] , 
+					dat1=dat1[ind.gg,2] , fqkyi=f.qk.yi[ind.gg,] ,
+					pik=pi.k[,gg] , fyiqk=f.yi.qk[ind.gg,]  )
+		n.k[,gg] <- res$nk
+		n.jk[,,gg] <- res$njk
+        r.jk[,,gg] <- res$rjk
+		ll[gg] <- res$ll	
 				}
     res <- list( "n.k" = n.k , "n.jk" = n.jk , "r.jk" = r.jk , "f.qk.yi" = f.qk.yi , "pjk" = pjk  ,
             "f.yi.qk" = f.yi.qk , "ll" = sum(ll) )
@@ -72,15 +79,15 @@
     #...................................                    
 		#***
 		# array notation of probabilities
-		pjkL <- array( NA , dim=c(2 , nrow(pjk) , ncol(pjk) ) )
-		pjkL[1,,] <- 1 - pjk
-		pjkL[2,,] <- pjk	
-		f.yi.qk <- matrix( 1 , nrow(dat2) , length(theta.k) )
-		for (ii in 1:ncol(dat2)){
-		#	ii <- 1
-			ind.ii <- which( dat2.resp[,ii] == 1 )
-			f.yi.qk[ind.ii,] <- f.yi.qk[ind.ii,] * pjkL[ dat2[ind.ii,ii]+1 , ,ii]
-						}
+		TP <- nrow(pjk)
+        pjkt <- t(pjk)
+		pjkL <- array( NA , dim=c( I , 2 , TP  ) )
+		pjkL[,1,] <- 1 - pjkt
+		pjkL[,2,] <- pjkt	
+		probsM <- matrix( aperm( pjkL , c(2,1,3) ) , nrow=I*2 , ncol=TP )
+		f.yi.qk <- mml_calc_like( dat2=dat2 , dat2resp = dat2.resp , 
+					probs = probsM )$fyiqk	
+					
 		#******
     f.qk.yi <- 0 * f.yi.qk
     if ( G==1 ){ pi.k <- matrix( pi.k , ncol=1 ) }

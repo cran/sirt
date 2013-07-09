@@ -10,6 +10,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 	conv1=10^(-5)  , mmliter=1000 , mstep.maxit = 3 , seed=0  , nstarts = 1){
 	#..................................................
 	# preliminaries
+	dat <- as.matrix(dat)
 	theta.normal <- FALSE
 	ref.item <- NULL
 	if ( is.null(theta.k) ){ 

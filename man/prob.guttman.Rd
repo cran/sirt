@@ -1,5 +1,6 @@
 \name{prob.guttman}
 \alias{prob.guttman}
+\alias{summary.prob.guttman}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Probabilistic Guttman Model
@@ -12,6 +13,8 @@ Proctor, 1970).
 \usage{
 prob.guttman(dat, pid = NULL, guess.equal = FALSE,  slip.equal = FALSE, 
     itemlevel = NULL, conv1 = 0.001, glob.conv = 0.001, mmliter = 500)
+    
+\method{summary}{prob.guttman}(object,...)    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -40,6 +43,12 @@ Global convergence criterion for the deviance
 }
   \item{mmliter}{
 Maximum number of iterations
+}
+  \item{object}{
+Object of class \code{prob.guttman}
+}
+  \item{\dots}{
+Further arguments to be passed
 }
 }
 %\details{
@@ -102,4 +111,5 @@ summary(mod3)
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{Probabilistic Guttman model}
+\keyword{summary}
 %% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

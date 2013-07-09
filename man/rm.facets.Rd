@@ -1,5 +1,6 @@
 \name{rm.facets}
 \alias{rm.facets}
+\alias{summary.rm.facets}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Rater Facets Models with Item/Rater Intercepts and Slopes
@@ -20,6 +21,8 @@ rm.facets(dat, pid=NULL, rater=NULL, Qmatrix=NULL, theta.k=seq(-9, 9, len=30),
     est.b.rater=TRUE, est.a.item=FALSE, est.a.rater=FALSE, max.b.increment=1, 
     numdiff.parm=0.001, maxdevchange=0.1, globconv=0.001, maxiter=1000, 
     msteps=4, mstepconv=0.001)
+
+\method{summary}{rm.facets}(object,...)	    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,7 +37,7 @@ Person identifier.
 Rater identifier
 }
   \item{Qmatrix}{
-An optional \eqn{Q} matrix. If this matrix is not provided,
+An optional Q-matrix. If this matrix is not provided,
 then by default the ordinary scoring of categories
 (from 0 to the maximum score of \eqn{K}) is used.
 }
@@ -70,6 +73,12 @@ Maximum number of iterations during an M step
 }
   \item{mstepconv}{
 Convergence criterion in an M step
+}
+  \item{object}{
+Object of class \code{rm.facets}
+}
+  \item{\dots}{
+Further arguments to be passed
 }
 }
 
@@ -223,3 +232,4 @@ summary(mod5)}
 % R documentation directory.
 \keyword{Rater model}
 \keyword{Facets model}
+\keyword{summary}

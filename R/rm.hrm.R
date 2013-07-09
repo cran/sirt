@@ -15,8 +15,8 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 	pi.k <- pi.k / sum( pi.k )
 	# process data
 	procdata <- res <- .prep.data.rm( dat=dat , rater=rater , pid=pid )
-	dat2 <- res$dat2
-	dat2.resp <- res$dat2.resp
+	dat2 <- as.matrix(res$dat2)
+	dat2.resp <- as.matrix(res$dat2.resp)
 	rater.index1 <- res$rater.index
 	dataproc.vars <- res$dataproc.vars
 	VV <- res$VV
@@ -89,12 +89,12 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 		a.item0 <- a.item
 		c.rater0 <- c.rater
 
- #a0 <- Sys.time()		
+ # a0 <- Sys.time()		
 		# calculate probabilities
 		res <- .rm.hrm.calcprobs( c.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , d.rater , item.index , rater.index ,
 				theta.k ,RR )		
-#cat("calcprob "); a1 <- Sys.time(); print(a1-a0) ; a0 <- a1 ;			
+# cat("calcprob "); a1 <- Sys.time(); print(a1-a0) ; a0 <- a1 ;			
 
         probs <- res$prob.total				
 		prob.rater <- res$prob.rater
@@ -109,7 +109,7 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 		pi.k <- res$pi.k
 		ll <- res$ll
 
-#cat("posterior "); a1 <- Sys.time(); print(a1-a0) ; a0 <- a1 ;			
+# cat("posterior "); a1 <- Sys.time(); print(a1-a0) ; a0 <- a1 ;			
 												
     	# estimate tau.item parameters
 		if (iter ==0){	max.b.increment -> tau.item.incr }
@@ -138,7 +138,7 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 			prob.item <- res$prob.item
 				}
 
-#cat("est.a "); a1 <- Sys.time(); print(a1-a0) ; a0 <- a1 ;							
+# cat("est.a "); a1 <- Sys.time(); print(a1-a0) ; a0 <- a1 ;							
 #prob.item <- NULL
 				
 		# estimate d.rater parameter
@@ -170,7 +170,7 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 			c.rater.incr <- max(g1)
 #			c.rater.incr <- ifelse( c.rater.incr > g1 , g1 , c.rater.incr )						
 						}						
-#cat("est.c.rater "); a1 <- Sys.time(); print(a1-a0) ; a0 <- a1 ;			
+# cat("est.c.rater "); a1 <- Sys.time(); print(a1-a0) ; a0 <- a1 ;			
 						
 		flush.console()		
 		

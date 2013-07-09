@@ -47,14 +47,12 @@ to local dependence}
 \item{theta.table}{Ability estimates for each unique response pattern}
 \item{pattern.in.data}{Item response pattern}
 \item{summary.theta.table}{Summary statistics of person parameter estimates}
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
 }
+
 %\references{
 %% ~put references to the literature/web site here ~
 %}
+
 \author{
 Alexander Robitzsch
 }

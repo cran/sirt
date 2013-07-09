@@ -1,23 +1,26 @@
 
 \name{lsdm}
 \alias{lsdm}
+\alias{summary.lsdm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Least Square Distance Method of Cognitive Validation
 }
 \description{
 This function estimates the least square distance method
-of cognitive validation (Dimitrov, 2007) which assumes
-a multiplicative relationship of attribute response
+of cognitive validation (Dimitrov, 2007; Dimitrov & Atanasov, 2012) 
+which assumes a multiplicative relationship of attribute response
 probabilities to explain item response probabilities.
 The function also estimates the classical linear logistic test 
-model (LLTM; Fischer, 1973) which assumes an additive relationship
+model (LLTM; Fischer, 1973) which assumes a linear relationship
 for item difficulties in the Rasch model.
 }
 \usage{
 lsdm(data, Qmatrix, theta=qnorm(seq(5e-04,0.9995,len=100)), 
     quant.list=c(0.5,0.65,0.8), b=NULL, a=rep(1,nrow(Qmatrix)), 
     c=rep(0,nrow(Qmatrix)) )
+
+\method{summary}{lsdm}(object,...)    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -32,7 +35,7 @@ and are specified in the argument \code{theta}.
   \item{Qmatrix}{
 An \eqn{I} times \eqn{K} matrix where the allocation of items 
 to attributes is coded. Values between zero and one are permitted.
-There must not be any items with only zero \eqn{Q} matrix entries
+There must not be any items with only zero Q-matrix entries
 in a row.
 }
   \item{theta}{
@@ -53,10 +56,46 @@ An optional vector of item discriminations.
   \item{c}{
 An optional vector of guessing parameters.
 }
+  \item{object}{
+Object of class \code{lsdm}
 }
-%\details{
-%%  ~~ If necessary, more details than the description above ~~
-%}
+  \item{\dots}{
+Further arguments to be passed
+}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DETAILS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\details{
+The least squares distance method (LSDM; Dimitrov 2007) is based on the
+assumption that estimated item response functions \eqn{P(X_i = 1 | \theta)} 
+can be decomposed in a multiplicative way (in the implemented 
+conjunctive model):
+\deqn{ P( X_i = 1 ) | \theta ) = \prod_{k=1}^K [ P( A_k = 1 | \theta ) ]^{q_{ik}} }
+where \eqn{P( A_k = 1 | \theta )} are attribute response functions and
+\eqn{q_{ik}} are entries of the Q-matrix. Note that the multiplicative form
+can be rewritten by taking the logarithm
+\deqn{ \log P( X_i = 1 ) | \theta ) = 
+	\sum_{k=1}^K q_{ik} \log [ P( A_k = 1 | \theta ) ] }
+Evaluation item and response functions on a grid of \eqn{\theta} values and 
+collecting these values in matrices \eqn{\bold{L}= \{ \log P( X_i = 1 ) | \theta ) \} }, 
+\eqn{\bold{Q}= \{ q_{ik} \} } and
+\eqn{\bold{X}= \{ \log P( A_k = 1 ) | \theta ) \} } leads to a least squares
+problem of the form \eqn{ \bold{L} \approx \bold{Q} \bold{X}} with the
+restriction of positive \bold{X} matrix entries. This least squares problem
+is a linear inequality constrained model which is solved by making use of
+the \pkg{ic.infer} package (Groemping, 2010).
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% VALUES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \value{
 A list with following entries
 \item{mean.mad.lsdm0}{Mean of \eqn{MAD} statistics for LSDM}
@@ -68,11 +107,11 @@ A list with following entries
 functions are evaluated}
 \item{item}{Item statistics (p value, \eqn{MAD}, ...)}
 \item{data}{Estimated or fixed item reponse functions evaluated at \code{theta}}
-\item{Qmatrix}{Used \eqn{Q} matrix}
+\item{Qmatrix}{Used Q-matrix}
 \item{lltm}{Model output of LLTM (\code{lm} values)}
 }
 \references{
-  DiBello, L. V., Roussos, L. A. & Stout, W. F. (2007). Review of
+  DiBello, L. V., Roussos, L. A., & Stout, W. F. (2007). Review of
   cognitively diagnostic assessment and a summary of psychometric models.
   In C. R. Rao and S. Sinharay (Eds.), \emph{Handbook of Statistics},
   Vol. 26 (pp. 979-1030). Amsterdam: Elsevier.
@@ -81,8 +120,16 @@ functions are evaluated}
   and analysis for binary items using their item response theory parameters. 
   \emph{Applied Psychological Measurement}, \bold{31}, 367-387.
    
+  Dimitrov, D. M., & Atanasov, D. V. (2012). Conjunctive and disjunctive 
+  extensions of the least squares distance model of cognitive diagnosis. 
+  \emph{Educational and Psychological Measurement}, \bold{72}, 120-138.  
+  
   Fischer, G. H. (1973). The linear logistic test model as an instrument 
   in educational research. \emph{Acta Psychologica}, \bold{37}, 359-374.
+	
+  Groemping, U. (2010). Inference with linear equality and inequality 
+  constraints using \R: The package \code{ic.infer}.
+  \emph{Journal of Statistical Software}, \bold{33(10)}, 1-31.  
 }
 \author{
 Alexander Robitzsch
@@ -100,6 +147,13 @@ See the \pkg{CDM} package for the estimation of related
 cognitive diagnostic models (DiBello, Roussos & Stout, 2007).
 }
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% EXAMPLES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 \examples{
 ###################################################################
 # EXAMPLE 1: DATA FISCHER (see Dimitrov, 2007)
@@ -110,7 +164,7 @@ b <- c( 0.171,-1.626,-0.729,0.137,0.037,-0.787,-1.322,-0.216,1.802,
     0.476,1.19,-0.768,0.275,-0.846,0.213,0.306,0.796,0.089,
     0.398,-0.887,0.888,0.953,-1.496,0.905,-0.332,-0.435,0.346,
     -0.182,0.906)
-# read Q matrix
+# read Q-matrix
 Qmatrix <- c( 1,1,0,1,0,0,0,0,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,
     1,0,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,1,0,0,1,0,1,0,1,0,0,0,
     1,0,1,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,0,1,0,1,0,0,1,0,1,1,1,0,0,0,
@@ -150,7 +204,7 @@ summary(lsdm.res)
 b <- c(-2.03,-1.29,-1.03,-1.58,0.59,-1.65,2.22,-1.46,2.58,-0.66)
 # item slopes
 a <- c(0.6,0.81,0.75,0.81,0.62,0.75,0.54,0.65,0.75,0.54)
-# Qmatrix
+# define Q-matrix
 Qmatrix <- c(1,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,1,0,0,0,0,1,1,0,0,
     0,0,0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,1,1,0,1,0,0 )
 Qmatrix <- matrix( Qmatrix , nrow=10, byrow=TRUE )
@@ -173,23 +227,24 @@ summary(lsdm.res)
 ## [...]
 
 ###################################################################
-# EXAMPLE 3: PISA mathematics
-#   Using nonparametrically estimated item response functions
+# EXAMPLE 3: PISA reading (data.pisaRead)
+#    using nonparametrically estimated item response functions
 ###################################################################
 
 data(data.pisaRead)
 # response data
 dat <- data.pisaRead$data
 dat <- dat[ , substring( colnames(dat),1,1)=="R" ]
-# define Q matrix
+# define Q-matrix
 pars <- data.pisaRead$item
 Qmatrix <- data.frame( 
     "A0" = 1*(pars$ItemFormat=="MC" ) , 
     "A1" = 1*(pars$ItemFormat=="CR" ) )
 
-# Nonparametric estimation of item response functions
+# start with estimating the 1PL in order to get person parameters
 mod <- rasch.mml2( dat )
 theta <- wle.rasch( dat=dat ,b = mod$item$b )$theta
+# Nonparametric estimation of item response functions
 mod2 <- np.dich( dat=dat , theta=theta , 
     thetagrid = seq(-3,3,len=100) )
 
@@ -209,4 +264,5 @@ summary(lsdm.res)
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{Least Squares Distance Method (LSDM)}
+\keyword{summary}
 %% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

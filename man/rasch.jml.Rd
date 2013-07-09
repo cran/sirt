@@ -1,5 +1,6 @@
 \name{rasch.jml}
 \alias{rasch.jml}
+\alias{summary.rasch.jml}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Joint Maximum Likelihood (JML) Estimation of the Rasch Model
@@ -13,8 +14,9 @@ for the generation of starting values of item parameters.
 rasch.jml(dat, method = "MLE", b.init = NULL, constraints = NULL, weights = NULL, 
     glob.conv = 10^(-6),   conv1 = 1e-05, conv2 = 0.001, progress = TRUE,
     bsteps = 4,thetasteps = 2, wle.adj = 0, jmliter = 100, prox = TRUE , 
-    proxiter = 30, proxconv = 0.01 , 
-    dp=NULL , theta.init = NULL , calc.fit=TRUE)
+    proxiter = 30, proxconv = 0.01, dp=NULL , theta.init = NULL , calc.fit=TRUE)
+
+\method{summary}{rasch.jml}(object,...)	    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -79,7 +81,7 @@ Convergence criterion for PROX iterations
 }
   \item{dp}{
  Object created from data preparation function (\code{.data.prep})
- which could be created in earlier JML runs. Defauls is \code{NULL}.
+ which could be created in earlier JML runs. Default is \code{NULL}.
  }
 \item{theta.init}{
  Initial person parameter estimate
@@ -87,6 +89,12 @@ Convergence criterion for PROX iterations
 \item{calc.fit}{
  Should itemfit being calculated?
  }
+  \item{object}{
+Object of class \code{rasch.jml}
+}
+  \item{\dots}{
+Further arguments to be passed
+}
 }
 
 \details{
@@ -95,10 +103,13 @@ a fixed (finite) number of items. In literature (Lincare, 1994), a simple
 bias correction formula is proposed and included in the value
 \code{item$itemdiff.correction} in this function. If \eqn{I} denotes the number
 of items, then the correction factor is \eqn{\frac{I-1}{I}}. 
+}
 %%If there are \eqn{J}
 %%item parameter constraints, then the correction factor amounts to 
 %%\eqn{\frac{I-J-1}{I-J}}.
-}
+
+
+
 \value{
 A list with following entries
 \item{item}{Estimated item parameters}
@@ -108,7 +119,7 @@ A list with following entries
 \item{deviance}{Deviance}
 \item{data.proc}{Processed data frames excluding persons with extreme scores}
 \item{dp}{Value of data preparation (it is used in the function 
-\code{\link{jackknife.rasch.jml}})}
+\code{\link{rasch.jml.jackknife1}})}
 }
 \references{
  Linacre, J. M. (1994). \emph{Many-Facet Rasch Measurement}. Chicago: MESA Press.
@@ -130,7 +141,7 @@ Get a summary with \code{\link{summary.rasch.jml}}.
 
 See \code{\link{rasch.prox}} for the PROX algorithm as initial iterations.
 
-For a bias correction of the JML method try \code{\link{jackknife.rasch.jml}}.
+For a bias correction of the JML method try \code{\link{rasch.jml.jackknife1}}.
 
 See also marginal maximum likelihood estimation with \code{\link{rasch.mml2}} 
 or the \R package \pkg{ltm}.
@@ -145,7 +156,6 @@ I <- 11     # number of items
 b <- seq( -2 , 2 , length=I )
 dat <- sim.raschtype( rnorm( N ) , b )
 colnames(dat) <- paste( "I" , 1:I , sep="")
-
 
 # JML estimation of the Rasch model
 mod1 <- rasch.jml( dat )
@@ -167,12 +177,13 @@ constraints <- matrix( cbind( 4 , -.76 ,
                               6 , .10 ) , ncol=2 , byrow=TRUE )
 mod4 <- rasch.jml( dat , constraints = constraints )
 summary(mod4)
-# For constrained item parameters, it this not obviuous
-# how to calculate a 'correct correction' of item parameter bias
+# For constrained item parameters, it this not obvious
+# how to calculate a 'right correction' of item parameter bias
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 %\keyword{Rasch model}
 \keyword{Joint maximum likelihood (JML)}
+\keyword{summary}
 % __ONLY ONE__ keyword per line
