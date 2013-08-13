@@ -54,8 +54,10 @@ For JML estimation \code{\link{rasch.jml}}.
 For analytic bias correction methods see \code{\link{rasch.jml.biascorr}}.
 }
 \examples{
-##########################################################
-# Simulation of data from the Rasch model
+#############################################################################
+# EXAMPLE 1: Simulation of data from the Rasch model
+#############################################################################
+set.seed(7655)
 N <- 5000    # number of persons
 I <- 11      # number of items
 b <- seq( -2 , 2 , length=I )

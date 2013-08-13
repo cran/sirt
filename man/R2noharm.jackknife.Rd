@@ -37,7 +37,7 @@ row indexes in the data set.
 A list of lists with following entries:
 
 \item{partable}{
-	Dataframe with parameters
+	Data frame with parameters
 		}
 \item{se.pars}{List of estimated standard errors for all parameter estimates:
     \code{tanaka.stat}, \code{rmsr.stat}, \code{rmsea.stat},

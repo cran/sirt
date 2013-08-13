@@ -19,8 +19,6 @@ dif.logistic.regression <- function( dat , group , score ){
     # group     ... group identifier (this has to be a dummy variable)
     # score     ... matching criterion
     
-	# library(Design)     # needed for DIF logistic regression analysis
-#	library(rms)
     I <- ncol(dat)
     matr <- NULL
     for (ii in 1:I){

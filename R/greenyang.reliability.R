@@ -107,7 +107,6 @@ reliability.nonlinearSEM <- function( facloadings , thresh , cor.factors =NULL )
         # thresh        ... vector of thresholds
         # cor.factors   ... correlation matrix of factors
         #.............................................
-		library(mvtnorm)
         facloadings <- as.matrix( facloadings )
         NF <- ncol(facloadings ) # number of factor facloadings
         # correlation matrix

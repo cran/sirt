@@ -31,16 +31,17 @@ ccov.np <- function( data , score , bwscale = 1.1 , thetagrid = seq( -3,3,len=20
             for ( ii in 1:I ){
                 x <- score[ ! is.na( data[,ii] )  ]
                 y <- data[ ! is.na( data[,ii] ) , ii ]
-                icc.items[,ii] <- ksmooth( x  , y , bandwidth = bwscale * length(x)^(-1/5)  , x.points = thetagrid , kernel="normal")$y
-                if ( i < 20 ){ if ( ii == display[i] & progress == T ){ cat( paste( 5*i  , "% " , sep="" ) ) ; i <- i + 1 ; 
+                icc.items[,ii] <- ksmooth( x  , y , bandwidth = bwscale * length(x)^(-1/5)  , 
+							x.points = thetagrid , kernel="normal")$y
+                if ( i < 20 ){ if ( ii == display[i] & progress ){ cat( paste( 5*i  , "% " , sep="" ) ) ; i <- i + 1 ; 
                                                         if (i == 11){ cat("\n" ) }
                                                         flush.console()} }
                 }
-            if ( progress == T){ cat("\n") }
+            if ( progress){ cat("\n") }
             # weights thetagrid
             wgt.thetagrid <- dnorm(thetagrid)
             wgt.thetagrid <- wgt.thetagrid 
-            if (progress == T ){
+            if (progress ){
                 cat("...........................................................\n" )
                 cat("Nonparametric Estimation of conditional covariances \n " ) 
                 flush.console()
@@ -118,12 +119,12 @@ conf.detect <- function( data , score , itemcluster , bwscale = 1.1 , progress =
     cat("-----------------------------------------------------------\n" )
     cat("Confirmatory DETECT Analysis \n" ) ; flush.console()
     h1 <- is.matrix( score )
-    if (h1 == TRUE ){ PP <- ncol(score) }
-    if (h1 == FALSE ){  cat("Conditioning on 1 Score\n" )  } else {
+    if (h1 ){ PP <- ncol(score) }
+    if (! h1  ){  cat("Conditioning on 1 Score\n" )  } else {
             cat(paste("Conditioning on ",PP, " Scores\n" , sep="") ) }
     cat(paste("Bandwidth Scale:" , bwscale , "\n" ) ) 
     flush.console()
-    if (h1 == FALSE ){
+    if ( ! h1 ){
         ccovtable <- ccov.np( data , score = score, bwscale = bwscale , 
                                 progress= progress , thetagrid = thetagrid )
         res <- detect.index( ccovtable , itemcluster = itemcluster )
@@ -146,7 +147,7 @@ conf.detect <- function( data , score , itemcluster , bwscale = 1.1 , progress =
                         "RATIO Unweighted" , "RATIO Weighted" )
             }
     cat("-----------------------------------------------------------\n" )            
-    if (h1 == FALSE){   res <- list(  "detect" = res , "ccovtable" = ccovtable , "detect.summary" = res ) } else
+    if ( ! h1){   res <- list(  "detect" = res , "ccovtable" = ccovtable , "detect.summary" = res ) } else
             {     res <- list(  "detect" = detect.list , "ccovtable" = ccovtable.list , "detect.summary" = detect.summary ) }
     print(round(res$detect.summary,3))
     return( res )

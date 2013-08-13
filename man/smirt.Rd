@@ -8,15 +8,16 @@ Response Model
 }
 \description{
 This function estimates the noncompensatory and compensatory multidimensional
-item response model (Reckase, 2009).
+item response model (Reckase, 2009) for dichotomous data.
 }
 \usage{
 smirt(dat, Qmatrix, irtmodel="noncomp" , est.b = NULL, est.a = NULL, 
      est.c = NULL, est.d = NULL, b.init = NULL, a.init = NULL, c.init = NULL,
      d.init=NULL, Sigma.init=NULL , theta.k=seq(-6,6,len=20), theta.kDES=NULL, 
      qmcnodes=0 , mu.fixed = NULL, variance.fixed = NULL,  est.corr = FALSE, 
-     max.increment = 1, numdiff.parm = 0.001, maxdevchange = 0.1, 
-     globconv = 0.001, maxiter = 1000, msteps = 4, mstepconv = 0.001)
+     max.increment = 1, increment.factor=1, numdiff.parm = 0.001, 
+     maxdevchange = 0.1, globconv = 0.001, maxiter = 1000, msteps = 4, 
+     mstepconv = 0.001)
 
 \method{summary}{smirt}(object,...)
 }
@@ -93,6 +94,14 @@ be estimated?
 }
   \item{max.increment}{
 Maximum increment
+}
+  \item{increment.factor}{
+A value (larger than one) which defines the extent of the decrease of the maximum
+increment of item parameters in every iteration. The maximum increment in iteration
+\code{iter} is defined as \code{max.increment*increment.factor^(-iter)}
+where \code{max.increment=1}. Using a value larger than 1 helps
+to reach convergence in some non-converging analyses (use values of 1.01, 1.02
+or even 1.05). See also Simulated Example 1 Model 2a.
 }
   \item{numdiff.parm}{
 Numerical differentiation parameter
@@ -204,9 +213,9 @@ multidimensional models.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-##############################################################
+#############################################################################
 ## SIMULATED EXAMPLE 1: Noncompensatory and compensatory IRT models
-##############################################################
+#############################################################################
 set.seed(997)
 
 # (1) simulate data from a two-dimensional noncompensatory
@@ -243,6 +252,10 @@ summary(mod1)
 # Model 2: Noncompensatory 2PL model
 mod2 <- smirt(dat,Qmatrix=Q , est.a="2PL" , maxiter=15 )
 summary(mod2)
+
+# avoid convergence problems with increment.factor
+mod2a <- smirt(dat,Qmatrix=Q , est.a="2PL" , maxiter=30 , increment.factor=1.03)
+summary(mod2a)
 
 #***
 # Model 3: some fixed c and d parameters different from zero or one
@@ -348,7 +361,8 @@ summary(mod10)
 Qmatrix <- matrix( 1 , I , 1 )
 mod11 <- smirt( dat , irtmodel="comp" , Qmatrix=Qmatrix ,
          qmcnodes=1000 )
-summary(mod11) }
+summary(mod11) 
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

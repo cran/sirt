@@ -40,7 +40,6 @@ pf.logist.regression <- function( data , itemdiff , perc = seq(5,100,5) ){
 # Reise fit
 ##NS export(pf.reisefit)
 pf.reisefit <- function( data , itemdiff ){
-    library(lme4)
     dat1 <- data
     a1 <- data.frame( "y" = matrix(  t(dat1) , ncol= 1 , byrow=T) , 
                     "person" = rep(  seq( 1 , nrow(dat1) ) , each=I ) ,

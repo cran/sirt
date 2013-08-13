@@ -1,7 +1,6 @@
 R2noharm.EAP <-
 function( noharmobj , theta.k =seq(-6,6,len=21) ){
     mod <- noharmobj
-    library(MASS)
     guess <- mod$guesses
     f0 <- mod$final.constants
     FL <- mod$loadings.theta

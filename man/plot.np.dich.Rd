@@ -28,7 +28,7 @@ Infit (optional)
 Outfit (optional)
 }
   \item{nsize}{
-xxxx
+XXX
 }
   \item{askplot}{
 Ask for new plot?

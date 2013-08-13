@@ -8,7 +8,8 @@ Estimation of a NOHARM Analysis from within \R
 \description{
 This function enables the estimation of a NOHARM analysis
 (Fraser & McDonald, 1988; McDonald, 1997) from within \R. 
-Arguments of this function strictly follows
+NOHARM estimates a compensatory multidimensional factor analysis for dichotomous 
+response data. Arguments of this function strictly follows
 the rules of the NOHARM manual (see Fraser & McDonald, 2012).
 }
 
@@ -29,7 +30,8 @@ R2noharm(dat, model.type, dimensions = NULL, guesses = rep(0, ncol(dat)),
 
 \arguments{
   \item{dat}{
-A \eqn{N} times \eqn{I} data frame 
+An \eqn{N} times \eqn{I} data frame of item responses for \eqn{N} subjects
+and \eqn{I} items
 }
   \item{model.type}{
 Can be \code{"EFA"} (exploratory factor analysis) or \code{"CFA"}
@@ -39,23 +41,23 @@ Can be \code{"EFA"} (exploratory factor analysis) or \code{"CFA"}
 Number of dimensions in exploratory factor analysis
 }
   \item{guesses}{
-Fixed vector of guessing parameters. Default is \code{rep(0,ncol(dat))},
-i.e. no guessing.
+Fixed vector of guessing parameters of length \eqn{I}. 
+The default is \code{rep(0,ncol(dat))}.
 }
   \item{noharm.path}{
 Local path where the NOHARM 4 command line 64-bit version is being located.
 }
   \item{F.pattern}{
-Pattern matrix for \eqn{F}
+Pattern matrix for \eqn{F} (\eqn{I} times \eqn{D})
 }
   \item{F.init}{
-Initial matrix for \eqn{F}
+Initial matrix for \eqn{F} (\eqn{I} times \eqn{D})
 }
   \item{P.pattern}{
-Pattern matrix for \eqn{P}
+Pattern matrix for \eqn{P} (\eqn{D} times \eqn{D})
 }
   \item{P.init}{
-Initial matrix for \eqn{P}
+Initial matrix for \eqn{P} (\eqn{D} times \eqn{D})
 }
   \item{digits.pm}{
 Number of digits after decimal separator which are used for
@@ -66,7 +68,7 @@ Name for NOHARM input and output files
   }
   \item{display.fit}{
 How many digits (after decimal separator) should be used
-for printing results on the R console?
+for printing results on the \R console?
 }
   \item{dec}{
 Decimal separator (\code{"."} or \code{","})
@@ -89,7 +91,7 @@ Object of class \code{R2noharm}
 NOHARM estimates a multidimensional compensatory
 item response model with the probit link function \eqn{\Phi}. 
 For item responses \eqn{X_{pi}} of person \eqn{p} on
-item \eqn{i} the model equation reads as
+item \eqn{i} the model equation is defined as
 \deqn{P( X_{pi} = 1 | \bold{\theta}_p ) = c_i + ( 1 - c_i ) 
 \Phi( f_{i0} + f_{i1} \theta_{p1} + ... +
 f_{iD} \theta_{pD} ) }

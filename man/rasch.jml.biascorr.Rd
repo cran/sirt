@@ -56,8 +56,9 @@ Jackknife.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-#################################
-# Dataset Reading
+#############################################################################
+# EXAMPLE 1: Dataset Reading
+#############################################################################
 data(data.read)
 dat <- data( data.read )
 

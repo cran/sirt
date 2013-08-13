@@ -8,8 +8,9 @@ Random Item Response Model / Multilevel IRT Model
 This function enables the estimation of random item models and multilevel
 (or hierarchical) IRT models (Chaimongkol, Huffer & Kamata, 2007;
 Fox & Verhagen, 2010; van den Noortgate, de Boeck & Meulders, 2003). 
-Dichotomous response data is supported using a probit link. Normal response
-data can also be analyzed. See Details for a description of the implemented item
+Dichotomous response data is supported using a probit link. Normally
+distributed responses can also be analyzed. 
+See Details for a description of the implemented item
 response models.
 }
 \usage{
@@ -26,8 +27,7 @@ mcmc.2pno.ml(dat, group, link="logit" , est.b.M = "h", est.b.Var = "n",
 
 \arguments{
   \item{dat}{
-  Data frame with dichotomous item responses (option for normally distributed
-  responses will be soonly available).
+  Data frame with item responses.
 }
   \item{group}{
 Vector of group identifiers (e.g. classes, schools or countries)
@@ -75,7 +75,7 @@ Number of burnin iterations
 }
 \item{progress.iter}{
    Display progress every \code{progress.iter}-th iteration. If no progress
-   display is wanted, then choose \code{progress.iter} higher than \code{iter}.
+   display is wanted, then choose \code{progress.iter} larger than \code{iter}.
 }
   \item{prior.sigma2}{
 Prior for Level 2 standard deviation \eqn{\sigma_{L2}}
@@ -171,9 +171,9 @@ model by the WinBUGS 1.4.
 	
 Fox, J.-P., & Verhagen, A.-J. (2010). Random item effects modeling for 
 cross-national survey data. 
-In E. Davidov & P. Schmidt, and J. Billiet (Eds.), 
+In E. Davidov, P. Schmidt, & J. Billiet (Eds.), 
 \emph{Cross-cultural Analysis: Methods and Applications} 
-(pp. 467-488), London: Routeledge Academic.
+(pp. 467-488), London: Routledge Academic.
 
 van den Noortgate, W., De Boeck, P., & Meulders, M. (2003). 
 Cross-classification multilevel logistic models in psychometrics. 
@@ -198,7 +198,7 @@ See also the \pkg{MLIRT} package (\url{http://www.jean-paulfox.com})
 of Jean-Paul Fox.
 
 For more flexible estimation of multilevel IRT models see the
-\pkg{MCMCglmm} and \pkg{lme4} package.
+\pkg{MCMCglmm} and \pkg{lme4} packages.
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -207,9 +207,9 @@ For more flexible estimation of multilevel IRT models see the
 
 \examples{
 \dontrun{	
-######################################
+#############################################################################
 # EXAMPLE 1: Dataset Multilevel 1
-######################################
+#############################################################################
 data(data.ml1)
 dat <- data.ml1[,-1]
 group <- data.ml1$group
@@ -222,7 +222,7 @@ mod1 <- mcmc.2pno.ml( dat , group , est.b.Var="n" , burnin=burnin , iter=iter )
 summary(mod1)	# summary
 plot(mod1,layout=2,ask=TRUE) # plot results
 # write results to coda file
-mcmclist2coda( mod$mcmcobj , name = "data.ml1_mod1" )
+mcmclist2coda( mod1$mcmcobj , name = "data.ml1_mod1" )
 
 #***
 # Model 2: 1PNO with cluster item effects of item difficulties 
@@ -234,7 +234,7 @@ plot(mod2, ask=TRUE , layout=2 )
 # Model 3: 2PNO with cluster item effects of item difficulties but
 #          joint item slopes
 mod3 <- mcmc.2pno.ml( dat , group , est.b.Var="i" , est.a.M="h" , 
-	burnin=burnin , iter=iter )
+           burnin=burnin , iter=iter )
 summary(mod3)
 
 #***
@@ -244,9 +244,9 @@ mod4 <- mcmc.2pno.ml( dat , group , est.b.Var="i" , est.a.M="h" ,
         est.a.Var="j" , burnin=burnin , iter=iter )
 summary(mod4)
 
-######################################
+#############################################################################
 # EXAMPLE 2: Dataset Multilevel 2
-######################################
+#############################################################################
 data(data.ml2)
 dat <- data.ml2[,-1]
 group <- data.ml2$group

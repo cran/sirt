@@ -16,7 +16,7 @@ conf.detect(data, score, itemcluster, bwscale = 1.1, progress = TRUE,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
-An \eqn{N} times \eqn{I} data frame of dichotomous responses.
+An \eqn{N} times \eqn{I} data frame of dichotomous or polytomous responses.
 Missing responses are allowed.
 }
   \item{score}{
@@ -73,20 +73,20 @@ A list with following entries:
 \item{ccov.matrix}{Evaluated conditional covariance}
 }
 \references{
-Jang, E. E. & Roussos, L. (2007). An investigation into the dimensionality
+Jang, E. E., & Roussos, L. (2007). An investigation into the dimensionality
 of TOEFL using conditional covariance-based nonparametric approach.
 \emph{Journal of Educational Measurement}, \bold{44}, 1-21.
 
-Stout, W., Habing, B., Douglas, J. & Kim, H. R. (1996). 
+Stout, W., Habing, B., Douglas, J., & Kim, H. R. (1996). 
 Conditional covariance-based nonparametric multidimensionality assessment. 
 \emph{Applied Psychological Measurement}, \bold{20}, 331-354.
 
-Zhang, J. & Stout, W. (1999a). Conditional covariance structure 
-of generalized compensatory multidimensional items, 
+Zhang, J., & Stout, W. (1999a). Conditional covariance structure 
+of generalized compensatory multidimensional items. 
 \emph{Psychometrika}, \bold{64}, 129-152.
 
-Zhang, J. & Stout, W. (1999b). The theoretical DETECT index of 
-dimensionality and its application to approximate simple structure, 
+Zhang, J., & Stout, W. (1999b). The theoretical DETECT index of 
+dimensionality and its application to approximate simple structure. 
 \emph{Psychometrika}, \bold{64}, 213-249. 
 
 Zhang, J. (2007). Conditional covariance theory and DETECT for
@@ -105,8 +105,9 @@ Alexander Robitzsch
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-################################
-# TIMSS mathematics data set
+#############################################################################
+# EXAMPLE 1: TIMSS mathematics data set (dichotomous data)
+#############################################################################
 data(data.timss)
 
 # extract data
@@ -122,7 +123,7 @@ mod1 <- rasch.mml2( dat )
 # estimate WLEs
 wle1 <- wle.rasch( dat , b = mod1$item$b )$theta
 
-# DETECT Content Domains
+# DETECT content domains
 detect1 <- conf.detect( data = dat , score = wle1 ,
                     itemcluster = iteminfo$Content.Domain )
 ##          unweighted weighted
@@ -130,7 +131,8 @@ detect1 <- conf.detect( data = dat , score = wle1 ,
 ##   ASSI        0.273    0.273
 ##   RATIO       0.355    0.355
 
-# DETECT Cognitive Domains
+\dontrun{
+# DETECT cognitive domains
 detect2 <- conf.detect( data = dat , score = wle1 ,
                     itemcluster = iteminfo$Cognitive.Domain )
 ##          unweighted weighted
@@ -138,7 +140,7 @@ detect2 <- conf.detect( data = dat , score = wle1 ,
 ##   ASSI        0.227    0.227
 ##   RATIO       0.282    0.282
 
-# DETECT Itemformat 
+# DETECT item format 
 detect3 <- conf.detect( data = dat , score = wle1 ,
                     itemcluster = iteminfo$Format )
 ##          unweighted weighted
@@ -146,22 +148,65 @@ detect3 <- conf.detect( data = dat , score = wle1 ,
 ##   ASSI        0.060    0.060
 ##   RATIO       0.062    0.062
 
-# DETECT Block
+# DETECT item block
 detect4 <- conf.detect( data = dat , score = wle1 ,
                     itemcluster = iteminfo$Block )
 ##          unweighted weighted
 ##   DETECT      0.301    0.301
 ##   ASSI        0.193    0.193
-##   RATIO       0.339    0.339
+##   RATIO       0.339    0.339 }
 
-# Exploratory DETECT: Application of a cluster analysis
-#   employing the Ward method
+# Exploratory DETECT: Application of a cluster analysis employing the Ward method
 detect5 <- expl.detect( data = dat , score = wle1  , 
                 nclusters = 10 , N.est = nrow(dat)  )
+# Plot cluster solution
+pl <- plot( detect5$clusterfit , main = "Cluster solution" )
+rect.hclust(detect5$clusterfit, k=4, border="red")
+
+\dontrun{
+#############################################################################
+# EXAMPLE 2: Big 5 data set (polytomous data)
+#############################################################################
+
+# attach Big5 Dataset
+data(data.big5)
+
+# select 6 items of each dimension
+dat <- data.big5
+dat <- dat[, 1:30]
+
+# estimate person score by simply using a transformed sum score
+score <- qnorm( ( rowMeans( dat )+.5 )  / ( 30 + 1 ) )
+
+# extract item cluster (Big 5 dimensions)
+itemcluster <- substring( colnames(dat) , 1 , 1 )
+
+# DETECT Item cluster
+detect1 <- conf.detect( data = dat , score = score , itemcluster = itemcluster )
+##        unweighted weighted
+## DETECT      1.256    1.256
+## ASSI        0.384    0.384
+## RATIO       0.597    0.597
+
+# Exploratory DETECT
+detect5 <- expl.detect( data = dat , score = score  , 
+                nclusters = 9 , N.est = nrow(dat)  )
+## DETECT (unweighted)
+## Optimal Cluster Size is  6  (Maximum of DETECT Index)
+##   N.Cluster N.items N.est N.val      size.cluster DETECT.est ASSI.est RATIO.est
+## 1         2      30   500     0              6-24      1.073    0.246     0.510
+## 2         3      30   500     0           6-10-14      1.578    0.457     0.750
+## 3         4      30   500     0         6-10-11-3      1.532    0.444     0.729
+## 4         5      30   500     0        6-8-11-2-3      1.591    0.462     0.757
+## 5         6      30   500     0       6-8-6-2-5-3      1.610    0.499     0.766
+## 6         7      30   500     0     6-3-6-2-5-5-3      1.557    0.476     0.740
+## 7         8      30   500     0   6-3-3-2-3-5-5-3      1.540    0.462     0.732
+## 8         9      30   500     0 6-3-3-2-3-5-3-3-2      1.522    0.444     0.724
 
 # Plot Cluster solution
 pl <- plot( detect5$clusterfit , main = "Cluster solution" )
-rect.hclust(detect5$clusterfit, k=4, border="red")
+rect.hclust(detect5$clusterfit, k=6, border="red")
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

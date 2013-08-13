@@ -3,7 +3,6 @@
 mcmc.2pnoh <- function(dat , itemgroups , prob.mastery = c(.5 , .8 ) ,
 		weights=NULL , burnin=500 , iter=1000 , N.sampvalues = 1000 ,
 		progress.iter=50 , prior.variance=c(1,1) , save.theta=FALSE ){
-	library(coda)
 	s1 <- Sys.time()
 	# data preparation
 	dat0 <- dat

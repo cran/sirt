@@ -8,7 +8,8 @@ Ramsay's Quotient Model and a Nonparametric Item Response Model
 }
 \description{
 This function employs marginal maximum likelihood estimation
-of three item response models. First, the Rasch type model (generalized
+of three item response models for dichotomous data. 
+First, the Rasch type model (generalized
 item response model) can be estimated. The generalized logistic
 link function (Stukel, 1988) can be estimated or fixed for conducting
 IRT with different link functions than the logistic one. The Four-Parameter
@@ -363,9 +364,9 @@ For an assessment of global model fit see \code{\link{modelfit.sirt}}.
 
 
 \examples{
-##############################################################
-# EXAMPLE 1: Reading data set
-##############################################################
+#############################################################################
+# EXAMPLE 1: Reading dataset
+#############################################################################
 
 data(data.read)
 dat <- data.read
@@ -434,9 +435,9 @@ mod9 <- rasch.mml2( dat , theta.k=theta.k , trait.weights = trait.weights ,
             normal.trait=FALSE , est.a = 1:12 , mmliter=80 )
 summary(mod9)
 
-##############################################################
+#############################################################################
 # EXAMPLE 2: Longitudinal data
-##############################################################
+#############################################################################
 
 data(data.long)
 dat <- data.long[,-1]
@@ -457,11 +458,11 @@ mod1 <- rasch.mml2( dat , Qmatrix=Qmatrix , miterstep=4,
     est.b = est.b   ,  mu.fixed = mu.fixed , mmliter=30 )
 summary(mod1)}
 
-##############################################################
+#############################################################################
 # SIMULATED EXAMPLE 3
 #  one group, estimation of alpha parameter 
 #		in generalized logistic model
-##############################################################
+#############################################################################
 
 # simulate theta values
 set.seed(786)
@@ -524,10 +525,10 @@ summary(mod3b)
 mod4 <- rasch.mml2( dat ,  est.a=1:15)
 summary(mod4)
 
-##############################################################
+#############################################################################
 # SIMULATED EXAMPLE 4
 #  two groups, estimation of generalized logistic model
-##############################################################
+#############################################################################
 
 # simulate generalized logistic Rasch model in two groups
 set.seed(8765)
@@ -544,10 +545,10 @@ mod1 <-  rasch.mml2( dat1 , parm.conv=.0001 , group=group ,
 			est.alpha = TRUE , mmliter = 30 )
 summary(mod1)
 
-##############################################################
+#############################################################################
 # SIMULATED EXAMPLE 5
 # Multidimensional model
-##############################################################
+#############################################################################
 
 #***
 # (1) simulate data

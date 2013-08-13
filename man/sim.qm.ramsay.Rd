@@ -88,17 +88,17 @@ mod1 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm",
 	numdiff.parm = .0001 ,  fixed.K = fixed.K )                  
 summary(mod1)
 
-# Ramsay QM with joint estimated K parameter
+# Ramsay QM with joint estimated K parameters
 mod2 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" , 
 	numdiff.parm = .0001 ,  est.K = rep(1,I)  )                  
 summary(mod2)
 
-# Ramsay QM with itemwise estimated K parameter
+\dontrun{
+# Ramsay QM with itemwise estimated K parameters
 mod3 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" , 
 	numdiff.parm = .0001 ,   est.K = 1:I  )                  
 summary(mod3)
 
-\dontrun{
 # Rasch model
 mod4 <- rasch.mml2( dat )
 summary(mod4)

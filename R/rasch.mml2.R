@@ -108,7 +108,6 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 	if (D > 1){
 		if ( is.null(variance.fixed) & ( sum(est.a) > 0) ){ 
 			variance.fixed <- as.matrix( cbind( 1:D , 1:D , 1 ) )
-			library(mvtnorm)
 				}
 			}				
 	Sigma.cov <- diag(D)			

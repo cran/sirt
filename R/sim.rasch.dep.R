@@ -12,7 +12,6 @@
 # simulation of Rasch copula model
 ##NS export(sim.rasch.dep)
 sim.rasch.dep <- function( theta , b , itemcluster , rho ){
-    library(MASS)
     probmat <- plogis( outer( theta , b , "-" ) )
     I <- length(b)
 	n <- length(theta)

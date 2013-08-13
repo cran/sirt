@@ -2,7 +2,6 @@
 ########################################################
 # mcmc.list descriptives
 mcmc.list.descriptives <- function( mcmcobj , quantiles=c(.025,.05,.1,.9,.95,.975) ){
-    library(coda)
  	summary.mcmcobj <- summary(mcmcobj , quantile=quantiles)	
     dat.bugs <- mcmcobj[[1]]
     vars <- colnames(dat.bugs)

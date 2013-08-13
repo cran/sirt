@@ -27,8 +27,6 @@
 ##NS export(rasch.testlet.glmer)
 rasch.testlet.glmer <- function( dat , testlet.matrix = NULL , 
 			link = "logit" , verbose = TRUE , progress=TRUE  ){
-    # load R packages
-	library(lme4)
 	#***
     # setup data
     # dat1 <- data.frame( "pid" = seq( 1 , nrow(dat)) , dat )

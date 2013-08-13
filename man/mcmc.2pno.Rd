@@ -31,7 +31,7 @@ Maximum number of sampled values to save
 }
   \item{progress.iter}{
 Display progress every \code{progress.iter}-th iteration. If no progress
-display is wanted, then choose \code{progress.iter} higher than \code{iter}.
+display is wanted, then choose \code{progress.iter} larger than \code{iter}.
 }
   \item{save.theta}{
 Should theta values be saved?
@@ -93,9 +93,9 @@ A hierarchical version of this model can be estimated with
 }
 \examples{
 \dontrun{	
-######################################################
+#############################################################################
 # EXAMPLE 1: Dataset Reading
-######################################################
+#############################################################################
 data(data.read)
 # estimate 2PNO with MCMC with 3000 iterations and 500 burn-in iterations
 mod <- mcmc.2pno( dat=data.read , iter=3000 , burnin=500 )
@@ -106,9 +106,9 @@ mcmclist2coda( mod$mcmcobj , name = "dataread_2pno" )
 # summary
 summary(mod)
 
-######################################################
+#############################################################################
 # SIMULATED EXAMPLE 2
-######################################################
+#############################################################################
 # simulate data
 N <- 1000
 I <- 10

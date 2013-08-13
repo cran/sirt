@@ -36,7 +36,7 @@ default is a diagonal matrix with variances of 1.
 %% ...
 %}
 \references{
-Green, S.B., & Yang, Y. (2009). Reliability of summed item 
+Green, S. B., & Yang, Y. (2009). Reliability of summed item 
 scores using structural equation modeling: An alternative to 
 coefficient alpha. \emph{Psychometrika}, \bold{74}, 155-167. 
 }

@@ -85,8 +85,9 @@ Alexander Robitzsch
 A summary can be obtained using \code{\link{summary.prob.guttman}}.
 }
 \examples{
-##########################################
+#############################################################################
 # EXAMPLE 1: Dataset Reading
+#############################################################################
 data(data.read)
 dat <- data.read
 
@@ -101,7 +102,7 @@ mod2 <- prob.guttman( dat , guess.equal=TRUE , slip.equal=TRUE)
 summary(mod2)
 
 #***
-# Model 3: Guttman model with a priori specified item levels
+# Model 3: Guttman model with three a priori specified item levels
 itemlevel <- rep(1,12)
 itemlevel[ c(2,5,8,10,12) ] <- 2
 itemlevel[ c(3,4,6) ] <- 3

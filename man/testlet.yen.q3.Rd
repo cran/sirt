@@ -5,7 +5,7 @@
 \eqn{Q_3} Statistic of Yen (1984) for Testlets
 }
 \description{
-This function calculates the average Q3 statistic (Yen, 1984) within and
+This function calculates the average \eqn{Q_3} statistic (Yen, 1984) within and
 between testlets.
 }
 \usage{

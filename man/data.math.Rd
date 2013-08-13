@@ -10,7 +10,7 @@ dataset contains 664 students on 30 items.
 }
 \usage{data(data.math)}
 \format{
-The dataset comes as a list. The list element \code{data}
+The dataset is a list. The list element \code{data}
 contains the dataset with the demographical variables 
 student ID (\code{idstud}) and a dummy variable
 for female students (\code{female}). The remaining 

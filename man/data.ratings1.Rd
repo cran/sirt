@@ -21,4 +21,9 @@ This data set contains ratings for 135 students from
     \item{\code{k5}}{Item 5}
   }
 }
+
+%\examples{
+%# include an example of rating data here	
+%}	
+
 \keyword{datasets}

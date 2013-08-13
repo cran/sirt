@@ -12,4 +12,8 @@ and 6 items at T2 (\code{I3T2},... , \code{I8T2}).
 The first column contains the student identifier.
 }
 \usage{data(data.long)}
+%\examples{
+%# longitudinal scaling Rasch model and 2PL model
+%# rasch.mml2,  smirt, # TAM, # mirt # lme4 # MCMCglmm
+%}
 \keyword{datasets}

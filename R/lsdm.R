@@ -30,14 +30,12 @@ lsdm <- function( data , Qmatrix , theta = qnorm(seq(.0005,.9995,len=100)) , qua
 		# theta ... grid of theta values					#
 		#####################################################
 		# generate sequence for display
-		library(ic.infer)
         display.separate <- paste( rep("." , each=80 ) , collapse="" )
         # display progress
         cat( display.separate , "\n" )
         cat( "LSDM -- Least Squares Distance Method of Cognitive Validation \n")
         cat("Reference: Dimitrov, D. (2007) Applied Psychological Measurement, 31, 367-387.\n")
         cat( display.separate , "\n" ) 
-        library(ic.infer)
         if (!is.null(b) ){ 
             eins <- rep(1, length(theta) )
             data <- outer(c,eins) + ( 1 - outer(c,eins) )* 

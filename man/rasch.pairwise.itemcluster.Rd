@@ -14,7 +14,7 @@ rasch.pairwise.itemcluster(dat, itemcluster = NULL, conv = 1e-05,
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{dat}{An \eqn{N} times \eqn{I} dataframe. 
+  \item{dat}{An \eqn{N} times \eqn{I} data frame. 
   Missing responses are allowed and must be recoded as \code{NA}.
 }
   \item{itemcluster}{

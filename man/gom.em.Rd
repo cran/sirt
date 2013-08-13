@@ -86,7 +86,7 @@ The Rasch grade of membership model poses constraints on probabilities
 \eqn{\lambda_{ik}} and membership functions \eqn{g_{pk}}. The membership 
 function of person \eqn{p} is parametrized by a location parameter \eqn{\theta_p}
 and a variability parameter \eqn{\xi_p}. Each class \eqn{k} is represented by
-a location \eqn{\tilde{\theta}_k}. The membership function is defined as
+a location parameter \eqn{\tilde{\theta}_k}. The membership function is defined as
 \deqn{ g_{pk} \propto exp[ -  ( \theta_p - \tilde{\theta}_k )^2 / ( 2 \xi_p^2 )]}
 The extremal class probabilities \eqn{\lambda_{ik}} follow the Rasch model
 \deqn{ \lambda_{ik} = invlogit( \tilde{\theta}_k - b_i  ) }
@@ -104,8 +104,9 @@ A list with following entries:
 	}
 \item{classdesc}{Descriptives for class membership}	
 \item{lambda}{Estimated response probabilities \eqn{\lambda_{ik}}}
-\item{se.lambda}{Standard error for stimated response probabilities \eqn{\lambda_{ik}}}
-\item{mu}{Mean of \eqn{(\theta_p , \xi_p)} 
+\item{se.lambda}{Standard error for stimated response probabilities 
+\eqn{\lambda_{ik}}}
+\item{mu}{Mean of the distribution of \eqn{(\theta_p , \xi_p)} 
 	(only applies for \code{model="GOMRasch"})}
 \item{Sigma}{Covariance matrix of \eqn{(\theta_p , \xi_p)} 
 	(only applies for \code{model="GOMRasch"})}

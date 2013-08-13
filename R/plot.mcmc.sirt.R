@@ -9,7 +9,6 @@ plot.mcmc.sirt <- function( x , layout=1 , conflevel=.90 ,
 	
 	# layout type
 	# layout=1 : standard output from coda package	
-	# library(coda)
     if (layout==1){  plot(object$mcmcobj , ask=ask , ...) }         
 
 	#***************

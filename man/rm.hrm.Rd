@@ -7,7 +7,7 @@ Hierachical Rater Model Based on Signal Detection Theory
 }
 \description{
 This function estimates a version of the hierarchical rater
-model based on signal detection theory (DeCarlo, 2005; 
+model (HRM) based on signal detection theory (SDT; DeCarlo, 2005; 
 DeCarlo, Kim & Johnson, 2011).
 }
 
@@ -157,8 +157,7 @@ A list with following entries:
 %% REFERENCES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\references{
-	
+\references{	
 DeCarlo, L. T. (2005). A model of rater behavior in essay grading 
 based on signal detection theory. 
 \emph{Journal of Educational Measurement}, \bold{42}, 53-76.	
@@ -191,10 +190,9 @@ The facets rater model can be estimated with \code{\link{rm.facets}}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \examples{
-
-######################################################
+#############################################################################
 # EXAMPLE 1: HRM
-######################################################
+#############################################################################
 data(data.ratings1)
 dat <- data.ratings1
 
