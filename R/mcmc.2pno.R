@@ -2,7 +2,6 @@
 # MCMC estimation 2PNO model
 mcmc.2pno <- function(dat , weights=NULL , burnin=500 , iter=1000 , N.sampvalues = 1000 ,
 		progress.iter=50 , save.theta=FALSE ){
-#	library(coda)
 	s1 <- Sys.time()
 	# data preparation
 	dat0 <- dat

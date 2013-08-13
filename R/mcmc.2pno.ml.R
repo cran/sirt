@@ -13,7 +13,6 @@ mcmc.2pno.ml <- function(dat , group ,
 	# INPUT:	
 	# describe input in help files
 	##############################
-	library(coda)
 	s1 <- Sys.time()
 	# data preparation
 	dat0 <- dat
@@ -55,7 +54,7 @@ mcmc.2pno.ml <- function(dat , group ,
 	aM <- matrix( a , nrow=N , ncol=I , byrow=TRUE)
 	bM <- matrix( b , nrow=N , ncol=I , byrow=TRUE) + bG[ idgroup , ]
 	aM.chainsum <- bM.chainsum <- 0*bM
-	if (link=="logistic"){	
+	if (link=="logit"){	
 		theta <- qnorm( ( rowMeans( dat0,na.rm=TRUE ) + .01 ) / 1.02 )
 						}
 	if (link=="normal"){	

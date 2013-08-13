@@ -33,7 +33,7 @@ Should iteration progress be displayed?
 \value{
 A list with following entries
 \item{q3.matrix}{An \eqn{I} times \eqn{I} matrix of \eqn{Q_3} statistics}
-\item{q3.long}{Just \code{q3.matrix} in long matrix format where every row
+\item{q3.long}{Just the \code{q3.matrix} in long matrix format where every row
                   corresponds to an item pair}
 \item{expected}{An \eqn{N} times \eqn{I} matrix of expected probabilities 
 	by the Rasch model}

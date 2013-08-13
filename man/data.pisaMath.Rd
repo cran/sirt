@@ -10,7 +10,7 @@ dataset contains 565 students on 11 items.
 }
 \usage{data(data.pisaMath)}
 \format{
-The dataset comes as a list. The list element \code{data}
+The dataset is a list. The list element \code{data}
 contains the dataset with the demographical variables 
 student ID (\code{idstud}), school ID (\code{idschool}), a dummy variable for female 
 students (\code{female}), socioeconomic status (\code{hisei})

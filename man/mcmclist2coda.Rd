@@ -50,7 +50,7 @@ Alexander Robitzsch
 ############################################################
 # Dataset Reading
 data(data.read)
-# estimate 2PL with MCMC with 3000 iterations and 500 burn-in iterations
+# estimate 2PNO with MCMC with 3000 iterations and 500 burn-in iterations
 mod <- mcmc.2pno( dat=data.read , iter=3000 , burnin=500 )
 # plot MCMC chains
 plot( mod$mcmcobj , ask=TRUE )

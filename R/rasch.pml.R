@@ -43,8 +43,6 @@ rasch.pml <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 	Q <- NULL ; zero.corrs <- NULL
 	##################################
     # load libraries
-    library(combinat)
-    library(mvtnorm)
     # extract information from data
 	link <- "probit"
 	s1 <- Sys.time()

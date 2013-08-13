@@ -157,7 +157,7 @@ A list with following entries:
 \item{b}{Estimated item difficulties}
 \item{sigma}{Estimated standard deviation}
 \item{dat}{Original dataset}
-\item{ic}{Dataframe with information criteria (sample size, 
+\item{ic}{Data frame with information criteria (sample size, 
 number of estimated parameters, pseudolikelihood
 information criterion \code{PLIC})}
 \item{link}{Used link function (only probit is permitted)}
@@ -207,9 +207,9 @@ or \code{\link{rasch.pairwise.itemcluster}}.
 For an assessment of global model fit see \code{\link{modelfit.sirt}}.
 }
 \examples{
-##############################################################
+#############################################################################
 # EXAMPLE 1: Reading data set
-##############################################################
+#############################################################################
 
 data(data.read)
 dat <- data.read
@@ -264,9 +264,9 @@ est.a <- rep(1:3 , each=4 )
 mod6 <- rasch.pml2( dat , est.a =est.a , est.sigma=0)
 summary(mod6)
 
-#############################################################
+#############################################################################
 # EXAMPLE 2: PISA reading
-##############################################################
+#############################################################################
 
 data(data.pisaRead)
 dat <- data.pisaRead$data
@@ -301,13 +301,13 @@ error.corr <- error.corr1 * ( error.corr > 0 )
 mod3 <- rasch.pml3( dat , error.corr = error.corr )
 ## Trait SD (Logit Link) : 1.384 
 
-#####################################################
+#############################################################################
 # SIMULATED EXAMPLE 3
-set.seed(554)
-#####################################################
+#############################################################################
 
 #**********
 # simulate some data
+set.seed(554)
 N <- 500	# persons
 I <- 10		# items
 theta <- rnorm(N,sd=1.3 )	# trait SD of 1.3
@@ -333,13 +333,13 @@ summary(mod1)
 summary(mod2)
 summary(mod3)
 
-#####################################################
+#############################################################################
 # SIMULATED EXAMPLE 4
 # 11 items 
 # 2 item clusters with 2 and 3 items
-set.seed(5698)
-#####################################################
+#############################################################################
 
+set.seed(5698)
 I <- 11                             # number of items
 n <- 5000                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
@@ -418,14 +418,14 @@ mod6 <- rasch.pml3( dat , error.corr=est.corrs ,
     err.constraintM=err.constraint,  err.constraintV=err.constraintV)
 summary(mod6)
 
-############################################################
+#############################################################################
 # SIMULATED EXAMPLE 5
-set.seed(7650)
 # 10 Items: Cluster 1 -> Items 1,2
 #           Cluster 2 -> Items 3,4,5
 #           Cluster 3 -> Items 7,8,9
-############################################################
+#############################################################################
 
+set.seed(7650)
 I <- 10                             # number of items
 n <- 5000                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties

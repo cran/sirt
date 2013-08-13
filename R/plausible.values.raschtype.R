@@ -182,7 +182,6 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
         mod <- lm( pv ~ 0 + X )
         res <- list( "est.beta" = coef(mod) , "vcov.beta" = vcov(mod) )
         # sample beta parameter
-        library(MASS)
         res$samp.beta <- mvrnorm( mu = res$est.beta , Sigma = res$vcov.beta )
         # residual standard deviation
         n <- nrow(X) ; p <- ncol(X)

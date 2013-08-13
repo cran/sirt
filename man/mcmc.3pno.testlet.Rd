@@ -40,7 +40,8 @@ Should guessing parameters be estimated? The default is \code{TRUE}.
   \item{guess.prior}{
 A vector of length two or a matrix with \eqn{I} items and two columns 
 which defines the beta prior distribution of guessing
-parameters
+parameters. The default is a non-informative prior, i.e. the Beta(1,1)
+distribution.
 }
   \item{testlet.variance.prior}{
 A vector of length two which defines the (joint) prior for testlet variances
@@ -60,7 +61,7 @@ Maximum number of sampled values to save
 }
   \item{progress.iter}{
 Display progress every \code{progress.iter}-th iteration. If no progress
-display is wanted, then choose \code{progress.iter} higher than \code{iter}.
+display is wanted, then choose \code{progress.iter} larger than \code{iter}.
 }
   \item{save.theta}{
 Should theta values be saved?
@@ -160,9 +161,9 @@ For estimating testlet models using the \pkg{lme4} package see
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \examples{
 \dontrun{	
-###################################################
+#############################################################################
 # EXAMPLE 1: Dataset Reading
-###################################################
+#############################################################################
 data(data.read)
 dat <- data.read
 I <- ncol(dat)
@@ -182,33 +183,33 @@ plot(mod1,ask=TRUE , layout=2) # plot MCMC output in different layout
 #***
 # Model 2: 3PNO model with Beta(5,17) prior for guessing parameters
 mod2 <- mcmc.3pno.testlet( dat ,  guess.prior=c(5,17) ,
-        burnin=burnin, iter=iter )
+            burnin=burnin, iter=iter )
 summary(mod2)
 
 #***
 # Model 3: Rasch (1PNO) testlet model
 testlets <- substring( colnames(dat) , 1 , 1 )
 mod3 <- mcmc.3pno.testlet( dat ,  testlets=testlets ,  est.slope=FALSE , 
-    est.guess=FALSE , burnin=burnin, iter=iter )
+           est.guess=FALSE , burnin=burnin, iter=iter )
 summary(mod3)
 
 #***
 # Model 4: 3PNO testlet model with (almost) fixed guessing parameters .25
 mod4 <- mcmc.3pno.testlet( dat ,  guess.prior=1000*c(25,75) , testlets=testlets , 
-        burnin=burnin, iter=iter )
+              burnin=burnin, iter=iter )
 summary(mod4)
 plot(mod4, ask=TRUE, layout=2)
 
 #***
 # Model 5: 2PNO testlet model (param=2)
 mod5 <- mcmc.3pno.testlet( dat ,  est.guess=FALSE , testlets=testlets , 
-        param=2 , burnin=burnin, iter=iter )
+            param=2 , burnin=burnin, iter=iter )
 summary(mod5)
 
 #***
-# Model 6: 2PNO testlet model (param=3)
+# Model 6: 2PNO testlet model (param=3: bifactor model)
 mod6 <- mcmc.3pno.testlet( dat ,  est.guess=FALSE , testlets=testlets , 
-        param=3 , burnin=burnin, iter=iter )
+            param=3 , burnin=burnin, iter=iter )
 summary(mod6)}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

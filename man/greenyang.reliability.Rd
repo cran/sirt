@@ -20,8 +20,9 @@ greenyang.reliability(object.tetra, nfactors)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{object.tetra}{
-Object as the output of the function \code{tetrachoric} or 
-\code{fa.parallel.poly} from the \pkg{psych} package. 
+Object as the output of the function \code{tetrachoric}, the
+\code{fa.parallel.poly} from the \pkg{psych} package or the
+\code{tetrachoric2} function (from \pkg{sirt}). 
 This object can also be created
 as a list by the user where the tetrachoric correlation
 must must be in the list entry \code{rho} and the thresholds must 
@@ -43,14 +44,14 @@ estimate for a \eqn{D}-dimensional model. For the nested factor model,
 \code{omega_h} (Omega Asymptotic) is the reliability of the general factor model, 
 \code{omega_ha} (Omega Hierarchical Asymptotic) eliminates item-specific
 variance. The explained common variance (ECV, \code{ECV}) explained by the
-common factor is based on the \code{D}-dimensional but does not take
+common factor is based on the \eqn{D}-dimensional but does not take
 item thresholds into account.
 }
 \item{dimensions}{Number of dimensions}
 \item{estimate}{Reliability estimate}
 }
 \references{
-Green, S.B., & Yang, Y. (2009). Reliability of summed item 
+Green, S. B., & Yang, Y. (2009). Reliability of summed item 
 scores using structural equation modeling: An alternative to 
 coefficient alpha. \emph{Psychometrika}, \bold{74}, 155-167. 
 
@@ -75,8 +76,9 @@ This function needs the \pkg{psych} package.
 
 \examples{
 \dontrun{
-##################################################################
-# Reliability estimation of reading dataset
+#############################################################################
+# EXAMPLE 1: Reliability estimation of reading dataset
+#############################################################################
 library(psych)
 set.seed(789)
 data( data.read )
@@ -93,7 +95,7 @@ fap <- fa.parallel.poly(dat , n.iter = 1 )
 
 # parallel factor analysis based on tetrachoric correlation matrix 
 ##       (tetrachoric2)
-fap2 <- fa.parallel(dat.tetra$rho , n.obs=nrow(dat) ,  n.iter = 10 )
+fap2 <- fa.parallel(dat.tetra2$rho , n.obs=nrow(dat) ,  n.iter = 1 )
 ## Parallel analysis suggests that the number of factors =  6  
 ## and the number of components =  2 
 ## Note that in this analysis, uncertainty with respect to thresholds is ignored.
@@ -107,7 +109,8 @@ greenyang.reliability( object.tetra = dat.tetra , nfactors =4 )
 ##   Omega Hierarchical Asymptotic (4D)    omega_ha          4    0.427
 ##   Explained Common Variance (4D)             ECV          4    0.489
 
-# calculation of Green-Yang-Reliability based on tetrachoric2 generated matrix
+# calculation of Green-Yang-Reliability based on tetrachoric correlations
+#   obtained by tetrachoric2
 greenyang.reliability( object.tetra = dat.tetra2 , nfactors =4 )
 
 # The same result will be obtained by using fap as the input

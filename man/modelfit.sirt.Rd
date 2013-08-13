@@ -62,8 +62,9 @@ Supported classes: \code{\link{rasch.mml2}},
 
 \examples{
 \dontrun{	
-############################################
-# Example 1: Reading data
+#############################################################################
+# EXAMPLE 1: Reading data
+#############################################################################
 data(data.read)
 dat <- data.read
 I <- ncol(dat)

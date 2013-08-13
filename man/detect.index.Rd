@@ -19,7 +19,7 @@ detect.index(ccovtable, itemcluster)
 A value of \code{\link{ccov.np}}.
 }
   \item{itemcluster}{
-Itemcluster for each item. The order of entries must correspond
+Item cluster for each item. The order of entries must correspond
 to the columns in \code{data} (submitted to \code{\link{ccov.np}}).
 }
 }
@@ -34,16 +34,16 @@ to the columns in \code{data} (submitted to \code{\link{ccov.np}}).
 %% ...
 %}
 \references{
-Stout, W., Habing, B., Douglas, J. & Kim, H. R. (1996). 
+Stout, W., Habing, B., Douglas, J., & Kim, H. R. (1996). 
 Conditional covariance-based nonparametric multidimensionality assessment. 
 \emph{Applied Psychological Measurement}, \bold{20}, 331-354.
 
-Zhang, J. & Stout, W. (1999a). Conditional covariance structure 
-of generalized compensatory multidimensional items, 
+Zhang, J., & Stout, W. (1999a). Conditional covariance structure 
+of generalized compensatory multidimensional items. 
 \emph{Psychometrika}, \bold{64}, 129-152.
 
-Zhang, J. & Stout, W. (1999b). The theoretical DETECT index of 
-dimensionality and its application to approximate simple structure, 
+Zhang, J., & Stout, W. (1999b). The theoretical DETECT index of 
+dimensionality and its application to approximate simple structure. 
 \emph{Psychometrika}, \bold{64}, 213-249. 
 }
 \author{

@@ -25,9 +25,10 @@ Maximum number of iterations.
 }
 \item{cor.smooth}{
 Should smoothing of the tetrachoric correlation matrix
-be performed to ensure positive definiteness. Choosing
+be performed to ensure positive definiteness? Choosing
 \code{cor.smooth=TRUE}, the function \code{cor.smooth}
-from the \pkg{psych} package is used.
+from the \pkg{psych} package is used for obtaining a positive definite
+tetrachoric correlation matrix.
 }
 }
 %\details{

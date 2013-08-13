@@ -63,19 +63,31 @@ export(
     mcmclist2coda ,
     mcmc.2pnoh ,
     mcmc.3pno.testlet   ,
-    mcmc.2pno.ml    
+    mcmc.2pno.ml    ,
+    isop.dich , 
+    fit.isop , 
+    fit.adisop ,
+    isop.scoring ,
+    isop.poly ,
+    rowMaxs.sirt ,
+    rowMins.sirt ,
+    rowCumsums.sirt ,
+    rowIntervalIndex.sirt ,
+    rowKSmallest.sirt ,
+    monoreg.rowwise ,
+    monoreg.colwise
         )
 
 
 
 importFrom(utils,packageDescription)
 
-S3method(summary , rasch.mml )
-S3method(summary , rasch.pml )
-S3method(summary , rasch.copula )
+S3method(summary,rasch.mml)
+S3method(summary,rasch.pml)
+S3method(summary,rasch.copula)
 S3method(summary,lsdm)
 S3method(summary,rasch.copula2)
-S3method(summary, rasch.jml)
+S3method(summary,rasch.jml)
 S3method(summary,rasch.pairwise)
 S3method(summary,prob.guttman)
 S3method(summary,rasch.mirtlc)
@@ -85,10 +97,13 @@ S3method(summary,gom.jml)
 S3method(summary,smirt)
 S3method(summary,gom)
 S3method(summary,mcmc.sirt)
+S3method(summary,isop)
 
-S3method(plot , np.dich)
-S3method(plot , mcmc.sirt )
 
+
+S3method(plot,np.dich)
+S3method(plot,mcmc.sirt)
+S3method(plot,isop)
 
 export(   
     R2noharm,
@@ -99,3 +114,15 @@ export(
 
 S3method(summary,R2noharm)
 S3method(summary,R2noharm.jackknife)
+
+
+# imports
+import(mvtnorm)
+import(sfsmisc)
+import(TAM)
+import(CDM)
+import(combinat)
+import(ic.infer)
+import(sm)
+import(psych)
+import(pbivnorm)

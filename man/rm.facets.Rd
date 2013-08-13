@@ -169,10 +169,10 @@ See \code{\link{rm.hrm}} for estimating a hierarchical rater model.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \examples{
-######################################################
+#############################################################################
 # EXAMPLE 1: Partial Credit Model and
 #  Generalized partial credit model for one rater
-######################################################
+#############################################################################
 data(data.ratings1)
 dat <- data.ratings1
 
@@ -189,9 +189,9 @@ summary(mod1)
 summary(mod2)
 
 \dontrun{
-######################################################
+#############################################################################
 # EXAMPLE 2: Facets Model: 5 items, 7 raters
-######################################################
+#############################################################################
 
 data(data.ratings1)
 dat <- data.ratings1
@@ -224,6 +224,7 @@ mod5 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater ,
 
 summary(mod1)
 summary(mod2)
+summary(mod2a)
 summary(mod3)
 summary(mod4)
 summary(mod5)}

@@ -30,10 +30,6 @@ Matrix with columns corresponding to subscales \cr
 The symbol \code{X} denotes the subscale and \code{Z}
 the whole scale (see also in the Examples section for the structure of
 this matrix).
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
 }
 \references{
 Haberman, S. J. (2008). When can subscores have value? 
@@ -85,7 +81,7 @@ print( p1 , digits= 3 )
 ## prmse.Z     0.638   0.697   0.468
 ## prmse.XZ    0.674   0.697   0.677
 
-## Scales A and B do not give any befenit from reporting,
+## Scales A and B do not have lower RMSEA,
 ## but for scale C the RMSE is smaller than the RMSE of a
 ## prediction based on a whole scale.
 }

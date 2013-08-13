@@ -25,14 +25,36 @@ CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ---
+Version 0.34 -- 2013-08-13
+---
+x included estimation of ISOP and ADISOP models
+x included example data.big5
+x fixed a bug in pbivnorm2 for negative correlations
+x included argument increment.factor in smirt to
+  prevent nonconvergence (thanks to Balal Izanloo)
+x included an example for DETECT for polytomous data
+x included rowwise maximum and minimum and rowwise
+  cumulative sum of a matrix based on Rcpp code
+x included matrix functions rowIntervalIndex.sirt 
+  (useful for simulations) and rowKSmallest.sirt 
+  (useful for sorting matrix entries, e.g. for
+  predictive mean matching in mice)
+x fixed a bug in mcmc.2pno.ml (thanks to Ronny Scherer)
+x included matrix row and column wise monotone regression
+  function monoreg.rowwise (adapted from fdrtool package)
+x included graded response model estimation in isop.poly
+  function
+x included plot method for ISOP models (isop.dich and
+  isop.poly)
+
+---
 Version 0.33 -- 2013-07-09
 ---
 x included R2NOHARM functions into this package for running
   NOHARM from within R
-x modelfit.sirt allows objects of class smirt
+x modelfit.sirt now allows objects of class smirt
 x speeded calculation of modelfit.sirt
 x speeded rasch.mml2, prob.guttman, rasch.mirtlc, rm.facets, rm.hrm
-
 
 ---
 Version 0.32 -- 2013-06-28

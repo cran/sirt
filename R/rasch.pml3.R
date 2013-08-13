@@ -23,8 +23,6 @@ rasch.pml3 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 	V <- err.constraintM
 	##################################
     # load libraries
-    library(combinat)
-    library(mvtnorm)
 # a0 <- Sys.time()	
     # extract information from data
 	link <- "probit"

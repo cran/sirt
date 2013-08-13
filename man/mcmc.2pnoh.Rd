@@ -38,7 +38,7 @@ Maximum number of sampled values to save
 }
   \item{progress.iter}{
 Display progress every \code{progress.iter}-th iteration. If no progress
-display is wanted, then choose \code{progress.iter} higher than \code{iter}.
+display is wanted, then choose \code{progress.iter} larger than \code{iter}.
 }
 \item{prior.variance}{Scale parameter of the inverse gamma distribution
 	for the \eqn{\sigma^2} and \eqn{\nu^2} item variance parameters}
@@ -134,10 +134,10 @@ The two-parameter normal ogive model can be estimated with
 
 \examples{
 \dontrun{
-##########################################################
-# SIMULATED EXAMPLE 1
-##########################################################
-# Simulate data according to Janssen et al. (2000, Table 2)
+#############################################################################
+# SIMULATED EXAMPLE 1: Simulated data according to Janssen et al. (2000, Table 2)
+#############################################################################
+
 N <- 1000
 Ik <- c(4,6,8,5,9,6,8,6,5)
 xi.k <- c( -.89 , -1.13 , -1.23 , .06 , -1.41 , -.66 , -1.09 , .57 , -2.44)

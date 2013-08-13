@@ -10,7 +10,7 @@ on 25 items.
 }
 \usage{data(data.timss)}
 \format{
-This dataset comes as a list. \code{data} is the dataset containing
+This dataset is a list. \code{data} is the dataset containing
 student ID (\code{idstud}), a dummy variable for female (\code{girl})
 and student age (\code{age}). The following variables (starting with
 \code{M} in the variable name are items.

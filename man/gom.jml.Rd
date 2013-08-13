@@ -64,14 +64,6 @@ of person \eqn{p} on item \eqn{i} is
     P(X_{pi}=1 | g_{p1}, \ldots , g_{pK} ) = \sum_k \lambda_{ik} g_{pk}
     ,    \sum_k g_{pk} = 1 
             }
-For incorrect responses, the model equation is            
-\deqn{
-    P(X_{pi}=0 | g_{p1}, \ldots , g_{pK} ) = \sum_k (1-\lambda_{ik}) g_{pk}
-\quad , \quad \sum_k g_{pk} = 1 
-                }{%
-    P(X_{pi}=0 | g_{p1}, \ldots , g_{pK} ) = \sum_k (1-\lambda_{ik}) g_{pk}
-    ,    \sum_k g_{pk} = 1 
-            }            
 }
 
 
@@ -138,7 +130,7 @@ data( data.timss)
 dat <- data.timss$data[ , grep("M" , colnames(data.timss$data) ) ] 
 
 # 2 Classes (deterministic starting values)
-m2 <- gom.jml(dat,K=2 , maxiter=20 )
+m2 <- gom.jml(dat,K=2 , maxiter=10 )
 summary(m2)
 
 \dontrun{

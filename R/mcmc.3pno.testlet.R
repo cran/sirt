@@ -5,7 +5,6 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , param=1 ,
 		testlet.variance.prior = c( 1 , .2 ) , 
 		burnin=500 , iter=1000 , N.sampvalues = 1000 ,
 		progress.iter=50 , save.theta=FALSE ){
-	library(coda)
 	s1 <- Sys.time()
 	# data preparation
 	dat0 <- dat

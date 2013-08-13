@@ -73,8 +73,7 @@ mod <- rasch.mml2( dat[,items] )
 wle <- wle.rasch( dat[,items] , b=mod$item$b )$theta
 
 # assess DIF by logistic regression
-mod1 <- dif.logistic.regression( dat=dat[,items] ,
-         score=wle , group=dat$female )
+mod1 <- dif.logistic.regression( dat=dat[,items] , score=wle , group=dat$female)
 
 # calculate DIF variance
 dif1 <- dif.variance( dif=mod1$uniformDIF , se.dif = mod1$se.uniformDIF )
@@ -88,6 +87,19 @@ dif2 <- dif.strata.variance( dif=mod1$uniformDIF , se.dif = mod1$se.uniformDIF ,
         itemcluster = data.math$item$domain )
 ## $unweighted.DIFSD
 ## [1] 0.1455916
+
+\dontrun{
+#****
+# Likelihood ratio test and graphical model test in eRm package
+library(eRm)
+# estimate Rasch model
+res <- RM( dat[,items] )
+summary(res)
+# LR-test with respect to female
+lrres <- LRtest(res, splitcr = dat$female)
+summary(lrres)
+# graphical model test
+plotGOF(lrres)  }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

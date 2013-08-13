@@ -17,7 +17,7 @@ pbivnorm2 <- function( x , y , rho ){
 	if ( length(ind.neg) > 0 ){
 		rho[ind.neg] <- - rho[ind.neg]
 		b1[ind.neg] <- -b1[ind.neg]
-		a1[ind.neg] <- -a1[ind.neg]
+#		a1[ind.neg] <- -a1[ind.neg]
 					}
 	# APPROX. (ii)
 	ind2 <- which( a1 < 0 & b1 < 0 )

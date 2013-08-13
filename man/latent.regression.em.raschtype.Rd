@@ -77,11 +77,13 @@ Maximum number of iterations
 In the output \emph{Regression Parameters} 
 the fraction of missing information (\code{fmi}) is reported
 which is the increase of variance in regression
-parameter estimates due to the fact the ability is
+parameter estimates because ability is defined as
 a latent variable. The effective sample size \code{pseudoN.latent}
 corresponds to a sample size when the ability would be
 available with a reliability of one.
 }
+
+
 \value{
 A list with following entries
   \item{iterations}{Number of iterations needed}
@@ -164,7 +166,6 @@ mod3 <- rasch.copula2( dat[,items] , itemcluster=itemclusters )
 # use model estimated likelihood for latent regression model
 lm3 <- latent.regression.em.raschtype( f.yi.qk=mod3$f.yi.qk , 
            X = X , theta.list=mod3$theta.k) 
-
      
 ############################################################
 ### SIMULATED EXAMPLE 2
@@ -231,7 +232,8 @@ mod1 <- latent.regression.em.raschtype( data = dat1 , X  = dfr[,-1] ,
 ## Residual Variance  = 0.9338 
 ## Explained Variance = 0.5487 
 ## Total Variance     = 1.4825 
-##                 R2 = 0.3701   }
+##                 R2 = 0.3701   
+}
 }
 \keyword{Latent regression model}
 \keyword{Generalized logistic item response model}

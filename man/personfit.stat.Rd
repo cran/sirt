@@ -46,7 +46,7 @@ for a review of different person fit statistics):
 \item{outfit}{Person outfit statistic}
 \item{infit}{Person infit statistic}
 \item{rpbis}{Point biserial correlation of item responses 
-and item p values}
+and item \eqn{p} values}
 \item{rpbis.itemdiff}{Point biserial correlation of item responses 
 and item difficulties \code{b}}
 \item{U3}{Fit statistic \eqn{U_3}}

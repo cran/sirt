@@ -71,7 +71,7 @@ Alexander Robitzsch
 }
 
 \examples{
-# Simulation of data from a Rasch model
+# Simulation of data from a Rasch model (alpha_1 = alpha_2 = 0)
 N <- 500    # number of persons
 I <- 11     # number of items
 b <- seq( -2 , 2 , length=I )

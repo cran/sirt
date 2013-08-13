@@ -23,7 +23,6 @@ np.dich <- function( dat , theta , thetagrid , progress = FALSE ,
     # method    ... binomial and normal (nonparametric binomial or normal nonparametric regression)
     # bwscale   ... bandwidth scale h = bwscale * ^N^{-1/5)                     #
     #......................................................................
-	library(sm)
     # recode values of infinity to missing          
     theta[ theta %in% c( -Inf , Inf ) ] <- NA
     I <- ncol(dat)

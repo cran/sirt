@@ -149,8 +149,10 @@ or the \R package \pkg{ltm}.
 
 
 \examples{
-#############################################
-# Simulation of data from the Rasch model
+#############################################################################
+# SIMULATED EXAMPLE 1: Simulated data from the Rasch model
+#############################################################################
+set.seed(789)
 N <- 500    # number of persons
 I <- 11     # number of items
 b <- seq( -2 , 2 , length=I )
@@ -169,9 +171,12 @@ summary(mod2)
 mod3 <- rasch.pairwise( dat )
 summary(mod3)
 
-###################################################
-# item parameter constraints in JML estimation
+# JML estimation in TAM
+library(TAM)
+mod4 <- tam.jml2( resp=dat )
 
+#******
+# item parameter constraints in JML estimation
 # fix item difficulties: b[4]=-.76 and b[6]= .10
 constraints <- matrix( cbind( 4 , -.76 , 
                               6 , .10 ) , ncol=2 , byrow=TRUE )
@@ -179,7 +184,6 @@ mod4 <- rasch.jml( dat , constraints = constraints )
 summary(mod4)
 # For constrained item parameters, it this not obvious
 # how to calculate a 'right correction' of item parameter bias
-
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

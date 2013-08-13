@@ -63,7 +63,6 @@ tetrachoric2 <- function( dat , delta=.007 , maxit = 1000000 ,
 	TC[ as.matrix(dfr[ , c("item1","item2") ] ) ] <- dfr$r0
 	TC[ as.matrix(dfr[ , c("item2","item1") ] ) ] <- dfr$r0
 	if (cor.smooth){ 
-		library(psych)
 		TC <- cor.smooth(TC) 
 			    }
 	res <- list("tau"=tau , "rho" = TC )

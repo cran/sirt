@@ -17,8 +17,8 @@ for item difficulties in the Rasch model.
 }
 \usage{
 lsdm(data, Qmatrix, theta=qnorm(seq(5e-04,0.9995,len=100)), 
-    quant.list=c(0.5,0.65,0.8), b=NULL, a=rep(1,nrow(Qmatrix)), 
-    c=rep(0,nrow(Qmatrix)) )
+       quant.list=c(0.5,0.65,0.8), b=NULL, a=rep(1,nrow(Qmatrix)), 
+       c=rep(0,nrow(Qmatrix)) )
 
 \method{summary}{lsdm}(object,...)    
 }
@@ -74,16 +74,16 @@ The least squares distance method (LSDM; Dimitrov 2007) is based on the
 assumption that estimated item response functions \eqn{P(X_i = 1 | \theta)} 
 can be decomposed in a multiplicative way (in the implemented 
 conjunctive model):
-\deqn{ P( X_i = 1 ) | \theta ) = \prod_{k=1}^K [ P( A_k = 1 | \theta ) ]^{q_{ik}} }
+\deqn{ P( X_i = 1  | \theta ) = \prod_{k=1}^K [ P( A_k = 1 | \theta ) ]^{q_{ik}} }
 where \eqn{P( A_k = 1 | \theta )} are attribute response functions and
 \eqn{q_{ik}} are entries of the Q-matrix. Note that the multiplicative form
 can be rewritten by taking the logarithm
-\deqn{ \log P( X_i = 1 ) | \theta ) = 
+\deqn{ \log P( X_i = 1  | \theta ) = 
 	\sum_{k=1}^K q_{ik} \log [ P( A_k = 1 | \theta ) ] }
 Evaluation item and response functions on a grid of \eqn{\theta} values and 
 collecting these values in matrices \eqn{\bold{L}= \{ \log P( X_i = 1 ) | \theta ) \} }, 
 \eqn{\bold{Q}= \{ q_{ik} \} } and
-\eqn{\bold{X}= \{ \log P( A_k = 1 ) | \theta ) \} } leads to a least squares
+\eqn{\bold{X}= \{ \log P( A_k = 1  | \theta ) \} } leads to a least squares
 problem of the form \eqn{ \bold{L} \approx \bold{Q} \bold{X}} with the
 restriction of positive \bold{X} matrix entries. This least squares problem
 is a linear inequality constrained model which is solved by making use of

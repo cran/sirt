@@ -12,7 +12,7 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 # estimation of b
 .smirt.est.b.comp <- function(   b , a , c , d , Qmatrix , est.b , theta.k , 
         n.ik , I , K , TP , D , numdiff.parm=.001 , max.increment=1,
-		msteps ,  mstepconv){
+		msteps ,  mstepconv  , increment.factor){
     h <- numdiff.parm
 	diffindex <- est.b		# zeros are allowed!
 	cat("  M steps b parameter   |")
@@ -20,6 +20,7 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 	Q2 <- rep(1,I)
 	Q2[ est.b == 0 ] <- 0
 	Q <- Qmatrix	
+	b00 <- b
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
 		b0 <- b
 
@@ -43,6 +44,10 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 		cat("-") # ; flush.console()
 			}
 	cat(" " , it , "Step(s) \n")	#; flush.console()	
+	if ( increment.factor > 1){
+		b <- .adj.maxincrement.parameter( oldparm=b00 , newparm=b , 
+					max.increment=max.increment )		
+						}		
     res <- list("b" = b , "se.b" = se.b , 
 			"ll" = sum(res$ll0) )
     return(res)
@@ -52,7 +57,7 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 # estimation of a
 .smirt.est.a.comp <- function(   b , a , c , d , Qmatrix , est.a , theta.k , 
         n.ik , I , K , TP , D , numdiff.parm=.001 , max.a.increment=max.a.increment,
-		msteps ,  mstepconv){
+		msteps ,  mstepconv  , increment.factor){
     h <- numdiff.parm
 	diffindex <- est.a		# zeros are allowed!
 	Q <- Qmatrix
@@ -60,6 +65,7 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 	it <- 0 ;	conv1 <- 1000	
 	Q2 <- Q1 <- 0*Qmatrix
 	se.a <- a
+	a00 <- a
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
 		a0 <- a
 		
@@ -89,6 +95,10 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 		it <- it+1
 		cat("-") # ; flush.console()
 			}
+	if ( increment.factor > 1){
+		a <- .adj.maxincrement.parameter( oldparm=a00 , newparm=a , 
+					max.increment=max.a.increment )		
+						}				
 	cat(" " , it , "Step(s) \n")	#; flush.console()	
     res <- list("a" = a , "se.a" = se.a , 
 			"ll" = sum(res$ll0) )
@@ -100,12 +110,13 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 # estimation of c
 .smirt.est.c.comp <- function(   b , a , c , d , Qmatrix , est.c , theta.k , 
         n.ik , I , K , TP , D , numdiff.parm=.001 , max.increment=max.increment,
-		msteps ,  mstepconv){
+		msteps ,  mstepconv  , increment.factor){
     h <- numdiff.parm
 	diffindex <- est.c		# zeros are allowed!
 	Q1 <- rep(1,I)
 	Q1[ est.c == 0 ] <- 0
 	Q <- Qmatrix
+	c00 <- c
 	cat("  M steps c parameter   |")
 	it <- 0 ;	conv1 <- 1000	
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
@@ -134,6 +145,10 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 		cat("-") # ; flush.console()
 			}
 	cat(" " , it , "Step(s) \n")	#; flush.console()	
+	if ( increment.factor > 1){
+		c <- .adj.maxincrement.parameter( oldparm=c00 , newparm=c , 
+					max.increment=max.increment )		
+						}		
     res <- list("c" = c , "se.c" = se.c , 
 			"ll" = sum(res$ll0) )
     return(res)
@@ -144,12 +159,13 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 # estimation of c
 .smirt.est.d.comp <- function(   b , a , c , d , Qmatrix , est.d , theta.k , 
         n.ik , I , K , TP , D , numdiff.parm=.001 , max.increment=max.increment,
-		msteps ,  mstepconv){
+		msteps ,  mstepconv  , increment.factor){
     h <- numdiff.parm
 	diffindex <- est.d		# zeros are allowed!
 	Q1 <- rep(1,I)
 	Q1[ est.d == 0 ] <- 0
 	Q <- Qmatrix	
+	d00 <- d
 	cat("  M steps d parameter   |")
 	it <- 0 ;	conv1 <- 1000	
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
@@ -178,6 +194,10 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 		cat("-") # ; flush.console()
 			}
 	cat(" " , it , "Step(s) \n")	#; flush.console()	
+	if ( increment.factor > 1){
+		d <- .adj.maxincrement.parameter( oldparm=d00 , newparm=d , 
+					max.increment=max.increment )		
+						}		
     res <- list("d" = d , "se.d" = se.d , 
 			"ll" = sum(res$ll0) )
     return(res)

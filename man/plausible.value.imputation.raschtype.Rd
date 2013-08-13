@@ -30,11 +30,11 @@ An optional matrix which contains the individual likelihood.
 	}
 \item{X}{
 A matrix of individual covariates for the latent
-regression of theta onto \code{X}
+regression of \eqn{\theta} on \eqn{X}
 }
 \item{Z}{
 A matrix of individual covariates for the regression
-of individual residual variances on \code{Z}
+of individual residual variances on \eqn{Z}
 }
   \item{beta0}{
 Initial vector of regression coefficients

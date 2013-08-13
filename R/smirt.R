@@ -8,7 +8,8 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	c.init=NULL , d.init=NULL , Sigma.init =NULL , 
 	theta.k=seq(-6,6,len=20) , 	theta.kDES = NULL , qmcnodes= 0 ,  
 	mu.fixed=NULL , variance.fixed=NULL , 
-	est.corr=FALSE , max.increment=1 , numdiff.parm=.001 , maxdevchange=.10 ,
+	est.corr=FALSE , max.increment=1 , increment.factor=1 , 
+	numdiff.parm=.001 , maxdevchange=.10 ,
 	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001){
 	#..........................................................
 	s1 <- Sys.time()
@@ -85,7 +86,9 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 				}			
 	#****
 	# init a parameters
-	if ( is.null(a.init)){ a <- matrix( 1 , I , ncol(Qmatrix) )
+	if ( is.null(a.init) ){ 
+		a <- matrix( 1 , I , ncol(Qmatrix) )
+		a[ Qmatrix == 0 ] <- 0
 			} else { a <- a.init }
 #	max.a.increment <- a*max.increment
 	max.a.increment <- matrix( .4 , nrow=1 , ncol=ncol(a) )
@@ -165,7 +168,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 				theta.k=theta.kDES , 
 				n.ik , I , K , TP , D ,  numdiff.parm=numdiff.parm , 
 				max.increment=max.increment,
-				msteps ,  mstepconv , irtmodel )		
+				msteps ,  mstepconv , irtmodel , increment.factor )		
 		b <- res2$b
 		se.b <- res2$se.b
 #		ll <- res2$ll
@@ -177,7 +180,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 			    theta.k=theta.kDES , 
 				n.ik , I , K , TP , D=TD ,  numdiff.parm=numdiff.parm , 
 				max.a.increment=max.a.increment,
-				msteps ,  mstepconv , irtmodel )		
+				msteps ,  mstepconv , irtmodel , increment.factor )		
 			a <- res2$a
 			se.a <- res2$se.a
 							}	
@@ -188,7 +191,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 				theta.k=theta.kDES , 
 				n.ik , I , K , TP , D ,  numdiff.parm=numdiff.parm , 
 				max.increment=max.increment,
-				msteps ,  mstepconv, irtmodel )		
+				msteps ,  mstepconv, irtmodel , increment.factor)		
 			c <- res2$c
 			se.c <- res2$se.c
 							}								
@@ -199,7 +202,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 				theta.k=theta.kDES , 
 				n.ik , I , K , TP , D ,  numdiff.parm=numdiff.parm , 
 				max.increment=max.increment,
-				msteps ,  mstepconv , irtmodel )		
+				msteps ,  mstepconv , irtmodel , increment.factor )		
 			d <- res2$d
 			se.d <- res2$se.d
 							}								
@@ -207,6 +210,13 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		
 #		 print(a1-a0) ; a0 <- a1 ;									
 		flush.console()		
+
+		#***
+		# decrease increments in every iteration
+		if( increment.factor > 1){	
+			max.increment <-  max.increment / increment.factor
+			max.a.increment <-  max.a.increment / increment.factor
+					}
 		
 		# Covariance estimation
 		m1 <- .smirt.est.covariance( f.qk.yi , Sigma , theta.k , N ,

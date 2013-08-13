@@ -179,9 +179,9 @@ package. Latent class analysis can be carried out with
 \pkg{poLCA} and \pkg{randomLCA} packages.
 }
 \examples{
-####################################
-# Example 1: Reading data
-####################################
+#############################################################################
+# EXAMPLE 1: Reading data
+#############################################################################
 data( data.read )
 dat <- data.read
 
@@ -235,7 +235,7 @@ mod14 <- rasch.mirtlc( dat ,  modeltype="MLC1" , mmliter=30 ,
         theta.k = seq( -4 , 4 , len=11 ) , distribution.trait="normal")
 summary(mod14)
 
-# 1PL model with a smoothed trait distribution (3 moments)
+# 1PL model with a smoothed trait distribution (up to 3 moments)
 mod15 <- rasch.mirtlc( dat ,  modeltype="MLC1" , mmliter=30 , 
         theta.k = seq( -4, 4 , len=11 ) ,  distribution.trait="smooth3")
 summary(mod15)
@@ -285,10 +285,10 @@ mod33 <- rasch.mirtlc( dat ,  dimensions=dimensions ,
        theta.k= theta.k , modeltype="MLC2"  )
 summary(mod33)
 
-##############################################################
-# Simulated Example 2: Skew trait distribution
-##############################################################
-
+#############################################################################
+# SIMLUATED EXAMPLE 2: Skew trait distribution
+#############################################################################
+set.seed(789)
 N <- 1000   # number of persons
 I <- 20     # number of items
 theta <- sqrt( exp( rnorm( N ) ) )

@@ -8,7 +8,7 @@ Pairwise Estimation Method of the Rasch Model
 \description{
 This function estimates the Rasch model with a minimum chi
 square estimation method (cited in Fischer, 2007, p. 544)
-which is a pairwise conditional likelihood estimation.
+which is a pairwise conditional likelihood estimation approach.
 }
 \usage{
 rasch.pairwise(dat, conv = 1e-04, maxiter = 3000, progress = TRUE, 
@@ -54,7 +54,7 @@ An object of class \code{rasch.pairwise} with following entries
 \item{item}{Summary table of item parameters}
 }
 \references{
-  Fischer, G. H. (2007) Rasch models.
+  Fischer, G. H. (2007). Rasch models.
   In C. R. Rao and S. Sinharay (Eds.), \emph{Handbook of Statistics},
   Vol. 26 (pp. 515-585). Amsterdam: Elsevier.
 }
