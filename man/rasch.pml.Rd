@@ -40,7 +40,7 @@ rasch.pml3(dat, est.b = seq(1, ncol(dat)), est.a=rep(0,ncol(dat)) ,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
-An \eqn{N} times \eqn{I} data frame of dichotomous item responses
+An \eqn{N \times I} data frame of dichotomous item responses
 }
   \item{est.b}{
 Vector of integers of length \eqn{I}. Same integers mean that the
@@ -79,7 +79,7 @@ Initial or fixed item slopes
 Initial or fixed trait standard deviation
 }
   \item{error.corr}{
-An optional \eqn{I} times \eqn{I} integer matrix
+An optional \eqn{I \times I} integer matrix
 which defines the estimation of residual correlations. 
 Entries of zero indicate that the corresponding 
 residual correlation should not be estimated. 
@@ -94,13 +94,13 @@ If some error correlations are estimated, then no itempairs in
 }
 % 	err.constraintM=NULL , err.constraintV=NULL ,
 \item{err.constraintM}{
-An optional \eqn{P} times \eqn{L} matrix where \eqn{P} denotes
+An optional \eqn{P \times L} matrix where \eqn{P} denotes
 the number of item pairs in pseudolikelihood estimation
 and \eqn{L} is the number of linear constraints for residual
 correlations (see Details). 
 		}
 \item{err.constraintV}{
-An optional \eqn{L} times 1 matrix with specified values
+An optional \eqn{L \times 1} matrix with specified values
 for linear constraints on residual correlations (see Details).
 		}
   \item{glob.conv}{

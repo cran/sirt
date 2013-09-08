@@ -1,26 +1,4 @@
  
-# 0.01  2012-xx-yy
-
-
-# 0.01  2012-06-23  o initial release
-# 0.02  2012-06-31  o correct a bug in updating in numerical differentiation ( est.aa , est.bb , ... )
-# 0.03  2012-07-11  o estimate sigma
-# 0.04  2012-07-11  o try estimation of sigma parameters
-# 0.05  2012-07-14  o some error when estimating Ramsay's QM
-# 0.06  2012-09-20  o included package version in summary
-# 1.01  2012-09-26  o speed improvement due to rewriting the
-#					  calculation of the posterior distribution
-# 1.02				o changed output on the console
-# 1.05  2012-10-02  o output system.time() in summary
-# 1.99  2012-10-02  o rasch.mml frozen
-# 1.991 2012-10-05  o included item names in sim.raschtype
-# 1.992 2012-10-29  o removed a minor bug in sim.qm.ramsay
-# 2.01  2012-11-11  o decompose function into different parts
-
-# 2.0x  2012-11-yy
-#-------------------------------------------------------
-
-
 
  
 #------------------------------------------------------------------------
@@ -29,7 +7,8 @@
 #  Model                                                                            #
 # item discrimination and guessing parameter can be fixed                                                                                    #
 ##NS export(rasch.mml)
-rasch.mml <- function( dat , theta.k = seq(-4,4,len=20) , group = NULL , weights = NULL ,  constraints = NULL , 
+rasch.mml <- function( dat , theta.k = seq(-4,4,len=20) , group = NULL , weights = NULL ,  
+				constraints = NULL , 
                         glob.conv = 10^(-5) , parm.conv = 10^(-4) , mitermax = 1 , WLE = T , 
                         mmliter = 600 , progress = TRUE ,  
                         fixed.a = rep(1,ncol(dat)) , 
@@ -766,8 +745,7 @@ rasch.mml <- function( dat , theta.k = seq(-4,4,len=20) , group = NULL , weights
         #..................
         return( res )
         }
-#--------------------------------------------------------------------------------------------------------------------------------------------
-
+#----------------------------------------------------------------------
 
 
 

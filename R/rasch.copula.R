@@ -1,16 +1,3 @@
- 
-# 0.01  2012-xx-yy  o
-#...
-# 0.01  2012-06-23  o initial release
-# 0.02  2012-06-23  o create column names in dat frame if not existent
-#					o include simulation function of Rasch copula model
-# 0.03  2012-06-24  o exclude sim.rasch.copula -> new function sim.racsh.dep
-# 0.04  2012-06-24  o avoid boundary delta estimates in rasch.copula (=> eliminate this feature!)
-# 0.05  2012-06-31  o eliminate error in est.bb, est.aa, ... in numerical differentiation
-# 0.99  2012-07-15	o froze this copula version
-
-# 0.0x  2012-xx-yy  o
-#-------------------------------------------------------
 
 
 

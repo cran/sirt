@@ -1,6 +1,6 @@
 
 tetrachoric2 <- function( dat , delta=.007 , maxit = 1000000 ,
-	cor.smooth=TRUE ){
+	cor.smooth=TRUE , progress=TRUE){
 	# process data
 	dat <- as.matrix(dat)
 	# calculate tau
@@ -25,6 +25,7 @@ tetrachoric2 <- function( dat , delta=.007 , maxit = 1000000 ,
 	dfr$qi1 <- qnorm( dfr$pi1)
 	dfr$qi2 <- qnorm( dfr$pi2)
 	# functions defined by Cengiz Zopluoglu   
+#	L <- function(r,h,k) {(1/(2*pi*sqrt(1-r^2)))*exp(-((h^2-2*h*k*r+k^2)/(2*(1-r^2))))}
 	L <- function(r,h,k) {(1/(2*pi*sqrt(1-r^2)))*exp(-((h^2-2*h*k*r+k^2)/(2*(1-r^2))))}
 	S <- function(x,r,h,k) { x-(L(r,h,k)*delta) }
 	A0 <- dfr$A0 <- dfr$p11 - dfr$pi1 * dfr$pi2 
@@ -36,7 +37,7 @@ tetrachoric2 <- function( dat , delta=.007 , maxit = 1000000 ,
 	ii <- 0
 
 	vars <-  c("A0","r0","iter","conv")
-	cat("    0 : " )
+	if (progress){ cat("    0 : " ) }
 	while( ( mean( dfr$conv) < 1 ) & ( ii < maxit ) ){
 		# iterations
 		dfr0 <- dfr
@@ -53,9 +54,10 @@ tetrachoric2 <- function( dat , delta=.007 , maxit = 1000000 ,
 							}
 		i2 <- which( dfr$conv==1 & dfr0$conv==1 )
 		if (length(i2) > 0){    dfr[ i2 , vars] <- dfr0[ i2 , vars] }
-		if (ii %% 100 == 0 ){ cat(".") ; flush.console() }
-		if (ii %% 1000 == 0 ){ cat("\n" ,ii, ": ") }    
-		# print(dfr) ; flush.console()
+		if (progress){
+			if (ii %% 100 == 0 ){ cat(".") ; flush.console() }
+			if (ii %% 1000 == 0 ){ cat("\n" ,ii, ": ") }    
+					}
 			}
 	cat("\n")
 	TC <- matrix(NA , I , I )
@@ -65,6 +67,7 @@ tetrachoric2 <- function( dat , delta=.007 , maxit = 1000000 ,
 	if (cor.smooth){ 
 		TC <- cor.smooth(TC) 
 			    }
+	rownames(TC) <- colnames(TC) <- colnames(dat)
 	res <- list("tau"=tau , "rho" = TC )
 	return(res)
 	}

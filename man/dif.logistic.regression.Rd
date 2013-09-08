@@ -9,7 +9,7 @@ functioning using a logistic regression analysis
 (Zumbo, 1999). 
 }
 \usage{
-dif.logistic.regression(dat, group, score)
+dif.logistic.regression(dat, group, score,quant=1.645)
 }
 \arguments{
   \item{dat}{
@@ -21,9 +21,25 @@ Group identifier
   \item{score}{
 Ability estimate, e.g. the WLE.
 }
+\item{quant}{Used quantile of the normal distribution 
+for assessing statistical significance}
 }
+
+\details{
+Items are classified into A (negligible DIF), B (moderate DIF) and 
+C (large DIF) levels according to the
+ETS classification system (Longford, Holland & Thayer, 1993, p. 175).
+See also Monahan et al. (2007) for further DIF effect size
+classifications.
+}
+
 \value{
 A data frame with following variables:
+
+\item{itemnr}{Numeric index of the item}
+\item{sortDIFindex}{Rank of item with respect to the uniform DIF
+	(from negative to positive values)
+}
 \item{item}{Item name}
 \item{N}{Sample size per item}
 \item{R}{Value of \code{group} variable for reference group}
@@ -33,20 +49,40 @@ A data frame with following variables:
 \item{p}{Item \eqn{p} value}
 \item{pR}{Item \eqn{p} value in reference group}
 \item{pF}{Item \eqn{p} value in focal group}
+\item{pdiff}{Item \eqn{p} value differences}
 \item{pdiff.adj}{Adjusted \eqn{p} value difference}
 \item{uniformDIF}{Uniform DIF estimate}
 \item{se.uniformDIF}{Standard error of uniform DIF}
 \item{t.uniformDIF}{The \eqn{t} value for uniform DIF}
 \item{sig.uniformDIF}{Significance label for uniform DIF}
+\item{DIF.ETS}{DIF classification according to the ETS classification
+	system (see Details)
+}
+\item{uniform.EBDIF}{Empirical Bayes estimate of uniform DIF (Longford,
+	Holland & Thayer, 1993) which takes degree of DIF standard error
+        into account}
+\item{DIF.SD}{Value of the DIF standard deviation}
 \item{nonuniformDIF}{Nonuniform DIF estimate}
 \item{se.nonuniformDIF}{Standard error of nonuniform DIF}
 \item{t.nonuniformDIF}{The \eqn{t} value for nonuniform DIF}
 \item{sig.nonuniformDIF}{Significance label for nonuniform DIF}
 }
+
+
 \references{
-Zumbo, B. D. (1999). \emph{A Handbook on the Theory and Methods of Differential 
-Item Functioning (DIF): Logistic Regression Modeling as a Unitary Framework 
-for Binary and Likert-type (Ordinal) Item Scores}. 
+Longford, N. T., Holland, P. W., & Thayer, D. T. (1993).
+Stability of the MH D-DIF statistics across populations.
+In P. W. Holland & H. Wainer (Eds.). \emph{Differential
+Item Functioning} (pp. 171-196). Hillsdale, NJ: Erlbaum.	
+
+Monahan, P. O., McHorney, C. A., Stump, T. E., & Perkins, A. J. (2007). 
+Odds ratio, delta, ETS classification, and standardization measures of 
+DIF magnitude for binary logistic regression. 
+\emph{Journal of Educational and Behavioral Statistics}, \bold{32}, 92-109.
+
+Zumbo, B. D. (1999). \emph{A handbook on the theory and methods of differential 
+item functioning (DIF): Logistic regression modeling as a unitary framework 
+for binary and Likert-type (ordinal) item scores}. 
 Ottawa ON: Directorate of Human Resources Research and Evaluation, 
 Department of National Defense. 
 }

@@ -26,7 +26,7 @@ rasch.copula2(dat, itemcluster, copula.type ="bound.mixt" ,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
-An \eqn{N} times \eqn{I} data frame. Cases with only missing responses
+An \eqn{N \times I} data frame. Cases with only missing responses
 are removed from the analysis.
 }
   \item{itemcluster}{

@@ -43,7 +43,8 @@ Matrix with fitted values
 %}
 
 \author{
-Alexander Robitzsch \cr
+Alexander Robitzsch
+
 The \code{monoreg} function from the \pkg{fdrtool}
 package is simply extended to handle matrix input.
 }

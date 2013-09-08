@@ -16,7 +16,7 @@ conf.detect(data, score, itemcluster, bwscale = 1.1, progress = TRUE,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
-An \eqn{N} times \eqn{I} data frame of dichotomous or polytomous responses.
+An \eqn{N \times I} data frame of dichotomous or polytomous responses.
 Missing responses are allowed.
 }
   \item{score}{

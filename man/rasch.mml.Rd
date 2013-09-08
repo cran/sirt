@@ -1,6 +1,7 @@
 \name{rasch.mml2}
 \alias{rasch.mml2}
 \alias{summary.rasch.mml}
+\alias{plot.rasch.mml}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Estimation of the Generalized Logistic Item Response Model, 
@@ -31,9 +32,12 @@ rasch.mml2( dat , theta.k=seq(-6,6,len=21) , group=NULL , weights=NULL ,
    designmatrix=NULL , alpha.conv=parm.conv , numdiff.parm=0.001 ,
    numdiff.alpha.parm= numdiff.parm , distribution.trait="normal" , Qmatrix=NULL , 
    variance.fixed=NULL , mu.fixed=cbind(seq(1,ncol(Qmatrix)),rep(0,ncol(Qmatrix))) ,
-   irtmodel="raschtype" , npformula=NULL , use.freqpatt = is.null(group)  , ... )
+   irtmodel="raschtype" , npformula=NULL , npirt.monotone=TRUE ,
+   use.freqpatt = is.null(group)  , ... )
    
-\method{summary}{rasch.mml}(object,...)   
+\method{summary}{rasch.mml}(object,...)
+
+\method{plot}{rasch.mml}(x,items=NULL, xlim=NULL, main=NULL, ...) 
 }
 %- maybe also 'usage' for other objects documented here.
 
@@ -47,7 +51,7 @@ rasch.mml2( dat , theta.k=seq(-6,6,len=21) , group=NULL , weights=NULL ,
 
 \arguments{
   \item{dat}{
-An \eqn{N} times \eqn{I} data frame of dichotomous item responses
+An \eqn{N \times I} data frame of dichotomous item responses
 }
 \item{theta.k}{
 Optional vector of discretized theta values. For multidimensional
@@ -208,6 +212,11 @@ of the 2PL model (see Details). If \code{irtmodel="npirt"} and \code{npformula}
 is not specified, then an unrestricted item response functions on the
 grid of \eqn{\theta} values is estimated.
 }
+
+\item{npirt.monotone}{Should nonparametrically estimated item response functions
+	be monotone? The default is \code{TRUE}. This function applies only
+	to \code{irtmodel='npirt'} and \code{npformula=NULL}.
+}
 \item{use.freqpatt}{A logical if frequencies of pattern should be used or not.
 	The default is \code{is.null(group)}. This means that for single
 	group analyses, frequency patterns are used but not for multiple
@@ -216,6 +225,10 @@ grid of \eqn{\theta} values is estimated.
   \item{object}{  	  
 Object of class \code{rasch.mml}
 }
+\item{x}{Object of class \code{rasch.mml}}
+\item{items}{Vector of integer or item names which should be plotted}
+\item{xlim}{Specification for \code{xlim} in plot}
+\item{main}{Title of the plot}
   \item{\dots}{
 Further arguments to be passed
 }
@@ -370,11 +383,14 @@ For an assessment of global model fit see \code{\link{modelfit.sirt}}.
 
 data(data.read)
 dat <- data.read
+I <- ncol(dat) # number of items
 
 # Rasch model
 mod1 <- rasch.mml2( dat )
 summary(mod1)
-I <- ncol(dat) # number of items
+plot( mod1 )    # plot all items
+# title 'Rasch model', display curves from -3 to 3 only for items 1, 5 and 8
+plot(mod1, main="Rasch model Items 1, 5 and 8", xlim=c(-3,3) , items=c(1,5,8) )
 
 # Rasch model with constraints on item difficulties
 # set item parameters of A1 and C3 equal to -2
@@ -395,6 +411,7 @@ summary(mod1c)
 # 2PL model
 mod2 <- rasch.mml2( dat , est.a = 1:I )
 summary(mod2)
+plot(mod2)	# plot 2PL item response curves
 
 \dontrun{
 # 3PL model
@@ -432,7 +449,7 @@ summary(mod8)
 theta.k <- seq( 0.01 , .99 , len=20 )
 trait.weights <- rep( 1/length(theta.k) , length(theta.k) )
 mod9 <- rasch.mml2( dat , theta.k=theta.k , trait.weights = trait.weights ,
-            normal.trait=FALSE , est.a = 1:12 , mmliter=80 )
+            normal.trait=FALSE , est.a = 1:12  )
 summary(mod9)
 
 #############################################################################
@@ -448,15 +465,17 @@ Qmatrix[1:6,1] <- 1 # T1 items
 Qmatrix[7:12,2] <- 1    # T2 items
 
 # define restrictions on item difficulties
-est.b <- c(1,2,3,4,5,6,
-           3,4,5,6,7,8) 
+est.b <- c(1,2,3,4,5,6,   3,4,5,6,7,8) 
 mu.fixed <- cbind(1,0) 
     # set first mean to 0 for identification reasons
 
 # Model 1: 2-dimensional Rasch model
 mod1 <- rasch.mml2( dat , Qmatrix=Qmatrix , miterstep=4,
     est.b = est.b   ,  mu.fixed = mu.fixed , mmliter=30 )
-summary(mod1)}
+summary(mod1)
+plot(mod1)
+##     Plot function is only applicable for unidimensional models
+}
 
 #############################################################################
 # SIMULATED EXAMPLE 3
@@ -476,50 +495,62 @@ dat <- sim.raschtype( theta = theta , b = b , alpha1 = 0 , alpha2 = -0.3 )
 #  estimating alpha parameters
 mod1 <- rasch.mml2( dat , est.alpha = TRUE , mmliter=30 )
 summary(mod1)
-
-# fixed alpha parameters
-mod1b <- rasch.mml2( dat , est.alpha = FALSE , alpha1=0 , alpha2=-.3 , mmliter=30)
-summary(mod1b)
+plot(mod1)
 
 \dontrun{
+# fixed alpha parameters
+mod1b <- rasch.mml2( dat , est.alpha = FALSE , alpha1=0 , alpha2=-.3 )
+summary(mod1b)
+
 # estimation with equal alpha parameters
-mod1c <- rasch.mml2( dat , est.alpha = TRUE , equal.alpha=TRUE , mmliter=30)
+mod1c <- rasch.mml2( dat , est.alpha = TRUE , equal.alpha=TRUE )
 summary(mod1c)
 
 # Ramsay QM
-mod2a <- rasch.mml2( dat , irtmodel ="ramsay.qm" , mmliter=30)
-summary(mod2a)
+mod2a <- rasch.mml2( dat , irtmodel ="ramsay.qm" )
+summary(mod2a)}
 
 # Ramsay QM with estimated K parameters
 mod2b <- rasch.mml2( dat , irtmodel ="ramsay.qm" , est.K=1:15 , mmliter=30)
 summary(mod2b)
+plot(mod2b)
 
-# nonparametric estimation of item response curves
-mod3a <- rasch.mml2( dat , irtmodel ="npirt" , mmliter =500 ,
+\dontrun{
+# nonparametric estimation of monotone item response curves
+mod3a <- rasch.mml2( dat , irtmodel ="npirt" , mmliter =100 ,
             theta.k = seq( -3 , 3 , len=10) ) # evaluations at 10 theta grid points
 # nonparametric ICC of first 4 items
 round( t(mod3a$pjk)[1:4,] , 3 ) 
 summary(mod3a)
+plot(mod3a)
 
+# nonparametric IRT estimation without monotonicity assumption
+mod3b <- rasch.mml2( dat , irtmodel ="npirt" , mmliter =10 ,
+            theta.k = seq( -3 , 3 , len=10) , npirt.monotone=FALSE) 
+plot(mod3b)
+            
 # B-Spline estimation of ICCs
 library(splines)
 mod3c <- rasch.mml2( dat , irtmodel ="npirt" , 
         npformula = "y~bs(theta,df=3)" , theta.k = seq(-3,3,len=15) )
 summary(mod3c)
 round( t(mod3c$pjk)[1:6,] , 3 )
+plot(mod3c)
 
 # nonparametric estimation of the link function
 # In this example, a bit complicated ICC is estimated:
 # "theta + I( theta^2)" is a quadratic item response function
-mod3 <- rasch.mml2( dat , irtmodel ="npirt" , 
+mod3d <- rasch.mml2( dat , irtmodel ="npirt" , 
         npformula = "y~theta + I(theta^2)" )
-summary(mod3)
+summary(mod3d)
+plot(mod3d)
 
 # estimation of a stepwise ICC function
 # ICCs are constant on the theta domains: [-Inf,-1], [-1,1], [1,Inf]
-mod3b <- rasch.mml2( dat , irtmodel ="npirt" , 
+mod3e <- rasch.mml2( dat , irtmodel ="npirt" , 
         npformula = "y~I(theta>-1 )+I(theta>1)" )
-summary(mod3b)
+summary(mod3e)
+plot(mod3e , xlim=c(-2.5,2.5) )
 
 # 2PL model
 mod4 <- rasch.mml2( dat ,  est.a=1:15)
@@ -541,13 +572,11 @@ dat2 <- sim.raschtype( theta = rnorm( N2 , mean=-.5 , sd =.75)  ,
 dat1 <- rbind( dat1 , dat2 )
 group <- c( rep(1,N1) , rep(2,N2))
 
-mod1 <-  rasch.mml2( dat1 , parm.conv=.0001 , group=group ,  
-			est.alpha = TRUE , mmliter = 30 )
+mod1 <-  rasch.mml2( dat1 , parm.conv=.0001 , group=group , est.alpha = TRUE )
 summary(mod1)
 
 #############################################################################
-# SIMULATED EXAMPLE 5
-# Multidimensional model
+# SIMULATED EXAMPLE 5: Multidimensional model
 #############################################################################
 
 #***
@@ -577,10 +606,10 @@ Qmatrix[1:I+I,2] <- 1
 # (2) estimation of models
 # 2-dimensional Rasch model
 mod1 <- rasch.mml2( dat , Qmatrix=Qmatrix )
-summary(mod1 , mmliter=20)
+summary(mod1)
 
 # 2-dimensional 2PL model
-mod2 <- rasch.mml2( dat , Qmatrix=Qmatrix , est.a = 1:(2*I) , mmliter=20)               
+mod2 <- rasch.mml2( dat , Qmatrix=Qmatrix , est.a = 1:(2*I) )               
 summary(mod2)
 
 # estimation with some fixed variances and covariances
@@ -588,8 +617,7 @@ summary(mod2)
 #  covariance to zero
 variance.fixed <- matrix( cbind(c(1,1) , c(1,2) , c(1,0)) , 
              byrow=FALSE , ncol= 3 )
-mod3 <- rasch.mml2( dat , Qmatrix=Qmatrix , 
-                variance.fixed = variance.fixed )
+mod3 <- rasch.mml2( dat , Qmatrix=Qmatrix , variance.fixed = variance.fixed )
 summary(mod3)
 
 # constraints on item difficulties
@@ -597,8 +625,7 @@ summary(mod3)
 est.b <- c( 1:I , 1:I )     
     # equal indices correspond to equally estimated item parameters
 mu.fixed <- cbind( 1 , 0 )
-mod4 <- rasch.mml2( dat , Qmatrix=Qmatrix , 
-                est.b = est.b , mu.fixed = mu.fixed )
+mod4 <- rasch.mml2( dat, Qmatrix=Qmatrix, est.b = est.b , mu.fixed = mu.fixed )
 summary(mod4) }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
@@ -607,4 +634,5 @@ summary(mod4) }
 \keyword{Ramsay's quotient model}
 \keyword{Nonparametric item response theory}
 \keyword{summary}
+\keyword{plot}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

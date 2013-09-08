@@ -19,7 +19,7 @@ rasch.pairwise(dat, conv = 1e-04, maxiter = 3000, progress = TRUE,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
-An \eqn{N} times \eqn{I} data frame of dichotomous item responses
+An \eqn{N \times I} data frame of dichotomous item responses
 }
   \item{conv}{
 Convergence criterion

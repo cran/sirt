@@ -51,7 +51,7 @@ Alexander Robitzsch
 \seealso{
 For JML estimation \code{\link{rasch.jml}}.
 
-For analytic bias correction methods see \code{\link{rasch.jml.biascorr}}.
+For analytical bias correction methods see \code{\link{rasch.jml.biascorr}}.
 }
 \examples{
 #############################################################################

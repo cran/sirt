@@ -1,37 +1,7 @@
  
-# 0.01  2012-xx-yy
 
-
-# 0.01  2012-06-23  o initial release
-# 1.01  2012-12-13  o corrected WLE estimation
-
-#-------------------------------------------------------
-
-
-    # while( ( max(abs( theta.change )) > conv ) & ( iter < maxit ) ){
-        # # calculate P and Q
-        # p.ia <- plogis( outer( theta , b , "-" ) ) ; q.ia <- 1 - p.ia
-        # # Log Likelihood (for every subject)
-        # l1 <- rowSums( dat.resp * ( dat - p.ia ) )
-        # # I and J terms
-        # I.wle <- rowSums( dat.resp * p.ia * q.ia )
-        # J.wle <- rowSums( dat.resp * p.ia * q.ia * (q.ia - p.ia ) )
-        # I1.wle <- J.wle
-        # J1.wle <- rowSums( dat.resp * p.ia * q.ia * ( 6 * p.ia^2 - 6 * p.ia + 1 ) )
-        # # calculate objective function
-        # f.obj <- l1 + J.wle / ( 2 * I.wle )
-        # # derivative of the objective function  => corrected version (2008-01-05)
-        # f1.obj <- rowSums( - dat.resp * p.ia * q.ia  ) + ( J1.wle * I.wle - J.wle  * I1.wle )/ ( 2 * I.wle^2 )   
-        # # theta change
-        # theta.change <- - f.obj / f1.obj 
-        # theta <- theta + theta.change
-        # iter <- iter +1
-        # if ( any( is.nan( theta.change ) ) ){ stop( "Numerical problems occur during WLE estimation procedure.") }
-        # }
-
-#----------------------------------------------------------------------------------------------------
-# Function for WLE ability estimation                                                               #
-##NS export(wle.rasch)
+#----------------------------------------------------------
+# Function for WLE ability estimation                      
 wle.rasch <- function( dat , dat.resp = NULL , b , # a = 1 + 0*b , c = 0*b , 
 							itemweights = 1+0*b ,
                             theta = rep(0 , nrow(dat)) , conv = .001 , maxit = 200 ,
@@ -85,7 +55,8 @@ wle.rasch <- function( dat , dat.resp = NULL , b , # a = 1 + 0*b , c = 0*b ,
         # calculate objective function
         f.obj <- l1 + J.wle / ( 2 * I.wle )
         # derivative of the objective function  => corrected version (2008-01-05)
-#        f1.obj <- rowSums( - dat.resp * p.ia * q.ia  ) + ( J1.wle * I.wle - J.wle  * I1.wle )/ ( 2 * I.wle^2 )   
+#        f1.obj <- rowSums( - dat.resp * p.ia * q.ia  ) + ( J1.wle * I.wle - J.wle  * I1.wle )
+#				/ ( 2 * I.wle^2 )   
         f1.obj <- - I.wle + ( J1.wle * I.wle - J.wle  * I1.wle )/ ( 2 * I.wle^2 )   			
         # theta change
         increment <- theta.change <- - f.obj / f1.obj 
@@ -116,8 +87,9 @@ wle.rasch <- function( dat , dat.resp = NULL , b , # a = 1 + 0*b , c = 0*b ,
 ###############################################################################################
 # Jackknife standard error estimation of WLE
 ##NS export(wle.rasch.jackknife)
-wle.rasch.jackknife <- function( dat , b , itemweights = 1+0*b , pid = NULL , testlet = NULL , stratum = NULL ,
-                                    size.itempop = NULL ){ 
+wle.rasch.jackknife <- function( dat , b , itemweights = 1+0*b , pid = NULL , 
+			testlet = NULL , stratum = NULL ,
+            size.itempop = NULL ){ 
         # INPUT:
         # size.itempop ... finite sampling correction
         # 
@@ -247,7 +219,6 @@ wle.rasch.jackknife <- function( dat , b , itemweights = 1+0*b , pid = NULL , te
                             }   # end simple random sampling
 		#*********************************
 		# calculate and print reliability
-
 		v1 <- var(wle$theta)
 		v2 <- mean( jack.se^2	)
 		wle.rel <- 	( v1 - v2 ) / v1

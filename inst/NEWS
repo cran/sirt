@@ -1,8 +1,16 @@
----------------- sirt NEWS -------------------
+----------------------- sirt NEWS -----------------------------
 
-++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 sirt: Supplementary Item Response Theory
+
+
+                    _/              _/   
+           _/_/_/      _/  _/_/  _/_/_/_/
+        _/_/      _/  _/_/        _/     
+           _/_/  _/  _/          _/      
+      _/_/_/    _/  _/            _/_/   
+
 
 Alexander Robitzsch
 Federal Institute for Educational Research, Innovation and 
@@ -10,19 +18,52 @@ Development of the Austrian School System (BIFIE)
 Salzburg (Austria)
 http://www.bifie.at
 
-++++++++++++++++++++++++++++++++++++++++++++++
-
-Questions or suggestions about sirt can be sent to
-
-a.robitzsch/-\bifie.at
-
 See also URL: 
 https://sites.google.com/site/alexanderrobitzsch/software
 
+Questions or suggestions about sirt can be sent to
+a.robitzsch /-\ bifie.at
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CHANGELOG sirt
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+---
+Versions 0.35 to 0.36 -- 2013-09-08
+---
+x corrected legends and labels in plot.isop function
+x included function rowKSmallest2.sirt
+x fixed a bug in mcmc.3pno.testlet 
+  (thanks to Chun-Hsien Wu)
+  -> removed parametrization 3 (bifactor model) because it
+     produced untrustworthy results
+x included gregmisc in imports (thanks to Jean-Paul Fox)
+x disabled parametrization 2 in mcmc.3pno.testlet
+  -> now only the original model from the Glas paper
+     (parametrization 1) is estimated
+x included argument for item parameter fixings in
+  pairwise conditional likelihood function 
+  rasch.pairwise.itemcluster
+x included ETS classification labels of uniform DIF in
+  function dif.logistic.regression
+x included the possiblity of not submitting any item strata 
+  to stratified.cronbach.alpha and an example for using 
+  the psych package
+x included function 'md.pattern.sirt' for analyzing
+  response patterns
+x included crossprod function in several sirt functions
+x included monotone nonparametric estimation in 'rasch.mml2'
+  as the default in case of irtmodel='npirt' and npformula=NULL
+x speeded irtmodel='npirt' in case of providing npformula
+x included output of summary of testlet effects in 
+  mcmc.3pno.testlet
+x included the functional unidimensional model (Ip et al. 2013)
+x included the linking method of Haberman (2009)
+x included plot method for rasch.mml2 function
+x removed rasch.testlet.glmer function
 
 ---
 Version 0.34 -- 2013-08-13
@@ -61,7 +102,7 @@ Version 0.32 -- 2013-06-28
 ---
 x included the estimation  of the 2PL model via MCMC (mcmc.2pno)
 x included a function for estimating Rhat and MAP from MCMC output
-   (mcmc.list.descriptives)
+  (mcmc.list.descriptives)
 x included a function for writing coda files (mcmclist2coda)
 x renamed jacknife.rasch.jml into rasch.jml.jackknife1
 x included mcmc.2pnoh for estimating a hierarchical IRT model
@@ -71,12 +112,12 @@ x included mcmc.2pno.ml function for estimating a multilevel
   IRT model for dichotomous and normally distributed data
 
 ---
-Version 0.31 -- 2013-05-27
+Version 0.31 -- 2013-05-27  [*** First CRAN Release ***]
 ---
 x speeded rasch.pml2 a bit
 x fixed a bug in smirt function (thanks to Izanloo Balal)
 x included function tetrachoric2 for a quick calculation
-   of the tetrachoric correlation matrix
+  of the tetrachoric correlation matrix
 x included pbivnorm2 for the bivariate normal integral
 x included rasch.pml3, a bit faster version than rasch.pml2
 x eliminated warning statements in smirt and fixed a bug in 
@@ -85,10 +126,10 @@ x eliminated warning statements in smirt and fixed a bug in
 ---
 Version 0.30  -- 2013-04-30
 ---
-x included a C file for faster calculations in rm.hrm
+x included a Rcpp function for faster calculations in rm.hrm
   (now there is a dependency of Rcpp and RcppArmadillo)
 x included smirt function for estimating the multdimensional
-   noncompensatory and compensatory models
+  noncompensatory and compensatory models
 x included variational approximation for the Rasch model
 x included the (Rasch) grade of membership model
 
@@ -118,18 +159,18 @@ Version 0.27  -- 2013-02-26
 ---
 x included classification accuracy in the Rasch model
 x implemented multidimensional latent class Rasch model
-   (Bartolucci, 2007)
+  (Bartolucci, 2007)
 x cleaning of help files, included several datasets and
   examples
 x included log-linear smoothing of the theta distribution
-   in rasch.mirtlc
+  in rasch.mirtlc
 x included 2PL estimation in rasch.mirtlc
 x included global fit statistics in modelfit.sirt
 x included log-linear smoothing of the ability distribution
-   in rasch.mml2
+  in rasch.mml2
 x accelerated rasch.pml function and renamed it into rasch.pml2
 x allowed for linear constraints for residual correlations
-   in rasch.pml2
+  in rasch.pml2
 x accelerated latent.regression.em.raschtype and 
   plausible value routines
 

@@ -82,9 +82,6 @@ Alexander Robitzsch
 For fitting the ADISOP model it is recommended to first
 fit the ISOP model and then proceed with the fitted frequency
 table from ISOP (see Examples).
-	
-These functions use the \code{monoreg} function
-from the \pkg{fdrtool} package.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

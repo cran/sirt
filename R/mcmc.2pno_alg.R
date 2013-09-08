@@ -36,9 +36,11 @@
 	# sampling without weights
 	Xast <- as.matrix( cbind( theta , -1 ) )
     if ( is.null(weights) ){
-		Sigma <- solve( t(Xast) %*% Xast )
+#		Sigma <- solve( t(Xast) %*% Xast )
+		Sigma <- solve( crossprod(Xast) )
 		# calculate mean
-		mj <- Sigma %*% t(Xast) %*% Z
+#		mj <- Sigma %*% t(Xast) %*% Z
+		mj <- Sigma %*% crossprod(Xast , Z )
 		mj <- as.matrix( t(mj))		    	
 						}
 	#--------------
@@ -55,7 +57,8 @@
 		Xastinv12 <- - Xast12 / Xastdet
 		Sigma <- matrix( c(Xastinv11 , Xastinv12 , Xastinv12 , Xastinv22) , 2 ,2 )
 		# compute t(Xast) %*% Z (weighted)
-		mj <- Sigma %*% t( Xast * weights ) %*% Z
+#		mj <- Sigma %*% t( Xast * weights ) %*% Z
+		mj <- Sigma %*% crossprod( Xast * weights , Z )
 	    mj <- as.matrix( t(mj))	
 			}		
     #--------------							

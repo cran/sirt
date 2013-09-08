@@ -21,7 +21,10 @@ fit.logistic <- function( freq.correct , wgt , scores , item.p ,
 						)
 #	dfr0$item.plogis <- qlogis( dfr0$item.p)
 #	dfr0$stud.plogis <- qlogis( dfr0$stud.p)
-	if (progress){ cat("\n*******Logistic Model***********\n") }	
+	if (progress){ 
+		cat("\n*******Logistic Model***********\n") 
+#		cat("*** " , paste(Sys.time())  , "*******\n")		
+			}	
 	theta <- qlogis( scores1 )
 	b <- qlogis( item.p )
 	#***********************************
@@ -81,6 +84,9 @@ fit.logistic <- function( freq.correct , wgt , scores , item.p ,
 	NW <- mean( colSums(wgt) )
 	ll$llcase.ind <- ll$ll.ind/NW	
 	ll$llcase.logistic <- ll$ll.logistic/NW
+#	if (progress){ 
+#		cat("*** " , paste(Sys.time())  , "*******\n")			
+#			}	
 	# output
 	res <- list( "fX" = G , "ResX" = freq.correct - G , 
 				"fit" = fit  , "item.sc"= b  , 

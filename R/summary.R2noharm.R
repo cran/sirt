@@ -10,7 +10,7 @@ summary.R2noharm <- function( object , logfile=NULL , ...){
 	if ( ! is.null(logfile) ){ sink( paste0(logfile,".Rout") , split=TRUE ) }
 	cat( paste( "-------------------------------------------------") , "\n" )	
 	cat( paste( "NOHARM4 " , object$systime , sep="") , "\n" )	
-	d <- packageDescription("R2NOHARM")
+	d <- packageDescription("sirt")
 	cat(paste(d$Package," " , d$Version," (",d$Date,")",sep=""))
 	cat( paste( "\n-------------------------------------------------") , "\n\n" )	
 	#**********************

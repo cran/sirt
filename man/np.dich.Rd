@@ -15,7 +15,7 @@ np.dich(dat, theta, thetagrid, progress = FALSE, bwscale = 1.1,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
-An \eqn{N} times \eqn{I} data frame of dichotomous
+An \eqn{N \times I} data frame of dichotomous
 item responses
 }
   \item{theta}{

@@ -79,6 +79,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 					} else { 
 				b <- b.init 
 					}
+	if ( ! is.null(est.b) & is.null(b.init) ){ b <- 0*b } 
 	e1 <- matrix( 1:I , I , ncol(Qmatrix) )
 	if ( is.null(est.b)){ 	
 		if (irtmodel=="noncomp"){ est.b <- Qmatrix*e1  }
@@ -100,7 +101,8 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 			}
 	if ( is.null(est.a)){ 
 		est.a <- 0 * Qmatrix*e1 
-				}			
+				}
+	if ( ! is.null(est.a) & is.null(a.init) ){ a <- 1*a } 				
 	#***
 	# init c and d parameters
 	if ( is.null(c.init)){  c <- rep(0,I)  } else { c <- c.init }
@@ -172,7 +174,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		b <- res2$b
 		se.b <- res2$se.b
 #		ll <- res2$ll
-# cat("smirt est.b") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
+#cat("smirt est.b") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
 
 		# estimate a parameters
 		if ( sum (est.a) > 0 ){
@@ -184,6 +186,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 			a <- res2$a
 			se.a <- res2$se.a
 							}	
+
 						
 		# estimate c parameters
 		if ( sum (est.c) > 0 ){

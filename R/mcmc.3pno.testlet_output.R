@@ -50,7 +50,7 @@
 		est.guess , theta.chain , sigma.testlet.chain , TT ,
 		burnin , SV , save.theta , testletgroups , param ){
 	#***********************************
-	a <- a.chain 
+	a <- a.chain
 	b <- b.chain
 	theta <- theta.chain
 	N <- ncol(theta.chain )
@@ -106,12 +106,14 @@
 ####################################################################
 # calculate EAP reliability, person parameter EAPs
 # and corresponding posterior SDs
-.mcmc.person.3pno.testlet <- function( theta.chain , weights ){	
+.mcmc.person.3pno.testlet <- function( theta.chain , weights , 
+			gamma.testlet.chain){	
 	###################
 	# EAP reliability
+	    N <- ncol(theta.chain )
 		v1 <- var( colMeans( theta.chain ) )
-		if ( is.null(weights) ){ 
-				N <- ncol(theta.chain )
+		SV <- nrow(theta.chain)
+		if ( is.null(weights) ){ 				
 				h1 <- ( rowSums( theta.chain^2 ) - ( N * rowMeans( theta.chain ) )^2 ) / N 
 				h1 <- mean(h1)
 				EAP.rel <- v1 / h1 
@@ -129,6 +131,14 @@
 	# person parameter estimates
 	person <- data.frame( "EAP" = colMeans( theta.chain ) ,
 						  "SD" = colSds(theta.chain) )
+	# compute testlet effects
+    TT <- ncol(gamma.testlet.chain) / N - 1
+	for (tt in 1:TT){
+		# tt <- 1
+		gtc <- gamma.testlet.chain[ , 1:N + (tt-1)*N ]
+		person[ , paste0("EAP.Testlet",tt)] <- colMeans(gtc)
+		person[ , paste0("SD.Testlet",tt)] <- colSds( gtc )
+					}						  
 	# output
 	res <- list( "EAP.rel" = EAP.rel , "person" = person )
 	return(res)

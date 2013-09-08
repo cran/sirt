@@ -14,12 +14,12 @@ rasch.prox(dat, dat.resp = 1 - is.na(dat), freq=rep(1,nrow(dat)) ,
 }
 \arguments{
   \item{dat}{
-An \eqn{N} times \eqn{I} data frame of dichotomous response data. \code{NA}s 
+An \eqn{N \times I} data frame of dichotomous response data. \code{NA}s 
 are not allowed and must be indicated by zero entries in the 
 response indicator matrix \code{dat.resp}.
 }
   \item{dat.resp}{
-An \eqn{N} times \eqn{I} indicator data frame of nonmissing item responses.
+An \eqn{N \times I} indicator data frame of nonmissing item responses.
 }
   \item{freq}{
 A vector of frequencies (or weights) of all rows in data frame \code{dat}.

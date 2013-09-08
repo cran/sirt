@@ -1,11 +1,16 @@
 ######################################################
 # MCMC estimation 2PNO model
-mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , param=1 , 
+mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , 
 		weights=NULL , est.slope =TRUE , est.guess = TRUE , guess.prior = NULL , 
 		testlet.variance.prior = c( 1 , .2 ) , 
 		burnin=500 , iter=1000 , N.sampvalues = 1000 ,
 		progress.iter=50 , save.theta=FALSE ){
 	s1 <- Sys.time()
+	param <- 1
+#	if (param>2){	
+#		cat("Implementation of parametrization 3 is broken and invalid\n")
+#		stop("Use only parameterizations 1 or 2!\n")
+#			}	
 	# data preparation
 	dat0 <- dat
 	dat <- as.matrix(dat)
@@ -26,9 +31,9 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , param=1 ,
 		weights <- N * weights / sum(weights )
 					}	
 	# set initial values
-	a.testlet <- a <- rep(.6,I)	
+#	a.testlet <- a <- rep(.6,I)	
+	a.testlet <- a <- rep(1,I)	
 	b <- qnorm( (colMeans(dat0 , na.rm=TRUE) + .01 )/1.02 )
-	
 	# guessing parameters
 	if ( is.null(guess.prior) ){
 		guess.prior <- matrix( c(1,1) , nrow=I , ncol=2 , byrow=TRUE )
@@ -72,7 +77,10 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , param=1 ,
 	sigma.chain <- deviance.chain <- rep(NA, SV)
 	gamma.testlet.chain <- matrix(NA, SV , N*(TT+1) )
 	zz <- 0	
-	#**********************
+		
+	
+	#************************************************	
+	#************************************************
 	# begin iterations
 	for (ii in 1:iter){
 		
@@ -104,7 +112,7 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , param=1 ,
 		#***
 		# draw latent traits theta
 		theta <- .draw.theta.3pno.testlet( aM , bM , N , I , Z , param , gamma.testletM ,
-			     sigma ,  a.testletM)						 				 
+			     sigma ,  a.testletM)		 
 			 
 		# draw theta SD
 		if ( ! est.slope ){ 
@@ -122,8 +130,8 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , param=1 ,
 		if ( est.slope ){
 			res <- .draw.itempars.3pno.testlet( theta , Z , I , N , weights ,
 					gamma.testlet , testletgroups , param  , TT , a.testletM )
-			a <- res$a ; b <- res$b
-						}
+			a <- res$a ; b <- res$b		
+						}						
 		# draw only b item parameters
 		if ( ! est.slope ){
 			b <- .draw.est.b.3pno.testlet( aM , bM , N , I , Z , param ,
@@ -142,7 +150,7 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , param=1 ,
 					   sigma.testlet , testlet.variance.prior , weights , TT)		
 				  }
 		# draw testlet slope
-		if (param==3){
+		if (param==3){	 		
 			a.testlet <- .draw.est.a.testlet.3pno.testlet( aM , bM , N , I , Z , param ,
 					gamma.testletM , sigma , weights , theta , testletgroups ,
 					gamma.testlet , TT	)		
@@ -152,12 +160,12 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , param=1 ,
 		aM <- matrix( a , nrow=N , ncol=I , byrow=TRUE)
 		bM <- matrix( b , nrow=N , ncol=I , byrow=TRUE)		
 		if (param==3){ a.testletM <- matrix( a.testlet , nrow=N , ncol=I , byrow=TRUE) }
-
+	
 		
 		# save parameters
 		if ( ii %in% svindex ){
 			zz <- zz+1
-			a.chain[ zz , ] <- a
+			a.chain[ zz , ] <- a					
 			b.chain[ zz , ] <- b			
 			c.chain[ zz , ] <- guess
 			if (param==3){
@@ -174,14 +182,14 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , param=1 ,
 		# print progress
 		if ( ( ii %% progress.iter ) == 0 ){ 
 			cat( "Iteration" , ii , " | " , paste(Sys.time()) , "\n")
-			flush.console() }
-						
-				}
+			flush.console() }					
+				}   # end MCMC iterations
 	##############################
 	# output	
 	
 	# EAP reliability and person parameter estimates
-	res <- .mcmc.person.3pno.testlet( theta.chain , weights )
+	res <- .mcmc.person.3pno.testlet( theta.chain , weights ,
+				gamma.testlet.chain )
 	EAP.rel <- res$EAP.rel
 	person <- res$person
 	
@@ -204,6 +212,7 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) , param=1 ,
 	#----
 	# summary of the MCMC output
 	summary.mcmcobj <- mcmc.list.descriptives( mcmcobj )
+	
 	#****
 	# description
 	description <- .mcmc.description.3pno.testlet( TT , param , est.guess , est.slope )

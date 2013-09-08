@@ -9,7 +9,7 @@ This function estimates the 3PNO testlet model (Wang, Bradlow & Wainer, 2002)
 by Markov Chain Monte Carlo methods (Glas, 2012).
 }
 \usage{
-mcmc.3pno.testlet(dat, testlets = rep(NA, ncol(dat)), param = 1, 
+mcmc.3pno.testlet(dat, testlets = rep(NA, ncol(dat)), 
    weights = NULL, est.slope = TRUE, est.guess = TRUE, guess.prior = NULL, 
    testlet.variance.prior = c(1, 0.2), burnin = 500, iter = 1000, 
    N.sampvalues = 1000, progress.iter = 50, save.theta = FALSE)
@@ -23,10 +23,6 @@ Data frame with dichotomous item responses for \eqn{N} persons and \eqn{I} items
 An integer or character vector which indicates the allocation of items to 
 testlets. Same entries corresponds to same testlets. 
 If an entry is \code{NA}, then this item does not belong to any testlet. 
-}
-  \item{param}{
-The parametrization of the testlet model (see Details). Possible values are
-\code{1}, \code{2} or \code{3}. 
 }
   \item{weights}{
 An optional vector with student sample weights
@@ -73,25 +69,14 @@ Should theta values be saved?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \details{
 The testlet response model for person \eqn{n} at item \eqn{i} 
-is defined in parametrization 1 (\code{param=1})
+is defined as 
 \deqn{ P(X_{ni} = 1 ) = c_i + ( 1 - c_i ) 
 		\Phi ( a_i \theta_n + \gamma_{n,t(i)} + b_i	) \quad , \quad
 	\theta_n \sim N ( 0  ,1 ) , \gamma_{n,t(i)} \sim N( 0 , \sigma^2_t ) }
 
-For parametrization 2 (\code{param=2}) the response model is defined as	
-\deqn{ P(X_{ni} = 1 ) = c_i + ( 1 - c_i ) 
-		\Phi ( a_i \theta_n + a_i \gamma_{n,t(i)} + b_i	) \quad , \quad
-	\theta_n \sim N ( 0  ,1 ) , \gamma_{n,t(i)} \sim N( 0 , \sigma^2_t ) }
-
-Parametrization 3 (\code{param=3}) is the bifactor model
-\deqn{ P(X_{ni} = 1 ) = c_i + ( 1 - c_i ) 
-		\Phi ( a_i \theta_n + a_{ti} \gamma_{n,t(i)} + b_i	) \quad , \quad
-	\theta_n \sim N ( 0  ,1 ) , \gamma_{n,t(i)} \sim N( 0 , 1 )}
-with item slopes \eqn{a_i} on the general factor \eqn{\theta_n} and
-item slopes \eqn{a_{ti}} on the testlet factor \eqn{\gamma_{n,t(i)}}.
-	
 In case of \code{est.slope=FALSE}, all item slopes \eqn{a_i} are set to 1. Then
-a variance \eqn{\sigma^2} of the \eqn{\theta_n} distribution is estimated.
+a variance \eqn{\sigma^2} of the \eqn{\theta_n} distribution is estimated
+which is called the Rasch testlet model in the literature (Wang & Wilson, 2005).
 
 In case of \code{est.guess=FALSE}, all guessing parameters \eqn{c_i} are
 set to 0.
@@ -117,7 +102,7 @@ A list of class \code{mcmc.sirt} with following entries:
   \item{EAP.rel}{EAP reliability}
   \item{person}{Data frame with EAP person parameter estimates for 
   	  \eqn{\theta_p} and their corresponding posterior standard
-  	deviations}  
+  	deviations and for all testlet effects}  
   \item{dat}{Used data frame}
   \item{weights}{Used student weights}
   \item{\dots}{Further values}
@@ -131,13 +116,16 @@ A list of class \code{mcmc.sirt} with following entries:
 Glas, C. A. W. (2012). \emph{Estimating and testing the extended testlet model.}
 LSAC Research Report Series, RR 12-03.
 
-Wang, X., Bradlow, E. T., & Wainer, H. (2002). A general Bayesian model 
-for testlets: Theory and applications. 
-\emph{Applied Psychological Measurement}, \bold{26}, 109-128.
-	
 Wainer, H., Bradlow, E. T., & Wang, X. (2007). 
 \emph{Testlet response theory and its applications}. 
 Cambridge: Cambridge University Press.
+
+Wang, W.-C., & Wilson, M. (2005). The Rasch testlet model.
+\emph{Applied Psychological Measurement}, \bold{29}, 126-149. 
+
+Wang, X., Bradlow, E. T., & Wainer, H. (2002). A general Bayesian model 
+for testlets: Theory and applications. 
+\emph{Applied Psychological Measurement}, \bold{26}, 109-128.
 }
 
 \author{
@@ -151,10 +139,10 @@ Alexander Robitzsch
 
 \seealso{
 S3 methods: \code{\link{summary.mcmc.sirt}}, \code{\link{plot.mcmc.sirt}}	
-	
-For estimating testlet models using the \pkg{lme4} package see
-\code{\link{rasch.testlet.glmer}}.
 }
+
+%For estimating testlet models using the \pkg{lme4} package see
+%\code{\link{rasch.testlet.glmer}}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% EXAMPLES
@@ -200,17 +188,113 @@ mod4 <- mcmc.3pno.testlet( dat ,  guess.prior=1000*c(25,75) , testlets=testlets 
 summary(mod4)
 plot(mod4, ask=TRUE, layout=2)
 
-#***
-# Model 5: 2PNO testlet model (param=2)
-mod5 <- mcmc.3pno.testlet( dat ,  est.guess=FALSE , testlets=testlets , 
-            param=2 , burnin=burnin, iter=iter )
-summary(mod5)
+#############################################################################
+# SIMULATED EXAMPLE 2: Simulated data according to the Rasch testlet model
+#############################################################################
+set.seed(678)
+
+N <- 3000   # number of persons
+I <- 4      # number of items per testlet
+TT <- 3     # number of testlets
+
+ITT <- I*TT
+b <- round( rnorm( ITT , mean=0 , sd = 1 ) , 2 )
+sd0 <- 1 # sd trait
+sdt <- seq( 0 , 2 , len=TT ) # sd testlets
+sdt <- sdt
+
+# simulate theta
+theta <- rnorm( N , sd = sd0 )
+# simulate testlets
+ut <- matrix(0,nrow=N , ncol=TT )
+for (tt in 1:TT){ ut[,tt] <- rnorm( N , sd = sdt[tt] ) }
+ut <- ut[ , rep(1:TT,each=I) ]
+# calculate response probability
+prob <- matrix( pnorm( theta + ut + matrix( b , nrow=N , ncol=ITT , 
+		byrow=TRUE ) ) , N, ITT)
+Y <- (matrix( runif(N*ITT) , N , ITT) < prob )*1
+# colMeans(Y)
+
+# define testlets
+testlets <- rep(1:TT , each=I )
+
+burnin <- 300
+iter <- 1000
 
 #***
-# Model 6: 2PNO testlet model (param=3: bifactor model)
-mod6 <- mcmc.3pno.testlet( dat ,  est.guess=FALSE , testlets=testlets , 
-            param=3 , burnin=burnin, iter=iter )
-summary(mod6)}
+# Model 1: 1PNO model (without testlet structure)
+mod1 <- mcmc.3pno.testlet( dat=Y ,  est.slope=FALSE , est.guess=FALSE , 
+        burnin=burnin, iter=iter , testlets= testlets )        
+summary(mod1)        
+
+summ1 <- mod1$summary.mcmcobj
+# compare item parameters
+cbind( b , summ1[ grep("b" , summ1$parameter ) , "Mean" ] )
+# Testlet standard deviations
+cbind( sdt , summ1[ grep("sigma\\.testlet" , summ1$parameter ) , "Mean" ] )
+
+#***
+# Model 2: 1PNO model (without testlet structure)
+mod2 <- mcmc.3pno.testlet( dat=Y ,  est.slope=TRUE , est.guess=FALSE , 
+        burnin=burnin, iter=iter , testlets= testlets )        
+summary(mod2)        
+
+summ2 <- mod2$summary.mcmcobj
+# compare item parameters
+cbind( b , summ2[ grep("b\\[" , summ2$parameter ) , "Mean" ] )
+# item discriminations
+cbind( sd0 , summ2[ grep("a\\[" , summ2$parameter ) , "Mean" ] )
+# Testlet standard deviations
+cbind( sdt , summ2[ grep("sigma\\.testlet" , summ2$parameter ) , "Mean" ] )
+
+#############################################################################
+# SIMULATED EXAMPLE 3: Simulated data according to the 2PNO testlet model
+#############################################################################
+set.seed(678)
+
+N <- 3000    # number of persons
+I <- 3      # number of items per testlet
+TT <- 5    # number of testlets
+
+ITT <- I*TT
+b <- round( rnorm( ITT , mean=0 , sd = 1 ) , 2 )
+a <- round( runif( ITT , 0.5 , 2 ) ,2)
+sdt <- seq( 0 , 2 , len=TT ) # sd testlets
+sdt <- sdt
+
+# simulate theta
+theta <- rnorm( N , sd = sd0 )
+# simulate testlets
+ut <- matrix(0,nrow=N , ncol=TT )
+for (tt in 1:TT){ ut[,tt] <- rnorm( N , sd = sdt[tt] ) }
+ut <- ut[ , rep(1:TT,each=I) ]
+# calculate response probability
+bM <- matrix( b , nrow=N , ncol=ITT , byrow=TRUE )
+aM <- matrix( a , nrow=N , ncol=ITT , byrow=TRUE )
+prob <- matrix( pnorm( aM*theta + ut + bM ) , N, ITT)
+Y <- (matrix( runif(N*ITT) , N , ITT) < prob )*1
+colMeans(Y)
+
+# define testlets
+testlets <- rep(1:TT , each=I )
+
+burnin <- 500
+iter <- 1500
+
+#***
+# Model 1: 2PNO model
+mod1 <- mcmc.3pno.testlet( dat=Y ,  est.slope=TRUE , est.guess=FALSE , 
+        burnin=burnin, iter=iter , testlets= testlets )                               
+summary(mod1)        
+
+summ1 <- mod1$summary.mcmcobj
+# compare item parameters
+cbind( b , summ1[ grep("b" , summ1$parameter ) , "Mean" ] )
+# item discriminations
+cbind( a , summ1[ grep("a\\[" , summ1$parameter ) , "Mean" ] )
+# Testlet standard deviations
+cbind( sdt , summ1[ grep("sigma\\.testlet" , summ1$parameter ) , "Mean" ] )
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

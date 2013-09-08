@@ -26,11 +26,16 @@ plotisoppoly <- function(x , ask=TRUE , ... ){
 		# plot all item response functions
 		par( mfrow=c(2,2))
 			# Labels for plots
+			kv <- substitute( expression( a ) , list(a=kk) )
 			xlabplot <- expression( paste( "Modified P Score " , rho[p] ))
-			ylabplot <- expression(paste(P,"(",X[i], "<=|", rho[p] , ")" ))    
+#			ylabplot <- expression(paste(P,"(",X[i], ">=" , kv , "|", rho[p] , ")" ))    
+#			ylabplot <- substitute( paste(P,"(",X[i], ">=" , kv , "|", rho[p] , ")" )   ,
+#							list(kv=kk-1) )
+			ylabplot <- substitute( paste(P,"(",X[i] >= kv , "|", rho[p] , ")" )   ,
+							list(kv=kk-1) )
 			# saturated IRT model
 			p1 <- mod$surv.saturated
-			mainplot1 <- paste0( "Category Response Functions Cat" , kk - 1 )
+			mainplot1 <- paste0( "Survivor Functions Category " , kk - 1 )
 			mainplot <- paste0( mainplot1 ,  "\nSaturated Model")			
 			plot.all.icc.isop.poly( pers , p1 , xlabplot , ylabplot , mainplot,I,kk)
 			# isop

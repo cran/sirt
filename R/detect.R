@@ -1,16 +1,6 @@
  
-# 0.01  2012-xx-yy
 
-
-# 0.01  2012-06-23  o initial release
-
-
-#-------------------------------------------------------
-
-
-
-##NS export(ccov.np)
-#------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------
 # nonparametric estimation of conditional covariance
 ccov.np <- function( data , score , bwscale = 1.1 , thetagrid = seq( -3,3,len=200) , 
 		progress=TRUE ){
@@ -33,7 +23,8 @@ ccov.np <- function( data , score , bwscale = 1.1 , thetagrid = seq( -3,3,len=20
                 y <- data[ ! is.na( data[,ii] ) , ii ]
                 icc.items[,ii] <- ksmooth( x  , y , bandwidth = bwscale * length(x)^(-1/5)  , 
 							x.points = thetagrid , kernel="normal")$y
-                if ( i < 20 ){ if ( ii == display[i] & progress ){ cat( paste( 5*i  , "% " , sep="" ) ) ; i <- i + 1 ; 
+                if ( i < 20 ){ if ( ii == display[i] & progress ){ 
+							cat( paste( 5*i  , "% " , sep="" ) ) ; i <- i + 1 ; 
                                                         if (i == 11){ cat("\n" ) }
                                                         flush.console()} }
                 }

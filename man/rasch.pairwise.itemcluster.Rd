@@ -9,18 +9,22 @@ This function uses pairwise conditional likelihood estimation
 for estimating item parameters in the Rasch model.
 }
 \usage{
-rasch.pairwise.itemcluster(dat, itemcluster = NULL, conv = 1e-05, 
-    maxiter = 3000, progress = TRUE, b.init = NULL)
+rasch.pairwise.itemcluster(dat, itemcluster = NULL, b.fixed=NULL ,
+    conv = 1e-05, maxiter = 3000, progress = TRUE, b.init = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{dat}{An \eqn{N} times \eqn{I} data frame. 
+  \item{dat}{An \eqn{N \times I} data frame. 
   Missing responses are allowed and must be recoded as \code{NA}.
 }
   \item{itemcluster}{
 Optional integer vector of itemcluster (see Examples). Different
 integers correspond to different item clusters. No item cluster
 is set as default.
+}
+  \item{b.fixed}{
+Matrix for fixing item parameters. The first columns contains the item
+(number or name), the second column the parameter to be fixed.
 }
   \item{conv}{
 Convergence criterion in maximal absolute parameter change
@@ -40,29 +44,38 @@ This is an adaptation of the code of van der Linden and Eggen (1986). Only item 
 of different item clusters are taken into account for item difficulty estimation. 
 Therefore, the problem of locally dependent items within each itemcluster is (almost) 
 eliminated (see Examples below) because contributions of local dependencies
-do not appear in the pairwise likelihood terms.
+do not appear in the pairwise likelihood terms. In detail, the estimation rests
+on observed frequency tables of items \eqn{i} and \eqn{j} and therefore on conditional 
+probabilities 
+\deqn{ \frac{P(X_i = x , X_j=y)}{P(X_i + X_j = 1 )} \quad \mbox{with}
+\quad x,y=0,1 \quad \mbox{and} x+y=1 }
+If for some item pair \eqn{(i,j)} a higher positive (or negative) correlation 
+is expected (i.e. deviation from local dependence), then this pair is
+removed from estimation. Clearly, there is a loss in precision but item
+parameters can be less biased.
 }
 \value{
 Object of class \code{rasch.pairwise} with elements
-%%  If it is a LIST, use
   \item{b}{
     Vector of item difficulties
          }
  \item{item}{
         Data frame of item paramters (\eqn{N}, \eqn{p} and item difficulty)
             }
-%% ...
 }
 \references{
-%    Humphry, S. M. (2011). The role of the unit in physics and psychometrics.
-%    \emph{Measurement: Interdisciplinary Research & Perspective}, \bold{9}, 1-24.
-
     van der Linden, W. J., & Eggen, T. J. H. M. (1986). \emph{An empirical
     Bayes approach to item banking}. Research Report 86-6, University of Twente.
 
     Zwinderman, A. H. (1995). Pairwise parameter estimation in Rasch models.
     \emph{Applied Psychological Measurement}, \bold{19}, 369-375.
 }
+
+%    Humphry, S. M. (2011). The role of the unit in physics and psychometrics.
+%    \emph{Measurement: Interdisciplinary Research & Perspective}, \bold{9}, 1-24.
+
+
+
 \author{
 Alexander Robitzsch
 }
@@ -125,6 +138,7 @@ summary(mod3)
 mod <- rasch.pairwise.itemcluster( dat = dat , itemcluster = itemcluster )
 summary(mod)
 
+\dontrun{
 # Rasch MML estimation
 mod4 <- rasch.mml2( dat )
 summary(mod4)
@@ -167,7 +181,16 @@ round( apply( M1 , 2 , sd ) , 3 )
 ##                     true.b                  b.rasch           b.rasch.copula       
 ##                      1.311                    1.398                    1.310   
 ##      b.rasch.pairwise    b.rasch.pairwise.cluster 
-##                 1.373                       1.310 
+##                 1.373                       1.310   }
+
+# set item parameters of first item to 0 and of second item to -0.7
+b.fixed <- cbind( c(1,2) , c(0,-.7) )
+mod5 <- rasch.pairwise.itemcluster( dat = dat , b.fixed=b.fixed, 
+      itemcluster = itemcluster )
+# difference between estimations 'mod' and 'mod5'
+dfr <- cbind( mod5$item$b , mod$item$b )
+plot( mod5$item$b , mod$item$b , pch=16)
+apply( dfr , 1 , diff )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

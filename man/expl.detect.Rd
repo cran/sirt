@@ -17,7 +17,7 @@ expl.detect(data, score, nclusters, N.est = NULL, seed = 897, bwscale = 1.1)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
-An \eqn{N} times \eqn{I} data frame of dichotomous responses.
+An \eqn{N \times I} data frame of dichotomous responses.
 Missing responses are allowed.
 }
   \item{score}{

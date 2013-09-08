@@ -16,7 +16,7 @@ ccov.np(data, score, bwscale = 1.1, thetagrid = seq(-3, 3, len = 200),
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
-An \eqn{N} times \eqn{I} data frame of dichotomous responses.
+An \eqn{N \times I} data frame of dichotomous responses.
 Missing responses are allowed.
 }
   \item{score}{

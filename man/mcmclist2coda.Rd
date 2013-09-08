@@ -5,7 +5,7 @@
 Write Coda File from an Object of Class \code{mcmc.list}
 }
 \description{
-This function  writes a coda file from an object of class \code{mcmcm.list}.
+This function  writes a coda file from an object of class \code{mcmc.list}.
 Note that only first entry (i.e. one chain) will be processed. 
 }
 \usage{

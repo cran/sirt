@@ -58,6 +58,7 @@
     mtheta <- rowSums( aM * V ) * vtheta
     theta <- rnorm( N , mean=mtheta , sd = sqrt( vtheta ) )
 	theta <- theta - mean( theta )
+	if (param==3){ theta <- theta / sd( theta ) }
     return(theta)
             }
 #############################################
@@ -91,14 +92,15 @@
 			nu.tt <- rowSums( a.testletM[,ind.tt]^2 )
 			vtheta <- 1 / ( 1 / nu.tt + 1 / sigma.testlet[tt]^2 ) 
 			mtheta <- rowSums( a.testletM[,ind.tt] * Zast.tt ) * 1 / nu.tt * vtheta
-					}						
+					}
+		# sample gamma parameter					
 		gamma.testlet[,tt] <- rnorm(N , mean=mtheta , sd = sqrt(vtheta) )
 		gamma.testlet[,tt] <- gamma.testlet[,tt] - mean( gamma.testlet[,tt] )
 		
 #		gamma.testlet[ , 1:TT] <- gamma.testlet[ , 1:TT ] - rowMeans( gamma.testlet[,1:TT] )		
-#		if (param==3){ 
-#			gamma.testlet[,tt] <- gamma.testlet[,tt] / sd( gamma.testlet[,tt] )		
-#					}
+		if (param==3){ 
+     		gamma.testlet[,tt] <- gamma.testlet[,tt] / sd( gamma.testlet[,tt] )		
+					}			
 			}	
     return(gamma.testlet)
             }
@@ -111,20 +113,20 @@
 .draw.itempars.3pno.testlet <- function( theta , Z , I , N , weights ,
 	gamma.testlet , testletgroups , param , TT , a.testletM){
 	# define adjusted Z values
-	gamma.testletM <- gamma.testlet[ , testletgroups ]	
+	gamma.testletM <- gamma.testlet[ , testletgroups ]
+# print( round( a.testletM[1,],2))	
 	if (param==1){ Z <- Z - gamma.testletM }
 	if (param==3){ Z <- Z - a.testletM*gamma.testletM }	
 	if (param==2){ # Z <- Z 
 	#	gamma.testletM <- gamma.testlet[ , testletgroups ]
-	#	theta <- theta + gamma.testletM		
-			theta0 <- theta
-			Z0 <- Z
+#		theta <- theta + gamma.testletM		
+		theta0 <- theta
+		Z0 <- Z
 				}
 	# for parametrization 2, this function must be rewritten
 	# because "the theta" is now item specific
 	# loop over testlets tt=1,...,TT
 	# maybe for TT+1 some adjustment has to be done
-		
 	#''''''''''''''''''''''''''''''''''''''''
 	# parametrization param=1
 	if ( (param==1) | (param==3) ){			
@@ -132,9 +134,11 @@
 		# sampling without weights
 		Xast <- as.matrix( cbind( theta , 1 ) )
 		if ( is.null(weights) ){
-			Sigma <- solve( t(Xast) %*% Xast )
+#			Sigma <- solve( t(Xast) %*% Xast )
+			Sigma <- solve( crossprod(Xast) )
 			# calculate mean
-			mj <- Sigma %*% t(Xast) %*% Z
+#			mj <- Sigma %*% t(Xast) %*% Z
+			mj <- Sigma %*% crossprod( Xast , Z )
 			mj <- as.matrix( t(mj))		    	
 							}
 		#--------------
@@ -151,7 +155,8 @@
 			Xastinv12 <- - Xast12 / Xastdet
 			Sigma <- matrix( c(Xastinv11 , Xastinv12 , Xastinv12 , Xastinv22) , 2 ,2 )
 			# compute t(Xast) %*% Z (weighted)
-			mj <- Sigma %*% t( Xast * weights ) %*% Z
+#			mj <- Sigma %*% t( Xast * weights ) %*% Z
+			mj <- Sigma %*% crossprod( Xast * weights , Z )
 			mj <- as.matrix( t(mj))	
 				}		
 		#--------------							
@@ -180,9 +185,11 @@
 			# sampling without weights
 			Xast <- as.matrix( cbind( theta , 1 ) )
 			if ( is.null(weights) ){
-				Sigma <- solve( t(Xast) %*% Xast )
+#				Sigma <- solve( t(Xast) %*% Xast )
+				Sigma <- solve( crossprod(Xast) )
 				# calculate mean
-				mj <- Sigma %*% t(Xast) %*% Z
+#				mj <- Sigma %*% t(Xast) %*% Z
+				mj <- Sigma %*% crossprod(Xast , Z )
 				mj <- as.matrix( t(mj))		    	
 								}				
 			#--------------
@@ -258,8 +265,13 @@
 			m.ik <- colSums( weights*gamma.testlet[,tt] * Vtt  )
 						}						
 		m.ik <- m.ik * v.ik	
+#print( round( m.ik , 2 ))	
+# print( round( v.ik , 6 ))
+# print( sd( gamma.testlet[,tt] ))
 		a.testlet[ind.tt] <- rnorm( Itt , mean = m.ik , sd = sqrt(v.ik ) )
 				}
+print( round(a.testlet ,2))				
+cat(".....\n")					
     return(a.testlet)
             }
 #############################################

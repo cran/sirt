@@ -3,9 +3,10 @@
 \alias{rowMaxs.sirt}
 \alias{rowMins.sirt}
 \alias{rowCumsums.sirt}
+\alias{colCumsums.sirt}
 \alias{rowIntervalIndex.sirt}
 \alias{rowKSmallest.sirt}
-
+\alias{rowKSmallest2.sirt}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -22,9 +23,12 @@ rowMins.sirt(matr)      # rowwise minimum
 
 rowCumsums.sirt(matr)   # rowwise cumulative sum
 
+colCumsums.sirt(matr)   # columnwise cumulative sum
+
 rowIntervalIndex.sirt(matr,rn) # first index in row nn when matr(nn,zz) > rn(nn)
 
 rowKSmallest.sirt(matr , K , break.ties=TRUE) # k smallest elements in a row
+rowKSmallest2.sirt(matr , K )
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,7 +38,7 @@ A numeric matrix
 \item{rn}{A vector, usually a random number in applications}
 \item{K}{An integer indicating the number of smallest elements to be
 extracted}
-\item{break.ties}{A logical which indicated if ties are randomly
+\item{break.ties}{A logical which indicates if ties are randomly
 	broken. The default is \code{TRUE}.
 }
 }
@@ -43,8 +47,10 @@ extracted}
 The function \code{rowIntervalIndex.sirt} searches for all rows \code{n}
 the first index \code{i} for which \code{matr(n,i) > rn(n)} holds. 
 
-The function \code{rowKSmallest.sirt} extracts the \eqn{K} smallest
-entries in a matrix row.
+The functions \code{rowKSmallest.sirt} and \code{rowKSmallest2.sirt}
+extract the \eqn{K} smallest entries in a matrix row. For small
+numbers of \eqn{K} the function \code{rowKSmallest2.sirt} is
+the faster one.
 }
 
 \value{
@@ -90,7 +96,7 @@ For other matrix functions see the \pkg{matrixStats} package.
 #############################################################################
 set.seed(789)
 N1 <- 10 ; N2 <- 4
-M1 <- matrix( runif(N1*N2) , nrow=N1 , ncol=N2)
+M1 <- round( matrix( runif(N1*N2) , nrow=N1 , ncol=N2) , 1 )
 
 rowMaxs.sirt(M1)      # rowwise maximum
 rowMins.sirt(M1)      # rowwise minimum
@@ -105,6 +111,7 @@ rowIntervalIndex.sirt(matr,rn)
 
 # select the two smallest values
 rowKSmallest.sirt(matr=M1 , K=2)
+rowKSmallest2.sirt(matr=M1 , K=2)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
