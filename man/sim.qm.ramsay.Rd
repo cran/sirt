@@ -29,7 +29,7 @@ Ramsay's quotient model (Ramsay, 1989) is defined by the equation
 	{ K_i + \exp { ( \theta_p / b_i ) } }}
 }
 \value{
-An \eqn{N} times \eqn{I}  data frame with dichotomous item responses.
+An \eqn{N \times I}  data frame with dichotomous item responses.
 }
 \references{
 Ramsay, J. O. (1989). A comparison of three simple test theory models. 

@@ -9,7 +9,8 @@ This function estimates a tetrachoric correlation matrix according to
 the Tucker method (Method 2 of Froemel, 1971).
 }
 \usage{
-tetrachoric2(dat, delta = 0.007, maxit = 1000000, cor.smooth=TRUE)
+tetrachoric2(dat, delta = 0.007, maxit = 1000000, cor.smooth=TRUE,
+   progress=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -30,6 +31,7 @@ be performed to ensure positive definiteness? Choosing
 from the \pkg{psych} package is used for obtaining a positive definite
 tetrachoric correlation matrix.
 }
+\item{progress}{Display progress? Default is \code{TRUE}.}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~

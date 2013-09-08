@@ -42,10 +42,15 @@
 		#******
     f.qk.yi <- 0 * f.yi.qk
     if ( G==1 ){ pi.k <- matrix( pi.k , ncol=1 ) }
-    for ( gg in 1:G){ 
-        f.qk.yi[ group == gg , ] <- f.yi.qk[ group == gg , ] * 
-				outer( rep( 1 , nrow(dat2[ group==gg,]) ) , pi.k[,gg] )
-                    }				
+	if (G>1){
+		for ( gg in 1:G){ 
+			f.qk.yi[ group == gg , ] <- f.yi.qk[ group == gg , ] * 
+					outer( rep( 1 , nrow(dat2[ group==gg,]) ) , pi.k[,gg] )
+						}				
+					}
+	if (G==1){ 
+			f.qk.yi <- f.yi.qk * matrix( pi.k[,1] , nrow=nrow(f.yi.qk) , ncol=nrow(pi.k) , byrow=TRUE ) 
+			}										
     f.qk.yi <- f.qk.yi / rowSums( f.qk.yi )		
 	# expected counts at theta.k
 	if (D==1){ NT <- length(theta.k) } else { NT <- nrow(theta.k ) }
@@ -91,25 +96,39 @@
 		#******
     f.qk.yi <- 0 * f.yi.qk
     if ( G==1 ){ pi.k <- matrix( pi.k , ncol=1 ) }
-    for ( gg in 1:G){ 
-        f.qk.yi[ group == gg , ] <- f.yi.qk[ group == gg , ] * outer( rep( 1 , nrow(dat2[ group==gg,]) ) , pi.k[,gg] )
-                    }				
+	if (G>1){
+		for ( gg in 1:G){ 
+			ind.gg <- group==gg
+			f.qk.yi[ ind.gg , ] <- f.yi.qk[ ind.gg , ] * matrix( pi.k[,gg] , nrow=length(ind.gg) , 
+							ncol=nrow(pi.k) , byrow=TRUE )
+						}
+				}
+	if (G==1){ 
+			f.qk.yi <- f.yi.qk * matrix( pi.k[,1] , nrow=nrow(f.yi.qk) , ncol=nrow(pi.k) , byrow=TRUE ) 
+			}
+					
     f.qk.yi <- f.qk.yi / rowSums( f.qk.yi )		
 	# expected counts at theta.k
     n.k <- matrix( 0 , length(theta.k) , G )
     r.jk <- n.jk <- array( 0 , dim=c( ncol(dat2) , length(theta.k) , G) )
     ll <- rep(0,G)
-    for (gg in 1:G){ 
-        n.k[,gg] <- colSums( dat1[group==gg,2] * f.qk.yi[group==gg,,drop=FALSE]  )
+    for (gg in 1:G){
+		ind.gg <- group==gg	
+        n.k[,gg] <- colSums( dat1[ind.gg,2] * f.qk.yi[ind.gg,,drop=FALSE]  )
         # expected counts at theta.k and item j
-        n.jk[,,gg] <- ( t(dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% 
-					f.qk.yi[group==gg, ]
+#        n.jk[,,gg] <- ( t(dat2.resp[ind.gg,]) * outer( rep(1,I) , dat1[ind.gg,2] ) ) %*% 
+#					f.qk.yi[ ind.gg, ]
+		f.qk.yi.gg <- f.qk.yi[ ind.gg, ]
+		
+		dat1.gg <- matrix( dat1[ind.gg,2] , nrow=I , ncol=sum(ind.gg) , byrow=TRUE )
+		M1 <- ( t(dat2.resp[ind.gg,]) * dat1.gg )
+        n.jk[,,gg] <-  M1 %*% f.qk.yi.gg
+					
         # compute r.jk (expected counts for correct item responses at theta.k for item j
-        r.jk[,,gg] <- ( t(dat2[group==gg,]) * t( dat2.resp[group==gg,]) * 
-						outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[ group==gg,]
+        r.jk[,,gg] <- ( t(dat2[ind.gg,]) * M1 ) %*% f.qk.yi.gg
         # compute log-Likelihood
-        ll[gg] <- sum( dat1[group==gg,2] * log( rowSums( f.yi.qk[group==gg,] * 
-					outer( rep( 1,nrow(f.yi.qk[group==gg,,drop=FALSE]) ) , pi.k[,gg] ) ) ) )
+        ll[gg] <- sum( dat1[ind.gg,2] * log( rowSums( f.yi.qk[ind.gg,] * 
+					outer( rep( 1,nrow(f.yi.qk[ind.gg,,drop=FALSE]) ) , pi.k[,gg] ) ) ) )
 				}
     res <- list( "n.k" = n.k , "n.jk" = n.jk , "r.jk" = r.jk , "f.qk.yi" = f.qk.yi , "pjk" = pjk  ,
             "f.yi.qk" = f.yi.qk , "ll" = sum(ll) )

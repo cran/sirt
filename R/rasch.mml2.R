@@ -29,7 +29,8 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 						Qmatrix = NULL , 
 						variance.fixed = NULL , 
 						mu.fixed = cbind( seq(1,ncol(Qmatrix)) , rep(0,ncol(Qmatrix)) ) ,
-						irtmodel = "raschtype" , npformula = NULL ,  
+						irtmodel = "raschtype" , npformula = NULL , 
+						npirt.monotone=TRUE ,						
 						use.freqpatt = is.null(group) , 
 						... ){
     #******************************************************************************************##
@@ -295,6 +296,20 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 	# Ramsay QM
 #	if ( irtmodel == "ramsay.qm" ){ normal.trait <- TRUE }
 
+	#****
+	# preparations npirt and npformula
+	ICC_model_matrix <- NULL
+	if ( ( npirt) & ( !is.null(npformula) ) ){
+		for (ii in 1:I){		
+					dfr1 <- data.frame( "theta" = theta.k , "y" = 1 , "wgt" = NA )
+					dfr0 <- data.frame( "theta" = theta.k , "y" = 0 , "wgt" = NA )
+					dafr <- data.frame( rbind( dfr0 , dfr1 ) )
+					theta <- dafr$theta.k
+					ICC_model_matrix[[ii]] <- model.matrix( npformula[[ii]] , dafr )	
+						}
+				}
+	
+
 #################################################	
         #--------------------------------#
         # MML Iteration Algorithm        #
@@ -369,7 +384,8 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 				 if (npirt ){
 				    pjk0 <- pjk
 					res <- .mstep.mml.npirt( pjk , r.jk , n.jk , theta.k , 
-									npformula , npmodel, G , I)					
+									npformula , npmodel, G , I , npirt.monotone ,
+									ICC_model_matrix )					
 					pjk <- res$pjk
 					npmodel <- res$npmodel												
 #					pjk <- t( rjk0 / njk0 )
@@ -413,8 +429,8 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 										}
 									}
 				if ( ! is.null(variance.fixed ) ){
-					Sigma.cov[ variance.fixed[,1:2] ] <- variance.fixed[,3]
-					Sigma.cov[ variance.fixed[,c(2,1)] ] <- variance.fixed[,3]		
+					Sigma.cov[ variance.fixed[,1:2,drop=FALSE] ] <- variance.fixed[,3]
+					Sigma.cov[ variance.fixed[,c(2,1),drop=FALSE] ] <- variance.fixed[,3]		
 									}
 				diag(Sigma.cov) <- diag(Sigma.cov) + 10^(-10)
 				pi.k <- matrix( dmvnorm( theta.k , mean = mu , sigma = Sigma.cov )	, ncol=1 )		

@@ -11,12 +11,15 @@ of dichotomous data using the Green & Yang (2009) method.
 The underlying factor model is \eqn{D}-dimensional where
 the dimension \eqn{D} is specified by the argument
 \code{nfactors}. The factor solution is subject to the
-application of the Schmid-Leiman transformation (see Reise,
-Moore & Haviland, 2010).
+application of the Schmid-Leiman transformation (see Reise, 2012; 
+Reise, Bonifay, & Haviland, 2013; Reise, Moore, & Haviland, 2010).
 }
+
 \usage{
 greenyang.reliability(object.tetra, nfactors)
 }
+
+
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{object.tetra}{
@@ -55,6 +58,14 @@ Green, S. B., & Yang, Y. (2009). Reliability of summed item
 scores using structural equation modeling: An alternative to 
 coefficient alpha. \emph{Psychometrika}, \bold{74}, 155-167. 
 
+Reise, S. P. (2012). The rediscovery of bifactor measurement models. 
+\emph{Multivariate Behavioral Research}, \bold{47}, 667-696.
+
+Reise, S. P., Bonifay, W. E., & Haviland, M. G. (2013). 
+Scoring and modeling psychological measures in the presence of 
+multidimensionality. \emph{Journal of Personality Assessment}, 
+\bold{95}, 129-140.
+
 Reise, S. P., Moore, T. M., & Haviland, M. G.  (2010).
 Bifactor models and rotations: Exploring the extent to which 
 multidimensional data yield univocal scale scores, 
@@ -70,9 +81,10 @@ This function needs the \pkg{psych} package.
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%}
+\seealso{
+See \code{\link{f1d.irt}} for estimating the functional unidimensional
+item response model.
+}
 
 \examples{
 \dontrun{

@@ -4,16 +4,17 @@
 # Summary for rasch.copula object                         *
 summary.rasch.copula2 <- function( object , ... ){
     # object      ... object from rasch.copula                #
-        cat("---------------------------------------------------------------------------------------------------------- \n")
+        cat("-----------------------------------------------------------------\n")
 		d1 <- packageDescription("sirt")
 #		cat( paste( d1$Package , d1$Version ,d1$Date ) , "\n" )
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
-		cat( "Date " , paste( object$s2 ) , "\n" )
+		cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
+	    cat("Computation Time:" , print(object$s2 - object$s1), "\n\n")		
         cat("Marginal Maximum Likelihood Estimation \n")
         cat(paste( "Raschtype Copula Model with generalized logistic link function: Estimation of alpha1 and alpha2 \n") )
 		cat("Function rasch.copula2\n")
 		cat("alpha1=",round(object$alpha1,3)," alpha2=" , round(object$alpha2,3) , " \n")
-		cat("---------------------------------------------------------------------------------------------------------- \n")
+		cat("-----------------------------------------------------------------\n")
 		cat( "Deviance = " , round( object$deviance , 2 ) , "\n" )
 		cat( "Number of persons = " , object$ic$n , " (" , nrow(object$pattern) , " Response Patterns)\n" )    
 		cat( "Number of estimated parameters = " , object$ic$np , "\n" )   
@@ -29,7 +30,7 @@ summary.rasch.copula2 <- function( object , ... ){
 		cat( "Trait Distribution (" , length(object$theta.k) , " Knots )\n" , 
 				  "Mean=" , 0 , " SD=" , 1 , "\n") 
 		cat(paste("\nEAP Reliability:" , round( object$EAP.Rel,3)),"\n\n")			  
-		cat("---------------------------------------------------------------------------------------------------------- \n")
+		cat("-----------------------------------------------------------------\n")
 		cat("Item Parameter \n")
 		.pr( object$item , 3 )   
 		cat("\nDependency parameters\n")

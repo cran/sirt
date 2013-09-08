@@ -34,11 +34,7 @@ to the number of itemclusters.
 %%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-An \eqn{N} times \eqn{I} data frame of dichotomous item responses.
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+An \eqn{N \times I} data frame of dichotomous item responses.
 }
 \author{
 Alexander Robitzsch
@@ -47,8 +43,8 @@ Alexander Robitzsch
 The specification of the simulation models follows a marginal interpretation
 of the latent trait. Local dependencies are only interpreted as nuissance
 and not of substantive interest. If local dependencies should be substantively 
-interpreted, a Rasch testlet model seems preferable 
-(see \code{\link{rasch.testlet.glmer}}).
+interpreted, a testlet model seems preferable 
+(see \code{\link{mcmc.3pno.testlet}}).
 }
 
 

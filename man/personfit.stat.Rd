@@ -14,7 +14,7 @@ personfit.stat(dat, abil, b)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
-An \eqn{N} times \eqn{I} data frame of dichotomous item 
+An \eqn{N \times I} data frame of dichotomous item 
 responses
 }
   \item{abil}{

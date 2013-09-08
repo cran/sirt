@@ -1,7 +1,7 @@
 #*******************************************************
 # Summary for smirt object
 summary.smirt <- function( object , ...){
-    cat("---------------------------------------------------------------------------------------------------------- \n")
+	cat("-----------------------------------------------------------------\n")
     d1 <- packageDescription("sirt")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 	cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
@@ -17,7 +17,7 @@ summary.smirt <- function( object , ...){
 		cat( "   " , object$ic$n , "Cases, " , ncol(object$dat2) , "Items, " , # object$G , "Group(s)", "," ,
 				object$D , "Dimension(s)\n")  
 
-    cat("---------------------------------------------------------------------------------------------------------- \n")
+    cat("-----------------------------------------------------------------\n")
 	cat( "Number of iterations =" , object$iter , "\n" )
     cat( "Deviance = " , round( object$deviance , 2 ) , " | " )
     cat( "Log Likelihood = " , round( -object$deviance/2 , 2 ) , "\n" )	
@@ -42,18 +42,18 @@ summary.smirt <- function( object , ...){
     cat( "CAIC = " , round( object$ic$CAIC , 2 ) ," | penalty =" , round( object$ic$CAIC - object$ic$deviance ,2 ) )
 		cat("   | CAIC = -2*LL + [log(n)+1]*p  (consistent AIC)\n\n" )   
 
-	cat("---------------------------------------------------------------------------------------------------------- \n")
+    cat("-----------------------------------------------------------------\n")
 #	cat("Trait Distribution\n")
 #	obji <- object$pi.k
 	cat( "\nM Trait:\n" ) 
-	print( round( object$mean.trait ), 3 )  
+	print( round( object$mean.trait , 3 )  )
 	cat( "\nSD Trait:\n" ) 
 	print( round( object$sd.trait , 3 ) ) 
 	cat( "\nCorrelations Trait: \n" )
 	print( round( object$cor.trait , 3 ) )
 	cat( "\nEAP Reliability:\n" ) 
 	print( round( t(object$EAP.rel ), 3 ) ) 	
-	cat("---------------------------------------------------------------------------------------------------------- \n")
+    cat("-----------------------------------------------------------------\n")
 	cat("Item Parameter \n")
 	obji <- object$item
 	obji[,-1] <- round( obji[,-1] , 3)

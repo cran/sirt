@@ -17,7 +17,7 @@ eigenvalues.manymatrices(Sigma.all, itermax = 10, maxconv = 0.001,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{Sigma.all}{
-An \eqn{N} times \eqn{D^2} matrix containing the \eqn{D^2} entries
+An \eqn{N \times D^2} matrix containing the \eqn{D^2} entries
 of \eqn{N} symmetric matrices
 }
   \item{itermax}{
@@ -35,7 +35,7 @@ Convergence criterion for convergence of eigenvectors
 \value{
 A list with following entries
   \item{lambda}{Matrix with eigenvalues}
-  \item{U}{An \eqn{N} times \eqn{D^2} Matrix of orthonormal eigenvectors}
+  \item{U}{An \eqn{N \times D^2} Matrix of orthonormal eigenvectors}
   \item{logdet}{Vector of logarithm of determinants}
   \item{det}{Vector of determinants}
   \item{Sigma.inv}{Inverse matrix if \code{inverse=TRUE}.}

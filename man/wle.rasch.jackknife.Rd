@@ -15,7 +15,7 @@ wle.rasch.jackknife(dat, b, itemweights = 1 + 0 * b, pid = NULL,
 }
 \arguments{
   \item{dat}{
-An \eqn{N} times \eqn{I} data frame of item responses
+An \eqn{N \times I} data frame of item responses
 }
   \item{b}{
 Vector of item difficulties

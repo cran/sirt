@@ -25,7 +25,7 @@ lsdm(data, Qmatrix, theta=qnorm(seq(5e-04,0.9995,len=100)),
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
-An \eqn{I} times \eqn{L} matrix of dichotomous item responses.
+An \eqn{I \times L} matrix of dichotomous item responses.
 The \code{data} consists of \eqn{I} item response functions
 (parametrically or nonparametrically estimated) which are
 evaluated at a discrete grid of \eqn{L} \code{theta} values 
@@ -33,7 +33,7 @@ evaluated at a discrete grid of \eqn{L} \code{theta} values
 and are specified in the argument \code{theta}.
  }
   \item{Qmatrix}{
-An \eqn{I} times \eqn{K} matrix where the allocation of items 
+An \eqn{I \times K} matrix where the allocation of items 
 to attributes is coded. Values between zero and one are permitted.
 There must not be any items with only zero Q-matrix entries
 in a row.

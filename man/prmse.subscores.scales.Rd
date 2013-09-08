@@ -16,7 +16,7 @@ prmse.subscores.scales(data, subscale)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
-An \eqn{N} times \eqn{I} data frame of item responses
+An \eqn{N \times I} data frame of item responses
 }
   \item{subscale}{
 Vector of labels corresponding to subscales

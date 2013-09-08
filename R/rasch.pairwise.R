@@ -1,21 +1,3 @@
- 
-# 0.01  2012-xx-yy
-
-
-# 0.01  2012-06-23  o initial release
-# 0.02  2012-06-24  o corrected a bug in summary table of rasch.pairwise 
-# 0.03  2012-06-24  o included function rasch.pairwise.itemcluster
-# 0.04  2012-07-14  o worked on a bug:
-#						PL Iter. 1 : max. parm. change =  NA 
-#						Fehler in while (max.change > conv) { : 
-#						Fehlender Wert, wo TRUE/FALSE nötig ist
-
-
-
-# 0.0x  2012-0x-yy
-#-------------------------------------------------------
-
-
 
 
 #---------------------------------------------------------------#
@@ -25,7 +7,9 @@
 # Chapter of G. Fischer: p. 544 ff.                             #
 # pairwise likelihood method
 ##NS export(rasch.pairwise)
-rasch.pairwise <- function( dat , conv = 0.0001 , maxiter = 3000 , progress = TRUE , b.init = NULL ){
+rasch.pairwise <- function( dat , conv = 0.0001 , maxiter = 3000 , 
+	progress = TRUE , b.init = NULL ){
+	#******************************************************#
     # INPUT:                                               #
     # dat      ... data frame                              #
     # conv     ... convergence in epsilon parameters       #
@@ -94,7 +78,7 @@ summary.rasch.pairwise <- function( object , ...){
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 	cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
 	cat("Computation Time:" , print(object$s2 - object$s1), "\n\n")
-    cat("  Function" , object$fct , "\n") 
+    cat(paste0("  Function '" , object$fct , "'") , "\n") 
     cat("------------------------------------------- \n")
     cat("Pairwise likelihood estimation \n")
     cat("Rasch Model \n")
@@ -106,61 +90,3 @@ summary.rasch.pairwise <- function( object , ...){
 
 
 
-
-
-############################################################
-# Pairwise estimation with itemclusters
-##NS export(rasch.pairwise.itemcluster)
-rasch.pairwise.itemcluster <- function( dat , itemcluster = NULL ,
-			conv = .00001 , maxiter = 3000 , progress = TRUE , b.init = NULL){
-    if ( is.null(b.init) ){ 
-#			b.init <- - qlogis( colMeans( dat , na.rm=T ) ) 
-			b.init <- - qlogis( colMeans( dat , na.rm=T ) ) 
-				}
-	s1 <- Sys.time()
-    I <- ncol(dat)
-	dat <- as.matrix(dat)
-	dat0 <- dat
-	dat[ is.na(dat) ] <- 9
-    b <- b.init
-    # create count tables
-    Aij <- t( dat == 0 ) %*% ( dat == 1 )
-    Aji <- t( dat == 1 ) %*% ( dat == 0 )
-	# set some entries to zero for itemclusters
-	clusters <- unique( itemcluster[ itemcluster != 0 ] )
-	CC <- length(clusters)
-	for (cc in clusters){
-		icc <- which( itemcluster == cc )
-		Aji[icc,icc] <- Aij[icc,icc] <- 0
-				}
-    nij <- Aij + Aji
-    eps0 <- eps <- exp(  b )
-    max.change <- 10
-    iter <- 1
-    while( max.change > conv ){
-        b0 <- b
-		eps0 <- eps
-#		g1 <- sum( nij[ii,] * ( eps0[ii] + eps0 )^(-1) )	
-		m1 <- matrix( eps0 , I , I , byrow=TRUE ) + matrix( eps0 , I , I ) 
-		g1 <- rowSums( nij / m1 )
-		eps <- rowSums( Aij ) / g1 
-        b <-  log(  eps )
-        max.change <- max(abs( b - b0 ))
-        if ( progress ){
-                cat( "PL Iter." , iter , ": max. parm. change = " , 
-                        round( max.change , 6 ) , "\n")
-                flush.console()
-                    } 
-        iter <- iter + 1               
-                }				
-        item <- data.frame( "N" = colSums(1 -is.na(dat0)) , "p" = colMeans( dat0 , na.rm=T ) , 
-                        "b" =  log(eps) )
-		if ( is.null(itemcluster) ){ itemcluster <- rep(0,I) }
-		item$itemcluster <- itemcluster
-		s2 <- Sys.time()									
-        res <- list( "b" = b , "eps" = eps , "iter" = iter , "conv" = conv , "dat" = dat0 ,"item" = item ,
-			"fct" = "rasch.pairwise.itemcluster" , "s1"=s1 , "s2"=s2  ) 
-        class(res) <- "rasch.pairwise"
-        return(res)
-       }
-#-------------------------------------------------------------------

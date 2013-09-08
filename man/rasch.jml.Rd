@@ -20,7 +20,7 @@ rasch.jml(dat, method = "MLE", b.init = NULL, constraints = NULL, weights = NULL
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{dat}{An \eqn{N} times \eqn{I} data frame of dichotomous item responses 
+  \item{dat}{An \eqn{N \times I} data frame of dichotomous item responses 
   	where \eqn{N} indicates the number of persons
 and \eqn{I} the number of items
 }

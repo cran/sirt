@@ -54,8 +54,9 @@ summary(dat)
 library(TAM); library(eRm); library(CDM); library(mirt);
 library(ltm); library(mokken)
 
-#*************
+#****************
 # Model 1: Partial Credit Model
+#****************
 
 # M1a: rm.facets (in sirt)
 m1a <- rm.facets( dat )
@@ -86,10 +87,11 @@ m1f <- mirt( dat , model=1 , itemtype="1PL" , verbose=TRUE)
 summary(m1f)
 coef(m1f)
 
-#*************
+#****************
 # Model 2: Generalized partial credit model
+#****************
 
-# M2a: rm.facets (sirt)
+# M2a: rm.facets (in sirt)
 m2a <- rm.facets( dat , est.a.item=TRUE)
 summary(m2a)
 # Note that in rm.facets the mean of item discriminations is fixed to 1
@@ -113,8 +115,9 @@ m2e <- mirt( dat , model=1 ,  verbose=TRUE)
 summary(m2e)
 coef(m2e)
 
-#*************
+#****************
 # Model 3: Nonparametric Item Response Model
+#****************
 
 # M3a: ISOP and ADISOP model - isop.poly (in sirt)
 m3a <- isop.poly( dat )

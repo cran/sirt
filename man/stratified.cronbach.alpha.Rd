@@ -10,17 +10,19 @@ for composite scales (Cronbach, Schoenemann & McKie, 1965;
 Meyer, 2010).
 }
 \usage{
-stratified.cronbach.alpha(data, itemstrata)
+stratified.cronbach.alpha(data, itemstrata=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
-An \eqn{N} times \eqn{I} data frame
+An \eqn{N \times I} data frame
 }
   \item{itemstrata}{
 A matrix with two columns defining the item stratification.
 The first column contains the item names, the second column
 the item stratification label (these can be integers).
+The default \eqn{NULL} does only compute Cronbach's Alpha
+for the whole scale.
 }
 }
 %\details{
@@ -59,6 +61,9 @@ data( data.read )
 dat <- data.read
 I <- ncol(dat)
 
+# apply function without defining item strata
+stratified.cronbach.alpha( data.read  )
+
 # define item strata
 itemstrata <- cbind( colnames(dat) , substring( colnames(dat) , 1 ,1 ) )
 stratified.cronbach.alpha( data.read , itemstrata=itemstrata )
@@ -67,6 +72,23 @@ stratified.cronbach.alpha( data.read , itemstrata=itemstrata )
 ## 2     A  4 0.545    2.616   1.381               NA
 ## 3     B  4 0.381    2.811   1.059               NA
 ## 4     C  4 0.640    3.253   1.107               NA
+
+\dontrun{
+#**************************
+# reliability analysis in psych package
+library(psych)
+# Cromnbach's alpha and item discriminations
+alpha( dat )
+# McDonald's omega
+omega(dat , nfactors=1)     # 1 factor
+##   Alpha:                 0.69 
+##   Omega Total            0.69 
+##  => Note that alpha in this function is the standardized Cronbach's
+##     alpha, i.e. alpha computed for standardized variables.
+omega(dat , nfactors=2)     # 2 factors
+##   Omega Total            0.72 
+omega(dat , nfactors=3)     # 3 factors  
+##   Omega Total            0.74 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

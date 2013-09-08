@@ -15,7 +15,7 @@ wle.rasch(dat, dat.resp = NULL, b, itemweights = 1 + 0 * b,
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{dat}{ An \eqn{N} times \eqn{I} data frame of 
+  \item{dat}{ An \eqn{N \times I} data frame of 
   dichotomous item responses
 }
   \item{dat.resp}{

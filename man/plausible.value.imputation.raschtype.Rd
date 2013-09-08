@@ -19,7 +19,7 @@ plausible.value.imputation.raschtype(data=NULL, f.yi.qk=NULL, X,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
-An \eqn{N} times \eqn{I} data frame of dichotomous responses
+An \eqn{N \times I} data frame of dichotomous responses
 }
 \item{f.yi.qk}{
 An optional matrix which contains the individual likelihood.

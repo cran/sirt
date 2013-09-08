@@ -124,6 +124,22 @@ marginal.truescore.reliability( b=mod$item$b )
 mod <- rasch.mml2( data.read , est.a=1:12 )
 marginal.truescore.reliability( b=mod$item$b , a=mod$item$a)
 ##   Reliability= 0.696 
+
+\dontrun{
+# compare results with Cronbach's alpha and McDonald's omega
+# posing a 'wrong model' for normally distributed data
+library(psych)
+omega(dat , nfactors=1)     # 1 factor
+##  Omega_h for 1 factor is not meaningful, just omega_t
+##   Omega 
+##   Call: omega(m = dat, nfactors = 1)
+##   Alpha:                 0.69 
+##   G.6:                   0.7 
+##   Omega Hierarchical:    0.66 
+##   Omega H asymptotic:    0.95 
+##   Omega Total            0.69 
+
+##! Note that alpha in psych is the standardized one. } 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

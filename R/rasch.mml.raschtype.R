@@ -285,7 +285,8 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 		XX <- outer( rep(1,length(theta)) , fixed.a ) * XX
 							}
 	if ( ! is.null(Qmatrix) ){ 							
-		XX0 <- as.matrix(theta) %*% t(Qmatrix)
+##		XX0 <- as.matrix(theta) %*% t(Qmatrix)
+		XX0 <- tcrossprod( as.matrix(theta) , Qmatrix )
 		XX <- XX0 - outer( rep(1,nrow(theta)) , b )
 		XX <- as.vector(XX)
 		XX <- outer( rep(1,nrow(theta)) , fixed.a ) * XX		
@@ -369,31 +370,32 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
 #########################################################################
 
 
-#*******************************************************
-# plot rasch.mml object                           
-##NS S3method(plot,rasch.mml)      
-plot.rasch.mml <- function( object , plottitle = "Person-Item-Map" , itemcex = 1 ){
-    plot( object$trait.distr[,1] , object$trait.distr[,2] , xlab= "Trait Distribution & Item Difficulties" ,
-                    ylab = "Empirical Trait Distribution" , type="n" , ylim= c( -.03 , max(object$trait.distr[,2])*1.3 ) ,
-                    main= plottitle , axes= F )
-    abline( h = 0 , col="gray" )
-    K <- nrow(object$trait.distr)
-    for (k in 1:K){  lines( rep( object$trait.distr[k,1] , 2) , c( 0 , object$trait.distr[k,2] ) , col="blue" , lwd=3 ) }
-    I <- nrow(object$item)
-    if (!is.null(object$fixed.a)){ object$fixed.a <- 1 + 0 * ( 1:( nrow(object$item)) ) }
-    points( object$mean.trait , -.015 , pch=17 , col=3 , cex= 1.5 )
-    lines( object$mean.trait + object$sd.trait *c(-1,1) , rep( -.015 , 2 ) , col=3 , lwd=2 )
-    points( object$item$itemdiff * object$fixed.a , rep( -.015 , I ) + runif( I , -.005 , .005 ) , cex= itemcex , col="red")
-    abline( h = -0.015 , col="gray" )
-    lines( rep(0,2) , c( -.02 , -.01) , col="gray" , lwd=2)
-    axis( side = 1 )
-    axis( side = 2 )
-    axis( side = 4 )
-    # density function
-#    xgrid <- seq( min(object$trait.distr[,1]) , max(object$trait.distr[,1]) , 0.1 )
-#    lines( xgrid , dnorm( xgrid , mean = object$mean.trait , sd = object$sd.trait ) , col=2 , lwd = 2 )
-    }
-#******************************************************
+##     #*******************************************************
+##     # plot rasch.mml object                           
+##     ##NS S3method(plot,rasch.mml)      
+##     plot.rasch.mml <- function( object , plottitle = "Person-Item-Map" , itemcex = 1 ){
+##         plot( object$trait.distr[,1] , object$trait.distr[,2] , xlab= "Trait Distribution & Item Difficulties" ,
+##                         ylab = "Empirical Trait Distribution" , type="n" , ylim= c( -.03 , max(object$trait.distr[,2])*1.3 ) ,
+##                         main= plottitle , axes= F )
+##         abline( h = 0 , col="gray" )
+##         K <- nrow(object$trait.distr)
+##         for (k in 1:K){  lines( rep( object$trait.distr[k,1] , 2) , c( 0 , object$trait.distr[k,2] ) , col="blue" , lwd=3 ) }
+##         I <- nrow(object$item)
+##         if (!is.null(object$fixed.a)){ object$fixed.a <- 1 + 0 * ( 1:( nrow(object$item)) ) }
+##         points( object$mean.trait , -.015 , pch=17 , col=3 , cex= 1.5 )
+##         lines( object$mean.trait + object$sd.trait *c(-1,1) , rep( -.015 , 2 ) , col=3 , lwd=2 )
+##         points( object$item$itemdiff * object$fixed.a , rep( -.015 , I ) + runif( I , -.005 , .005 ) , cex= itemcex , col="red")
+##         abline( h = -0.015 , col="gray" )
+##         lines( rep(0,2) , c( -.02 , -.01) , col="gray" , lwd=2)
+##         axis( side = 1 )
+##         axis( side = 2 )
+##         axis( side = 4 )
+##         # density function
+##     #    xgrid <- seq( min(object$trait.distr[,1]) , max(object$trait.distr[,1]) , 0.1 )
+##     #    lines( xgrid , dnorm( xgrid , mean = object$mean.trait , sd = object$sd.trait ) , col=2 , lwd = 2 )
+##         }
+##     #******************************************************
+
 
 
 #*********************************************************************		

@@ -30,7 +30,7 @@ R2noharm(dat, model.type, dimensions = NULL, guesses = rep(0, ncol(dat)),
 
 \arguments{
   \item{dat}{
-An \eqn{N} times \eqn{I} data frame of item responses for \eqn{N} subjects
+An \eqn{N \times I} data frame of item responses for \eqn{N} subjects
 and \eqn{I} items
 }
   \item{model.type}{
@@ -48,16 +48,16 @@ The default is \code{rep(0,ncol(dat))}.
 Local path where the NOHARM 4 command line 64-bit version is being located.
 }
   \item{F.pattern}{
-Pattern matrix for \eqn{F} (\eqn{I} times \eqn{D})
+Pattern matrix for \eqn{F} (\eqn{I \times D})
 }
   \item{F.init}{
-Initial matrix for \eqn{F} (\eqn{I} times \eqn{D})
+Initial matrix for \eqn{F} (\eqn{I \times D})
 }
   \item{P.pattern}{
-Pattern matrix for \eqn{P} (\eqn{D} times \eqn{D})
+Pattern matrix for \eqn{P} (\eqn{D \times D})
 }
   \item{P.init}{
-Initial matrix for \eqn{P} (\eqn{D} times \eqn{D})
+Initial matrix for \eqn{P} (\eqn{D \times D})
 }
   \item{digits.pm}{
 Number of digits after decimal separator which are used for
@@ -152,8 +152,8 @@ A list with following entries
 }
 \references{
 Fraser, C., & McDonald, R. P. (1988). NOHARM: Least squares item factor analysis. 
-\emph{Multivariate Behavioral Research}, \bold{23}, 267-269.	
-	
+\emph{Multivariate Behavioral Research}, \bold{23}, 267-269.
+
 Fraser, C., & McDonald, R. P. (2012). \emph{NOHARM 4 Manual}. 
 \url{http://noharm.niagararesearch.ca/nh4man/nhman.html}
 
@@ -193,9 +193,9 @@ I <- ncol(dat) # number of items
 # locate noharm.path
 noharm.path <- "c:/NOHARM"
 
-#.............................................
-# EXAMPLE 1
-# 1-dimensional Rasch model (1-PL model)
+#############################################################################
+# EXAMPLE 1: 1-dimensional Rasch model (1-PL model)
+#############################################################################
 
 # estimate one factor variance
 P.pattern <- matrix( 1 , ncol=1 , nrow=1 )
@@ -216,9 +216,10 @@ summary(jmod, logfile="ex1__1dim_1pl__JACKKNIFE")
 # extract factor scores
 emod <- R2noharm.EAP(mod)
 
-#.............................................
-# EXAMPLE 2
-# 1-dimensional 2PL Model
+#############################################################################
+# EXAMPLE 2: 1-dimensional 2PL Model
+#############################################################################
+
 # set trait variance equal to 1
 P.pattern <- matrix( 0 , ncol=1 , nrow=1 )
 P.init <- 1+0*P.pattern
@@ -235,9 +236,9 @@ summary(mod)
 jmod <- R2noharm.jackknife( mod , jackunits = 20 )
 summary(jmod)
 
-#.............................................
-# EXAMPLE 3
-# 1-dimensional 3PL Model with fixed guessing parameters
+#############################################################################
+# EXAMPLE 3: 1-dimensional 3PL Model with fixed guessing parameters
+#############################################################################
 
 # set trait variance equal to 1
 P.pattern <- matrix( 0 , ncol=1 , nrow=1 )
@@ -256,9 +257,9 @@ summary(mod)
 jmod <- R2noharm.jackknife( mod , jackunits = 20 )
 summary(jmod)
 
-#.............................................
-# EXAMPLE 4
-# 3-dimensional Rasch model
+#############################################################################
+# EXAMPLE 4: 3-dimensional Rasch model
+#############################################################################
 
 # estimate one factor variance
 P.pattern <- matrix( 1 , ncol=3 , nrow=3 )
@@ -284,9 +285,9 @@ summary(jmod)
 # extract factor scores
 emod <- R2noharm.EAP(mod)
 
-#.............................................
-# EXAMPLE 5
-# 3-dimensional 2PL model
+#############################################################################
+# EXAMPLE 5: 3-dimensional 2PL model
+#############################################################################
 
 # estimate one factor variance
 P.pattern <- matrix( 1 , ncol=3 , nrow=3 )
@@ -309,9 +310,9 @@ summary(mod)
 jmod <- R2noharm.jackknife( mod , jackunits = seq( 1:50 , each = 4 ) )
 summary(jmod)
 
-#.............................................
-# EXAMPLE 6
-# Exploratory Factor Analysis with 3 factors
+#############################################################################
+# EXAMPLE 6: Exploratory Factor Analysis with 3 factors
+#############################################################################
 
 mod <- R2noharm( dat = dat , model.type="EFA" ,  dimensions = 3 , 
                writename = "ex6__3dim_efa" , noharm.path = noharm.path ,

@@ -19,7 +19,7 @@ latent.regression.em.raschtype(data=NULL, f.yi.qk=NULL , X ,
     maxiter=300 )
 }
 \arguments{
-  \item{data}{ An \eqn{N} times \eqn{I} data frame of dichotomous item responses.
+  \item{data}{ An \eqn{N \times I} data frame of dichotomous item responses.
   If no data frame is supplied, then a user can input the individual
   likelihood \code{f.yi.qk}.
 }
@@ -29,7 +29,7 @@ latent.regression.em.raschtype(data=NULL, f.yi.qk=NULL , X ,
   estimation of the latent regression model independent of the
   parameters of the used item response model.
 	}
-  \item{X}{An \eqn{N} times \eqn{K} matrix of \eqn{K} covariates in the latent 
+  \item{X}{An \eqn{N \times K} matrix of \eqn{K} covariates in the latent 
     regression model. Note that the intercept (i.e. a vector of ones) 
     must be included in \code{X}.
 }

@@ -8,7 +8,7 @@ Response Model
 }
 \description{
 This function estimates the noncompensatory and compensatory multidimensional
-item response model (Reckase, 2009) for dichotomous data.
+item response model (Bolt & Lall, 2003; Reckase, 2009) for dichotomous data.
 }
 \usage{
 smirt(dat, Qmatrix, irtmodel="noncomp" , est.b = NULL, est.a = NULL, 

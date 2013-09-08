@@ -1,16 +1,5 @@
  
 
-# 0.01  2012-06-23  o initial release
-# 0.02  2012-07-07	o fixed a bug in testlet.yen.q3 when calculating
-#					  the Q3 correlation matrix
-# 0.03  2012-09-26  o work on speed improvements
-#					o output of Q3 statistics
-
-# 0.01  2012-xx-yy
-#-------------------------------------------------------
-
-
-
 
 
 #******************************************************************************************************
@@ -35,29 +24,13 @@ yen.q3 <- function( dat , theta , b , progress = TRUE ){
         colnames(q3.matr) <- rownames(q3.matr) <- colnames(dat)
 		q3.matr <- cor( residual , use = "pairwise.complete.obs")		
 		nares <- 1 - is.na(residual)
-		NIP <- t(nares) %*% nares
+#		NIP <- t(nares) %*% nares
+		NIP <- crossprod(nares)
 		itempairs <- t( combn( I , 2 ) )
 		q3.long[,3] <- q3.matr[ itempairs ]
 		q3.long[,4] <- NIP[ itempairs ]
 		q3.long[,1] <- colnames(q3.matr)[ itempairs[,1] ]
 		q3.long[,2] <- colnames(q3.matr)[ itempairs[,2] ]			
-#        v <- 1
-#        for (ii in 1:(I-1)){
-#		for (jj in (ii+1):I){
-#            r.ii.jj <- na.omit( residual[ ,c(ii,jj) ] )
-#            if (nrow(r.ii.jj) > 0 ){ 
-#                q3.long[ v , 3] <- q3.matr[ii,jj] <- q3.matr[jj,ii] <- cor( r.ii.jj )[1,2]
-#                q3.long[v,1] <- colnames(dat)[ii]
-#                q3.long[v,2] <- colnames(dat)[jj]
-#                q3.long[v,4] <- nrow( r.ii.jj )
-#                v <- v + 1
-#                    }
-#                    } 
-#					if (progress){ if ( ii %% 15 == 0) { cat(" " , ii , " \n" ) } else { cat( " " , ii ) } 
-#                        flush.console()
-#                }
-#            }
-#        cat("\n" ) 
         q3.long <- as.data.frame( q3.long )
         q3.long[,3] <- as.numeric( paste( q3.long[,3] ))
         q3.long <- q3.long[ order( q3.long[,3] ) , ]

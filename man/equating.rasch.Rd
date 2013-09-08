@@ -27,7 +27,7 @@ difficulties
   \item{theta}{
 Vector of theta values at which the linking functions
 should be evaluated. If a weighting according to a prespecified normal 
-distribution \eqn{N/\mu,\sigma^2} is aimed, then choose
+distribution \eqn{N( \mu,\sigma^2)} is aimed, then choose
 \code{theta=qnorm( seq(.001 , .999 , len=100) , mean=mu, sd=sigma)}
 }
   \item{alpha1}{
@@ -68,6 +68,8 @@ Alexander Robitzsch
 \seealso{
 For linking under more general item response models
 see the \pkg{plink} package.
+
+For linking several studies see \code{\link{linking.haberman}}.
 }
 \examples{
 #############################################################################

@@ -22,6 +22,13 @@ This data set contains ratings for 135 students from
   }
 }
 
+\source{
+Data from a 2009 Austrian survey of national educational
+standards for 8th graders in German language writing.
+Variables \code{k1} to \code{k5} are several rating
+criteria of writing compentency.
+}
+
 %\examples{
 %# include an example of rating data here	
 %}	

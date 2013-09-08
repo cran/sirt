@@ -14,7 +14,7 @@ yen.q3(dat, theta, b, progress=TRUE)
 }
 \arguments{
   \item{dat}{
-An \eqn{N} times \eqn{I} data frame of dichotomous item responses
+An \eqn{N \times I} data frame of dichotomous item responses
 }
   \item{theta}{
 Vector of length \eqn{N} of person parameter estimates (e.g. obtained from 
@@ -32,12 +32,12 @@ Should iteration progress be displayed?
 %}
 \value{
 A list with following entries
-\item{q3.matrix}{An \eqn{I} times \eqn{I} matrix of \eqn{Q_3} statistics}
+\item{q3.matrix}{An \eqn{I \times I} matrix of \eqn{Q_3} statistics}
 \item{q3.long}{Just the \code{q3.matrix} in long matrix format where every row
                   corresponds to an item pair}
-\item{expected}{An \eqn{N} times \eqn{I} matrix of expected probabilities 
+\item{expected}{An \eqn{N \times I} matrix of expected probabilities 
 	by the Rasch model}
-\item{residual}{An \eqn{N} times \eqn{I} matrix of residuals obtained after 
+\item{residual}{An \eqn{N \times I} matrix of residuals obtained after 
 	fitting the Rasch model}
 \item{Q3.stat}{Vector with descriptive statistics of \eqn{Q_3}}
 %% ...
@@ -59,10 +59,10 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-For the estimation of average the \eqn{Q_3} statistic within testlets see 
+For the estimation of the average \eqn{Q_3} statistic within testlets see 
 \code{\link{testlet.yen.q3}}. 
 
-For modelling testlet effects see \code{\link{rasch.testlet.glmer}}.
+For modelling testlet effects see \code{\link{mcmc.3pno.testlet}}.
 
 For handling local dependencies in IRT models see 
 \code{\link{rasch.copula2}}, \code{\link{rasch.pml3}} or \cr

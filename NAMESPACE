@@ -33,7 +33,6 @@ export(
     rasch.pml2 , 
     rasch.pml3 , 
     rasch.prox,
-    rasch.testlet.glmer,
     sim.rasch.dep,
     stratified.cronbach.alpha,
     wle.rasch,
@@ -72,10 +71,15 @@ export(
     rowMaxs.sirt ,
     rowMins.sirt ,
     rowCumsums.sirt ,
+    colCumsums.sirt ,
     rowIntervalIndex.sirt ,
     rowKSmallest.sirt ,
+    rowKSmallest2.sirt ,
     monoreg.rowwise ,
-    monoreg.colwise
+    monoreg.colwise ,
+    md.pattern.sirt ,
+    f1d.irt ,
+    linking.haberman
         )
 
 
@@ -104,6 +108,7 @@ S3method(summary,isop)
 S3method(plot,np.dich)
 S3method(plot,mcmc.sirt)
 S3method(plot,isop)
+S3method(plot,rasch.mml)
 
 export(   
     R2noharm,
@@ -116,13 +121,22 @@ S3method(summary,R2noharm)
 S3method(summary,R2noharm.jackknife)
 
 
-# imports
+# imports Depends packages
 import(mvtnorm)
-import(sfsmisc)
+import(MASS)
+import(coda)
+# import(lme4)
+#importFrom(lme4,lmer)
+#importFrom(lme4,ranef)
+#importFrom(lme4,VarCorr)
+
+
+importFrom( sfsmisc , QUnif  )
 import(TAM)
 import(CDM)
 import(combinat)
 import(ic.infer)
 import(sm)
 import(psych)
-import(pbivnorm)
+importFrom(pbivnorm,pbivnorm)
+import(gregmisc)
