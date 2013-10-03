@@ -4,16 +4,16 @@
 # Summary for rasch.copula object                         *
 ##NS S3method(summary,rasch.pml)
 summary.rasch.pml <- function( object , ...){
-    cat("---------------------------------------------------------------------------------------------------------- \n")	
+    cat("-----------------------------------------------------------------\n")
     d1 <- packageDescription("sirt")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 	cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
 	cat("Computation Time:" , print(object$s2 - object$s1), "\n\n")
     cat("  Function" , object$fct , " \n")
-    cat("---------------------------------------------------------------------------------------------------------- \n")
+    cat("-----------------------------------------------------------------\n")
     cat("Pairwise Marginal Likelihood Estimation \n")
 	cat(paste("Link function:" , object$link , "\n"))
-    cat("---------------------------------------------------------------------------------------------------------- \n")
+    cat("-----------------------------------------------------------------\n")
     cat( "Pseudolikelihood objective function = " , round( object$ic$deviance , 2 ) , "\n" )
     cat( "Number of persons = " , object$ic$n , "\n" )    
     cat( "Number of estimated parameters = " , object$ic$np , "\n" )    
@@ -27,25 +27,25 @@ summary.rasch.pml <- function( object , ...){
 #    cat( "Trait Distribution (" , length(object$theta.k) , " Knots )\n" , 
 #              "Mean=" , 0 , " SD=" , 1 , "\n") 
 
-    cat("---------------------------------------------------------------------------------------------------------- \n")
+    cat("-----------------------------------------------------------------\n")
 	# print item summary
 	cat("Item Parameter Summary\n")
 	cat( " Estimated" , length(object$bG)+length(object$aG) , "Item Parameters\n\n")
 	.pr( object$item , digits=3 )		# print item statistics
 	#....................................................................
 	# print Trait parameter summary
-    cat("---------------------------------------------------------------------------------------------------------- \n")	
+    cat("-----------------------------------------------------------------\n")	
 	cat("Trait SD (Probit Link): ")
     cat( round(object$sigma , 3 ) , "\n")
 	cat("Trait SD (Logit Link) : ")
     cat( round( object$item$sigma[1] * 1.701 , 3 ) , "\n")		
 #	cat("\nCorrelation Matrix\n")
 #    print( cov2cor(object$sigma) , digits=3 )
-   cat("---------------------------------------------------------------------------------------------------------- \n")
+    cat("-----------------------------------------------------------------\n")
 	
 	if ( object$est.corrs){
-	    cat("---------------------------------------------------------------------------------------------------------- \n")
-		cat("Residual Correlation Parameter Summary\n")
+    cat("-----------------------------------------------------------------\n")
+	cat("Residual Correlation Parameter Summary\n")
 		cat( " Estimated" , length(object$epsG) , "Residual Correlation Parameters\n\n")
 	   .pr( object$eps.corrM , digits=3 )		# print item statistics
 			}		

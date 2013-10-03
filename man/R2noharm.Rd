@@ -15,10 +15,10 @@ the rules of the NOHARM manual (see Fraser & McDonald, 2012).
 
 
 \usage{
-R2noharm(dat, model.type, dimensions = NULL, guesses = rep(0, ncol(dat)), 
-	    noharm.path, F.pattern = NULL, F.init = NULL, P.pattern = NULL, 
-	    P.init = NULL, digits.pm = 4, writename = NULL, display.fit = 5, 
-	    dec = ".", display = TRUE)
+R2noharm(dat=NULL,pm=NULL , n=NULL , model.type, weights=NULL , dimensions = NULL, 
+      guesses = NULL , noharm.path, F.pattern = NULL, F.init = NULL, 
+      P.pattern = NULL, P.init = NULL, digits.pm = 4, writename = NULL, 
+      display.fit = 5,  dec = ".", display = TRUE)
 
 \method{summary}{R2noharm}(object, logfile=NULL , \dots)	    
 }
@@ -33,16 +33,21 @@ R2noharm(dat, model.type, dimensions = NULL, guesses = rep(0, ncol(dat)),
 An \eqn{N \times I} data frame of item responses for \eqn{N} subjects
 and \eqn{I} items
 }
+\item{pm}{A matrix or a vector containing product-moment correlations}
+\item{n}{Sample size. This value must only be included if \code{pm} is
+provided.}
   \item{model.type}{
 Can be \code{"EFA"} (exploratory factor analysis) or \code{"CFA"}
 (confirmatory factor analysis).
 }
+\item{weights}{Optional vector of student weights}
   \item{dimensions}{
 Number of dimensions in exploratory factor analysis
 }
   \item{guesses}{
-Fixed vector of guessing parameters of length \eqn{I}. 
-The default is \code{rep(0,ncol(dat))}.
+An optional vector of fixed guessing parameters of length \eqn{I}. 
+In case of the default \code{NULL}, all guessing parameters are set
+to zero.
 }
   \item{noharm.path}{
 Local path where the NOHARM 4 command line 64-bit version is being located.
@@ -117,6 +122,7 @@ A list with following entries
 \item{rmsr}{RMSR statistic}
 \item{N.itempair}{Sample sizes of pairwise item observations}
 \item{pm}{Product moment matrix}
+\item{weights}{Used student weights}
 \item{guesses}{Fixed guessing parameters}
 \item{residuals}{Residual covariance matrix}
 \item{final.constants}{Vector of final constants}
@@ -166,8 +172,8 @@ New York: Springer.
 Alexander Robitzsch
 }
 \note{
-In general, \code{dec=","} corresponds to computers with European
-systems and \code{dec="."} to computers with American systems.
+Possible errors are often due to wrong \code{dec}
+specification.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -185,17 +191,20 @@ For estimating standard errors see \code{\link{R2noharm.jackknife}}.
 
 \examples{
 \dontrun{
+#############################################################################
+# EXAMPLE 1: Data data.noharm18 with 18 items
+#############################################################################
+
 # load data
-data( data.noharm )
-dat <- data.noharm
+data( data.noharm18 )
+dat <- data.noharm18
 I <- ncol(dat) # number of items
 
 # locate noharm.path
 noharm.path <- "c:/NOHARM"
 
-#############################################################################
-# EXAMPLE 1: 1-dimensional Rasch model (1-PL model)
-#############################################################################
+#****************************************
+# Model 1: 1-dimensional Rasch model (1-PL model)
 
 # estimate one factor variance
 P.pattern <- matrix( 1 , ncol=1 , nrow=1 )
@@ -213,12 +222,21 @@ summary(mod , logfile="ex1__1dim_1pl__SUMMARY")
 # jackknife
 jmod <- R2noharm.jackknife( mod , jackunits = 20 )
 summary(jmod, logfile="ex1__1dim_1pl__JACKKNIFE")
-# extract factor scores
+# compute factor scores
 emod <- R2noharm.EAP(mod)
 
-#############################################################################
-# EXAMPLE 2: 1-dimensional 2PL Model
-#############################################################################
+#*****-----
+# Model 1b: Include student weights in estimation
+N <- nrow(dat)
+weights <- runif( N , 1 , 5 )
+mod1b <- R2noharm( dat = dat , model.type="CFA" ,  weights=weights ,  
+        F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+        P.init = P.init , writename = "ex1__1dim_1pl_w" , 
+        noharm.path = noharm.path , dec ="," )
+summary(mod1b)
+
+#****************************************
+# Model 2: 1-dimensional 2PL Model
 
 # set trait variance equal to 1
 P.pattern <- matrix( 0 , ncol=1 , nrow=1 )
@@ -228,17 +246,16 @@ F.pattern <- matrix( 1 , nrow=I , ncol=1 )
 F.init <- 1 + 0*F.pattern       
 
 mod <- R2noharm( dat = dat , model.type="CFA" ,  
-		F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , writename = "ex2__1dim_2pl" , 
-		noharm.path = noharm.path , dec = "," )
+          F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+          P.init = P.init , writename = "ex2__1dim_2pl" , 
+          noharm.path = noharm.path , dec = "," )
 
 summary(mod)
 jmod <- R2noharm.jackknife( mod , jackunits = 20 )
 summary(jmod)
 
-#############################################################################
-# EXAMPLE 3: 1-dimensional 3PL Model with fixed guessing parameters
-#############################################################################
+#****************************************
+# Model 3: 1-dimensional 3PL Model with fixed guessing parameters
 
 # set trait variance equal to 1
 P.pattern <- matrix( 0 , ncol=1 , nrow=1 )
@@ -250,16 +267,15 @@ F.init <- 1 + 0*F.pattern       #
 guesses <- rep( .1 , I )
 
 mod <- R2noharm( dat = dat , model.type="CFA" ,  
-		F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , guesses = guesses , 
-		writename = "ex3__1dim_3pl" , noharm.path = noharm.path , dec=","  )
+          F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+          P.init = P.init , guesses = guesses , 
+          writename = "ex3__1dim_3pl" , noharm.path = noharm.path , dec=","  )
 summary(mod)
 jmod <- R2noharm.jackknife( mod , jackunits = 20 )
 summary(jmod)
 
-#############################################################################
-# EXAMPLE 4: 3-dimensional Rasch model
-#############################################################################
+#****************************************
+# Model 4: 3-dimensional Rasch model
 
 # estimate one factor variance
 P.pattern <- matrix( 1 , ncol=3 , nrow=3 )
@@ -270,12 +286,11 @@ F.init <- F.pattern <- matrix( 0 , nrow=I , ncol=3 )
 F.init[1:6,1] <- 1
 F.init[7:12,2] <- 1
 F.init[13:18,3] <- 1
-F.init
 
 mod <- R2noharm( dat = dat , model.type="CFA" ,  
-		F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , writename = "ex4__3dim_1pl" , 
-		noharm.path = noharm.path  , dec ="," )
+          F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+          P.init = P.init , writename = "ex4__3dim_1pl" , 
+          noharm.path = noharm.path  , dec ="," )
 # write output from R console in a file
 summary(mod , logfile="ex4__3dim_1pl__SUMMARY.Rout")
 
@@ -285,9 +300,8 @@ summary(jmod)
 # extract factor scores
 emod <- R2noharm.EAP(mod)
 
-#############################################################################
-# EXAMPLE 5: 3-dimensional 2PL model
-#############################################################################
+#****************************************
+# Model 5: 3-dimensional 2PL model
 
 # estimate one factor variance
 P.pattern <- matrix( 1 , ncol=3 , nrow=3 )
@@ -301,25 +315,143 @@ F.pattern[13:18,3] <- 1
 F.init <- F.pattern
 
 mod <- R2noharm( dat = dat , model.type="CFA" ,  
-		F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , writename = "ex5__3dim_2pl" , 
-		noharm.path = noharm.path  , dec = "," )
-
+          F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+          P.init = P.init , writename = "ex5__3dim_2pl" , 
+          noharm.path = noharm.path  , dec = "," )
 summary(mod)
 # use 50 jackknife units with 4 persons within a unit
 jmod <- R2noharm.jackknife( mod , jackunits = seq( 1:50 , each = 4 ) )
 summary(jmod)
 
-#############################################################################
-# EXAMPLE 6: Exploratory Factor Analysis with 3 factors
-#############################################################################
+#****************************************
+# Model 6: Exploratory Factor Analysis with 3 factors
 
 mod <- R2noharm( dat = dat , model.type="EFA" ,  dimensions = 3 , 
-               writename = "ex6__3dim_efa" , noharm.path = noharm.path ,
-			   dec = ",")
+           writename = "ex6__3dim_efa", noharm.path = noharm.path ,dec = ",")
 summary(mod)
 
 jmod <- R2noharm.jackknife( mod , jackunits = 20 )
+
+#############################################################################
+# EXAMPLE 2: NOHARM manual Example A
+#############################################################################
+
+# See NOHARM manual: http://noharm.niagararesearch.ca/nh4man/nhman.html
+# The following text and data is copied from this manual.
+#
+# In the first example, we demonstrate how to prepare the input for a 2-dimensional 
+# model using exploratory analysis. Data from a 9 item test were collected from 
+# 200 students and the 9x9 product-moment matrix of the responses was computed.
+# 
+# Our hypothesis is for a 2-dimensional model with no guessing, 
+# i.e., all guesses are equal to zero. However, because we are unsure of any 
+# particular pattern for matrix F, we wish to prescribe an exploratory analysis, i.e., 
+# set EX = 1. Also, we will content ourselves with letting the program supply all 
+# initial values.
+# 
+# We would like both the sample product-moment matrix and the residual matrix to 
+# be included in the output. 
+
+# scan product-moment matrix copied from the NOHARM manual
+pm <- scan()
+     0.8967               
+     0.2278 0.2356        
+     0.6857 0.2061 0.7459 
+     0.8146 0.2310 0.6873 0.8905
+     0.4505 0.1147 0.3729 0.4443 0.5000 
+     0.7860 0.2080 0.6542 0.7791 0.4624 0.8723 
+     0.2614 0.0612 0.2140 0.2554 0.1914 0.2800 0.2907
+     0.7549 0.1878 0.6236 0.7465 0.4505 0.7590 0.2756 0.8442
+     0.6191 0.1588 0.5131 0.6116 0.3845 0.6302 0.2454 0.6129 0.6879
+
+ex2 <- R2noharm( pm= pm , n =200 , model.type="EFA" , dimensions=2 ,
+         noharm.path=noharm.path , writename="ex2_noharmExA" , dec=",")
+summary(ex2)
+
+#############################################################################
+# EXAMPLE 3: NOHARM manual Example B
+#############################################################################
+
+# See NOHARM manual: http://noharm.niagararesearch.ca/nh4man/nhman.html
+# The following text and data is copied from this manual.
+
+# Suppose we have the product-moment matrix of data from 125 students on 9 items. 
+# Our hypothesis is for 2 dimensions with simple structure. In this case, 
+# items 1 to 5 have coefficients of theta which are to be estimated for one 
+# latent trait but are to be fixed at zero for the other one. 
+# For the latent trait for which items 1 to 5 have zero coefficients, 
+# items 6 to 9 have coefficients which are to be estimated. For the other 
+# latent trait, items 6 to 9 will have zero coefficients. 
+# We also wish to estimate the correlation between the latent traits, 
+# so we prescribe P as a 2x2 correlation matrix.
+# 
+# Our hypothesis prescribes that there was no guessing involved, i.e., 
+# all guesses are equal to zero. For demonstration purposes, 
+# let us not have the program print out the sample product-moment matrix. 
+# Also let us not supply any starting values but, rather, use the defaults 
+# supplied by the program.
+
+pm <- scan()
+    0.930 
+    0.762 0.797
+    0.541 0.496 0.560
+    0.352 0.321 0.261 0.366
+    0.205 0.181 0.149 0.110 0.214 
+    0.858 0.747 0.521 0.336 0.203 0.918 
+    0.773 0.667 0.465 0.308 0.184 0.775 0.820 
+    0.547 0.474 0.347 0.233 0.132 0.563 0.524 0.579
+    0.329 0.290 0.190 0.140 0.087 0.333 0.308 0.252 0.348
+
+I <- 9	# number of items
+# define loading matrix
+F.pattern <- matrix(0,I,2)
+F.pattern[1:5,1] <- 1
+F.pattern[6:9,2] <- 1
+F.init <- F.pattern
+# define covariance matrix
+P.pattern <- matrix(1,2,2)
+diag(P.pattern) <- 0
+P.init <- 1+P.pattern
+
+ex3 <- R2noharm( pm=pm , n=125, , model.type="CFA" ,  
+        F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+        P.init = P.init , writename = "ex3_noharmExB" , 
+        noharm.path = noharm.path , dec ="," )
+summary(ex3)
+
+#############################################################################
+# EXAMPLE 4: NOHARM manual Example C
+#############################################################################
+
+data(data.noharmExC)
+# See NOHARM manual: http://noharm.niagararesearch.ca/nh4man/nhman.html
+# The following text and data is copied from this manual.
+
+# In this example, suppose that from 300 respondents we have item 
+# responses scored dichotomously, 1 or 0, for 8 items.
+# 
+# Our hypothesis is for a unidimensional model where all eight items 
+# have coefficients of theta which are to be estimated. 
+# Suppose that since the items were multiple choice with 5 options each, 
+# we set the fixed guesses all to 0.2 (not necessarily good reasoning!)
+# 
+# Let's supply initial values for the coefficients of theta (F matrix) 
+# as .75 for items 1 to 4 and .6 for items 5 to 8.
+
+I <- 8
+guesses <- rep(.2,I)
+F.pattern <- matrix(1,I,1)
+F.init <- F.pattern
+F.init[1:4,1] <- .75
+F.init[5:8,1] <- .6
+P.pattern <- matrix(0,1,1)
+P.init <- 1 + 0 * P.pattern
+
+ex4 <- R2noharm( dat=data.noharmExC , , model.type="CFA" ,  
+        guesses=guesses , F.pattern = F.pattern , F.init = F.init , 
+        P.pattern = P.pattern, P.init = P.init , writename = "ex3_noharmExC" , 
+        noharm.path = noharm.path , dec ="," )
+summary(ex4)
 }
 }
 

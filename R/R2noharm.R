@@ -1,7 +1,8 @@
 
 #------------------------------------------------------------------
 # NOHARM exploratory factor analysis                      
-R2noharm <- function( dat , model.type , dimensions = NULL , guesses = rep(0,ncol(dat)) , noharm.path , 
+R2noharm <- function( dat=NULL , pm=NULL , n=NULL ,model.type , weights=NULL , 
+			dimensions = NULL , guesses = NULL , noharm.path , 
                             F.pattern = NULL , F.init = NULL , P.pattern = NULL , P.init = NULL , 
 							digits.pm = 4 , writename = NULL ,
                             display.fit = 5  , dec = "." , display = TRUE  ){
@@ -20,7 +21,6 @@ R2noharm <- function( dat , model.type , dimensions = NULL , guesses = rep(0,nco
     # The matrices F.pattern, F.init, P.pattern and P.init correspond to the 
     # definition in the NOHARM manual
 #	noharm.path <- shQuote(noharm.path)
-    dat <- as.matrix(dat)
     if (model.type == "CFA" ){ dimensions <- ncol(F.pattern) }
 	if ( display ){ 
 		cat("Multidimensional Normal Ogive by Harmonic Analysis (NOHARM 4) \n" )
@@ -34,32 +34,67 @@ R2noharm <- function( dat , model.type , dimensions = NULL , guesses = rep(0,nco
 				} else {             cat("Confirmatory Item Factor Analysis \n\n" ) }
 		flush.console()
 				}
-    I <- ncol(dat)     # number of items
-    n <- nrow(dat)     # number of subjects
-    # calculate raw product moment matrix
-    dat9 <- dat
-    dat.resp <- is.na( dat)
-    dat9[ dat.resp ] <- 9
-    # pairwise product moment matrix
-    BM <- t( dat9 * (1- dat.resp ) ) %*% ( dat9 * (1- dat.resp  ) )
-    # number of persons on an item pair
-    NM <- t((1- dat.resp ) ) %*% (  (1- dat.resp  ) )
-    BM <- round( BM/NM , digits.pm )
+	########################################################				
+	# data input
+	if ( ! is.null(dat) ){
+		# allow also for input of moment matrix data				
+		dat <- as.matrix(dat)				
+		I <- ncol(dat)     # number of items
+		n <- nrow(dat)     # number of subjects
+		if ( is.null(weights) ){
+			weights <- rep(1,n) } else {
+			weights <- weights / sum(weights) * n 
+				}
+		
+		# calculate raw product moment matrix
+		dat9 <- dat
+		dat.resp <- is.na( dat)
+		dat9[ dat.resp ] <- 9
+		# pairwise product moment matrix
+	#    BM <- t( dat9 * (1- dat.resp ) ) %*% ( dat9 * (1- dat.resp  ) )
+		 BM <- crossprod( dat9 * (1- dat.resp  )*weights  )
+		# number of persons on an item pair
+	#    NM <- t((1- dat.resp ) ) %*% (  (1- dat.resp  ) )
+		NM <- crossprod(  (1- dat.resp)*weights  )
+        BM <- round( BM/NM , digits.pm )		
+					}
+	inputdat <- TRUE
+	########################################################
+	if ( ! is.null(pm) ){				
+	  if ( is.vector(pm) ){	
+		I2 <- length(pm)
+		I <- sqrt( 2*I2+1/4 ) - .5		
+		BM <- matrix( 0 , I , I )
+		colnames(BM) <- paste0("I",1:I)
+		vv <- 0
+		for (ii in 1:I){
+#		ii <- 1
+			BM[ ii , 1:ii ] <- pm[ seq(vv+1,vv+ii) ]
+			vv <- vv + ii
+					}
+		BM <-  BM + t(BM)
+		diag(BM) <- diag(BM)/2
+		     } else { 
+				pm <- BM 
+				I <- ncol(pm)
+					}
+		weights <- rep(1,n)
+		NM <- matrix(n , I,I)
+		dat <- BM[1:2,,drop=FALSE]
+		inputdat <- FALSE
+						}
     # Exploratory analysis requested?
     EX <- 1 * ( model.type == "EFA" )
     # supply starting values
     IV <- 1 * (model.type == "CFA" )
     
-    
-#    if (dimensions > 20){ 
-#            stop( cat( "\nIn NOHARM87 no more than 20 dimensions are permitted.
-#		\nPlease check NOHARM's 2003 Windows Version.\n") )
-#                    }   
-#    if ( dimensions <= 20 ){
-        if ( TRUE ){
+	if ( is.null(guesses) ){
+		guesses <- rep(0, I )
+					}
+				
     # arrange NOHARM Input Files
 	s1 <- Sys.time()
-    noharm.input <- c( paste( "R2NOHARM Inputfile" , s1 ), 
+    noharm.input <- c( paste( "R2noharm Input file" , s1 ), 
                         paste( I , dimensions , n  , 1 ,  EX , IV , 0 , 0 ,  sep=" ") 
                                         )
     # add guessing parameter
@@ -119,6 +154,7 @@ R2noharm <- function( dat , model.type , dimensions = NULL , guesses = rep(0,nco
             "rmsr" = .noharm.rmsr( noharmout1 ) ,
             "N.itempair" = NM ,
             "pm" = BM ,
+			"weights" = weights , 
             "guesses" = guesses ,
             "residuals" = .noharm.residuals( noharmout1 , I=I , dat=dat) , 
             "final.constants" = .noharm.itemlevel( noharmout1 , "Final Constants" , I=I , dat=dat) ,
@@ -153,6 +189,7 @@ R2noharm <- function( dat , model.type , dimensions = NULL , guesses = rep(0,nco
 										"ENDE" ,   dimensions = dimensions , I=I, dat=dat) 
                 )   
 			}
+			
         # results for noharm.efa with more than one dimension
     if (dimensions > 1 & model.type == "CFA" ){
 			modtype <- 3
@@ -210,8 +247,10 @@ R2noharm <- function( dat , model.type , dimensions = NULL , guesses = rep(0,nco
                               } }    
 	# collect arguments in output	
 	res$model.type <- model.type	
-	res$Nobs <- nrow(dat)
-	res$Nitems <- ncol(dat)
+#	res$Nobs <- nrow(dat)
+#	res$Nitems <- ncol(dat)
+	res$Nobs <- n
+	res$Nitems <- I
 	res$modtype <- modtype
 	res$F.init <- F.init
 	res$F.pattern <- F.pattern
@@ -250,7 +289,7 @@ R2noharm <- function( dat , model.type , dimensions = NULL , guesses = rep(0,nco
 			cs <- 1:(dimensions-1)
 			res$Nestpars <- Nestpars <- I + I*dimensions - sum(cs)
 					}
-		res$df <- df <- 0.5*I*(I-1) - Nestpars
+		res$df <- df <- 0.5*I*(I+1) - Nestpars
 		res$chisquare_df  <- res$chisquare / res$df
 		# calculate RMSEA
 		res$rmsea <- rmsea <- sqrt(max(c( (X2 / res$Nobs ) / df - 1/res$Nobs , 0)))
@@ -261,10 +300,16 @@ R2noharm <- function( dat , model.type , dimensions = NULL , guesses = rep(0,nco
 	if (display){
 		cat( paste( "Tanaka Index=" , round(res$tanaka,display.fit) , sep="") , "\n" )
 		cat( paste( "RMSR=" , round(res$rmsr,display.fit) , sep="") , "\n" )
+		if ( ! inputdat ){
+		   cat("\n**** Note that Jackknife does not work for pm input! **** \n")
 				}
+			}
+	if ( ! inputdat ){
+		   res$dat <- NULL
+			}			
+	res$inputdat <- inputdat
 	class(res) <- "R2noharm"
     return( res )
-            }
     }
 #----------------------------------------------------------
 

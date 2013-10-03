@@ -70,8 +70,8 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 				 theta.k <- 
 						matrix( theta.k  , nrow=Nclasses , ncol=D , byrow=FALSE)
 				 theta.kstart <- theta.k
-				 if ( seed != 0 ){
-				 if (seed>0){  set.seed( seed ) } else{ set.seed( Sys.time() ) }
+				 if ( seed[1] != 0 ){
+				 if (seed[1] >0){  set.seed( seed[1] ) } else{ set.seed( Sys.time() ) }
 					 theta.k <- theta.k + matrix( rnorm( Nclasses*D , sd =.7 ) , ncol=D )
 								}
 						} # end inut (is.null(theta.k))
@@ -139,7 +139,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 						}  # end MLC	
 	#***************
 		# iterate over different starts
-		if ( seed < 0){ 
+		if ( ( seed[1] < 0) | ( length(seed) < nstarts) ){ 
 			seed <- round(runif( nstarts , 1 , 10000 )) 
 					}
 		devL <- rep(NA , nstarts )

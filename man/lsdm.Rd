@@ -4,10 +4,10 @@
 \alias{summary.lsdm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Least Square Distance Method of Cognitive Validation
+Least Squares Distance Method of Cognitive Validation
 }
 \description{
-This function estimates the least square distance method
+This function estimates the least squares distance method
 of cognitive validation (Dimitrov, 2007; Dimitrov & Atanasov, 2012) 
 which assumes a multiplicative relationship of attribute response
 probabilities to explain item response probabilities.

@@ -10,9 +10,9 @@ yen.q3 <- function( dat , theta , b , progress = TRUE ){
         # dat       ... data frame
         # theta     ... theta estimate
         # b         ... item difficulty estimate
-        cat("Yen's Q3 Statistic  \n" )
+        cat("Yen's Q3 Statistic based on an estimated theta score \n*** " )
         I <- ncol(dat)
-        cat(I , "Items \n" )
+        cat(I , "Items | " )
         # expected probability
         expected <- .prob.rasch( theta , b )
         # residual 
@@ -42,7 +42,7 @@ yen.q3 <- function( dat , theta , b , progress = TRUE ){
 		Q3.stat <- quantile( q3.long[,3] , prob = c(  .10 , .25 , .50 , .75 , .90  ) )
 		Q3.stat <- c("M" = MQ3 , "SD" = SDQ3 , "Min" = min(q3.long[,3] ) , 
 					Q3.stat , "Max" = max(q3.long[,3] ) )
-		cat("\nQ3 Descriptives\n\n")
+		cat("*** Q3 Descriptives\n")
 		print(round(Q3.stat,3))
         res <- list( "q3.matrix" = q3.matr , "q3.long" = q3.long ,
 		"expected" = expected , "residual" = residual , "Q3.stat" = Q3.stat )

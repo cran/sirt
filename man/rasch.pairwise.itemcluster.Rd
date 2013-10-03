@@ -48,7 +48,7 @@ do not appear in the pairwise likelihood terms. In detail, the estimation rests
 on observed frequency tables of items \eqn{i} and \eqn{j} and therefore on conditional 
 probabilities 
 \deqn{ \frac{P(X_i = x , X_j=y)}{P(X_i + X_j = 1 )} \quad \mbox{with}
-\quad x,y=0,1 \quad \mbox{and} x+y=1 }
+\quad x,y=0,1 \quad \mbox{and} \quad x+y=1 }
 If for some item pair \eqn{(i,j)} a higher positive (or negative) correlation 
 is expected (i.e. deviation from local dependence), then this pair is
 removed from estimation. Clearly, there is a loss in precision but item
@@ -64,11 +64,11 @@ Object of class \code{rasch.pairwise} with elements
             }
 }
 \references{
-    van der Linden, W. J., & Eggen, T. J. H. M. (1986). \emph{An empirical
-    Bayes approach to item banking}. Research Report 86-6, University of Twente.
+van der Linden, W. J., & Eggen, T. J. H. M. (1986). \emph{An empirical
+Bayes approach to item banking}. Research Report 86-6, University of Twente.
 
-    Zwinderman, A. H. (1995). Pairwise parameter estimation in Rasch models.
-    \emph{Applied Psychological Measurement}, \bold{19}, 369-375.
+Zwinderman, A. H. (1995). Pairwise parameter estimation in Rasch models.
+\emph{Applied Psychological Measurement}, \bold{19}, 369-375.
 }
 
 %    Humphry, S. M. (2011). The role of the unit in physics and psychometrics.

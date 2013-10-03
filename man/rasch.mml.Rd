@@ -245,7 +245,14 @@ The item response function of the generalized item response model
 [ a_i ( \theta_{pd} - b_i ) ] }
 where \eqn{g} is the generalized logistic link function depending
 on parameters \eqn{\alpha_1} and \eqn{\alpha_2}. 
-The logistic link function corresponds to \eqn{\alpha_1=0} and \eqn{\alpha_2=0}.
+
+For the most important link functions the specifications are (Stukel, 1988):
+
+logistic link function: \eqn{\alpha_1=0} and \eqn{\alpha_2=0} \cr 
+probit link function: \eqn{\alpha_1=0.165} and \eqn{\alpha_2=0.165} \cr
+loglog link function: \eqn{\alpha_1=-0.037} and \eqn{\alpha_2=0.62} \cr
+cloglog link function: \eqn{\alpha_1=0.62} and \eqn{\alpha_2=-0.037} \cr
+
 A \eqn{D}-dimensional model can also be specified 
 but only allows for between item dimensionality 
 (one item loads on one and only dimension). 
@@ -537,9 +544,7 @@ summary(mod3c)
 round( t(mod3c$pjk)[1:6,] , 3 )
 plot(mod3c)
 
-# nonparametric estimation of the link function
-# In this example, a bit complicated ICC is estimated:
-# "theta + I( theta^2)" is a quadratic item response function
+# estimation of quadratic item response functions: ~ theta + I( theta^2) 
 mod3d <- rasch.mml2( dat , irtmodel ="npirt" , 
         npformula = "y~theta + I(theta^2)" )
 summary(mod3d)
@@ -626,7 +631,56 @@ est.b <- c( 1:I , 1:I )
     # equal indices correspond to equally estimated item parameters
 mu.fixed <- cbind( 1 , 0 )
 mod4 <- rasch.mml2( dat, Qmatrix=Qmatrix, est.b = est.b , mu.fixed = mu.fixed )
-summary(mod4) }
+summary(mod4) 
+
+#############################################################################
+# SIMULATED EXAMPLE 6: Two booklets with same items but with item context effects. 
+# Therefore, item slopes and item difficulties are assumed to be shifted in the 
+# second design group.
+#############################################################################
+
+#***
+# simulate data
+set.seed(987)
+I <- 10     # number of items
+# define person design groups 1 and 2
+n1 <- 700
+n2 <- 1500
+# item difficulties group 1
+b1 <- seq(-1.5,1.5,length=I)
+# item slopes group 1
+a1 <- rep(1, I)
+# simulate data group 1
+dat1 <- sim.raschtype( rnorm(n1) , b=b1 , fixed.a=a1 )
+colnames(dat1) <- paste0("I" , 1:I , "des1" )
+# group 2
+b2 <- b1 - .15
+a2 <- 1.1*a1
+# simulate data group 2
+dat2 <- sim.raschtype( rnorm(n2) , b=b2 , fixed.a=a2 )
+colnames(dat2) <- paste0("I" , 1:I , "des2" )
+# define joint dataset
+dat <- matrix( NA , nrow=n1+n2 , ncol=2*I)
+colnames(dat) <- c( colnames(dat1) , colnames(dat2) )
+dat[ 1:n1 , 1:I ] <- dat1
+dat[ n1 + 1:n2 , I + 1:I ] <- dat2
+# define group identifier
+group <- c( rep(1,n1) , rep(2,n2) )
+
+#***
+# Model 1: Rasch model two groups
+itemindex <- rep( 1:I , 2 )
+mod1 <- rasch.mml2( dat , group=group , est.b=itemindex )
+summary(mod1)
+
+#***
+# Model 2: two item slope groups and designmatrix for intercepts
+designmatrix <- matrix( 0 , 2*I , I+1)
+designmatrix[ ( 1:I )+ I,1:I] <- designmatrix[1:I ,1:I] <- diag(I)
+designmatrix[ ( 1:I )+ I,I+1] <- 1
+mod2 <- rasch.mml2( dat , est.a=rep(1:2,each=I) , designmatrix=designmatrix )
+summary(mod2)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
