@@ -3,6 +3,7 @@
 useDynLib(sirt)
 
 export(   
+    eigenvalues.sirt,
     ccov.np,
     detect.index,
     conf.detect,
@@ -79,7 +80,8 @@ export(
     monoreg.colwise ,
     md.pattern.sirt ,
     f1d.irt ,
-    linking.haberman
+    linking.haberman ,
+    data.wide2long
         )
 
 

@@ -45,8 +45,9 @@ For estimating all \eqn{Q_3} statistics between item pairs use
 \code{\link{yen.q3}}.
 }
 \examples{
-#########
-# use data.read as an example
+#############################################################################
+# EXAMPLE 1: data.read. The 12 items are arranged in 4 testlets
+#############################################################################
 data(data.read)
 
 # estimate the Rasch model

@@ -49,7 +49,7 @@ linking.haberman <- function( itempars , conv = .00001 , maxiter=1000 ,
 	rownames(transf.itempars) <- NULL
 	# This is the transformation for item parameters.
 	transf.personpars <- transf.itempars
-	transf.personpars$At <- 1/transf.itempars$At
+	transf.personpars$At <- transf.itempars$At
 	transf.personpars$Bt <-  - transf.itempars$Bt / transf.itempars$At	
 	# new item parameters
 	joint.itempars <- data.frame("item" = items , "aj"=aj , "bj"=Bj )

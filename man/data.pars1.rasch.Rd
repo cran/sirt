@@ -15,7 +15,8 @@ data(data.pars1.rasch)
 data(data.pars1.2pl)
 }
 \format{
-The format of \code{data.pars1.rasch1} is:
+\itemize{
+\item The format of \code{data.pars1.rasch} is:
 
 \code{'data.frame':   22 obs. of  4 variables:} \cr
 \code{ $ study: chr  "study1" "study1" "study1" "study1" ...} \cr
@@ -26,13 +27,14 @@ The format of \code{data.pars1.rasch1} is:
 Item slopes \code{a} are fixed to 1 in 1PL estimation. Item difficulties
 are denoted by \code{b}. \cr
 
-The format of \code{data.pars1.2pl} is:
+\item The format of \code{data.pars1.2pl} is:
 
 \code{'data.frame':   22 obs. of  4 variables:} \cr
 \code{ $ study: chr  "study1" "study1" "study1" "study1" ...} \cr
 \code{ $ item : Factor w/ 12 levels "M133","M176",..: 1 2 3 4 5 1 6 7 3 8 ...} \cr
 \code{ $ a    : num  1.238 0.957 1.83 1.927 2.298 ...} \cr
 \code{ $ b    : num  -1.16607 0.35844 1.06571 1.17159 0.00792 ...} \cr
+}
 }
 
 %\details{

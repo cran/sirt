@@ -975,6 +975,8 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
         res$ic <- ic
 		res$est.c <- est.c
 		res$groupindex <- ag1
+		res$n.jk <- n.jk
+		res$r.jk <- r.jk				
         # computation time
         s2 <- Sys.time()
 		res$s1 <- s1

@@ -39,9 +39,12 @@ A list with following entries
 %\references{
 %% ~put references to the literature/web site here ~
 %}
+
 \author{
 Alexander Robitzsch
 }
+
+
 %\note{
 %%  ~~further notes~~
 %}

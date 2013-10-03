@@ -53,8 +53,11 @@ R2noharm.jackknife <- function( object , jackunits = NULL ){
 	#**************************
 	# BEGIN JACKKNIFE
 	for ( uu in u.jackunits ){
+		weights.uu <- object$weights[ jackunits != uu ]	
 		mod.uu <- R2noharm( dat = object$dat[ jackunits != uu , ] , 
-					model.type = object$model.type , guesses = object$guesses , noharm.path = object$noharm.path, 
+					model.type = object$model.type , 
+					weights=weights.uu , 
+					guesses = object$guesses , noharm.path = object$noharm.path, 
 								F.pattern = object$F.pattern  , F.init = object$F.init , 
 								P.pattern = object$P.pattern , P.init = object$P.init , digits.pm = 5 , writename = "model_jackknife" ,
 								display.fit = 5  , dec = object$dec , display = FALSE  )

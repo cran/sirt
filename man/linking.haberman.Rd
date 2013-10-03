@@ -43,9 +43,9 @@ should be displayed.
 For \eqn{t=1,\ldots,T} studies, item difficulties \eqn{b_{it}} and
 item slopes \eqn{a_{it}} are available. For dichotomous responses, these
 parameters are defined by the 2PL response equation
-\deqn{ log P(X_{pi}=1| \theta_p ) = a_i ( \theta_p - b_i ) }
+\deqn{ logit P(X_{pi}=1| \theta_p ) = a_i ( \theta_p - b_i ) }
 while for polytomous responses the generalized partial credit model holds
-\deqn{ logit \frac{P(X_{pi}=k| \theta_p )}{P(X_{pi}=k-1| \theta_p )}
+\deqn{ log \frac{P(X_{pi}=k| \theta_p )}{P(X_{pi}=k-1| \theta_p )}
 = a_i ( \theta_p - b_i + d_{ik} ) }
 
 The parameters \eqn{ \{ a_{it} , b_{it} \}} of all items and studies are

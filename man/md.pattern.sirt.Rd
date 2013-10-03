@@ -57,7 +57,7 @@ See also the \code{md.pattern} function in the \pkg{mice} package.
 }
 
 \examples{
-############################################################################
+#############################################################################
 # SIMULATED EXAMPLE 1
 #############################################################################
 set.seed(7654)
@@ -68,7 +68,7 @@ res <- md.pattern.sirt(dat)
 # plot of response patterns
 res$dat.ordered
 image( z=t(res$dat.ordered) , y =1:N , x=1:I , xlab="Items"  , ylab="Persons")
-# 0's are red and 1's are red
+# 0's are yellow and 1's are red
 
 #############################################################################
 # EXAMPLE 2: Item response patterns for dataset data.read

@@ -31,6 +31,23 @@ a.robitzsch /-\ bifie.at
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+---
+Versions 0.37 -- 2013-10-02
+---
+x renamed 'data.noharm' into 'data.noharm18'
+x fixed a bug in rasch.mirtlc with multiple starts in latent
+  class models
+x included datasets: 'data.noharmExC', 'data.mcdonald', 'data.reck'
+x allowed input of student weights and product-moment
+  matrix in R2noharm
+x fixed a bug in calculation of degrees of freedom in R2noharm 
+  function
+x fixed a bug in linear transformation for person parameters
+  in linking.haberman
+x included eigenvalue decomposition function 'eigenvalues.sirt'
+x included data conversion function 'data.wide2long'
+  
 ---
 Versions 0.35 to 0.36 -- 2013-09-08
 ---

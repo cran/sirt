@@ -18,7 +18,7 @@ eigenvalues.manymatrices(Sigma.all, itermax = 10, maxconv = 0.001,
 \arguments{
 \item{Sigma.all}{
 An \eqn{N \times D^2} matrix containing the \eqn{D^2} entries
-of \eqn{N} symmetric matrices
+of \eqn{N} symmetric matrices of dimension \eqn{D \times D}
 }
   \item{itermax}{
 Maximum number of iterations

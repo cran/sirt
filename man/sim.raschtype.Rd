@@ -38,9 +38,15 @@ Vector of lower item asymototes \eqn{c}
 Vector of lower item asymototes \eqn{d}
 }
 }
-%\details{
-%%  ~~ If necessary, more details than the description above ~~
-%}
+\details{
+The class of generalized logistic link functions contain 
+the most important link functions using the specifications (Stukel, 1988):
+
+logistic link function: \eqn{\alpha_1=0} and \eqn{\alpha_2=0} \cr 
+probit link function: \eqn{\alpha_1=0.165} and \eqn{\alpha_2=0.165} \cr
+loglog link function: \eqn{\alpha_1=-0.037} and \eqn{\alpha_2=0.62} \cr
+cloglog link function: \eqn{\alpha_1=0.62} and \eqn{\alpha_2=-0.037} \cr
+}
 %\value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use

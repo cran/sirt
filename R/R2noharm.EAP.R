@@ -67,6 +67,6 @@ function( noharmobj , theta.k =seq(-6,6,len=21) ){
     
     res <- list( "person" = person , "theta"=theta.k , 
 			"posterior" = posterior , "like"= like , 
-            "EAP.rel" = EAP.rel , "prpbs" = probs )
+            "EAP.rel" = EAP.rel , "probs" = probs )
     return(res)
     }
