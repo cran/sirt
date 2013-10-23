@@ -40,7 +40,7 @@ Vector of initial item difficulty estimates. Default is \code{NULL}.
 }
 }
 \details{
-This is an adaptation of the code of van der Linden and Eggen (1986). Only item pairs 
+This is an adaptation of the algorithm of van der Linden and Eggen (1986). Only item pairs 
 of different item clusters are taken into account for item difficulty estimation. 
 Therefore, the problem of locally dependent items within each itemcluster is (almost) 
 eliminated (see Examples below) because contributions of local dependencies

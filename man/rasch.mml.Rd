@@ -251,7 +251,10 @@ For the most important link functions the specifications are (Stukel, 1988):
 logistic link function: \eqn{\alpha_1=0} and \eqn{\alpha_2=0} \cr 
 probit link function: \eqn{\alpha_1=0.165} and \eqn{\alpha_2=0.165} \cr
 loglog link function: \eqn{\alpha_1=-0.037} and \eqn{\alpha_2=0.62} \cr
-cloglog link function: \eqn{\alpha_1=0.62} and \eqn{\alpha_2=-0.037} \cr
+cloglog link function: \eqn{\alpha_1=0.62} and \eqn{\alpha_2=-0.037} 
+
+See \code{\link{pgenlogis}} for exact transformation formulas of
+the mentioned link functions. \cr
 
 A \eqn{D}-dimensional model can also be specified 
 but only allows for between item dimensionality 

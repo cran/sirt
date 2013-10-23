@@ -50,7 +50,7 @@ In case of the default \code{NULL}, all guessing parameters are set
 to zero.
 }
   \item{noharm.path}{
-Local path where the NOHARM 4 command line 64-bit version is being located.
+Local path where the NOHARM 4 command line 64-bit version is located.
 }
   \item{F.pattern}{
 Pattern matrix for \eqn{F} (\eqn{I \times D})

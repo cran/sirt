@@ -81,7 +81,11 @@ export(
     md.pattern.sirt ,
     f1d.irt ,
     linking.haberman ,
-    data.wide2long
+    data.wide2long ,
+    automatic.recode ,
+    genlogis.moments ,
+    invariance.alignment ,
+    truescore.irt
         )
 
 
@@ -121,7 +125,7 @@ export(
 
 S3method(summary,R2noharm)
 S3method(summary,R2noharm.jackknife)
-
+S3method(summary,invariance.alignment)
 
 # imports Depends packages
 import(mvtnorm)

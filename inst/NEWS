@@ -32,6 +32,21 @@ CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+
+---
+Versions 0.38 -- 2013-10-23
+---
+x included function for automated finding of a scoring key in
+  a data frame with raw item responses ('automatic.recode')
+x fixed a bug in linking.haberman function 
+x added argument personpars in linking.haberman for transformation
+  of person parameters
+x included item parameters data.activity.itempars
+x included alignment method for approximate invariance
+  (Asparouhov & Muthen, 2013)
+x included function truescore.irt for conversion of trait scores
+  into true scores for unidimensional item response models
+
 ---
 Versions 0.37 -- 2013-10-02
 ---
@@ -265,3 +280,30 @@ x included function rasch.pairwise.itemcluster for the conditional
 x package structure of sirtr is created
 x included simulation function for Rasch copula model 
    (sim.rasch.copula)
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+# older sirt versions (formerly sirtr)
+
+Version 0.21 -- 2012-06-23
+Version 0.20 -- 2012-06-18
+Version 0.19 -- 2012-04-26
+Version 0.18 -- 2012-03-29
+Version 0.17 -- 2012-02-22
+Version 0.16 -- 2012-02-17
+Version 0.15 -- 2011-12-19
+Version 0.14 -- 2011-10-06
+Version 0.13 -- 2010-08-26
+Version 0.12 -- 2010-01-13
+Version 0.11 -- 2010-01-12
+Version 0.10 -- 2010-01-02
+Version 0.9  -- 2009-11-01
+Version 0.8  -- 2009-03-08
+Version 0.7  -- 2009-03-02
+Version 0.6  -- 2009-12-02
+Version 0.5  -- 2008-11-12
+Version 0.4  -- 2008-08-25
+Version 0.3  -- 2008-05-06
+Version 0.2  -- 2008-01-29
+Version 0.1  -- 2007-12-22
+Version 0.0  -- 2007-12-18

@@ -7,7 +7,8 @@ Random Item Response Model / Multilevel IRT Model
 \description{
 This function enables the estimation of random item models and multilevel
 (or hierarchical) IRT models (Chaimongkol, Huffer & Kamata, 2007;
-Fox & Verhagen, 2010; van den Noortgate, de Boeck & Meulders, 2003). 
+Fox & Verhagen, 2010; van den Noortgate, de Boeck & Meulders, 2003;
+Asparouhov & Muthen, 2012; Muthen & Asparouhov, 2013a, 2013b). 
 Dichotomous response data is supported using a probit link. Normally
 distributed responses can also be analyzed. 
 See Details for a description of the implemented item
@@ -164,6 +165,10 @@ A list of class \code{mcmc.sirt} with following entries:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \references{
+Asparouhov, T. & Muthen, B. (2012). General random effect latent variable 
+modeling: Random subjects, items, contexts, and parameters. 
+\url{http://www.statmodel.com/papers_date.shtml}.
+	
 Chaimongkol, S., Huffer, F. W., & Kamata, A. (2007). 
 An explanatory differential item functioning (DIF) 
 model by the WinBUGS 1.4. 
@@ -174,6 +179,15 @@ cross-national survey data.
 In E. Davidov, P. Schmidt, & J. Billiet (Eds.), 
 \emph{Cross-cultural Analysis: Methods and Applications} 
 (pp. 467-488), London: Routledge Academic.
+
+Muthen, B. & Asparouhov, T. (2013a). 
+Item response modeling in Mplus: A multi-dimensional, multi-level, 
+and multi-timepoint example. In W. Linden & R. Hambleton (2013). 
+\emph{Handbook of item response theory: Models, statistical tools, and 
+applications}. \url{http://www.statmodel.com/papers_date.shtml}
+
+Muthen, B. & Asparouhov, T. (2013b). New methods for the study of measurement 
+invariance with many groups. \url{http://www.statmodel.com/papers_date.shtml}
 
 van den Noortgate, W., De Boeck, P., & Meulders, M. (2003). 
 Cross-classification multilevel logistic models in psychometrics. 

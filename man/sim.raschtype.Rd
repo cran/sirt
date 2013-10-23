@@ -46,6 +46,9 @@ logistic link function: \eqn{\alpha_1=0} and \eqn{\alpha_2=0} \cr
 probit link function: \eqn{\alpha_1=0.165} and \eqn{\alpha_2=0.165} \cr
 loglog link function: \eqn{\alpha_1=-0.037} and \eqn{\alpha_2=0.62} \cr
 cloglog link function: \eqn{\alpha_1=0.62} and \eqn{\alpha_2=-0.037} \cr
+
+See \code{\link{pgenlogis}} for exact transformation formulas of
+the mentioned link functions.
 }
 %\value{
 %%  ~Describe the value returned
@@ -73,7 +76,7 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{rasch.mml2}}
+\code{\link{rasch.mml2}}, \code{\link{pgenlogis}}
 }
 
 \examples{

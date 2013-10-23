@@ -19,7 +19,7 @@ rasch.pml3 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 			progress = TRUE  ){
 	##################################
 	# multidimensional version does not work
-	Q <- NULL ; zero.corrs <- NULL
+	Q <- NULL ; combs <- zero.corrs <- NULL
 	V <- err.constraintM
 	##################################
     # load libraries

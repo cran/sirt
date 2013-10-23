@@ -1,27 +1,4 @@
 
- 
-# 0.01  2012-xx-yy
-
-
-# 0.01  2012-06-31  o initial release
-# 0.02  2012-06-31  o included logit link
-# 0.03  2012-07-05  o use probit link as initial iterations for logit link
-# 0.04  2012-07-05  o go back to original version
-# 0.05  2012-07-05  o included estimation of residual error correlations
-#						(should only work in probit models)
-# 0.07  2012-07-05	o go back to version 0.05
-#					o implementation of testlet model seemed to fail
-# 0.08  2012-07-05	o introduce multiple group estimation
-#					   -> introduced mu vector
-# 0.09  2012-07-05	o included argument group
-#						- itempairs in multiple group case
-# 0.10  2012-07-05  o include estimation for residual correlations for multiple groups
-# 0.11  2012-07-05  o include estimation of mu for G>1 groups
-# 0.12  2012-07-05  o go back to version  0.07
-
-
-# 0.1x  2012-07-yy  o
-#-------------------------------------------------------
 
 #####################################################
 # Pairwise marginal likelihood (PML) estimation
@@ -40,7 +17,7 @@ rasch.pml <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 			progress = TRUE  ){
 	##################################
 	# multidimensional version does not work
-	Q <- NULL ; zero.corrs <- NULL
+	Q <- NULL ; combs <- zero.corrs <- NULL
 	##################################
     # load libraries
     # extract information from data
@@ -126,20 +103,6 @@ rasch.pml <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 	if ( ! is.null( a.init) ){ a <- a0 <- a.init }	
     if ( is.null(sigma.init)){ sigma <- 1 } else { sigma <- sigma.init }
 	#******
-	# mutidimensional model
-#	if ( ! is.null(Q) ){
-#		D <- ncol(Q)
-#		sigma <- diag(D)
-#		combs <- t( combn( D , 2 ) )
-#		combs <- rbind( combs , cbind(1:D , 1:D) )
-#		combs <- combs[ order(  combs[,1]*1000+combs[,2] ) , ]
-#		if ( ! is.null(zero.corrs)){
-#			for (ii in seq(1 , nrow(zero.corrs)) ){
-#				ind <- which( ( combs[,1] == zero.corrs[ii,1] ) & ( combs[,2] == zero.corrs[ii,2] ) )
-#				combs <- combs[-ind, ]
-#									}
-#							}
-#				} else { 
 				D <- 1 
 #				}
     IP <- nrow(itempairs )
@@ -266,7 +229,6 @@ rasch.pml <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 			prbar <- 10 
 			flush.console()	
 		if (est.sigma & (!is.null(Q)) ){
-#print(combs)		
 			for ( zz in seq(1,nrow(combs)) ){
 				ii <- combs[zz,1]
 				jj <- combs[zz,2]
