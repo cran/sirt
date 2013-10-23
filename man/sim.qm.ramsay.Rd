@@ -25,7 +25,7 @@ Vector of length \eqn{I} of guessing parameters (must be positive)
 }
 \details{
 Ramsay's quotient model (Ramsay, 1989) is defined by the equation 
-\eqn{P(X_{pi} = 1 | \theta_p ) = \frac{ \exp { ( \theta_p / b_i ) } }
+\deqn{P(X_{pi} = 1 | \theta_p ) = \frac{ \exp { ( \theta_p / b_i ) } }
 	{ K_i + \exp { ( \theta_p / b_i ) } }}
 }
 \value{
@@ -85,18 +85,18 @@ fixed.K <- rep( 3 , I )
 
 # Ramsay QM with fixed K parameter (K=3 in fixed.K specification)
 mod1 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm", 
-	numdiff.parm = .0001 ,  fixed.K = fixed.K )                  
+           numdiff.parm = .0001 ,  fixed.K = fixed.K )                  
 summary(mod1)
 
 # Ramsay QM with joint estimated K parameters
 mod2 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" , 
-	numdiff.parm = .0001 ,  est.K = rep(1,I)  )                  
+               numdiff.parm = .0001 ,  est.K = rep(1,I)  )                  
 summary(mod2)
 
 \dontrun{
 # Ramsay QM with itemwise estimated K parameters
 mod3 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" , 
-	numdiff.parm = .0001 ,   est.K = 1:I  )                  
+             numdiff.parm = .0001 ,   est.K = 1:I  )                  
 summary(mod3)
 
 # Rasch model

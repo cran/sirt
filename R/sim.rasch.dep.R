@@ -1,12 +1,4 @@
 
-# 0.01  2012-xx-yy  o
-#...
-# 0.01  2012-06-24  o initial release
-#					o a bug is corrected
-# 0.02  2012-10-05  o included column names of produced data set
-
-# 0.0x  2012-xx-yy  o
-#-------------------------------------------------------
 
 ###########################################################################
 # simulation of Rasch copula model

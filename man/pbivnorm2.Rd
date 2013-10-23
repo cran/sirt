@@ -2,7 +2,7 @@
 \alias{pbivnorm2}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Bivariate Normal Distribution
+Cumulative Function for the Bivariate Normal Distribution
 }
 \description{
 This function evaluates the bivariate normal distribution 

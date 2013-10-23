@@ -19,7 +19,7 @@ rasch.pml2 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 			progress = TRUE  ){
 	##################################
 	# multidimensional version does not work
-	Q <- NULL ; zero.corrs <- NULL
+	Q <- NULL ; combs <- zero.corrs <- NULL
 	V <- err.constraintM
 	##################################
     # load libraries
@@ -112,20 +112,6 @@ rasch.pml2 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 	if ( ! is.null( a.init) ){ a <- a0 <- a.init }	
     if ( is.null(sigma.init)){ sigma <- 1 } else { sigma <- sigma.init }
 	#******
-	# mutidimensional model
-#	if ( ! is.null(Q) ){
-#		D <- ncol(Q)
-#		sigma <- diag(D)
-#		combs <- t( combn( D , 2 ) )
-#		combs <- rbind( combs , cbind(1:D , 1:D) )
-#		combs <- combs[ order(  combs[,1]*1000+combs[,2] ) , ]
-#		if ( ! is.null(zero.corrs)){
-#			for (ii in seq(1 , nrow(zero.corrs)) ){
-#				ind <- which( ( combs[,1] == zero.corrs[ii,1] ) & ( combs[,2] == zero.corrs[ii,2] ) )
-#				combs <- combs[-ind, ]
-#									}
-#							}
-#				} else { 
 				D <- 1 
 #				}
 

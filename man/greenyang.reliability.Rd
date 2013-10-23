@@ -48,7 +48,11 @@ estimate for a \eqn{D}-dimensional model. For the nested factor model,
 \code{omega_ha} (Omega Hierarchical Asymptotic) eliminates item-specific
 variance. The explained common variance (ECV, \code{ECV}) explained by the
 common factor is based on the \eqn{D}-dimensional but does not take
-item thresholds into account.
+item thresholds into account. The amount of explained
+variance \code{ExplVar} is defined as the quotient of the first
+eigenvalue of the tetrachoric correlation matrix to the
+sum of all eigenvalues. The statistic \code{EigenvalRatio}
+is the ratio of the first and second eigenvalue. 
 }
 \item{dimensions}{Number of dimensions}
 \item{estimate}{Reliability estimate}
@@ -114,12 +118,14 @@ fap2 <- fa.parallel(dat.tetra2$rho , n.obs=nrow(dat) ,  n.iter = 1 )
 
 # calculate reliability using a model with 4 factors
 greenyang.reliability( object.tetra = dat.tetra , nfactors =4 )
-##                                      coefficient dimensions estimate
-##   Omega Total (1D)                       omega_1          1    0.771
-##   Omega Total (4D)                       omega_t          4    0.844
-##   Omega Hierarchical (4D)                omega_h          4    0.360
-##   Omega Hierarchical Asymptotic (4D)    omega_ha          4    0.427
-##   Explained Common Variance (4D)             ECV          4    0.489
+##                                            coefficient dimensions estimate
+## Omega Total (1D)                               omega_1          1    0.771
+## Omega Total (4D)                               omega_t          4    0.844
+## Omega Hierarchical (4D)                        omega_h          4    0.360
+## Omega Hierarchical Asymptotic (4D)            omega_ha          4    0.427
+## Explained Common Variance (4D)                     ECV          4    0.489
+## Explained Variance (First Eigenvalue)          ExplVar         NA   35.145
+## Eigenvalue Ratio (1st to 2nd Eigenvalue) EigenvalRatio         NA    2.121
 
 # calculation of Green-Yang-Reliability based on tetrachoric correlations
 #   obtained by tetrachoric2

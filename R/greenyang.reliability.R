@@ -1,14 +1,5 @@
  
-# 0.01  2012-xx-yy
 
-
-# 0.01  2012-06-23  o initial release
-
-
-#-------------------------------------------------------
-
-
-##NS export(greenyang.reliability)
 #--------------------------------------------------------------------------
 # Reliability from a multidimensional nonlinear SEM for dichotomous data
 greenyang.reliability <- function( object.tetra , nfactors){ 
@@ -65,19 +56,31 @@ greenyang.reliability <- function( object.tetra , nfactors){
         # calculation of reliability
         omega.relha <- sum( rel.matrix ) / sum( rel.matrix2 )	
        rel1h <- sum( rel.matrix ) / sum( rel.matrix3 )	
+	#'''''''''
+	# eigenvalue decomposition	
+	eigenval.rho <- svd( object.tetra$rho )$d
 	#'''''''''								
 #	rel1h <- rel1h$omega.rel
 	relf <- relf$omega.rel
-    dfr <- data.frame( "coefficient" = c( "omega_1" , "omega_h" , "omega_t","omega_ha","ECV" ) , 
-                    "dimensions" = c(1,nfactors , nfactors,nfactors,nfactors) ,
+    dfr <- data.frame( "coefficient" = c( "omega_1" , "omega_h" , "omega_t",
+			"omega_ha","ECV" , 
+				"ExplVar" , "EigenvalRatio") , 
+                    "dimensions" = c(1,nfactors , nfactors,nfactors,
+						nfactors , NA , NA) ,
                     "estimate" = c( rel1 , rel1h , relf , omega.relha ,
-					   mod.omega$omega.lim) )
- 	dfr <- dfr[ c(1,3,2,4,5) , ]
+					   mod.omega$omega.lim , 
+					   round( 100*eigenval.rho[1]/sum(eigenval.rho),3) ,
+					   round( eigenval.rho[1]/eigenval.rho[2],3)
+								)
+						)
+ 	dfr <- dfr[ c(1,3,2,4,5,6,7) , ]
     rownames(dfr)[1] <- c("Omega Total (1D)")
     rownames(dfr)[2] <- paste("Omega Total (",nfactors,"D)",sep="")
     rownames(dfr)[3] <- paste("Omega Hierarchical (",nfactors,"D)",sep="")
     rownames(dfr)[4] <- paste("Omega Hierarchical Asymptotic (",nfactors,"D)",sep="")
     rownames(dfr)[5] <- paste("Explained Common Variance (",nfactors,"D)",sep="")
+    rownames(dfr)[6] <- "Explained Variance (First Eigenvalue)"	
+    rownames(dfr)[7] <- "Eigenvalue Ratio (1st to 2nd Eigenvalue)"	
 	
     dfr1 <- dfr
     dfr1[,"estimate"] <- round( dfr1[,"estimate"] , 3)

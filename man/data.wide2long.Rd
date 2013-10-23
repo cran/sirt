@@ -2,7 +2,7 @@
 \alias{data.wide2long}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Converting a Data Frame in Wide Format in a Long Format
+Converting a Data Frame from Wide Format in a Long Format
 }
 \description{
 Converts a data frame in wide format into long format.

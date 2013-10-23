@@ -12,11 +12,15 @@ Supplementary item response theory models to complement existing functions in \R
 \tabular{ll}{
 Package: \tab \pkg{sirt} \cr
 Type: \tab Package\cr
-Version: \tab 0.37 \cr
+Version: \tab 0.38 \cr
 Publication Year: \tab 2013\cr
 License: \tab GPL (>= 2)\cr
 URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr
-} This package enables the estimation of following models:  
+} 
+
+
+This package enables the estimation of following models: 
+
 \itemize{   
 
 %% M-dim generalized item response model
@@ -318,15 +322,16 @@ therein).
 
 \keyword{package}
 \section{\R Function Versions }{
+\code{automatic.recode__1.04.R}, 
 \code{class.accuracy.rasch__0.03.R}, 
-\code{data.prep__1.03.R}, 
-\code{data.wide2long__0.02.R}, \cr
+\code{data.prep__1.03.R}, \cr
+\code{data.wide2long__0.02.R}, 
 \code{detect__0.04.R}, 
-\code{dif.logisticregression__1.01.R}, 
-\code{dif.variance__0.05.R}, \cr
+\code{dif.logisticregression__1.01.R}, \cr
+\code{dif.variance__0.05.R}, 
 \code{dirichlet__0.04.R}, 
-\code{eigenvalues.manymatrices__0.03.R}, 
-\code{eigenvalues.sirt__0.04.R}, \cr
+\code{eigenvalues.manymatrices__0.03.R}, \cr
+\code{eigenvalues.sirt__0.04.R}, 
 \code{equating.rasch__0.02.R}, 
 \code{f1d.irt__1.03.R}, 
 \code{fit.adisop__2.09.R}, \cr
@@ -339,14 +344,16 @@ therein).
 \code{gom.em__5.01.R}, \cr
 \code{gom.jml__0.08.R}, 
 \code{gom.jml_alg__0.04.R}, 
-\code{greenyang.reliability__0.04.R}, 
+\code{greenyang.reliability__1.02.R}, \cr
+\code{invariance.alignment.aux__1.02.R}, 
+\code{invariance.alignment__1.06.R}, 
 \code{isop.dich__3.08.R}, \cr
 \code{isop.poly__2.06.R}, 
 \code{isop.scoring__1.03.R}, 
 \code{isop_alg__0.03.R}, 
 \code{latent.regression__1.06.R}, \cr
 \code{linking.haberman.aux__0.02.R}, 
-\code{linking.haberman__0.03.R}, 
+\code{linking.haberman__2.11.R}, 
 \code{lsdm__0.05.R}, \cr
 \code{marginal.truescore.reliability__0.01.R}, 
 \code{matrix_functions__0.01.R}, \cr
@@ -373,51 +380,53 @@ therein).
 \code{pbivnorm2__1.04.R}, 
 \code{personfit.stat__0.01.R}, 
 \code{personfit__0.03.R}, \cr
+\code{pgenlogis__1.01.R}, 
 \code{plausible.values.raschtype__2.04.R}, 
-\code{plot.isop__1.05.R}, 
-\code{plot.mcmc.sirt__0.07.R}, \cr
+\code{plot.isop__1.05.R}, \cr
+\code{plot.mcmc.sirt__0.07.R}, 
 \code{plot.rasch.mml__0.06.R}, 
-\code{prmse.subscores__0.02.R}, 
-\code{prob.guttman__1.02.R}, \cr
+\code{prmse.subscores__0.02.R}, \cr
+\code{prob.guttman__1.02.R}, 
 \code{qmc.nodes__0.02.R}, 
-\code{R2noharm-utility__1.01.R}, 
-\code{R2noharm.EAP__0.05.R}, \cr
+\code{R2noharm-utility__1.01.R}, \cr
+\code{R2noharm.EAP__0.05.R}, 
 \code{R2noharm.jackknife__1.03.R}, 
-\code{R2noharm__2.10.R}, 
-\code{rasch.copula__0.993.R}, \cr
+\code{R2noharm__2.10.R}, \cr
+\code{rasch.copula__0.993.R}, 
 \code{rasch.copula2__5.06.R}, 
-\code{rasch.copula2_aux__0.02.R}, 
-\code{rasch.jml.biascorr__0.03.R}, \cr
+\code{rasch.copula2_aux__0.02.R}, \cr
+\code{rasch.jml.biascorr__0.03.R}, 
 \code{rasch.jml__3.12.R}, 
-\code{rasch.mirtlc__8.05.R}, 
-\code{rasch.mirtlc_aux__9.07.R}, \cr
+\code{rasch.mirtlc__8.05.R}, \cr
+\code{rasch.mirtlc_aux__9.07.R}, 
 \code{rasch.mml.npirt__2.03.R}, 
-\code{rasch.mml.ramsay__2.03.R}, 
-\code{rasch.mml.raschtype__2.19.R}, \cr
+\code{rasch.mml.ramsay__2.03.R}, \cr
+\code{rasch.mml.raschtype__2.20.R}, 
 \code{rasch.mml__2.02.R}, 
-\code{rasch.mml2__6.05.R}, 
-\code{rasch.pairwise.itemcluster__0.02.R}, \cr
+\code{rasch.mml2__6.05.R}, \cr
+\code{rasch.pairwise.itemcluster__0.02.R}, 
 \code{rasch.pairwise__0.14.R}, 
-\code{rasch.pml__2.12.R}, 
+\code{rasch.pml__2.14.R}, \cr
 \code{rasch.pml_aux__1.03.R}, 
-\code{rasch.pml2__4.08.R}, \cr
+\code{rasch.pml2__4.10.R}, 
 \code{rasch.pml2_aux__3.17.R}, 
-\code{rasch.pml3__5.04.R}, 
+\code{rasch.pml3__5.05.R}, \cr
 \code{rasch.pml3_aux__5.01.R}, 
-\code{rasch.prox__1.03.R}, \cr
+\code{rasch.prox__1.03.R}, 
 \code{rasch.va__0.01.R}, 
-\code{rm.facets__2.02.R}, 
+\code{rm.facets__2.02.R}, \cr
 \code{rm.facets_alg__2.03.R}, 
-\code{rm.hrm__7.04.R}, \cr
+\code{rm.hrm__7.04.R}, 
 \code{rm.hrm_alg__7.06.R}, 
-\code{rm_proc__0.01.R}, 
-\code{sim.rasch.dep__0.04.R}, 
-\code{smirt__5.39.R}, \cr
-\code{smirt_alg_comp__1.05.R}, 
+\code{rm_proc__0.01.R}, \cr
+\code{sim.rasch.dep__0.05.R}, 
+\code{smirt__5.39.R}, 
+\code{smirt_alg_comp__1.05.R}, \cr
 \code{smirt_alg_noncomp__2.14.R}, 
-\code{smirt_preproc__0.05.R}, \cr
-\code{stratified.cronbach.alpha__0.02.R}, 
+\code{smirt_preproc__0.05.R}, 
+\code{stratified.cronbach.alpha__0.02.R}, \cr
 \code{summary.gom.em__0.04.R}, 
+\code{summary.invariance.alignment__0.01.R}, 
 \code{summary.isop__0.04.R}, \cr
 \code{summary.mcmc.sirt__1.02.R}, 
 \code{summary.R2noharm.jackknife__1.01.R}, \cr
@@ -429,8 +438,9 @@ therein).
 \code{summary.rm.hrm__0.02.R}, \cr
 \code{summary.smirt__0.05.R}, 
 \code{tetrachoric2__1.01.R}, 
-\code{wle.rasch__1.04.R}, 
-\code{yen.q3__0.06.R}, \cr
+\code{truescore.irt__0.05.R}, 
+\code{wle.rasch__1.04.R}, \cr
+\code{yen.q3__0.06.R}, 
 \code{zzz__1.05.R}, 
 }
 \section{\emph{Rcpp} Function Versions }{
@@ -444,13 +454,16 @@ therein).
 \code{first_eigenvalue_sirt__2.13.h}, 
 }
 \section{\emph{Rd} Documentation Versions }{
+\code{automatic.recode__0.03.Rd}, 
 \code{ccov.np__0.08.Rd}, 
-\code{class.accuracy.rasch__0.07.Rd}, 
-\code{conf.detect__1.14.Rd}, \cr
-\code{data.big5__0.14.Rd}, 
+\code{class.accuracy.rasch__0.07.Rd}, \cr
+\code{conf.detect__1.14.Rd}, 
+\code{data.activity.itempars__0.03.Rd}, 
+\code{data.big5__0.14.Rd}, \cr
 \code{data.long__0.08.Rd}, 
 \code{data.math__0.05.Rd}, 
-\code{data.mcdonald__0.05.Rd}, \cr
+\code{data.mcdonald__0.05.Rd}, 
+\code{data.mixed1__0.03.Rd}, \cr
 \code{data.ml__1.04.Rd}, 
 \code{data.noharm__2.03.Rd}, 
 \code{data.pars1.rasch__0.04.Rd}, \cr
@@ -458,34 +471,36 @@ therein).
 \code{data.pisaPars__0.02.Rd}, 
 \code{data.pisaRead__0.04.Rd}, \cr
 \code{data.ratings1__0.04.Rd}, 
+\code{data.raw1__0.02.Rd}, 
 \code{data.read__1.05.Rd}, 
-\code{data.reck__0.02.Rd}, 
-\code{data.timss__0.04.Rd}, \cr
-\code{data.wide2long__0.05.Rd}, 
-\code{detect.index__0.09.Rd}, 
-\code{dif.logistic.regression__0.11.Rd}, \cr
-\code{dif.strata.variance__0.05.Rd}, 
+\code{data.reck__0.02.Rd}, \cr
+\code{data.timss__0.04.Rd}, 
+\code{data.wide2long__0.06.Rd}, 
+\code{detect.index__0.09.Rd}, \cr
+\code{dif.logistic.regression__0.11.Rd}, 
+\code{dif.strata.variance__0.05.Rd}, \cr
 \code{dif.variance__0.06.Rd}, 
-\code{dirichlet.mle__0.06.Rd}, \cr
-\code{dirichlet.simul__0.03.Rd}, 
-\code{eigenvalues.manymatrices__0.06.Rd}, \cr
-\code{eigenvalues.sirt__0.03.Rd}, 
-\code{equating.rasch.jackknife__0.08.Rd}, \cr
+\code{dirichlet.mle__0.06.Rd}, 
+\code{dirichlet.simul__0.03.Rd}, \cr
+\code{eigenvalues.manymatrices__0.06.Rd}, 
+\code{eigenvalues.sirt__0.03.Rd}, \cr
+\code{equating.rasch.jackknife__0.08.Rd}, 
 \code{equating.rasch__1.15.Rd}, 
-\code{expl.detect__1.06.Rd}, 
-\code{f1d.irt__1.03.Rd}, 
-\code{fit.isop__1.07.Rd}, \cr
+\code{expl.detect__1.06.Rd}, \cr
+\code{f1d.irt__1.04.Rd}, 
+\code{fit.isop__1.07.Rd}, 
 \code{gom.em__1.13.Rd}, 
-\code{gom.jml__0.09.Rd}, 
-\code{greenyang.reliability__1.12.Rd}, \cr
-\code{isop.scoring__1.08.Rd}, 
+\code{gom.jml__0.09.Rd}, \cr
+\code{greenyang.reliability__1.13.Rd}, 
+\code{invariance.alignment__0.20.Rd}, 
+\code{isop.scoring__1.08.Rd}, \cr
 \code{isop__3.03.Rd}, 
-\code{latent.regression.em.raschtype__1.15.Rd}, \cr
-\code{linking.haberman__0.09.Rd}, 
+\code{latent.regression.em.raschtype__1.15.Rd}, 
+\code{linking.haberman__0.22.Rd}, \cr
 \code{lsdm__1.14.Rd}, 
 \code{marginal.truescore.reliability__0.09.Rd}, \cr
 \code{matrixfunctions.sirt__1.08.Rd}, 
-\code{mcmc.2pno.ml__0.17.Rd}, 
+\code{mcmc.2pno.ml__0.18.Rd}, 
 \code{mcmc.2pno__1.18.Rd}, \cr
 \code{mcmc.2pnoh__0.12.Rd}, 
 \code{mcmc.3pno.testlet__1.05.Rd}, 
@@ -495,10 +510,10 @@ therein).
 \code{modelfit.sirt__0.18.Rd}, \cr
 \code{monoreg.rowwise__0.05.Rd}, 
 \code{np.dich__0.10.Rd}, 
-\code{pbivnorm2__0.06.Rd}, \cr
+\code{pbivnorm2__0.07.Rd}, \cr
 \code{person.parameter.rasch.copula__1.04.Rd}, 
 \code{personfit.stat__0.06.Rd}, 
-\code{pgenlogis__0.05.Rd}, \cr
+\code{pgenlogis__0.12.Rd}, \cr
 \code{plausible.value.imputation.raschtype__1.11.Rd}, 
 \code{plot.mcmc.sirt__0.04.Rd}, \cr
 \code{plot.np.dich__0.10.Rd}, 
@@ -507,31 +522,32 @@ therein).
 \code{qmc.nodes__0.04.Rd}, 
 \code{R2noharm.EAP__0.06.Rd}, 
 \code{R2noharm.jackknife__1.06.Rd}, \cr
-\code{R2noharm__2.08.Rd}, 
+\code{R2noharm__2.09.Rd}, 
 \code{rasch.copula__1.23.Rd}, 
 \code{rasch.jml.biascorr__0.10.Rd}, \cr
 \code{rasch.jml.jackknife1__2.06.Rd}, 
 \code{rasch.jml__1.19.Rd}, 
 \code{rasch.mirtlc__2.32.Rd}, \cr
-\code{rasch.mml__3.37.Rd}, 
-\code{rasch.pairwise.itemcluster__0.17.Rd}, 
+\code{rasch.mml__3.39.Rd}, 
+\code{rasch.pairwise.itemcluster__0.18.Rd}, 
 \code{rasch.pairwise__0.12.Rd}, \cr
 \code{rasch.pml__2.31.Rd}, 
 \code{rasch.prox__1.06.Rd}, 
-\code{rasch.va__0.03.Rd}, \cr
+\code{rasch.va__0.04.Rd}, \cr
 \code{reliability.nonlinearSEM__0.07.Rd}, 
 \code{rm.facets__0.13.Rd}, 
 \code{rm.hrm__0.15.Rd}, \cr
-\code{sim.qm.ramsay__0.13.Rd}, 
+\code{sim.qm.ramsay__0.15.Rd}, 
 \code{sim.rasch.dep__0.15.Rd}, 
-\code{sim.raschtype__0.08.Rd}, \cr
-\code{sirt-package__1.50.Rd}, 
+\code{sim.raschtype__0.09.Rd}, \cr
+\code{sirt-package__1.52.Rd}, 
 \code{smirt__1.31.Rd}, 
 \code{stratified.cronbach.alpha__0.10.Rd}, \cr
 \code{summary.mcmc.sirt__0.05.Rd}, 
 \code{testlet.yen.q3__1.01.Rd}, 
 \code{tetrachoric2__1.05.Rd}, \cr
+\code{truescore.irt__0.02.Rd}, 
 \code{wle.rasch.jackknife__1.09.Rd}, 
-\code{wle.rasch__1.05.Rd}, 
+\code{wle.rasch__1.05.Rd}, \cr
 \code{yen.q3__1.04.Rd}, 
 }

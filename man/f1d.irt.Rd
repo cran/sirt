@@ -28,10 +28,10 @@ normal distribution
 Number of dimensions to be estimated
 }
   \item{A}{
-Matrix of item discrminations (if IRT model is already estimated) 
+Matrix of item discrminations (if the IRT model is already estimated) 
 }
   \item{intercept}{
-Vector of item intercepts (if IRT model is already estimated)
+Vector of item intercepts (if the IRT model is already estimated)
 }
   \item{maxiter}{
 Maximum number of iterations

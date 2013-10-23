@@ -11,14 +11,24 @@ Haberman (2009). This method is a generalization of log-mean-mean
 linking from tow to several studies.
 }
 \usage{
-linking.haberman(itempars, conv = 1e-05, maxiter = 1000, progress = TRUE)
+linking.haberman(itempars, personpars, conv = 1e-05, maxiter = 1000, 
+    progress = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{itempars}{
-A data frame with four or five column. The first four columns contain
+A data frame with four or five columns. The first four columns contain
 in the order: study name, item name, \eqn{a} parameter, \eqn{b} parameter.
 The fifth column is an optional weight for every item and every study.
+}
+\item{personpars}{A list with vectors (e.g. EAPs or WLEs) or data frames
+	(e.g. plausible values) containing person parameters which
+	should be transformed.
+If a data frame in each list entry has \code{se} or \code{SE}
+(standard error) in a column name, then the corresponding
+column is only multiplied by \eqn{A_t}.
+If a column is labeled as \code{pid} (person ID),
+then it is left untransformed.
 }
 \item{conv}{
 Convergence criterion.
@@ -49,8 +59,8 @@ while for polytomous responses the generalized partial credit model holds
 = a_i ( \theta_p - b_i + d_{ik} ) }
 
 The parameters \eqn{ \{ a_{it} , b_{it} \}} of all items and studies are
-linearly transformed using equations \eqn{a_{it} \approx A_t \cdot a_i} and
-\eqn{b_{it} / A_t \approx B_t + b_i}. For identification reasons
+linearly transformed using equations \eqn{a_{it} \approx a_i / A_t} and
+\eqn{b_{it} \cdot A_t \approx B_t + b_i}. For identification reasons
 we define \eqn{A_1=1} and \eqn{B_1} = 0.
 
 The optimization function (which is a least squares criterion;
@@ -58,6 +68,11 @@ see Haberman 2009) seeks the transformation parameters \eqn{A_t} and
 \eqn{B_t} with an alternating least squares 
 method. Note that every item \eqn{i} and every study \eqn{t} can
 be weighted (specified in the fifth column of \code{itempars}).
+
+Effect sizes of invariance are calculated as R-squared measures
+of explained item slopes and intercepts after linking
+in comparison to item parameters across groups
+(Asparouhov & Muthen, 2013).
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,12 +82,24 @@ be weighted (specified in the fifth column of \code{itempars}).
 
 \value{
 A list with following entries
-  \item{transf.itempars}{Data frame with linear transformation functions
-  for item parameters}
+  \item{transf.pars}{Data frame with transformation parameters
+\eqn{A_t} and \eqn{B_t}
+  }
+%  \item{transf.itempars}{Data frame with linear transformation functions
+%  for item parameters}
   \item{transf.personpars}{Data frame with linear transformation functions
   for person parameters}  
   \item{joint.itempars}{Estimated joint item parameters \eqn{a_i} and \eqn{b_i}
   	}
+  \item{a.trans}{Transformed \eqn{a_{it}} parameters}
+  \item{b.trans}{Transformed \eqn{b_{it}} parameters}
+  \item{a.orig}{Original \eqn{a_{it}} parameters}
+  \item{b.orig}{Original \eqn{b_{it}} parameters} 
+  \item{personpars}{Tranformed person parameters}
+  \item{es.invariance}{Effect size measures of invariance,
+  	  separately for item slopes and intercepts.
+  	  In the rows, \eqn{R^2} and \eqn{\sqrt{1-R^2}}
+          are displayed.}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -81,6 +108,10 @@ A list with following entries
 
 
 \references{
+Asparouhov, T., & Muthen, B. (2013).
+Multiple-group factor analysis alignment.
+\emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
+	
 Haberman, S. J. (2009). \emph{Linking parameter estimates derived
 from an item respone model through separate calibrations}. 
 ETS Research Report ETS RR-09-40. Princeton, ETS.
@@ -176,6 +207,186 @@ itempartable <- rbind( itempartable1 , itempartable2 )
 itempartable[,2] <- substring( itempartable[,2] , 1, 2 )
 # estimate linking parameters
 mod2 <- linking.haberman( itempars= itempartable )
+
+#############################################################################
+# SIMULATED EXAMPLE 3: 2 Studies - 1PL and 2PL linking 
+#############################################################################
+set.seed(789)
+I <- 20		# number of items
+N <- 2000       # number of persons
+# define item parameters
+b <- seq( -1.5 , 1.5 , length=I )
+# simulate data
+dat1 <- sim.raschtype( rnorm( N , mean=0,sd=1 ) , b=b )
+dat2 <- sim.raschtype( rnorm( N , mean=0.5,sd=1.50 ) , b=b )
+
+#*** Model 1: 1PL
+# 1PL Study 1
+mod1 <- rasch.mml2( dat1 , est.a= rep(1,I) )
+summary(mod1)
+# 1PL Study 2
+mod2 <- rasch.mml2( dat2 , est.a= rep(1,I) )
+summary(mod2)
+
+# collect item parameters
+dfr1 <- data.frame( "study1" , mod1$item$item , mod1$item$a , mod1$item$b )
+dfr2 <- data.frame( "study2" , mod2$item$item , mod2$item$a , mod2$item$b )
+colnames(dfr2) <- colnames(dfr1) <- c("study" , "item" , "a" , "b" )
+itempars <- rbind( dfr1 , dfr2 )
+
+# Haberman linking
+linkhab1 <- linking.haberman(itempars=itempars)
+## Transformation parameters (Haberman linking)
+##    study    At     Bt
+## 1 study1 1.000  0.000
+## 2 study2 1.465 -0.512
+## 
+## Linear transformation for item parameters a and b
+##    study   A_a   A_b    B_b
+## 1 study1 1.000 1.000  0.000
+## 2 study2 0.682 1.465 -0.512
+## 
+## Linear transformation for person parameters theta
+##    study A_theta B_theta
+## 1 study1   1.000   0.000
+## 2 study2   1.465   0.512
+## 
+## R-Squared Measures of Invariance
+##        slopes intercepts
+## R2          1     0.9979
+## sqrtU2      0     0.0456
+
+#*** Model 2: 2PL
+# 2PL Study 1
+mod1 <- rasch.mml2( dat1 , est.a= 1:I )
+summary(mod1)
+# 2PL Study 2
+mod2 <- rasch.mml2( dat2 , est.a= 1:I )
+summary(mod2)
+
+# collect item parameters
+dfr1 <- data.frame( "study1" , mod1$item$item , mod1$item$a , mod1$item$b )
+dfr2 <- data.frame( "study2" , mod2$item$item , mod2$item$a , mod2$item$b )
+colnames(dfr2) <- colnames(dfr1) <- c("study" , "item" , "a" , "b" )
+itempars <- rbind( dfr1 , dfr2 )
+
+# Haberman linking
+linkhab2 <- linking.haberman(itempars=itempars)
+## Transformation parameters (Haberman linking)
+##    study    At     Bt
+## 1 study1 1.000  0.000
+## 2 study2 1.468 -0.515
+## 
+## Linear transformation for item parameters a and b
+##    study   A_a   A_b    B_b
+## 1 study1 1.000 1.000  0.000
+## 2 study2 0.681 1.468 -0.515
+## 
+## Linear transformation for person parameters theta
+##    study A_theta B_theta
+## 1 study1   1.000   0.000
+## 2 study2   1.468   0.515
+## 
+## R-Squared Measures of Invariance
+##        slopes intercepts
+## R2     0.9984     0.9980
+## sqrtU2 0.0397     0.0443
+
+#############################################################################
+# SIMULATED EXAMPLE 4: 3 Studies - 1PL and 2PL linking 
+#############################################################################
+set.seed(789)
+I <- 20     # number of items
+N <- 1500       # number of persons
+# define item parameters
+b <- seq( -1.5 , 1.5 , length=I )
+# simulate data
+dat1 <- sim.raschtype( rnorm( N , mean=0,sd=1 ) , b=b )
+dat2 <- sim.raschtype( rnorm( N , mean=0.5,sd=1.50 ) , b=b )
+dat3 <- sim.raschtype( rnorm( N , mean=-.2,sd=.8 ) , b=b )
+# set some items to missing
+dat3 <- dat3[ , -c(1,4) ]
+dat2 <- dat2[ , -c(1,2,3) ] 
+
+#*** Model 1: 1PL in sirt
+# 1PL Study 1
+mod1 <- rasch.mml2( dat1 , est.a= rep(1,ncol(dat1)) )
+summary(mod1)
+# 1PL Study 2
+mod2 <- rasch.mml2( dat2 , est.a= rep(1,ncol(dat2)) )
+summary(mod2)
+# 1PL Study 3
+mod3 <- rasch.mml2( dat3 , est.a= rep(1,ncol(dat3)) )
+summary(mod3)
+
+# collect item parameters
+dfr1 <- data.frame( "study1" , mod1$item$item , mod1$item$a , mod1$item$b )
+dfr2 <- data.frame( "study2" , mod2$item$item , mod2$item$a , mod2$item$b )
+dfr3 <- data.frame( "study3" , mod3$item$item , mod3$item$a , mod3$item$b )
+colnames(dfr3) <- colnames(dfr2) <- colnames(dfr1) <- c("study" , "item" , "a" , "b" )
+itempars <- rbind( dfr1 , dfr2 , dfr3 )
+
+# use person parameters
+personpars <- list( mod1$person[ , c("EAP","SE.EAP") ] , mod2$person[ , c("EAP","SE.EAP") ] ,
+    mod3$person[ , c("EAP","SE.EAP") ] )
+
+# Haberman linking
+linkhab1 <- linking.haberman(itempars=itempars , personpars=personpars)
+# compare item parameters
+round( cbind( linkhab1$joint.itempars[,-1], linkhab1$b.trans )[1:5,] , 3 )
+##            aj     bj study1 study2 study3
+##   I0001 0.998 -1.427 -1.427     NA     NA
+##   I0002 0.998 -1.290 -1.324     NA -1.256
+##   I0003 0.998 -1.140 -1.068     NA -1.212
+##   I0004 0.998 -0.986 -1.003 -0.969     NA
+##   I0005 0.998 -0.869 -0.809 -0.872 -0.926
+
+# summary of person parameters of second study
+round( psych::describe( linkhab1$personpars[[2]] ) , 2 )
+##   var    n mean   sd median trimmed  mad   min  max range  skew kurtosis
+## EAP      1 1500 0.45 1.36   0.41    0.47 1.52 -2.61 3.25  5.86 -0.08    -0.62
+## SE.EAP   2 1500 0.57 0.09   0.53    0.56 0.04  0.49 0.84  0.35  1.47     1.56
+##          se
+## EAP    0.04
+## SE.EAP 0.00
+
+#*** Model 2: 2PL in TAM
+library(TAM)
+# 2PL Study 1
+mod1 <- tam.mml.2pl( resp=dat1 , irtmodel="2PL" )
+pvmod1 <- tam.pv(mod1, ntheta=300 , normal.approx=TRUE) # draw plausible values
+summary(mod1)
+# 2PL Study 2
+mod2 <- tam.mml.2pl( resp=dat2 , irtmodel="2PL" )
+pvmod2 <- tam.pv(mod2, ntheta=300 , normal.approx=TRUE)
+summary(mod2)
+# 2PL Study 3
+mod3 <- tam.mml.2pl( resp=dat3 , irtmodel="2PL" )
+pvmod3 <- tam.pv(mod3, ntheta=300 , normal.approx=TRUE)
+summary(mod3)
+
+# collect item parameters
+#!!  Note that in TAM the parametrization is a*theta - b while linking.haberman
+#!!  needs the parametrization a*(theta-b)
+dfr1 <- data.frame( "study1" , mod1$item$item , mod1$B[,2,1] , mod1$xsi$xsi / mod1$B[,2,1]  )
+dfr2 <- data.frame( "study2" , mod2$item$item , mod2$B[,2,1] , mod2$xsi$xsi / mod2$B[,2,1] )
+dfr3 <- data.frame( "study3" , mod3$item$item , mod3$B[,2,1] , mod3$xsi$xsi / mod3$B[,2,1] )
+colnames(dfr3) <- colnames(dfr2) <- colnames(dfr1) <- c("study" , "item" , "a" , "b" )
+itempars <- rbind( dfr1 , dfr2 , dfr3 )
+
+# define list containing person parameters
+personpars <- list(  pvmod1$pv[,-1] , pvmod2$pv[,-1] , pvmod3$pv[,-1] )
+
+# Haberman linking
+linkhab2 <- linking.haberman(itempars=itempars,personpars=personpars)
+##   Linear transformation for person parameters theta
+##      study A_theta B_theta
+##   1 study1   1.000   0.000
+##   2 study2   1.485   0.465
+##   3 study3   0.786  -0.192
+
+# extract transformed person parameters
+personpars.trans <- linkhab2$personpars
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
