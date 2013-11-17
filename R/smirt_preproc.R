@@ -81,3 +81,37 @@
 									}																												
 			return(res)
 						}
+########################################################################
+.smirt.check.inits <- function( a.init , b.init , irtmodel , Qmatrix){
+      #****** check b.init
+		if ( ! is.null( b.init) ){
+			if (irtmodel=="comp"){
+				if ( is.matrix(b.init) ){
+					b.init <- b.init[,1]
+					cat("*** I only use the first column of the b.init matrix \n***" ,
+						 "because a compensatory model is requested!\n" )	
+								}
+				}  # end comp
+			if (irtmodel=="noncomp"){
+				if ( is.vector(b.init) ){
+					stop("*** A matrix for b.init is required.")
+								}
+				}  # end noncomp								
+			} # end b.init
+		#**************
+      #****** check b.init
+		if ( ! is.null( a.init) ){
+				if ( is.vector(a.init) ){
+					stop("*** A matrix for a.init is required.")
+								}
+				if ( is.matrix(a.init) ){
+				   if ( ncol(a.init) != ncol(Qmatrix) ){
+					stop("*** Check number of dimensions for specifying a.init.")
+										}
+								}																
+				}  # end a.init							
+		
+	res <- list("b.init"=b.init , "a.init"=a.init)
+    return(res)  	
+		}
+##########################################################

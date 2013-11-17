@@ -1,20 +1,9 @@
  
-# 0.01  2012-xx-yy
-
-
-# 0.01  2012-06-23  o initial release
-
-
-#-------------------------------------------------------
-
-
-
 
 
 #''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 #''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 # Routine for plausible value imputation
-##NS export(plausible.value.imputation.raschtype)
 plausible.value.imputation.raschtype <- function( data=NULL , 
 		f.yi.qk=NULL , X , 
         Z = NULL, beta0=rep(0,ncol(X)) , sig0=1 ,
@@ -39,14 +28,19 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
     # burnin ... number of burn-in iterations    
     #...........................................................................
     # indexes for PV estimation
-	data <- as.matrix(data)
-    if (is.null(colnames(data)) ){ colnames(data) <- paste( "item" , seq(1 , ncol(data)) , sep="") }
-    dfrout <- data.frame( "item" = colnames(data) , "b" = b , "a" = a , "c" = c , "d" = d )  
-    cat("\nIRT Plausible Value Imputation - Rasch type model\n")
+	if ( ! is.null(data) ){
+		data <- as.matrix(data)
+		if (is.null(colnames(data)) ){ colnames(data) <- paste( "item" , seq(1 , ncol(data)) , sep="") }
+		dfrout <- data.frame( "item" = colnames(data) , "b" = b , "a" = a , "c" = c , "d" = d )  
+		cat("\nIRT Plausible Value Imputation - Rasch type model\n")
+	    nd <- nrow(data)
+						} else {
+			nd <- nrow(f.yi.qk) 
+					}
     pv.indexes <- sort( unique( round( sort( seq( iter , burnin +1 ,
 					len = nplausible ) ) )))
     coefs <- matrix( 0 , nrow=iter , ncol=ncol(X) + ( ! is.null(cluster) ) )
-    pvdraws <- matrix( 0 , nrow= length(pv.indexes) , ncol=nrow(data) ) 
+    pvdraws <- matrix( 0 , nrow= length(pv.indexes) , ncol= nd ) 
     # matrices
     X <- as.matrix(X)
     if ( is.null(Z) ){ Z <- matrix( 1 , nrow= nrow(X) , ncol=1) }
@@ -156,7 +150,7 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
     # SD of posterior distribution
     SD.Post <- sqrt( rowSums( theta.listM^2 * dens.total ) -  EAP^2 )
     # one draw of plausible values
-    if (pvdraw == FALSE ){ pvdraw <- NULL } else { 
+    if (  ! pvdraw ){ pvdraw <- NULL } else { 
             pvdraw <- matrix( rnorm( n*pvdraw , 
 				mean = rep(EAP,each=pvdraw) , sd = rep(SD.Post,each=pvdraw) ) , ncol=pvdraw , byrow=T )
                          }

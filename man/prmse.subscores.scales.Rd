@@ -54,6 +54,10 @@ Alexander Robitzsch
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
+#############################################################################
+# EXAMPLE 1: PRMSE Reading data data.read
+#############################################################################	
+
 data( data.read )
 p1 <- prmse.subscores.scales(data=data.read, 
     subscale = substring( colnames(data.read) , 1 ,1 ) )

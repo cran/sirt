@@ -19,10 +19,10 @@ class.accuracy.rasch(cutscores, b, meantheta, sdtheta, theta.l,
 Vector of cut scores
 }
   \item{b}{
-Vector of item dificulties
+Vector of item difficulties
 }
   \item{meantheta}{
-Mean of the trait ditribution
+Mean of the trait distribution
 }
   \item{sdtheta}{
 Standard deviation of the trait distribution
@@ -71,8 +71,9 @@ Classification accuracy of other IRT models
 can be obtained with the \R package \pkg{cacIRT}.
 }
 \examples{
-############################################
-# Dataset Reading
+#############################################################################
+# EXAMPLE 1: Reading dataset
+#############################################################################
 data( data.read )
 dat <- data.read
 

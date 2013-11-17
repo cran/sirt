@@ -172,7 +172,7 @@ New York: Springer.
 Alexander Robitzsch
 }
 \note{
-Possible errors are often due to wrong \code{dec}
+Possible errors often occur due to wrong \code{dec}
 specification.
 }
 
@@ -180,6 +180,8 @@ specification.
 
 \seealso{
 For estimating standard errors see \code{\link{R2noharm.jackknife}}.
+
+For EAP person parameter estimates see \code{\link{R2noharm.EAP}}. 
 }
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 
@@ -214,9 +216,9 @@ F.pattern <- matrix( 0 , nrow=I , ncol=1 )
 F.init <- 1 + 0*F.pattern       # 
 # estimate model
 mod <- R2noharm( dat = dat , model.type="CFA" ,  
-		F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+        F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
         P.init = P.init , writename = "ex1__1dim_1pl" , 
-		noharm.path = noharm.path , dec ="," )
+	noharm.path = noharm.path , dec ="," )
 # summary
 summary(mod , logfile="ex1__1dim_1pl__SUMMARY")
 # jackknife

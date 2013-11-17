@@ -78,6 +78,9 @@ Alexander Robitzsch
 \code{\link{wle.rasch}}
 }
 \examples{
+#############################################################################
+# EXAMPLE 1: Dataset Reading
+#############################################################################
 data(data.read)
 dat <- data.read
 
@@ -113,7 +116,6 @@ wle5 <- wle.rasch.jackknife(dat, b =res$item$thresh ,
 ## Stratum  B (Mean) Correction Factor 0.42857 
 ## Stratum  C (Mean) Correction Factor 0 
 ## WLE Reliability = 0.876 
-
          
 # compare different estimated standard errors
 a2 <- aggregate( wle2$wle$wle.jackse , list( wle2$wle$wle) , mean )

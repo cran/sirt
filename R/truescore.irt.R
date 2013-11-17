@@ -24,9 +24,30 @@ truescore.irt <- function( A , B , c=NULL , d =NULL ,
 
 	percscore <- truescore / sum( maxK )
 	percscore.error <- truescore.error / sum( maxK )
-
+	
+	# optimization function values
+	ind <- intersect( which( !is.na( theta ) ) , which( !is.na(percscore) ) )
+	x0 <- theta[ind]
+	y0 <- percscore[ind]
+	minf <- sum( ifelse( maxK==1 , c , 0 ) ) / sum(maxK) 
+	maxf <- sum( ifelse( maxK==1 , d , maxK ) ) / sum(maxK)	
+	critfct <- function(x) { 		
+	    a <- x[1]
+		b <- x[2]
+		# define fit function
+		sum( ( y0 - minf - (maxf - minf) * plogis( a*x0 + b ) )^2 )
+	}		
+#    m1 <- glm( y0 ~ x0 , family="binomial" , control=list(maxit=4) )	
+#	m1c <- coef(m1)
+#	h1 <- optim( c(m1c[2] , -m1c[1] ) , critfct)
+	h1 <- optim( c( .5 , 0 ) , critfct )
+#	fitval <- c( h1$par[1] , h1$par[2] )
+#	names(fitval) <- c("a" , "b" )		
+	#*****
+	# OUTPUT
 	res <- data.frame( "pid"=pid ,"truescore" = truescore , "truescore.error" = truescore.error , 
-			   "percscore" = percscore , "percscore.error" = percscore.error )
+			   "percscore" = percscore , "percscore.error" = percscore.error ,
+			   "lower"=minf , "upper"=maxf , "a" = h1$par[1] , "b" = h1$par[2] )
 	return(res)
 		}
 ####################################################

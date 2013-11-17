@@ -69,30 +69,47 @@ Further arguments to be passed
 }
 \details{
 The item response model of the grade of membership model 
-(Erosheva, Fienberg & Joutard, 2007) with \eqn{K} classes
+(Erosheva, Fienberg & Junker, 2002; 
+Erosheva, Fienberg & Joutard, 2007) with \eqn{K} classes
 for dichotomous correct responses \eqn{X_{pi}}
 of person \eqn{p} on item \eqn{i} is as follows (\code{model="GOM"})
 \deqn{
     P(X_{pi}=1 | g_{p1}, \ldots , g_{pK} ) = \sum_k \lambda_{ik} g_{pk}
-\quad , \quad \sum_k g_{pk} = 1 
-                }{%
-    P(X_{pi}=1 | g_{p1}, \ldots , g_{pK} ) = \sum_k \lambda_{ik} g_{pk}
-    ,    \sum_k g_{pk} = 1 
-            }
-The membership function is assumed to be discretely represented (specified by
-\code{problevels}).
+\quad , \quad \sum_{k=1}^K g_{pk} = 1
+\quad , \quad 0 \leq g_{pk} \leq 1 
+                }
+
+In most applications (e.g. Erosheva et al., 2007), the grade of
+memebership function \eqn{\{g_{pk}\}} is assumed to follow a Dirichlet
+distribution. In our \code{gom.em} implementation             
+the membership function is assumed to be discretely represented 
+by a grid \eqn{u=(u_1 , \ldots , u_L)} with entries between 0 and 1
+(e.g. \code{seq(0,1,length=5)} with \eqn{L=5}). 
+The values \eqn{g_{pk}} of the membership function can then
+only take values in \eqn{\{ u_1 , \ldots , u_L \}} with the restriction
+\eqn{\sum_k g_{pk} \sum_l \bold{1}(g_{pk} = u_l ) = 1}. 
+The grid \eqn{u} is specified by using the argument \code{problevels}.
            
-The Rasch grade of membership model poses constraints on probabilities
-\eqn{\lambda_{ik}} and membership functions \eqn{g_{pk}}. The membership 
+The Rasch grade of membership model (\code{model="GOMRasch"}) poses constraints 
+on probabilities \eqn{\lambda_{ik}} and membership functions \eqn{g_{pk}}. 
+The membership 
 function of person \eqn{p} is parametrized by a location parameter \eqn{\theta_p}
 and a variability parameter \eqn{\xi_p}. Each class \eqn{k} is represented by
 a location parameter \eqn{\tilde{\theta}_k}. The membership function is defined as
 \deqn{ g_{pk} \propto exp[ -  ( \theta_p - \tilde{\theta}_k )^2 / ( 2 \xi_p^2 )]}
+The person parameter \eqn{\theta_p} indicates the usual 'ability', while
+\eqn{\xi_p} describes the individual tendency to change between classes
+\eqn{1,\ldots,K} and their corresponding locations
+\eqn{\tilde{\theta}_1 , \ldots ,\tilde{\theta}_K}.
 The extremal class probabilities \eqn{\lambda_{ik}} follow the Rasch model
 \deqn{ \lambda_{ik} = invlogit( \tilde{\theta}_k - b_i  ) }
             
-            
+See Erosheva et al. (2002), Erosheva (2005) or Galyart (in press)
+for a comparison of grade of memebership models with latent trait models 
+and latent class models.
 }
+
+
 \value{
 A list with following entries:
 \item{deviance}{Deviance}
@@ -125,10 +142,24 @@ A list with following entries:
 \item{\dots}{Further values}
 }
 \references{
+Erosheva, E. A. (2005). Comparing latent structures of the grade of membership, 
+Rasch, and latent class models. \emph{Psychometrika}, \bold{70}, 619-628.
+	
+Erosheva, E. A., Fienberg, S. E., & Junker, B. W. (2002). 
+Alternative statistical models and representations for large sparse 
+multi-dimensional contingency tables. 
+\emph{Annales-Faculte Des Sciences Toulouse Mathematiques}, \bold{11},
+485-505.
+
 Erosheva, E. A., Fienberg, S. E., & Joutard, C. (2007).
 Describing disability through individual-level mixture models 
 for multivariate binary data. \emph{Annals of Applied Statistics},
 \bold{1}, 502-537.
+
+Galyardt, A. (in press). 
+Interpreting mixed membership models: Implications of Erosheva's representation 
+theorem. In E. M. Airoldi, D. Blei, E. A. Erosheva, & S. E. Fienberg:
+\emph{Handbook of Mixed Membership Models}. Chapman & Hall.
 }
 \author{
 Alexander Robitzsch
@@ -144,9 +175,10 @@ For joint maximum likelihood estimation of the grade of membership model
 see \code{\link{gom.jml}}.
 }
 \examples{
-#########################################################
+#############################################################################
 # EXAMPLE 1: PISA data mathematics
-#########################################################
+#############################################################################
+
 data(data.pisaMath)
 dat <- data.pisaMath$data
 dat <- dat[ , grep("M" , colnames(dat)) ]

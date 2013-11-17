@@ -4,7 +4,7 @@
 
 \docType{data}
 \title{
-Item Parameters for 3 Studies Obtained by 1PL and 2PL Estimation
+Item Parameters for Three Studies Obtained by 1PL and 2PL Estimation
 }
 \description{
 The datasets contains item parameters to be prepared for linking

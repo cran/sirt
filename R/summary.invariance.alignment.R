@@ -9,10 +9,15 @@ summary.invariance.alignment <- function( object , ...){
     cat("  Function 'invariance.alignment' \n")
 
     cat("-----------------------------------------------------------------\n")
-	cat( "Number of iterations =" , object$iter , "\n" )
-	cat( "Iteration with minimum function value =" , object$miniter , "\n" )
-    cat( "Optimization Function Value = " , round( object$fopt , 4 ) , 
-		"\n" )
+	cat( "Number of iterations =" , object$Niter[1] , 
+			"(LAMBDA) | " , object$Niter[2] , "(NU)\n" )
+	cat( "Iteration with minimum function value =" , 
+		object$miniter[1] , 	"(LAMBDA) | " , object$miniter[2] , "(NU)\n" )
+    cat( "Optimization Function Value (minimum value) = " , 
+		object$fopt[1] , 	"(LAMBDA) | " , object$fopt[2] , "(NU)\n" )
+    cat( "Optimization Function Value (last value) = " , 
+				object$fopt.history[object$Niter[1]-1,1] , 	"(LAMBDA) | " , 
+				object$fopt.history[object$Niter[2]-1,2] , "(NU)\n" )
 #    cat( "Log Likelihood = " , round( -object$deviance/2 , 2 ) , "\n" )	
 #    cat( "Number of persons = " , object$ic$n , "\n" )    
     cat("-----------------------------------------------------------------\n")

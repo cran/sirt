@@ -1,6 +1,7 @@
 \name{invariance.alignment}
 \alias{invariance.alignment}
 \alias{summary.invariance.alignment}
+\alias{plot.invariance.alignment}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -13,14 +14,19 @@ invariance for \eqn{G} groups and \eqn{I} items
 It is assumed that item loadings and intercepts are
 previously estimated under the assumption of a factor
 with zero mean and a variance of one. 
+
+\emph{Note that this function is in an early experimental stage.}
 }
 \usage{
 invariance.alignment(lambda, nu, wgt, align.scale = c(1, 1), 
-  align.pow = c(1, 1), eps = 1e-04, h = 0.001, max.increment = 0.2, 
-  increment.factor = 1.001, maxiter = 3000, conv = 1e-04, 
-  psi0.init = NULL, alpha0.init = NULL, progress = TRUE)
+    align.pow = c(1, 1), eps = 1e-04, h = 0.001, max.increment = 0.2, 
+    increment.factor = 1.001, maxiter = 3000, conv = 1e-04, 
+    fac.oldpar=.85 , psi0.init = NULL, alpha0.init = NULL, progress = TRUE)
 
 \method{summary}{invariance.alignment}(object,...)
+
+# plot of convergence behavior of optimization functions
+\method{plot}{invariance.alignment}(x,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -62,6 +68,12 @@ Maximum number of iterations
   \item{conv}{
 Maximum parameter change of the optimization function
 }
+\item{fac.oldpar}{Convergence acceleration parameter between 0 and 1. 
+	This parameter defines the relative weight the previous parameter value
+	for the calculation of the parameter update.
+	The default is .85. But experiment with this value and study
+	the obtained results.
+}
   \item{psi0.init}{
 An optional vector of initial \eqn{\psi_0} parameters
 }
@@ -73,6 +85,9 @@ An optional logical indicating whether computational
 should be printed.
 }
   \item{object}{
+Object of class \code{invariance.alignment}
+  }
+  \item{x}{
 Object of class \code{invariance.alignment}
   }
   \item{\dots}{
@@ -110,6 +125,12 @@ For identification reasons, the product \eqn{\Pi_g \psi_{g0}}
 of all group standard deviations is set to one. The mean
 \eqn{\alpha_{g0}} of the first group is set to zero.
 
+Note that the standard deviations \eqn{\psi_g} are estimated
+due to minimizing the sum of \eqn{f_\lambda} functions while
+means \eqn{\alpha_g} are obtained by minimizing the \eqn{f_\nu}
+part with fixed \eqn{\psi_g} parameters. Therefore, the original approach
+of Asparouhov and Muthen (2013) is split into a two-step procedure.
+
 Note that Asparouhov and Muthen (2013) use \eqn{a_\lambda=a_\nu=1}
 (which can be modified in \code{align.scale})
 and \eqn{p_\lambda = p_\nu = 1/4} (which can be modified in \code{align.pow}).
@@ -121,7 +142,16 @@ it is approximately \eqn{f_\lambda(x) = \sqrt{|x|} }.
 been proposed by Asparouhov and Muthen (2013). These are
 calculated separately for item loading and intercepts, resulting
 in \eqn{R^2_\lambda} and \eqn{R^2_\nu} measures which are
-included in the output \code{es.invariance}.
+included in the output \code{es.invariance}. In addition, 
+the average correlation of aligned item parameters among groups (\code{rbar})
+is reported.
+
+\emph{Metric invariance} means that all aligned item loadings \eqn{\lambda_{ig,1}}
+are equal across groups and therefore \eqn{R^2_\lambda = 1}.
+\emph{Scalar invariance} means that all aligned item loadings 
+\eqn{\lambda_{ig,1}} and aligned item intercepts \eqn{\nu_{ig,1}} are
+equal across groups and therefore \eqn{R^2_\lambda = 1} and \eqn{R^2_\nu = 1}
+(see Vandenberg & Lance, 2000).
 }
 
 \value{
@@ -133,7 +163,8 @@ A list with following entries
 \item{lambda.resid}{Residuals of \eqn{ \lambda_{i g ,1}} parameters}
 \item{nu.aligned}{Aligned \eqn{ \nu_{i g ,1}} parameters}
 \item{nu.resid}{Residuals of \eqn{ \nu_{i g ,1}} parameters}
-\item{iter}{Number of iterations}
+\item{Niter}{Number of iterations for \eqn{f_\lambda} and
+\eqn{f_\nu} optimization}
 \item{miniter}{Iteration index with minimum optimizatiob value}
 \item{fopt}{Minimum optimization value}
 \item{fopt.history}{Vector of iteration history of optimization function}
@@ -146,6 +177,11 @@ A list with following entries
 Asparouhov, T., & Muthen, B. (2013).
 Multiple-group factor analysis alignment.
 \emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
+
+Vandenberg, R. J., & Lance, C. E. (2000). A review and synthesis of the
+measurement invariance literature: Suggestions, practices, and
+recommendations for organizational research. \emph{Organizational Research
+Methods}, \bold{3}, 4-70.
 }
 
 \author{
@@ -155,7 +191,7 @@ Alexander Robitzsch
 \note{
 In case of nonconvergence, decrease \code{max.increments}
 or set \code{increment.factor} to a value larger than one
-(maybe 1.05 or 1.1).
+(maybe 1.01 or 1.05).
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -169,7 +205,7 @@ see \code{\link{mcmc.2pno.ml}}.
 
 \examples{
 #############################################################################
-# EXAMPLE 1: Parameters cultural activities 
+# EXAMPLE 1: Item parameters cultural activities 
 #############################################################################
 
 data( data.activity.itempars )
@@ -183,6 +219,11 @@ wgt <- matrix( sqrt(Ng) , length(Ng) , ncol(nu) )
 #   -> use the default of align.pow=c(1,1) and align.scale=c(1,1)
 mod1 <- invariance.alignment( lambda , nu , wgt )
 summary(mod1)
+##   Effect Sizes of Approximate Invariance 
+##          loadings intercepts
+##   R2       0.9266     0.9735
+##   sqrtU2   0.2709     0.1628
+##   rbar     0.9265     0.9738
 
 #****
 # Model 2: Different powers for alignment
@@ -204,10 +245,10 @@ round( mod2$nu.resid ,3 )
 # Note that setting increment.factor larger than 1 seems necessary
 mod3 <- invariance.alignment( lambda , nu , wgt , 
         align.pow=c(.25,.35) , align.scale=c(.55,.55) ,
-        max.increment=.05 , increment.factor=1.1 , maxiter=500,
+        max.increment=.05 , increment.factor=1.01 , maxiter=500,
         psi0.init=mod1$psi0 , alpha0.init = mod1$alpha0 )
 # plot iteration history
-plot( 1:mod3$iter , mod3$fopt.history[ 1:mod3$iter ] , type="l" )
+plot( mod3 )
 summary(mod3)
 
 # compare mean and SD estimates of Models 1 and 3
@@ -225,6 +266,176 @@ plot( abs(as.vector(mod1$nu.resid)) , abs(as.vector(mod3$nu.resid)) ,
       pch=16 , xlab="Residuals nu (Model 1)" , ylab="Residuals nu (Model 3)" , 
       xlim=c(0,.4),ylim=c(0,.4))
 lines( c(-3,3),c(-3,3) , col="gray")
+
+\dontrun{
+#############################################################################
+# EXAMPLE 2: Comparison 4 groups | data.inv4gr 
+#############################################################################
+
+data(data.inv4gr)
+dat <- data.inv4gr
+library(semTools)
+
+model1 <- '
+    F =~ I01 + I02 + I03 + I04 + I05 + I06 + I07 + I08 + I09 + I10 + I11
+    F ~~ 1*F
+    '
+
+res <- measurementInvariance(model1, std.lv =TRUE , data=dat , group="group")
+##   Measurement invariance tests:
+##   
+##   Model 1: configural invariance:
+##       chisq        df    pvalue       cfi     rmsea       bic 
+##     162.084   176.000     0.766     1.000     0.000 95428.025 
+##   
+##   Model 2: weak invariance (equal loadings):
+##       chisq        df    pvalue       cfi     rmsea       bic 
+##     519.598   209.000     0.000     0.973     0.039 95511.835 
+##   
+##   [Model 1 versus model 2]
+##     delta.chisq      delta.df delta.p.value     delta.cfi 
+##         357.514        33.000         0.000         0.027 
+##   
+##   Model 3: strong invariance (equal loadings + intercepts):
+##       chisq        df    pvalue       cfi     rmsea       bic 
+##    2197.260   239.000     0.000     0.828     0.091 96940.676 
+##   
+##   [Model 1 versus model 3]
+##     delta.chisq      delta.df delta.p.value     delta.cfi 
+##        2035.176        63.000         0.000         0.172 
+##   
+##   [Model 2 versus model 3]
+##     delta.chisq      delta.df delta.p.value     delta.cfi 
+##        1677.662        30.000         0.000         0.144 
+##   
+
+# extract item parameters separate group analyses
+ipars <- parameterEstimates(res$fit.configural)
+# extract lambda's: groups are in rows, items in columns
+lambda <- matrix( ipars[ ipars$op == "=~" , "est"] , nrow=4 ,  byrow=TRUE)
+colnames(lambda) <- colnames(dat)[-1]
+# extract nu's
+nu <- matrix( ipars[ ipars$op == "~1"  & ipars$se != 0 , "est" ], nrow=4 ,  byrow=TRUE)
+colnames(nu) <- colnames(dat)[-1]
+# define wgt
+wgt <- 1+0*nu
+
+# Model 1: least squares optimization
+mod1 <- invariance.alignment( lambda=lambda , nu=nu ,wgt=wgt)
+summary(mod1)
+##   Effect Sizes of Approximate Invariance 
+##          loadings intercepts
+##   R2       0.7007     0.8146
+##   sqrtU2   0.5471     0.4305
+##   rbar     0.6237     0.7822
+##   -----------------------------------------------------------------
+##   Group Means and Standard Deviations 
+##     alpha0  psi0
+##   1  0.000 0.965
+##   2 -0.105 1.098
+##   3 -0.081 1.011
+##   4  0.171 0.935
+
+# Model 2: sparse target function
+mod2 <- invariance.alignment( lambda=lambda , nu=nu ,wgt=wgt , align.pow=c(1/4,1/4) , 
+            increment.factor=1.01)
+summary(mod2)
+##   Effect Sizes of Approximate Invariance 
+##          loadings intercepts
+##   R2       0.6980     0.8063
+##   sqrtU2   0.5495     0.4402
+##   rbar     0.6237     0.7839
+##   -----------------------------------------------------------------
+##   Group Means and Standard Deviations 
+##     alpha0  psi0
+##   1  0.000 0.948
+##   2 -0.042 1.106
+##   3  0.003 0.990
+##   4  0.089 0.964
+
+# compare residuals
+round( mod1$nu.resid , 2)
+round( mod2$nu.resid , 2)
+##   > round( mod1$nu.resid , 2)
+##          I01   I02   I03   I04   I05   I06   I07   I08   I09   I10   I11
+##   [1,]  0.16  0.08  0.00  0.08 -0.19 -0.08  0.08 -0.09 -0.07 -0.23  0.07
+##   [2,]  0.09  0.14 -0.12 -0.03 -0.03 -0.04  0.12 -0.15 -0.17 -0.17  0.18
+##   [3,] -0.17 -0.16  0.16  0.09  0.16  0.01 -0.16  0.08  0.25  0.12 -0.12
+##   [4,] -0.07 -0.06 -0.04 -0.14  0.05  0.10 -0.04  0.15  0.00  0.28 -0.13
+##   > round( mod2$nu.resid , 2)
+##          I01   I02   I03   I04   I05   I06   I07   I08   I09   I10   I11
+##   [1,]  0.17  0.09  0.01  0.09 -0.18 -0.07  0.09 -0.08 -0.06 -0.23  0.08
+##   [2,]  0.06  0.13 -0.13 -0.05 -0.05 -0.06  0.09 -0.17 -0.19 -0.19  0.14
+##   [3,] -0.22 -0.20  0.12  0.06  0.14 -0.02 -0.20  0.07  0.22  0.10 -0.16
+##   [4,] -0.02 -0.02  0.01 -0.09  0.10  0.15  0.03  0.19  0.04  0.32 -0.06
+
+summary( abs( as.vector( mod1$nu.resid )) )
+summary( abs( as.vector( mod2$nu.resid )) )
+##   > summary( abs( as.vector( mod1$nu.resid )) )
+##        Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+##   0.0002706 0.0732800 0.1080000 0.1116000 0.1596000 0.2775000 
+##   > summary( abs( as.vector( mod2$nu.resid )) )
+##       Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+##   0.006102 0.062720 0.090370 0.112300 0.171800 0.318900
+
+#############################################################################
+# EXAMPLE 3: European Social Survey data.ess2005 
+#############################################################################
+
+data(data.ess2005)
+lambda <- data.ess2005$lambda
+nu <- data.ess2005$nu
+wgt <- 1+0*lambda
+
+# Model 1: least squares optimization
+mod1 <- invariance.alignment( lambda=lambda , nu=nu ,wgt=wgt)
+summary(mod1)
+##   Group Means and Standard Deviations 
+##      alpha0  psi0
+##   1   0.000 0.870
+##   2  -0.566 1.034
+##   3   0.121 0.970
+##   4  -0.724 0.899
+##   5   0.028 0.976
+##   6   0.168 1.028
+
+# Model 2: sparse target function
+mod2 <- invariance.alignment( lambda=lambda , nu=nu ,wgt=wgt , 
+            align.pow=c(1/4,1/4) , align.scale= c( .2 , .3) , 
+            increment.factor=1.01 , max.increment = .05 )
+plot(mod2)
+summary(mod2)
+## Group Means and Standard Deviations 
+##    alpha0  psi0
+## 1   0.000 0.894
+## 2  -0.414 1.008
+## 3   0.194 1.008
+## 4  -0.584 0.930
+## 5   0.037 1.010
+## 6   0.234 1.028
+
+plot( mod1$pars$alpha0 , mod2$pars$alpha0 , pch=16)
+lines( c(-5,5) , c(-5,5) , col="gray" )
+
+round( mod1$nu.resid[1:10,] , 2 )
+round( mod2$nu.resid[1:10,] , 2 )
+##   > round( mod1$nu.resid[1:10,] , 2 )
+##         ipfrule ipmodst ipbhprp imptrad
+##    [1,]    0.16   -0.26    0.00    0.01
+##    [2,]   -0.19    0.24    0.10   -0.24
+##    [3,]    0.22   -0.34    0.06   -0.02
+##    [4,]    0.29   -0.04    0.11   -0.54
+##    [5,]   -0.33    0.20    0.00    0.13
+##    [6,]    0.06   -0.21    0.05    0.04
+##   > round( mod2$nu.resid[1:10,] , 2 )
+##         ipfrule ipmodst ipbhprp imptrad
+##    [1,]    0.17   -0.25    0.01    0.02
+##    [2,]   -0.27    0.14    0.00   -0.30
+##    [3,]    0.18   -0.37    0.01   -0.05
+##    [4,]    0.18   -0.13    0.00   -0.61
+##    [5,]   -0.32    0.20    0.01    0.13
+##    [6,]    0.01   -0.23    0.01    0.01
+}
 }
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the

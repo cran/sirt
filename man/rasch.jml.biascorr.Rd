@@ -65,7 +65,7 @@ dat <- data( data.read )
 # estimate Rasch model
 mod <- rasch.jml( data.read  )
 
-# JML bias correction
+# JML with analytical bias correction
 res1 <- rasch.jml.biascorr( jmlobj=mod  )
 print( res1$b.biascorr , digits= 3 )
 ##        b.JML b.JMLcorr b.analytcorr1 b.analytcorr2

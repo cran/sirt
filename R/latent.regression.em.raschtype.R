@@ -2,14 +2,15 @@
 
 #----------------------------------------------------------------------------
 # Latent Regression: EM algorithm
-##NS export(latent.regression.em.raschtype)
+#    Rasch type model: based on individual likelihood
 latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X , 
 								weights = rep(1,nrow(X)) , 
                                 beta.init=rep(0,ncol(X)) , sigma.init =1 , 
                                 b=rep(0,ncol(X)) , a= rep(1 , length(b)) , c= rep(0 , length(b)) , 
                                 d = rep(1 , length(b)) , alpha1=0 , alpha2=0 , 
                                 max.parchange=.0001 , 
-                                theta.list = seq(-5,5,len=20) , maxiter = 300 ){
+                                theta.list = seq(-5,5,len=20) , maxiter = 300 ,
+								progress=TRUE ){
     #.....................................................................................#
     # INPUT:                                                                              #
     # data          ... item response matrix                                              #
@@ -27,7 +28,6 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
     # maxiter       ... maximum number of iterations                                      #
     #.....................................................................................#
     X <- as.matrix(X)   # matrix format
-	data <- as.matrix(data)
     # init parameters
     beta0 <- beta.init
     sig0 <- sigma.init
@@ -35,10 +35,10 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
     weights <- length(weights) * weights / sum(weights )
     # initialize iteration index and value of parameter change
     iter <- 1 ; parchange <- 1000
-	
 	#***
 	# data preparation
 	if ( ! is.null(data)){
+		data <- as.matrix(data)	
 		y <- data
 		y[ is.na(y)] <- 0
 		dat2.resp <- 1-is.na(data)
@@ -79,9 +79,11 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
 		post <- f.yi.qk * prior
 		post <- post / rowSums( post )
         parchange <- max( abs(sigma - sig0) , abs( cmod - beta0) )
-        cat( paste("Iteration " , iter,": max parm. change " , round( parchange , 6 ) ,sep="") ,
-				" # Regr. Coeff. " , round(as.vector(cmod),5) , 
-				 "\n") ; flush.console()
+		if (progress){ 
+			cat( paste("Iteration " , iter,": max parm. change " , round( parchange , 6 ) ,sep="") ,
+	#				" # Regr. Coeff. " , round(as.vector(cmod),5) , 
+					 "\n") ; flush.console()
+					 }
         # parameter update
         sig0 <- sigma ; beta0 <- cmod ; iter <- iter + 1
                     }
@@ -89,14 +91,17 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
     V <- ncol(X)    	# number of X variables (predictors)
 	W <- diag(weights)	# diagonal matrix of weights
 	# simple covariance matrix
-	h1 <- t(X) %*% W %*% X
+#	h1 <- t(X) %*% W %*% X
+	h1 <- crossprod( X , W ) %*% X	
 	h2 <- solve(h1)
 	vcov.simple <- sigma^2 * h2
 	# covariance matrix which includes measurement error
 	error.weights <- 1 - SE.EAP^2 / sigma^2 
-	EW <- outer( sqrt( error.weights ) , rep(1,ncol(X)))
-	X1 <- X * EW
-	h1 <- t(X1) %*% W %*% X1
+#	EW <- outer( sqrt( error.weights ) , rep(1,ncol(X)))
+#	X1 <- X * EW
+	X1 <- X * sqrt(error.weights)
+#	h1 <- t(X1) %*% W %*% X1
+	h1 <- crossprod( X1 , W ) %*% X1	
 	h2 <- solve(h1)
 	vcov.latent <- sigma^2 * h2
     scoefs <- matrix( 0 , nrow=V , ncol=9 )
@@ -114,17 +119,19 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
 	rsquared <- explvar / totalvar
 	scoefs$beta <- scoefs$est / sqrt( totalvar ) * apply( X , 2 , sd )
 	scoefs$fmi <- 1 -  scoefs$se.simple^2 / scoefs$se^2
-	scoefs[,"N.simple" ] <- nrow(data)
+	scoefs[,"N.simple" ] <- nrow(X)
 	scoefs[,"pseudoN.latent"] <- sum( error.weights )  
     scoefs$t <- scoefs$est / scoefs$se
     scoefs$p <- 2 * ( 1 - pnorm( abs( scoefs$t ) ) )
     if ( ! is.null( colnames(X) ) ){ rownames(scoefs) <- colnames(X) } # use column names of X
-	cat("\n\nRegression Parameters\n\n")
-	.prnum(scoefs,4)		# print results
-	cat( paste( "\nResidual Variance  =" , round( sigma^2 , 4 ) ) , "\n" )
-	cat( paste( "Explained Variance =" , round( explvar , 4 ) ) , "\n" )
-	cat( paste( "Total Variance     =" , round( totalvar , 4 ) ) , "\n" )
-	cat( paste( "	        R2 =" , round( rsquared , 4 ) ) , "\n" )	
+	if (progress){
+		cat("\nRegression Parameters\n\n")
+		.prnum(scoefs,4)		# print results
+		cat( paste( "\nResidual Variance  =" , round( sigma^2 , 4 ) ) , "\n" )
+		cat( paste( "Explained Variance =" , round( explvar , 4 ) ) , "\n" )
+		cat( paste( "Total Variance     =" , round( totalvar , 4 ) ) , "\n" )
+		cat( paste( "	        R2 =" , round( rsquared , 4 ) ) , "\n" )	
+				}
     #********
     # list of results
     res <- list( "iterations" = iter - 1, "maxiter" = maxiter , 
@@ -134,6 +141,7 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
 				"post" = post , "EAP" = EAP , "SE.EAP" = SE.EAP , 
 				"explvar" = explvar , "totalvar" = totalvar ,
 				"rsquared" = rsquared )
+	class(res) <- "latent.regression"
     return(res)
     }
 #-----------------------------------------------------------------------------------------------------

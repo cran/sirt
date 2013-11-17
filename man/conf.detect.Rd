@@ -59,7 +59,7 @@ Essential unidimensionality \tab DETECT < .20 \cr
     }
 \tabular{lcc}{
  Maximum value under simple structure \tab ASSI=1 \tab RATIO=1 \cr
-Essential deviation from unidimensionality \tab ASSI < .25 \tab
+Essential deviation from unidimensionality \tab ASSI > .25 \tab
 RATIO > .36 \cr
 Essential unidimensionality \tab  ASSI < .25 \tab
 RATIO < .36 \cr
@@ -101,9 +101,12 @@ Alexander Robitzsch
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%}
+\seealso{
+For a download of the free \emph{DIM-Pack} software (DIMTEST, DETECT) see  
+\url{http://psychometrictools.measuredprogress.org/home}.
+}
+
+
 \examples{
 #############################################################################
 # EXAMPLE 1: TIMSS mathematics data set (dichotomous data)
@@ -113,17 +116,14 @@ data(data.timss)
 # extract data
 dat <- data.timss$data
 dat <- dat[ , substring( colnames(dat),1,1) == "M" ]
-
-# extract iteminformations
+# extract item informations
 iteminfo <- data.timss$item
-
 # estimate Rasch model
 mod1 <- rasch.mml2( dat )
-
 # estimate WLEs
 wle1 <- wle.rasch( dat , b = mod1$item$b )$theta
 
-# DETECT content domains
+# DETECT for content domains
 detect1 <- conf.detect( data = dat , score = wle1 ,
                     itemcluster = iteminfo$Content.Domain )
 ##          unweighted weighted
@@ -140,7 +140,7 @@ detect2 <- conf.detect( data = dat , score = wle1 ,
 ##   ASSI        0.227    0.227
 ##   RATIO       0.282    0.282
 
-# DETECT item format 
+# DETECT for item format 
 detect3 <- conf.detect( data = dat , score = wle1 ,
                     itemcluster = iteminfo$Format )
 ##          unweighted weighted
@@ -148,7 +148,7 @@ detect3 <- conf.detect( data = dat , score = wle1 ,
 ##   ASSI        0.060    0.060
 ##   RATIO       0.062    0.062
 
-# DETECT item block
+# DETECT for item blocks
 detect4 <- conf.detect( data = dat , score = wle1 ,
                     itemcluster = iteminfo$Block )
 ##          unweighted weighted

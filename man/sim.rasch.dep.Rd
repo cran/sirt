@@ -62,12 +62,12 @@ estimated with \code{\link{rasch.copula2}}, \code{\link{rasch.pairwise}} or
 \code{\link{rasch.pairwise.itemcluster}}.
 }
 \examples{
-############################################################
-# Example 1:
-# 11 Items: 2 itemclusters with 2 resp. 3 dependent items
-#           and 6 independent items
-############################################################
+#############################################################################
+# SIMULATED EXAMPLE 1: 11 Items: 2 itemclusters with 2 resp. 3 dependent items
+#             and 6 independent items
+#############################################################################	
 
+set.seed(7654)
 I <- 11                             # number of items
 n <- 1500                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
@@ -98,12 +98,10 @@ mod3 <- rasch.mml2( dat )
 summary(mod3)
 
 \dontrun{
-############################################################
-# Example 2:
-# 12 Items: Cluster 1 -> Items 1,...,4
-#           Cluster 2 -> Items 6,...,9
-#           Cluster 3 -> Items 10,11,12
-############################################################
+#############################################################################
+# SIMULATED EXAMPLE 2: 12 Items: Cluster 1 -> Items 1,...,4; 
+#       Cluster 2 -> Items 6,...,9; Cluster 3 -> Items 10,11,12
+#############################################################################
 
 set.seed(7896)
 I <- 12                             # number of items

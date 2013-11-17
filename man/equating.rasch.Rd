@@ -66,10 +66,13 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-For linking under more general item response models
-see the \pkg{plink} package.
+For estimating standard errors (due to inference with respect to
+the item domain) of this procedure see \code{\link{equating.rasch.jackknife}}.
 
 For linking several studies see \code{\link{linking.haberman}}.
+
+For linking under more general item response models
+see the \pkg{plink} package.
 }
 \examples{
 #############################################################################

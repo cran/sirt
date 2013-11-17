@@ -82,7 +82,7 @@ res1$item.stat
 #############################################################################
 
 library(TAM)
-data(data.timssAusTwn)
+data(data.timssAusTwn,package="TAM")
 raw_resp <- data.timssAusTwn[,1:11]
 res2 <- automatic.recode( data=raw_resp )
 }

@@ -1,15 +1,4 @@
- 
-# 0.01  2012-xx-yy
 
-
-# 0.01  2012-06-23  o initial release
-
-
-#-------------------------------------------------------
-
-
-
-##NS export(lsdm)
 #.......................................................................................................................#
 # LSDM - Least Squares Distance Method 
 # LSDM -- Least Squares Distance Method of Cognitive Validation                           
@@ -169,7 +158,7 @@ summary.lsdm <- function( object , ... ){
                     "    Median MAD:" , formatC( round( median(lsdmobj$item$mad.lltm) , 3 ),digits=3 , width=6) ,        
                     "   R^2=" , format( round( summary(lsdmobj$lltm)$r.squared , 3 ),digits=3) ,   "\n") )
         cat( display.separate , "\n" )
-        cat("\nAttribute Parameter\n\n")
+        cat("\nAttribute Parameters\n\n")
         dfr.a <- data.frame( "N.Items" = colSums(lsdmobj$Qmatrix) , round( lsdmobj$attr.pars , 3 )  )
         elim.a <- union( grep("Q" , colnames(dfr.a) ) , grep( "sigma" , colnames(dfr.a) ) )
         print( dfr.a[ , -elim.a ] )

@@ -52,6 +52,7 @@ Alexander Robitzsch
 #############################################################################
 # EXAMPLE 1: data.pisaRead
 #############################################################################
+library(lme4)
 
 data(data.pisaRead) 
 dat <- data.pisaRead$data 

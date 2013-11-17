@@ -39,16 +39,16 @@ pf.logist.regression <- function( data , itemdiff , perc = seq(5,100,5) ){
 #-----------------------------------------------------------------------------------------
 # Reise fit
 ##NS export(pf.reisefit)
-pf.reisefit <- function( data , itemdiff ){
-    dat1 <- data
-    a1 <- data.frame( "y" = matrix(  t(dat1) , ncol= 1 , byrow=T) , 
-                    "person" = rep(  seq( 1 , nrow(dat1) ) , each=I ) ,
-                    "itemdiff" = rep( itemdiff , nrow(dat1) )
-                        )
-    mod <- lmer( y ~ itemdiff + ( 1 + itemdiff | person ) , data = a1 , family = "binomial" )
-    l1 <- list( "reise.fit" = fixef(mod)[2] + ranef(mod)$person[,2]   , "summary" = summary(mod) , "model" = mod )
-    return(l1)
-    }
+# pf.reisefit <- function( data , itemdiff ){
+#    dat1 <- data
+#    a1 <- data.frame( "y" = matrix(  t(dat1) , ncol= 1 , byrow=T) , 
+#                    "person" = rep(  seq( 1 , nrow(dat1) ) , each=I ) ,
+#                    "itemdiff" = rep( itemdiff , nrow(dat1) )
+#                        )
+#    mod <- lmer( y ~ itemdiff + ( 1 + itemdiff | person ) , data = a1 , family = "binomial" )
+#    l1 <- list( "reise.fit" = fixef(mod)[2] + ranef(mod)$person[,2]   , "summary" = summary(mod) , "model" = mod )
+#    return(l1)
+#    }
 #-----------------------------------------------------------------------------------------
 # calculate l0 and lz likelihood based statistic
 ##NS export(pf.l0)

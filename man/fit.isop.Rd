@@ -54,7 +54,7 @@ A list with following entries
 \item{fX}{Fitted frequency table}
 \item{ResX}{Residual frequency table}
 \item{fit}{Fit statistic: weighted least squares
-  between observed and expected frequencies}
+  of deviations between observed and expected frequencies}
 \item{item.sc}{Estimated item parameters}
 \item{person.sc}{
 	Estimated person parameters
@@ -93,9 +93,9 @@ polytomous data see \code{\link{isop.dich}}.
 
 
 \examples{
-############################################
+#############################################################################
 # EXAMPLE 1: Dataset Reading
-############################################
+#############################################################################
 
 data(data.read)
 dat <- as.matrix( data.read)
@@ -106,7 +106,6 @@ I <- ncol(dat)
 # (1) Data preparation
 #     actually only freq.correct and wgt are needed
 #     but these matrices must be computed in advance.
-#***
 
 # different scores of students
 stud.p <- rowMeans( dat , na.rm=TRUE )
@@ -129,15 +128,12 @@ wgt <- a1[,-1]
 
 #***
 # (2) Fit ISOP model
-#****
 res.isop <- fit.isop( freq.correct , wgt )   
 # fitted frequency table
 res.isop$fX
 
 #***
 # (3) Fit ADISOP model
-#****
-
 # use monotonely smoothed frequency table from ISOP model
 res.adisop <- fit.adisop( freq.correct=res.isop$fX , wgt )   
 # fitted frequency table

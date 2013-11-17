@@ -32,6 +32,28 @@ CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+---
+Versions 0.39 -- 2013-11-17
+---
+x included approximating function of expected percent score in
+  truescore.irt
+x added a check function for inits in smirt (thanks to Balal Izanloo)
+x fixed a bug in output of person parameters (thanks to Balal Izanloo)
+x speeded latent regression model 'latent.em.regression.raschtype'
+x included latent.em.regression.normal for normally distributed
+  outcomes
+x included factor for convergence acceleration in 
+  invariance.alignment
+x included summary for latent regression models
+x included function 'mle.pcm.group' for maximum likelihood estimation
+  in generalized item response models which includes an option for
+  estimating group parameters
+x changed algorithm in 'invariance.alignment' into a two-step approach
+x included plot method for function 'invariance.alignment'
+* included datasets: data.inv4gr, data.ess2005, data.mcdonald.rape,
+  data.si01 
+* included examples: lsdm (4,5), invariance.alignment (3),
+  plausible.value.imputation.raschtype (2,3)
 
 ---
 Versions 0.38 -- 2013-10-23
@@ -64,7 +86,7 @@ x included eigenvalue decomposition function 'eigenvalues.sirt'
 x included data conversion function 'data.wide2long'
   
 ---
-Versions 0.35 to 0.36 -- 2013-09-08
+Versions 0.35/0.36 -- 2013-09-08
 ---
 x corrected legends and labels in plot.isop function
 x included function rowKSmallest2.sirt

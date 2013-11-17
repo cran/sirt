@@ -55,7 +55,7 @@ For analytical bias correction methods see \code{\link{rasch.jml.biascorr}}.
 }
 \examples{
 #############################################################################
-# EXAMPLE 1: Simulation of data from the Rasch model
+# SIMULATED EXAMPLE 1: Simulated data from the Rasch model
 #############################################################################
 set.seed(7655)
 N <- 5000    # number of persons

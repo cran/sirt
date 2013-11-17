@@ -15,6 +15,11 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	s1 <- Sys.time()
 	dat0 <- dat <- as.matrix(dat)
 	N <- nrow(dat)
+	# check inits for item parameters
+	res1 <- .smirt.check.inits( a.init , b.init , irtmodel , Qmatrix )	
+	a.init <- res1$a.init
+	b.init <- res1$b.init
+	
 	#***
 	# process data
 	# Q matrix and theta design matrix
@@ -34,7 +39,9 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		theta.k <- as.matrix( expand.grid( as.data.frame( matrix( rep(nodes, D) , 
 				ncol = D ) ) ) )	
 				}
-	theta.k <- as.matrix( theta.k )			
+	theta.k <- as.matrix( theta.k )
+    Q <- as.matrix(Q)
+    Qmatrix <- as.matrix(Qmatrix)	
 	QMC <- FALSE
 	if (qmcnodes>0){ 
 		QMC <- TRUE

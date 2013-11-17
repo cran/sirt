@@ -95,10 +95,14 @@ For assessing DIF variance see \code{\link{dif.variance}} and
 
 See the \pkg{difR} package for a large collection of DIF detection
 methods.
+
+For a download of the free \emph{DIF-Pack} software (SIBTEST, ...) see  
+\url{http://psychometrictools.measuredprogress.org/home}.
 }
 \examples{
-#####################################
-# EXAMPLE 1: Mathematics data
+#############################################################################
+# EXAMPLE 1: Mathematics data | Gender DIF
+#############################################################################
 
 data( data.math )
 dat <- data.math$data
@@ -135,7 +139,8 @@ summary(res)
 lrres <- LRtest(res, splitcr = dat$female)
 summary(lrres)
 # graphical model test
-plotGOF(lrres)  }
+plotGOF(lrres) 
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

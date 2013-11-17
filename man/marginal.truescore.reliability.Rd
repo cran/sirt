@@ -7,7 +7,8 @@ True-Score Reliability for Dichotomous Data
 \description{
 This function computes the marginal true-score reliability for
 dichotomous data (Dimitrov, 2003; May & Nicewander, 1994) for 
-the four-parameter logistic item response model.
+the four-parameter logistic item response model
+(see \code{\link{rasch.mml2}} for details regarding this IRT model).
 }
 \usage{
 marginal.truescore.reliability(b, a=1+0*b ,c=0*b ,d=1+0*b,

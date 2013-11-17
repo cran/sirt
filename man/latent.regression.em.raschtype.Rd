@@ -1,28 +1,41 @@
 \name{latent.regression.em.raschtype}
 \alias{latent.regression.em.raschtype}
+\alias{latent.regression.em.normal}
+\alias{summary.latent.regression}
+
+
 \title{
 Latent Regression Model for the Generalized 
-Logistic Item Response Model
+Logistic Item Response Model and the Linear Model for Normal Responses
 }
 \description{
 This function estimates a unidimensional latent regression model if
-a likelihood is specified or parameters from the generalized
-item response model (Stukel, 1988) is given as in input.
+a likelihood is specified, parameters from the generalized
+item response model (Stukel, 1988) or a mean and a standard error
+estimate for individual scores is provided as input.
 Item parameters are treated as fixed in the estimation.
 }
+
 \usage{
 latent.regression.em.raschtype(data=NULL, f.yi.qk=NULL , X , 
     weights=rep(1, nrow(X)), beta.init=rep(0,ncol(X)), 
     sigma.init=1, b=rep(0,ncol(X)), a=rep(1,length(b)), 
     c=rep(0, length(b)), d=rep(1, length(b)), alpha1=0, alpha2=0, 
     max.parchange=1e-04, theta.list=seq(-5, 5, len=20), 
-    maxiter=300 )
+    maxiter=300 , progress=TRUE )
+
+latent.regression.em.normal(y, X, sig.e, weights = rep(1, nrow(X)), 
+    beta.init = rep(0, ncol(X)), sigma.init = 1, max.parchange = 1e-04, 
+    maxiter = 300, progress = TRUE)
+
+\method{summary}{latent.regression}(object,...)
 }
+
 \arguments{
   \item{data}{ An \eqn{N \times I} data frame of dichotomous item responses.
   If no data frame is supplied, then a user can input the individual
   likelihood \code{f.yi.qk}.
-}
+   }
   \item{f.yi.qk}{An optional matrix which contains the individual likelihood.
   This matrix is produced by \code{\link{rasch.mml2}} or
   \code{\link{rasch.copula2}}. The use of this argument allows the
@@ -72,6 +85,17 @@ Grid of person ability where theta is evaluated
   \item{maxiter}{
 Maximum number of iterations
 }
+\item{progress}{An optional logical indicating whether computation
+progress should be displayed.}
+\item{y}{Individual scores}
+\item{sig.e}{Standard errors for individual scores}
+  \item{object}{  	  
+Object of class \code{latent.regression}
+}
+  \item{\dots}{
+Further arguments to be passed
+}
+
 }
 \details{
 In the output \emph{Regression Parameters} 
@@ -110,6 +134,9 @@ In M. von Davier & C. H. Carstensen: \emph{Multivariate and Mixture
 Distribution Rasch Models: Extensions and Applications} (pp. 57-76). 
 New York: Springer.
 
+Mislevy, R. J. (1991). Randomization-based inference about latent variables 
+from complex samples. \emph{Psychometrika}, \bold{56}, 177-196.
+
 Stukel, T. A. (1988). Generalized logistic models. 
 \emph{Journal of the American Statistical Association}, \bold{83}, 426-431.
 }
@@ -130,9 +157,9 @@ for plausible value imputation of generalized logistic
 item type models.
 }
 \examples{
-############################################################
-###  EXAMPLE 1: PISA Reading
-############################################################
+#############################################################################
+#  EXAMPLE 1: PISA Reading | Rasch model for dichotomous data
+#############################################################################
 
 data( data.pisaRead)
 dat <- data.pisaRead$data
@@ -166,12 +193,12 @@ mod3 <- rasch.copula2( dat[,items] , itemcluster=itemclusters )
 # use model estimated likelihood for latent regression model
 lm3 <- latent.regression.em.raschtype( f.yi.qk=mod3$f.yi.qk , 
            X = X , theta.list=mod3$theta.k) 
-     
-############################################################
-### SIMULATED EXAMPLE 2
-set.seed(899)
-############################################################
 
+#############################################################################
+# SIMULATED EXAMPLE 2: Simulated data according to the Rasch model
+#############################################################################
+
+set.seed(899)
 I <- 21     # number of items
 b <- seq(-2,2, len=I)   # item difficulties
 n <- 2000       # number of students
@@ -221,7 +248,7 @@ dI[ c(7,11) ] <- 1		# 7th and 9th item have an asymptote of 1
 
 # latent regression model
 mod1 <- latent.regression.em.raschtype( data = dat1 , X  = dfr[,-1] ,
-		b = b , c = cI , d = dI    )
+           b = b , c = cI , d = dI    )
 ## Regression Parameters
 ## 
 ##        est se.simple     se        t p   beta    fmi N.simple pseudoN.latent
@@ -232,10 +259,92 @@ mod1 <- latent.regression.em.raschtype( data = dat1 , X  = dfr[,-1] ,
 ## Residual Variance  = 0.9338 
 ## Explained Variance = 0.5487 
 ## Total Variance     = 1.4825 
-##                 R2 = 0.3701   
+##                 R2 = 0.3701
+
+#############################################################################
+# SIMULATED EXAMPLE 3: Measurement error in dependent variable
+#############################################################################
+
+set.seed(8766)
+N <- 4000       # number of persons
+X <- rnorm(N)           # independent variable
+Z <- rnorm(N)           # independent variable
+y <- .45 * X + .25 * Z + rnorm(N)   # dependent variable true score
+sig.e <- runif( N , .5 , .6 )       # measurement error standard deviation
+yast <- y + rnorm( N , sd = sig.e ) # dependent variable measured with error 
+
+#****
+# Model 1: Estimation with latent.regression.em.raschtype using 
+#          individual likelihood
+# define theta grid for evaluation of density
+theta.list <- mean(yast) + sd(yast) * seq( - 5 , 5 , length=21)
+# compute individual likelihood
+f.yi.qk <- dnorm( outer( yast , theta.list , "-" ) / sig.e )
+f.yi.qk <- f.yi.qk / rowSums(f.yi.qk)
+# define predictor matrix
+X1 <- as.matrix(data.frame( "intercept"=1 , "X"=X , "Z"=Z ))
+
+# latent regression model
+res <- latent.regression.em.raschtype( f.yi.qk=f.yi.qk , 
+            X= X1 , theta.list=theta.list)
+##   Regression Parameters
+##   
+##                est se.simple     se       t      p   beta    fmi N.simple pseudoN.latent
+##   intercept 0.0112    0.0157 0.0180  0.6225 0.5336 0.0000 0.2345     4000       3061.998
+##   X         0.4275    0.0157 0.0180 23.7926 0.0000 0.3868 0.2350     4000       3061.998
+##   Z         0.2314    0.0156 0.0178 12.9868 0.0000 0.2111 0.2349     4000       3061.998
+##   
+##   Residual Variance  = 0.9877 
+##   Explained Variance = 0.2343 
+##   Total Variance     = 1.222 
+##                   R2 = 0.1917 
+                
+#****
+# Model 2: Estimation with latent.regression.em.normal
+res2 <- latent.regression.em.normal( y = yast , sig.e = sig.e , X = X1)
+##   Regression Parameters
+##   
+##                est se.simple     se       t      p   beta    fmi N.simple pseudoN.latent
+##   intercept 0.0112    0.0157 0.0180  0.6225 0.5336 0.0000 0.2345     4000       3062.041
+##   X         0.4275    0.0157 0.0180 23.7927 0.0000 0.3868 0.2350     4000       3062.041
+##   Z         0.2314    0.0156 0.0178 12.9870 0.0000 0.2111 0.2349     4000       3062.041
+##   
+##   Residual Variance  = 0.9877 
+##   Explained Variance = 0.2343 
+##   Total Variance     = 1.222 
+##                   R2 = 0.1917 
+
+## -> Results between Model 1 and Model 2 are identical because they use
+##    the same input.
+
+#***
+# Model 3: Regression model based on true scores y
+mod3 <- lm( y ~ X + Z )
+summary(mod3)
+##   Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+##   (Intercept)  0.02364    0.01569   1.506    0.132    
+##   X            0.42401    0.01570  27.016   <2e-16 ***
+##   Z            0.23804    0.01556  15.294   <2e-16 ***
+##   Residual standard error: 0.9925 on 3997 degrees of freedom
+##   Multiple R-squared:  0.1923,    Adjusted R-squared:  0.1919 
+##   F-statistic: 475.9 on 2 and 3997 DF,  p-value: < 2.2e-16
+
+#***
+# Model 4: Regression model based on observed scores yast
+mod4 <- lm( yast ~ X + Z )
+summary(mod4)
+##   Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+##   (Intercept)  0.01101    0.01797   0.613     0.54    
+##   X            0.42716    0.01797  23.764   <2e-16 ***
+##   Z            0.23174    0.01783  13.001   <2e-16 ***
+##   Residual standard error: 1.137 on 3997 degrees of freedom
+##   Multiple R-squared:  0.1535,    Adjusted R-squared:  0.1531 
+##   F-statistic: 362.4 on 2 and 3997 DF,  p-value: < 2.2e-16
 }
 }
 \keyword{Latent regression model}
 \keyword{Generalized logistic item response model}
 \keyword{Plausible values}
-
+\keyword{summary}

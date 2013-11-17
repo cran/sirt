@@ -23,7 +23,7 @@ The format is: \cr \cr
 In the dataset, there exist 48 items for each dimension. The Big 5
 dimensions are Neuroticism (\code{N}), Extraversion (\code{E}), 
 Openness (\code{O}), Agreeableness (\code{A}) and 
-Conscientiousness (\code{C}). Note that the original data was recoded into
+Conscientiousness (\code{C}). Note that the original items were recoded into
 three categories 0,1 and 2.
 }
 
@@ -40,6 +40,10 @@ factor model. \emph{Structural Equation Modeling}, \bold{16}, 295-314.
 }
 
 
+
+\section{Example Index}{
+\code{\link{conf.detect}} (Example 2)
+}
 
 \examples{
 \dontrun{
