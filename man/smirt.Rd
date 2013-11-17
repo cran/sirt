@@ -155,7 +155,12 @@ A list with following entries:
 \item{deviance}{Deviance}
 \item{ic}{Information criteria}
 \item{item}{Data frame with item parameters}
-\item{person}{Data frame with person parameters}
+\item{person}{Data frame with person parameters. It includes
+	the person mean of all item responses (\code{M}; percentage correct
+	of all non-missing items), the
+EAP estimate and its corresponding standard error for all dimensions
+(\code{EAP} and \code{SE.EAP}) and the maximum likelihood estimate
+as well as the mode of the posterior distribution (\code{MLE} and \code{MAP}).}
 \item{EAP.rel}{EAP reliability}
 \item{mean.trait}{Means of trait}
 \item{sd.trait}{Standard deviations of trait}
@@ -278,7 +283,7 @@ d.estpars <- c(6,9)
 d.init[ d.estpars ] <- .95
 est.d[ d.estpars ] <- d.estpars   # different d parameters
 mod4 <- smirt(dat,Qmatrix=Q , est.c=est.c , c.init=c.init ,
-    est.d=est.d , d.init=d.init  )
+            est.d=est.d , d.init=d.init  )
 summary(mod4)
 
 #***
@@ -361,7 +366,58 @@ summary(mod10)
 Qmatrix <- matrix( 1 , I , 1 )
 mod11 <- smirt( dat , irtmodel="comp" , Qmatrix=Qmatrix ,
          qmcnodes=1000 )
-summary(mod11) 
+summary(mod11)
+
+#############################################################################
+## EXAMPLE 2: Dataset Reading data.read
+##            Multidimensional models for dichotomous data
+#############################################################################
+
+data(data.read)
+dat <- data.read
+I <- ncol(dat)    # number of items
+
+#***
+# Model 1: 3-dimensional 2PL model
+
+# define Q-matrix
+Qmatrix <- matrix(0,nrow=I,ncol=3)
+Qmatrix[1:4,1] <- 1
+Qmatrix[5:8,2] <- 1
+Qmatrix[9:12,3] <- 1
+
+# estimate model
+mod1 <- smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , est.a="2PL" ,
+        qmcnodes=1000 , maxiter=20)
+summary(mod1)
+
+#***
+# Model 2: 3-dimensional Rasch model
+mod2 <- smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , 
+        qmcnodes=1000 , maxiter=20)
+summary(mod2)
+
+#***
+# Model 3: 3-dimensional 2PL model with uncorrelated dimensions
+# fix entries in variance matrix
+variance.fixed <- cbind( c(1,1,2) , c(2,3,3) , 0 )
+# estimate model
+mod3 <- smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , est.a="2PL" , 
+         variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)
+summary(mod3)
+
+#***
+# Model 4: Bifactor model with one general factor (g) and
+#          uncorrelated specific factors
+
+# define a new Q-matrix
+Qmatrix1 <- cbind( 1 , Qmatrix )
+# uncorrelated factors
+variance.fixed <- cbind( c(1,1,1,2,2,3) , c(2,3,4,3,4,4) , 0 )
+# estimate model
+mod4 <- smirt( dat , Qmatrix=Qmatrix1 , irtmodel="comp" , est.a="2PL" , 
+         variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)
+summary(mod4)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

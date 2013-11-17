@@ -73,8 +73,10 @@ Alexander Robitzsch
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-##################################
-# Person fit for reading data
+#############################################################################
+# EXAMPLE 1: Person fit Reading Data
+#############################################################################
+
 data(data.read)
 dat <- data.read
 

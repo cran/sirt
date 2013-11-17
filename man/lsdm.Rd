@@ -34,9 +34,9 @@ and are specified in the argument \code{theta}.
  }
   \item{Qmatrix}{
 An \eqn{I \times K} matrix where the allocation of items 
-to attributes is coded. Values between zero and one are permitted.
-There must not be any items with only zero Q-matrix entries
-in a row.
+to attributes is coded. Values of zero and one and all values between
+zero and one are permitted. There must not be any items with only zero 
+Q-matrix entries in a row.
 }
   \item{theta}{
 The discrete grid points where item response fuctions
@@ -130,6 +130,9 @@ functions are evaluated}
   Groemping, U. (2010). Inference with linear equality and inequality 
   constraints using \R: The package \code{ic.infer}.
   \emph{Journal of Statistical Software}, \bold{33(10)}, 1-31.  
+  
+Sonnleitner, P. (2008). Using the LLTM to evaluate an item-generating system 
+for reading comprehension. \emph{Psychology Science}, \bold{50}, 345-362.  
 }
 \author{
 Alexander Robitzsch
@@ -155,9 +158,9 @@ cognitive diagnostic models (DiBello, Roussos & Stout, 2007).
 
 
 \examples{
-###################################################################
+#############################################################################
 # EXAMPLE 1: DATA FISCHER (see Dimitrov, 2007)
-###################################################################
+#############################################################################
 
 # item difficulties
 b <- c( 0.171,-1.626,-0.729,0.137,0.037,-0.787,-1.322,-0.216,1.802,
@@ -184,7 +187,7 @@ summary(lsdm.res)
 ## Model Fit LSDM   -  Mean MAD:  0.071     Median MAD:   0.07 
 ## Model Fit LLTM   -  Mean MAD:  0.079     Median MAD:  0.063    R^2= 0.615 
 ## ................................................................................ 
-## Attribute Parameter
+## Attribute Parameters
 ##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
 ## A1      27 -2.101 1.615 -2.664   -1.168   0.404     0.009
 ## A2       8 -3.736 3.335 -5.491   -0.645   0.284     0.034
@@ -196,9 +199,9 @@ summary(lsdm.res)
 ## A8       5 -2.670 0.663 -2.065    0.077   0.310     0.806
 ## [...]
 
-###################################################################
+#############################################################################
 # EXAMPLE 2 DATA HENNING (see Dimitrov, 2007)
-###################################################################
+#############################################################################
 
 # item difficulties
 b <- c(-2.03,-1.29,-1.03,-1.58,0.59,-1.65,2.22,-1.46,2.58,-0.66)
@@ -217,7 +220,7 @@ summary(lsdm.res)
 ## Model Fit LSDM   -  Mean MAD:  0.061     Median MAD:   0.06 
 ## Model Fit LLTM   -  Mean MAD:  0.069     Median MAD:  0.069    R^2= 0.902 
 ## ................................................................................ 
-## Attribute Parameter
+## Attribute Parameters
 ##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
 ## A1       2 -2.727 0.786 -2.367   -1.592   0.478     0.021
 ## A2       5 -2.099 0.794 -1.834   -0.934   0.295     0.025
@@ -226,10 +229,11 @@ summary(lsdm.res)
 ## A5       2  2.410 0.509  1.564    2.673   0.451     0.002
 ## [...]
 
-###################################################################
+\dontrun{
+#############################################################################
 # EXAMPLE 3: PISA reading (data.pisaRead)
 #    using nonparametrically estimated item response functions
-###################################################################
+#############################################################################
 
 data(data.pisaRead)
 # response data
@@ -237,20 +241,17 @@ dat <- data.pisaRead$data
 dat <- dat[ , substring( colnames(dat),1,1)=="R" ]
 # define Q-matrix
 pars <- data.pisaRead$item
-Qmatrix <- data.frame( 
-    "A0" = 1*(pars$ItemFormat=="MC" ) , 
-    "A1" = 1*(pars$ItemFormat=="CR" ) )
+Qmatrix <- data.frame(  "A0" = 1*(pars$ItemFormat=="MC" ) , 
+                  "A1" = 1*(pars$ItemFormat=="CR" ) )
 
 # start with estimating the 1PL in order to get person parameters
 mod <- rasch.mml2( dat )
 theta <- wle.rasch( dat=dat ,b = mod$item$b )$theta
 # Nonparametric estimation of item response functions
-mod2 <- np.dich( dat=dat , theta=theta , 
-    thetagrid = seq(-3,3,len=100) )
+mod2 <- np.dich( dat=dat , theta=theta , thetagrid = seq(-3,3,len=100) )
 
 # LSDM analysis
-lsdm.res <- lsdm( data=mod2$estimate , Qmatrix=Qmatrix ,
-        theta=mod2$thetagrid)
+lsdm.res <- lsdm( data=mod2$estimate , Qmatrix=Qmatrix , theta=mod2$thetagrid)
 summary(lsdm.res)
 ## Model Fit
 ## Model Fit LSDM   -  Mean MAD:  0.215     Median MAD:  0.151 
@@ -260,6 +261,77 @@ summary(lsdm.res)
 ##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
 ## A0       5  1.326 0.705  1.289   -0.455   0.965     0.648
 ## A1       7 -1.271 1.073 -1.281   -1.585   0.816     0.081
+
+#############################################################################
+# EXAMPLE 4: Fraction subtraction dataset
+#############################################################################
+
+data( data.fraction1 , package="CDM")
+data <- data.fraction1$data
+q.matrix <- data.fraction1$q.matrix
+
+#****
+# Model 1: 2PL estimation 
+mod1 <- rasch.mml2( data , est.a=1:nrow(q.matrix) )
+
+# LSDM analysis
+lsdm.res1 <- lsdm( b=mod1$item$b , a=mod1$item$a , Qmatrix=q.matrix )
+summary(lsdm.res1)
+##   
+##   Model Fit LSDM   -  Mean MAD:  0.076     Median MAD:  0.055 
+##   Model Fit LLTM   -  Mean MAD:  0.153     Median MAD:  0.155    R^2= 0.801 
+##   ................................................................................ 
+##   Attribute Parameter  
+##       N.Items   b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
+##   QT1      14  -0.741 2.991 -1.115   -0.815   0.217     0.004
+##   QT2       8 -80.387 0.031 -4.806   -0.025   0.262     0.925
+##   QT3      12  -2.461 0.711 -2.006   -0.362   0.268     0.207
+##   QT4       9  -0.019 3.873 -0.100    1.465   0.345     0.002
+##   QT5       3  -3.062 0.375 -1.481    0.254   0.280     0.387
+
+#****
+# Model 2: 1PL estimation  
+mod2 <- rasch.mml2( data  )
+
+# LSDM analysis
+lsdm.res2 <- lsdm( b=mod1$item$b , Qmatrix=q.matrix )
+summary(lsdm.res2)
+##   
+##   Model Fit LSDM   -  Mean MAD:  0.046     Median MAD:   0.03 
+##   Model Fit LLTM   -  Mean MAD:  0.041     Median MAD:  0.042    R^2= 0.772
+
+#############################################################################
+# EXAMPLE 5: Dataset LLTM Sonnleitner Reading Comprehension (Sonnleitner, 2008)
+#############################################################################
+
+# item difficulties Table 7, p. 355 (Sonnleitner, 2008)
+b <- c(-1.0189,1.6754,-1.0842,-.4457,-1.9419,-1.1513,2.0871,2.4874,-1.659,-1.197,-1.2437,
+    2.1537,.3301,-.5181,-1.3024,-.8248,-.0278,1.3279,2.1454,-1.55,1.4277,.3301)
+b <- b[-21] # remove Item 21
+
+# Q-matrix Table 9 , p. 357 (Sonnleitner, 2008)
+Qmatrix <- scan()    
+   1 0 0 0 0 0 0 7 4 0 0 0   0 1 0 0 0 0 0 5 1 0 0 0   1 1 0 1 0 0 0 9 1 0 1 0   
+   1 1 1 0 0 0 0 5 2 0 1 0   1 1 0 0 1 0 0 7 5 1 1 0   1 1 0 0 0 0 0 7 3 0 0 0   
+   0 1 0 0 0 0 2 6 1 0 0 0   0 0 0 0 0 0 2 6 1 0 0 0   1 0 0 0 0 0 1 7 4 1 0 0   
+   0 1 0 0 0 0 0 6 2 1 1 0   0 1 0 0 0 1 0 7 3 1 0 0   0 1 0 0 0 0 0 5 1 0 0 0   
+   0 0 0 0 0 1 0 4 1 0 0 1   0 0 0 0 0 0 0 6 1 0 1 1   0 0 1 0 0 0 0 6 3 0 1 1   
+   0 0 0 1 0 0 1 7 5 0 0 1   0 1 0 0 0 0 1 2 2 0 0 1   0 1 1 0 0 0 1 4 1 0 0 1   
+   0 1 0 0 1 0 0 5 1 0 0 1   0 1 0 0 0 0 1 7 2 0 0 1   0 0 0 0 0 1 0 5 1 0 0 1
+  
+Qmatrix <- matrix( as.numeric(Qmatrix) , nrow=21 , ncol=12 , byrow=TRUE ) 
+colnames(Qmatrix) <- scan( what="character")
+   pc ic ier inc iui igc ch nro ncro td a t
+
+# divide Q-matrix entries by maximum in each column
+Qmatrix <- round(Qmatrix / matrix(apply(Qmatrix,2,max),21,12,byrow=TRUE) ,3)
+# LSDM analysis   
+res <- lsdm( b=b , Qmatrix=Qmatrix )
+summary(res)
+##   
+##   Model Fit LSDM   -  Mean MAD:  0.217     Median MAD:  0.178 
+##   Model Fit LLTM   -  Mean MAD:  0.087     Median MAD:  0.062    R^2= 0.785 
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

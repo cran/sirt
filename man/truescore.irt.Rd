@@ -3,11 +3,12 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Conversion of Trait Scores \eqn{\theta} into
-True Scores \eqn{\tau}
+True Scores \eqn{\tau ( \theta )}
 }
 \description{
-This function computes the true score \eqn{\tau=\tau(\theta)}
-in a unidimensional item response model. In addition, it also
+This function computes the true score 
+\eqn{\tau=\tau(\theta) = \sum_{i=1}^I P_i(\theta)}
+in a unidimensional item response model with \eqn{I} items. In addition, it also
 transforms conditional standard errors if they are provided.
 }
 \usage{
@@ -43,17 +44,24 @@ Numerical differentiation parameter
 }
 }
 
-%\details{
-%%  ~~ If necessary, more details than the description above ~~
-%}
+\details{
+In addition, the function \eqn{\pi(\theta)= \frac{1}{I} \cdot \tau( \theta)} 
+of the expected percent score is approximated by a logistic function
+\deqn{ \pi ( \theta ) \approx l + ( u - l ) \cdot invlogit ( a \theta + b )
+}	
+}
 
 \value{
 A data frame with following columns:
-\item{truescore}{True scores \eqn{\tau}}
+\item{truescore}{True scores \eqn{\tau = \tau ( \theta )}}
 \item{truescore.error}{Standard errors of true scores}
 \item{percscore}{Expected correct scores which is \eqn{\tau}
 divided by the maximum true score}
 \item{percscore.error}{Standard errors of expected correct scores}
+\item{lower}{The \eqn{l} parameter}
+\item{upper}{The \eqn{u} parameter}
+\item{a}{The \eqn{a} parameter}
+\item{b}{The \eqn{b} parameter}
 }
 
 %\references{
@@ -73,7 +81,7 @@ Alexander Robitzsch
 
 \examples{
 #############################################################################
-# EXAMPLE 1: Dataset with mixed responses
+# EXAMPLE 1: Dataset with mixed dichotomous and polytomous responses
 #############################################################################
 
 data(data.mixed1)
@@ -86,20 +94,29 @@ library(TAM)
 mod1 <- tam.mml( dat )
 # estimate person parameter estimates
 wmod1 <- tam.wle( mod1 )
+wmod1 <- wmod1[ order(wmod1$theta) , ]
 # extract item parameters
 A <- mod1$B[,-1,1]
 B <- mod1$AXsi[,-1]
 # person parameters and standard errors
 theta <- wmod1$theta
 error <- wmod1$error
+
 # estimate true score transformation
 dfr <- truescore.irt( A=A , B=B , theta=theta , error=error )
+
 # plot different person parameter estimates and standard errors
-par(mfrow=c(2,1))
-plot( theta , error , pch=16 , cex=.6 , xlab=expression(theta) ,
+par(mfrow=c(2,2))
+plot( theta , dfr$truescore , pch=16 , cex=.6 , xlab=expression(theta) , type="l",
+    ylab=expression(paste( tau , "(",theta , ")" ))  , main="True Score Transformation" )
+plot( theta , dfr$percscore , pch=16 , cex=.6 , xlab=expression(theta) , type="l",
+    ylab=expression(paste( pi , "(",theta , ")" ))  , main="Percent Score Transformation" )
+points( theta , dfr$lower + (dfr$upper-dfr$lower)*plogis(dfr$a*theta+dfr$b) , col=2 , lty=2)
+plot( theta , error , pch=16 , cex=.6 , xlab=expression(theta) , type="l",
     ylab=expression(paste("SE(",theta , ")" ))  , main="Standard Error Theta" )
 plot( dfr$truescore , dfr$truescore.error , pch=16 , cex=.6 , xlab=expression(tau) ,
-    ylab=expression(paste("SE(",tau , ")" ) ) , main="Standard Error True Score Tau" )
+    ylab=expression(paste("SE(",tau , ")" ) ) , main="Standard Error True Score Tau" ,
+    type="l")
 par(mfrow=c(1,1))
 
 \dontrun{
@@ -120,10 +137,12 @@ dfr <- truescore.irt( A=A , B=B , theta=theta , error=error )
 #############################################################################
 # EXAMPLE 2: Dataset Reading data.read
 #############################################################################
+data(data.read)
 
 #****
 # Model 1: estimate difficulty + guessing model
 mod1 <- rasch.mml2( data.read , fixed.c = rep(.25,12) )
+mod1$person <- mod1$person[ order( mod1$person$EAP) , ]
 # person parameters and standard errors
 theta <- mod1$person$EAP
 error <- mod1$person$SE.EAP
@@ -132,6 +151,10 @@ B <- - mod1$item$b
 c <- rep(.25,12)
 # estimate true score transformation
 dfr <- truescore.irt( A=A , B=B , theta=theta , error=error ,c=c)
+
+plot( theta , dfr$percscore , pch=16 , cex=.6 , xlab=expression(theta) , type="l",
+    ylab=expression(paste( pi , "(",theta , ")" ))  , main="Percent Score Transformation" )
+points( theta , dfr$lower + (dfr$upper-dfr$lower)*plogis(dfr$a*theta+dfr$b) , col=2 , lty=2)
 
 #****
 # Model 2: Rasch model

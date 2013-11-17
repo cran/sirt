@@ -55,13 +55,14 @@ distribution with a zero mean vector and identity covariance matrix.
 The F1D model estimates unidimensional item response functions
 such that
 \deqn{ P( X_{pi}=1 | \theta_p^\ast ) \approx 
-g( a_{i}^\ast \theta_{p}^\ast - d_i^\ast ) }
-The optimization function minimizes the deviations of
+g \left( a_{i}^\ast \theta_{p}^\ast - d_i^\ast \right) }
+The optimization function \eqn{F} minimizes the deviations of
 the approximation equations
 \deqn{ a_{i}^\ast \theta_{p}^\ast - d_i^\ast 
 \approx \sum_d a_{id} \theta_{pd} - d_i }
-The optimization function is defined by
-\deqn{ \sum_p \sum_i w_p ( a_{id} \theta_{pd} - d_i- 
+The optimization function \eqn{F} is defined by
+\deqn{ F( \{ a_i^\ast , d_i^\ast \}_i , \{ \theta_p^\ast \}_p )= 	
+	\sum_p \sum_i w_p ( a_{id} \theta_{pd} - d_i- 
 a_{i}^\ast \theta_{p}^\ast + d_i^\ast )^2 \rightarrow Min! }
 All items \eqn{i} are equally weighted whereas the ability
 distribution of persons \eqn{p} are weighted according to the
@@ -115,14 +116,14 @@ For estimation of bifactor models and Green-Yang reliability
 based on tetrachoric correlations see \code{\link{greenyang.reliability}}.
 
 For estimation of bifactor models based on marginal maximum likelihood
-(i.e. full information maximum likelihood) see the \code{tam.fa}
-in the \pkg{TAM} package.
+(i.e. full information maximum likelihood) see the 
+\code{\link[TAM:tam.fa]{tam.fa}} function in the \pkg{TAM} package.
 }
 
 
 \examples{
 #############################################################################
-# EXAMPLE 1: Dataset Mathematics
+# EXAMPLE 1: Dataset Mathematics data.math
 #############################################################################
 data(data.math)
 dat <- ( data.math$data )[ , -c(1,2) ] # select Mathematics items
@@ -162,8 +163,8 @@ I <- ncol(dat)
 Q <- matrix( 1, I,2 )
 Q[1,2] <- 0
 variance.fixed <- cbind( 1,2,0 )
-mod2a <- smirt( dat , Qmatrix=Q , irtmodel="comp" ,
-        est.a="2PL" , variance.fixed=variance.fixed , maxiter=50)
+mod2a <- smirt( dat , Qmatrix=Q , irtmodel="comp" , est.a="2PL" , 
+           variance.fixed=variance.fixed , maxiter=50)
 #++ (2) input estimated discriminations and intercepts for
 #       functional unidimensional model
 mod2b <- f1d.irt( A = mod2a$a , intercept = mod2a$b )

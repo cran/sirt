@@ -67,9 +67,9 @@ See \code{\link{rasch.copula2}} for estimating Rasch copula models.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-############################################################
+#############################################################################
 # EXAMPLE 1: Reading Data
-############################################################
+#############################################################################
 
 data(data.read)
 dat <- data.read
@@ -86,12 +86,10 @@ pmod1 <- person.parameter.rasch.copula(raschcopula.object = mod1 )
 ## 1               1           6.35
 
 \dontrun{
-############################################################
-# SIMULATED EXAMPLE 2:
-# 12 Items: Cluster 1 -> Items 1,...,4
-#           Cluster 2 -> Items 6,...,9
-#           Cluster 3 -> Items 10,11,12
-############################################################
+#############################################################################
+# SIMULATED EXAMPLE 2: 12 items nested within 3 item clusters (testlets)
+#   Cluster 1 -> Items 1-4; Cluster 2 -> Items 6-9;  Cluster 3 -> Items 10-12
+#############################################################################
 
 set.seed(967)
 I <- 12                             # number of items

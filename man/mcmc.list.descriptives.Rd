@@ -9,7 +9,7 @@ Computation of descriptive statistics, Rhat convergence statistic
 and MAP for a \code{mcmc.list} object. The Rhat statistic
 is computed by splitting one Monte Carlo chain into three segments of equal 
 length. The MAP is the mode estimate of the posterior distribution which is 
-approximated by a nonparametric density estimate. 
+approximated by the mode of the kernel density estimate. 
 }
 \usage{
 mcmc.list.descriptives( mcmcobj , quantiles=c(.025,.05,.1,.9,.95,.975) )

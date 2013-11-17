@@ -78,16 +78,16 @@ stratified.cronbach.alpha( data.read , itemstrata=itemstrata )
 # reliability analysis in psych package
 library(psych)
 # Cromnbach's alpha and item discriminations
-alpha( dat )
+psych::alpha( dat )
 # McDonald's omega
-omega(dat , nfactors=1)     # 1 factor
+psych::omega(dat , nfactors=1)     # 1 factor
 ##   Alpha:                 0.69 
 ##   Omega Total            0.69 
 ##  => Note that alpha in this function is the standardized Cronbach's
 ##     alpha, i.e. alpha computed for standardized variables.
-omega(dat , nfactors=2)     # 2 factors
+psych::omega(dat , nfactors=2)     # 2 factors
 ##   Omega Total            0.72 
-omega(dat , nfactors=3)     # 3 factors  
+psych::omega(dat , nfactors=3)     # 3 factors  
 ##   Omega Total            0.74 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

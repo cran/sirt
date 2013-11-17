@@ -316,6 +316,6 @@ summary(mod3)}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Multidimensional Latent Class Rasch Model}
+\keyword{Multidimensional latent class Rasch model}
 \keyword{summary}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

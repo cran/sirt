@@ -208,8 +208,7 @@ S3 methods: \code{\link{summary.mcmc.sirt}}, \code{\link{plot.mcmc.sirt}}
 For MCMC estimation of three-parameter (testlet) models see 
 \code{\link{mcmc.3pno.testlet}}.	
 
-See also the \pkg{MLIRT} package (\url{http://www.jean-paulfox.com})
-of Jean-Paul Fox.
+See also the \pkg{MLIRT} package (\url{http://www.jean-paulfox.com}).
 
 For more flexible estimation of multilevel IRT models see the
 \pkg{MCMCglmm} and \pkg{lme4} packages.
@@ -222,7 +221,7 @@ For more flexible estimation of multilevel IRT models see the
 \examples{
 \dontrun{	
 #############################################################################
-# EXAMPLE 1: Dataset Multilevel 1
+# EXAMPLE 1: Dataset Multilevel data.ml1
 #############################################################################
 data(data.ml1)
 dat <- data.ml1[,-1]
@@ -255,11 +254,11 @@ summary(mod3)
 # Model 4: 2PNO with cluster item effects of item difficulties and
 #          cluster item effects with a jointly estimated SD
 mod4 <- mcmc.2pno.ml( dat , group , est.b.Var="i" , est.a.M="h" ,
-        est.a.Var="j" , burnin=burnin , iter=iter )
+             est.a.Var="j" , burnin=burnin , iter=iter )
 summary(mod4)
 
 #############################################################################
-# EXAMPLE 2: Dataset Multilevel 2
+# EXAMPLE 2: Dataset Multilevel data.ml2
 #############################################################################
 data(data.ml2)
 dat <- data.ml2[,-1]

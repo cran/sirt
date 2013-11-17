@@ -34,7 +34,7 @@ i.e. every row corresponds to a person-rater combination.
 Person identifier.
 }
   \item{rater}{
-Rater identifier
+Rater identifier.
 }
   \item{Qmatrix}{
 An optional Q-matrix. If this matrix is not provided,
@@ -191,7 +191,7 @@ The facets rater model can be estimated with \code{\link{rm.facets}}.
 
 \examples{
 #############################################################################
-# EXAMPLE 1: HRM
+# EXAMPLE 1: Hierarchical rater model (HRM) data.ratings1
 #############################################################################
 data(data.ratings1)
 dat <- data.ratings1

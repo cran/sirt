@@ -8,8 +8,8 @@ Rater Facets Models with Item/Rater Intercepts and Slopes
 \description{
 This function estimates the unidimensional rater facets model (Lincare, 1994)
 and an extension to slopes (see Details). The estimation
-is conducted by an EM algorithm employing Marginal
-Maximum Likelihood.
+is conducted by an EM algorithm employing marginal
+maximum likelihood.
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -170,8 +170,8 @@ See \code{\link{rm.hrm}} for estimating a hierarchical rater model.
 
 \examples{
 #############################################################################
-# EXAMPLE 1: Partial Credit Model and
-#  Generalized partial credit model for one rater
+# EXAMPLE 1: Partial Credit Model and Generalized partial credit model 
+#                   5 items - 1 rater
 #############################################################################
 data(data.ratings1)
 dat <- data.ratings1
@@ -227,7 +227,8 @@ summary(mod2)
 summary(mod2a)
 summary(mod3)
 summary(mod4)
-summary(mod5)}
+summary(mod5)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

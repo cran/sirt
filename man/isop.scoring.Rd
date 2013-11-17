@@ -120,9 +120,10 @@ For fitting the ISOP and ADISOP model see
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \examples{
-#################################################################
+#############################################################################
 # EXAMPLE 1: Dataset Reading
-#################################################################
+#############################################################################
+
 data( data.read )
 dat <- data.read
 
@@ -131,11 +132,12 @@ msc <- isop.scoring( dat )
 # plot student scores
 boxplot( msc$person$mpsc ~ msc$person$score )
 
-#################################################################
-# EXAMPLE 2: Dataset students
-#################################################################
+#############################################################################
+# EXAMPLE 2: Dataset students from CDM package | polytomous items
+#############################################################################
+
 library(CDM)
-data( data.Students )
+data( data.Students , package="CDM")
 dat <- na.omit(data.Students[ , -c(1:2) ])
 
 # Scoring according to the ISOP model
@@ -152,4 +154,5 @@ msc2 <- isop.scoring( dat[,items] , score.itemcat=score.itemcat )
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{ISOP model}
+\keyword{Nonparametric IRT}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

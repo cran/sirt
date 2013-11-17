@@ -86,7 +86,7 @@ smoothes this distribution function \eqn{F} such that
 where the two-dimensional distribution function
 \eqn{F^\ast} is isotonic in \eqn{p} and \eqn{i}. Model fit is
 assessed by the square root of weighted squares of deviations
-\deqn{Fit = \sqrt{ 1/I \cdot w_{pi} \left(  F(p , i) - 
+\deqn{Fit = \sqrt{ \frac{1}{I} \sum_{p,i} w_{pi} \left(  F(p , i) - 
 	F^\ast(p,i ) \right )^2 }}
 with frequency weights \eqn{w_{pi}} and 
 \eqn{\sum_p w_{pi} =1} for every item \eqn{i}.
@@ -240,9 +240,10 @@ This function uses \code{\link{isop.scoring}},
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \examples{
-#################################################################
-# EXAMPLE 1: Dataset Reading (dichotomous)
-#################################################################
+#############################################################################
+# EXAMPLE 1: Dataset Reading (dichotomous items)
+#############################################################################
+
 data(data.read)
 dat <- as.matrix( data.read)
 I <- ncol(dat)
@@ -258,9 +259,10 @@ score.breaks <- seq( -.005 , 1.005 , len=5+1 )
 mod2 <- isop.dich( dat , score.breaks=score.breaks)
 summary(mod2)
 
-#################################################################
-# EXAMPLE 2: Dataset PISA mathematics (dichotomous)
-#################################################################
+#############################################################################
+# EXAMPLE 2: Dataset PISA mathematics (dichotomous items)
+#############################################################################
+
 data(data.pisaMath)
 dat <- data.pisaMath$data
 dat <- dat[ , grep("M" , colnames(dat) ) ]
@@ -271,12 +273,13 @@ dat <- dat[ , grep("M" , colnames(dat) ) ]
 mod1 <- isop.dich( dat , maxit=4000)
 summary(mod1)}
 
-#################################################################
-# EXAMPLE 3: Dataset students (polytomous)
-#################################################################
-# dataset students: scale cultural activities
+#############################################################################
+# EXAMPLE 3: Dataset Students (polytomous items)
+#############################################################################
+
+# Dataset students: scale cultural activities
 library(CDM)
-data(data.Students)
+data(data.Students , package="CDM")
 dat <- na.omit( data.Students[ , paste0("act",1:4) ] )
 
 # fit models
@@ -287,5 +290,6 @@ plot(mod1)
 
 \keyword{ISOP model}
 \keyword{ADISOP model}
+\keyword{Nonparametric IRT}
 \keyword{summary}
 \keyword{plot}

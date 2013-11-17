@@ -6,12 +6,37 @@ Longitudinal Dataset
 }
 \description{
 This dataset contains 200 observations on
-12 items. 6 items (\code{I1T1},... ,\code{I6T1})
+12 items. 6 items (\code{I1T1}, ... ,\code{I6T1})
 were administered at measurement occasion T1
-and 6 items at T2 (\code{I3T2},... , \code{I8T2}).
-The first column contains the student identifier.
+and 6 items at T2 (\code{I3T2}, ... , \code{I8T2}). There were 4 anchor items
+which were presented at both time points.
+The first column in the dataset contains the student identifier.
 }
-\usage{data(data.long)}
+\usage{
+data(data.long)
+}
+
+\format{
+The format of the dataset is
+
+\code{'data.frame':   200 obs. of  13 variables:} \cr
+\code{ $ idstud: int  1001 1002 1003 1004 1005 1006 1007 1008 1009 1010 ...} \cr
+\code{ $ I1T1  : int  1 1 1 1 1 1 1 0 1 1 ...} \cr
+\code{ $ I2T1  : int  0 0 1 1 1 1 0 1 1 1 ...} \cr
+\code{ $ I3T1  : int  1 0 1 1 0 1 0 0 0 0 ...} \cr
+\code{ $ I4T1  : int  1 0 0 1 0 0 0 0 1 1 ...} \cr
+\code{ $ I5T1  : int  1 0 0 1 0 0 0 0 1 0 ...} \cr
+\code{ $ I6T1  : int  1 0 0 0 0 0 0 0 0 0 ...} \cr
+\code{ $ I3T2  : int  1 1 0 0 1 1 1 1 0 1 ...} \cr
+\code{ $ I4T2  : int  1 1 0 0 1 1 0 0 0 1 ...} \cr
+\code{ $ I5T2  : int  1 0 1 1 1 1 1 0 1 1 ...} \cr
+\code{ $ I6T2  : int  1 1 0 0 0 0 0 0 0 1 ...} \cr
+\code{ $ I7T2  : int  1 0 0 0 0 0 0 0 0 1 ...} \cr
+\code{ $ I8T2  : int  0 0 0 0 1 0 0 0 0 0 ...} \cr
+}
+
+
+
 \examples{
 \dontrun{
 data(data.long)
@@ -79,7 +104,6 @@ dimnames(A1)[[3]] <- substring( dimnames(A1)[[3]],1,2)
 beta.fixed <- cbind( 1 , 2 , 0 )
 mod1c <- tam.mml( resp=dat , Q=Q , A=A1 , beta.fixed=beta.fixed)
 summary(mod1c)
-
 
 #***
 # Model 2: 2-dimensional 2PL model

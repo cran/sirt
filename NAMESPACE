@@ -85,7 +85,9 @@ export(
     automatic.recode ,
     genlogis.moments ,
     invariance.alignment ,
-    truescore.irt
+    truescore.irt ,
+    latent.regression.em.normal ,
+    mle.pcm.group
         )
 
 
@@ -126,6 +128,10 @@ export(
 S3method(summary,R2noharm)
 S3method(summary,R2noharm.jackknife)
 S3method(summary,invariance.alignment)
+S3method(plot,invariance.alignment)
+S3method(summary,latent.regression)
+
+
 
 # imports Depends packages
 import(mvtnorm)

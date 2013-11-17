@@ -659,6 +659,9 @@ colnames(dat1) <- paste0("I" , 1:I , "des1" )
 # group 2
 b2 <- b1 - .15
 a2 <- 1.1*a1
+# Item parameters are slightly transformed in the second group
+# compared to the first group. This indicates possible item context effects.
+
 # simulate data group 2
 dat2 <- sim.raschtype( rnorm(n2) , b=b2 , fixed.a=a2 )
 colnames(dat2) <- paste0("I" , 1:I , "des2" )

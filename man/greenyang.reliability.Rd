@@ -75,6 +75,7 @@ Bifactor models and rotations: Exploring the extent to which
 multidimensional data yield univocal scale scores, 
 \emph{Journal of Personality Assessment}, \bold{92}, 544-559.
 }
+
 \author{
 Alexander Robitzsch
 }
@@ -93,7 +94,7 @@ item response model.
 \examples{
 \dontrun{
 #############################################################################
-# EXAMPLE 1: Reliability estimation of reading dataset
+# EXAMPLE 1: Reliability estimation of Reading dataset data.read
 #############################################################################
 library(psych)
 set.seed(789)

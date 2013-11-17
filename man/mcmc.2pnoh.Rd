@@ -49,7 +49,7 @@ Should theta values be saved?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% DETAILS
 \details{
-The herarchical IRT model for criterion-referenced measurement
+The hierarchical IRT model for criterion-referenced measurement
 (Janssen et al., 2000) assumes that every item \eqn{i} intends
 to measure a criterion \eqn{k}. The item response function is defined as
 \deqn{ P(X_{pik} = 1 | \theta_p ) = 

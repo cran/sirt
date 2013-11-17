@@ -302,7 +302,7 @@ mod3 <- rasch.pml3( dat , error.corr = error.corr )
 ## Trait SD (Logit Link) : 1.384 
 
 #############################################################################
-# SIMULATED EXAMPLE 3
+# SIMULATED EXAMPLE 3: 10 locally independent items
 #############################################################################
 
 #**********
@@ -334,9 +334,7 @@ summary(mod2)
 summary(mod3)
 
 #############################################################################
-# SIMULATED EXAMPLE 4
-# 11 items 
-# 2 item clusters with 2 and 3 items
+# SIMULATED EXAMPLE 4: 11 items and 2 item clusters with 2 and 3 items
 #############################################################################
 
 set.seed(5698)
@@ -419,10 +417,8 @@ mod6 <- rasch.pml3( dat , error.corr=est.corrs ,
 summary(mod6)
 
 #############################################################################
-# SIMULATED EXAMPLE 5
-# 10 Items: Cluster 1 -> Items 1,2
-#           Cluster 2 -> Items 3,4,5
-#           Cluster 3 -> Items 7,8,9
+# SIMULATED EXAMPLE 5: 10 Items: Cluster 1 -> Items 1,2
+#         Cluster 2 -> Items 3,4,5;   Cluster 3 -> Items 7,8,9
 #############################################################################
 
 set.seed(7650)

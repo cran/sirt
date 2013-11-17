@@ -86,8 +86,9 @@ For a joint estimation of item and person parameters see the joint maximum
 likelihood estimation method in \code{\link{rasch.jml}}.
 }
 \examples{
-#####
-# use data.read as an example
+#############################################################################
+# EXAMPLE 1: Dataset Reading
+#############################################################################
 data(data.read)
 
 # estimate the Rasch model

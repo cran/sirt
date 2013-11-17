@@ -2,9 +2,10 @@
 invariance.alignment <- function( lambda , nu , wgt ,
    align.scale=c(1,1) , align.pow=c(1,1) , eps=.0001 , 
    h= .001 ,max.increment=.2 , increment.factor=1.001 ,  maxiter =3000 ,
-   conv=.0001 , psi0.init=NULL , alpha0.init=NULL ,
+   conv=.0001 , fac.oldpar = 0.85  , psi0.init=NULL , alpha0.init=NULL ,
    progress=TRUE ){
     s1 <- Sys.time()
+	max.incr0 <- max.increment
 	#****
 	G <- nrow(lambda)   # number of groups
 	I <- ncol(lambda)   # number of items
@@ -34,48 +35,35 @@ invariance.alignment <- function( lambda , nu , wgt ,
 	if ( ! is.null( psi0.init) ){ psi0 <- psi0.init }
 	if ( ! is.null( alpha0.init) ){ alpha0 <- alpha0.init / psi0 }
 	
-	fopt.history <- rep(NA , maxiter )
+	fopt.history <- matrix(NA , nrow=maxiter , ncol=2)
 	psi0b <- psi0
 	iter <- 1
 	minval <- fopt <- 10^300
 	fopt_change <- 10000
+	Niter <- rep(NA , 2 )
+	miniter0 <- fopt0 <- minval0 <- rep(NA,2)
 	#################################
-	# begin iterations
+	# begin iterations (lambda)
 	while( ( iter <= maxiter ) & ( fopt_change > conv) ){ 
 		alpha0_old <- alpha0
 		psi0_old <- psi0
 		fopt_old <- fopt
-
 		#*****
-		# optimization group SDs
-        
+		# optimization group SDs        
 		psi0b <- psi0
-		
 		# f(x)
 		flambda <- ll0a <- align.optim.lambda( lambda=lambda , psi0=psi0 , psi0b=psi0b ,
 					align.scale=align.scale[1] , align.pow=align.pow[1] ,wgt, eps=eps,group.combis)
-#		ll0b <- align.optim.nu( lambda , nu , psi0 , psi0b , alpha0 ,
-#				alpha0b , align.scale[2] ,
-#				align.pow[2] , wgt , eps, group.combis)					
 		fopt <- ll0 <- ll0a
 		
 		# f(x+h)
 		ll1 <- align.optim.lambda( lambda=lambda , psi0=psi0+h , psi0b=psi0b ,
 					align.scale=align.scale[1] , align.pow=align.pow[1] , wgt,eps=eps,group.combis)
-#		ll1b <- align.optim.nu( lambda , nu , psi0=psi0+h , 
-#				psi0b , alpha0 , alpha0b , align.scale[2] ,
-#				align.pow[2] , wgt , eps, group.combis)
-#		ll1 <- ll1+ll1b
 		
 		# f(x-h)
 		ll2 <- align.optim.lambda( lambda=lambda , psi0=psi0-h , psi0b=psi0b ,
 					align.scale=align.scale[1] , align.pow=align.pow[1] , wgt , eps=eps,group.combis)
-#		ll2b <- align.optim.nu( lambda , nu , psi0=psi0-h , 
-#				psi0b , alpha0 , alpha0b , align.scale[2] ,
-#				align.pow[2] , wgt , eps, group.combis)
-#		ll2 <- ll2 + ll2b				
-					
-					
+									
 					
 		# first and second derivative
 		increment <- align.newton.raphson( ll0 , ll1 , ll2 , max.increment , h )
@@ -83,9 +71,79 @@ invariance.alignment <- function( lambda , nu , wgt ,
 		psi0[ psi0 < eps ] <- eps
 		psi0 <- psi0 * ( prod( psi0 ) )^( -1/G )
 
-		psi00 <- psi0
-		psi0 <- psi0_old
 		
+#		fac.oldpar <- 0.5
+# fac.oldpar <- 0		
+		psi0 <- (1-fac.oldpar)*psi0+fac.oldpar*psi0_old
+#		psi00 <- psi0
+#		psi0 <- psi0_old
+		#*****
+		# optimization group means
+#		alpha0b <- alpha0 
+#		fnu <- ll0 <- align.optim.nu( lambda , nu , psi0 , psi0b ,alpha0 , alpha0b , align.scale[2] , align.pow[2] ,
+#			 wgt , eps, group.combis)
+#		ll1 <- align.optim.nu( lambda , nu , psi0 , psi0b ,alpha0+h , alpha0b , align.scale[2] , align.pow[2] ,
+#			 wgt , eps , group.combis)
+#		ll2 <- align.optim.nu( lambda , nu , psi0 , psi0b , alpha0-h , alpha0b , align.scale[2] , align.pow[2] ,
+#			 wgt , eps , group.combis)
+		# first and second derivative
+#		increment <- align.newton.raphson( ll0 , ll1 , ll2 , max.increment , h )
+#		alpha0 <- alpha0 + increment
+#		alpha0 <- alpha0 - mean( alpha0 )
+#		alpha0 <- alpha0 - alpha0[1]
+#		psi0 <- psi00
+		
+#		fac.oldpar <- 0
+#		alpha0 <- (1-fac.oldpar)*alpha0+fac.oldpar*alpha0_old
+		
+		#****
+		# optimization function
+#		fopt.history[iter] <- fopt <- sum( flambda + fnu )
+		fopt.history[iter,1] <- fopt <- sum( flambda )
+#		fopt <- sum( fopt )
+		fopt_change <- abs( fopt - fopt_old )
+
+#		alpha_change <- max( abs( alpha0 - alpha0_old ))
+		psi_change <- max( abs( psi0 - psi0_old ))
+		if (progress){
+			cat( "---------------- ITERATION" , iter , " (LAMBDA) -----------------\n") 
+			cat( "Optimization Function (lambda) =" , round( fopt ,6 ) )
+			if ( iter > 1){ 
+				cat( " | Absolute Change =" , round( fopt_change , 6 )) 
+					} 
+			cat("\n")
+#			cat("** Maximum alpha parameter change =" , round( alpha_change , 6) , "\n" )
+			cat("** Maximum psi parameter change   =" , round( psi_change , 6) , "\n" )
+			flush.console()
+					}
+		if ( fopt < minval ){
+			minval <- fopt
+			miniter <- iter
+#			alpha0.min <- alpha0
+			psi0.min <- psi0
+					}
+
+		iter <- iter + 1
+		Niter[1] <- iter
+		max.increment <- max.increment / increment.factor
+			} # end iterations
+	fopt0[1] <- fopt ; minval0[1] <- minval
+	miniter0[1] <- miniter
+	#***********************************************************
+	
+	
+	iter <- 1
+	minval <- fopt <- 10^300
+	fopt_change <- 10000
+	max.incr0 -> max.increment
+	psi0 <- psi0.min
+	
+	#################################
+	# begin iterations (nu)
+	while( ( iter <= maxiter ) & ( fopt_change > conv) ){ 
+		alpha0_old <- alpha0
+#		psi0_old <- psi0
+		fopt_old <- fopt
 		#*****
 		# optimization group means
 		alpha0b <- alpha0 
@@ -95,43 +153,53 @@ invariance.alignment <- function( lambda , nu , wgt ,
 			 wgt , eps , group.combis)
 		ll2 <- align.optim.nu( lambda , nu , psi0 , psi0b , alpha0-h , alpha0b , align.scale[2] , align.pow[2] ,
 			 wgt , eps , group.combis)
-		# first and second derivative
+	# first and second derivative
 		increment <- align.newton.raphson( ll0 , ll1 , ll2 , max.increment , h )
 		alpha0 <- alpha0 + increment
-#		alpha0 <- alpha0 - mean( alpha0 )
+		alpha0 <- alpha0 - mean( alpha0 )
 		alpha0 <- alpha0 - alpha0[1]
-# alpha0[ alpha0 > 10 ] <- 10
-		psi0 <- psi00
+#		psi0 <- psi00
+		
+#		fac.oldpar <- 0
+		alpha0 <- (1-fac.oldpar)*alpha0+fac.oldpar*alpha0_old
 		
 		#****
 		# optimization function
-		fopt.history[iter] <- fopt <- sum( flambda + fnu )
+		fopt.history[iter,2] <- fopt <- sum( fnu )
+#		fopt.history[iter] <- fopt <- sum( flambda )
 #		fopt <- sum( fopt )
 		fopt_change <- abs( fopt - fopt_old )
 
 		alpha_change <- max( abs( alpha0 - alpha0_old ))
-		psi_change <- max( abs( psi0 - psi0_old ))
+#		psi_change <- max( abs( psi0 - psi0_old ))
 		if (progress){
-			cat( "---------------- ITERATION" , iter , "-----------------\n") 
-			cat( "Optimization Function =" , round( fopt ,6 ) )
+			cat( "---------------- ITERATION" , iter , " (NU) -----------------\n") 
+			cat( "Optimization Function (nu) =" , round( fopt ,6 ) )
 			if ( iter > 1){ 
 				cat( " | Absolute Change =" , round( fopt_change , 6 )) 
 					} 
 			cat("\n")
 			cat("** Maximum alpha parameter change =" , round( alpha_change , 6) , "\n" )
-			cat("** Maximum psi parameter change   =" , round( psi_change , 6) , "\n" )
+#			cat("** Maximum psi parameter change   =" , round( psi_change , 6) , "\n" )
 			flush.console()
 					}
 		if ( fopt < minval ){
 			minval <- fopt
 			miniter <- iter
 			alpha0.min <- alpha0
-			psi0.min <- psi0
+#			psi0.min <- psi0
 					}
 
 		iter <- iter + 1
+		Niter[2] <- iter
 		max.increment <- max.increment / increment.factor
 			} # end iterations
+	fopt0[2] <- fopt ; minval0[2] <- minval ; 
+	miniter0[2] <- miniter
+	#***********************************************************
+		
+	
+	
 	#*****************************
 	# calculate item statistics and R-squared measures
 	# groupwise aligned loading
@@ -164,11 +232,11 @@ invariance.alignment <- function( lambda , nu , wgt ,
 			1 - sum( ( nu - expl)^2 , na.rm=TRUE ) / 
 			sum( (nu - rowMeans(nu) )^2 , na.rm=TRUE)
 
+    # correlations aligned parameters			
+	rbar <- c( ai.calc.corr(t(lambda.aligned)) , ai.calc.corr(t(nu.aligned)) )			
 	es.invariance <- rbind( Rsquared.invariance ,
-			sqrt( 1- Rsquared.invariance ) )
-	rownames(es.invariance) <- c("R2" , "sqrtU2")
-		
-# print(Rsquared.invariance)	
+			sqrt( 1- Rsquared.invariance ) , rbar)
+	rownames(es.invariance) <- c("R2" , "sqrtU2" , "rbar")
 	
 	psi0 <- psi0.min
 	alpha0 <- alpha0.min * psi0.min
@@ -186,9 +254,9 @@ invariance.alignment <- function( lambda , nu , wgt ,
 			"lambda.resid" = lambda.resid ,
 			"nu.aligned" = nu.aligned ,
 			"nu.resid" = nu.resid ,
-			"iter" = iter , "miniter"=miniter ,
-			"fopt"=minval ,
-			"fopt.history" = fopt.history[1:(iter-1)] ,
+			"Niter" = Niter -1 , "miniter"=miniter0 ,
+			"fopt"=minval0 ,
+			"fopt.history" = fopt.history[1:(max(Niter)-1) , ] ,
 			"align.scale"=align.scale , "align.pow"=align.pow ,
 			"s1"=s1 , "s2"=s2)
 	class(res) <- "invariance.alignment"

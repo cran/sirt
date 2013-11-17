@@ -62,7 +62,10 @@ Alexander Robitzsch
 For more details on linking methods see \code{\link{equating.rasch}}.
 }
 \examples{
-# Linking erros PISA study
+#############################################################################
+# EXAMPLE 1: Linking errors PISA study
+#############################################################################
+
 data(data.pisaPars)
 pars <- data.pisaPars
 

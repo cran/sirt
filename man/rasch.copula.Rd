@@ -177,9 +177,9 @@ See \code{\link{rasch.mml2}} for the generalized logistic link function.
 
 
 \examples{
-#############################################
-# Example 1: Reading data
-#############################################
+#############################################################################
+# EXAMPLE 1: Reading Data
+#############################################################################
 
 data(data.read)
 dat <- data.read
@@ -197,11 +197,10 @@ summary(mod1)
 summary(mod2)
 
 \dontrun{
-############################################################
-# Simulated Example 2:
-# 11 Items: 2 itemclusters with 2 resp. 3 dependent items
-#           and 6 independent items
-############################################################
+#############################################################################
+# SIMULATED EXAMPLE 2: 11 items nested within 2 item clusters (testlets)
+#    with 2 resp. 3 dependent and 6 independent items
+#############################################################################
 
 set.seed(5698)
 I <- 11                             # number of items
@@ -239,12 +238,10 @@ mod2 <- rasch.copula2( dat , itemcluster = itemcluster , delta = c(0,0) ,
             est.delta = c(0,0) )
 summary(mod2)
 
-############################################################
-# Simulated Example 3:
-# 12 Items: Cluster 1 -> Items 1,...,4
-#           Cluster 2 -> Items 6,...,9
-#           Cluster 3 -> Items 10,11,12
-############################################################
+#############################################################################
+# SIMULATED EXAMPLE 3: 12 items nested within 3 item clusters (testlets)
+#   Cluster 1 -> Items 1-4; Cluster 2 -> Items 6-9;  Cluster 3 -> Items 10-12
+#############################################################################
 
 set.seed(967)
 I <- 12                             # number of items

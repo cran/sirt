@@ -2,6 +2,7 @@
 
 \alias{data.mcdonald.act15}
 \alias{data.mcdonald.LSAT6}
+\alias{data.mcdonald.rape}
 
 \docType{data}
 
@@ -18,6 +19,7 @@ NOHARM for item response modelling. See Examples below.
 \usage{
 data(data.mcdonald.act15)
 data(data.mcdonald.LSAT6)
+data(data.mcdonald.rape)
 }
 
 
@@ -44,6 +46,21 @@ is obtained from Ch. 12 in McDonald (1999). \cr
 \code{ $ L5: int  0 0 0 1 1 1 1 1 1 0 ...}
 
 The dataset is obtained from Ch. 6 in McDonald (1999). \cr
+
+\item The format of the rape myth scale data  \code{data.mcdonald.rape} is
+
+\code{List of 2} \cr
+\code{ $ lambda: num [1:2, 1:19] 1.13 0.88 0.85 0.77 0.79 0.55 1.12 1.01 0.99 0.79 ...} \cr
+\code{  ..- attr(*, "dimnames")=List of 2} \cr
+\code{  .. ..$ : chr [1:2] "male" "female"} \cr
+\code{  .. ..$ : chr [1:19] "I1" "I2" "I3" "I4" ...} \cr
+\code{ $ nu    : num [1:2, 1:19] 2.88 1.87 3.12 2.32 2.13 1.43 3.79 2.6 3.01 2.11 ...} \cr
+\code{  ..- attr(*, "dimnames")=List of 2} \cr
+\code{  .. ..$ : chr [1:2] "male" "female"} \cr
+\code{  .. ..$ : chr [1:19] "I1" "I2" "I3" "I4" ...} \cr
+
+The dataset is obtained from Ch. 15 in McDonald (1999).
+
 }
 }
 
@@ -81,10 +98,9 @@ P.init <- 1+0*P.pattern
 F.pattern <- matrix( 1 , nrow=I , ncol=1 )
 F.init <- F.pattern        
 # estimate model
-mod1a <- R2noharm( dat = dat , model.type="CFA" ,  
-        F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , writename = "LSAT6__1dim_2pno" , 
-        noharm.path = noharm.path , dec ="," )            
+mod1a <- R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern , 
+          F.init = F.init , P.pattern = P.pattern , P.init = P.init ,
+          writename = "LSAT6__1dim_2pno" , noharm.path = noharm.path , dec ="," )            
 summary(mod1a , logfile="LSAT6__1dim_2pno__SUMMARY")
 
 #++ pairwise marginal maximum likelihood estimation using the probit link
@@ -101,10 +117,9 @@ P.init <- 1+0*P.pattern
 F.pattern <- matrix( 2 , nrow=I , ncol=1 )
 F.init <- 1+0*F.pattern       
 # estimate model
-mod2a <- R2noharm( dat = dat , model.type="CFA" ,  
-        F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , writename = "LSAT6__1dim_1pno" , 
-        noharm.path = noharm.path , dec ="," )            
+mod2a <- R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern ,
+        F.init = F.init , P.pattern = P.pattern , P.init = P.init , 
+        writename = "LSAT6__1dim_1pno" , noharm.path = noharm.path , dec ="," )            
 summary(mod2a , logfile="LSAT6__1dim_1pno__SUMMARY")
 
 # PMML estimation
@@ -141,8 +156,7 @@ pm <- data.mcdonald.act15
 #************
 # Model 1: 2-dimensional exploratory factor analysis
 mod1 <- R2noharm( pm=pm , n=1000, model.type="EFA" , dimensions=2 , 
-        writename = "ACT15__efa_2dim" , 
-        noharm.path = noharm.path , dec ="," )            
+        writename = "ACT15__efa_2dim" , noharm.path = noharm.path , dec ="," )            
 summary(mod1)
 
 #************
@@ -156,10 +170,9 @@ F.pattern[ c(6:10,11:15),2] <- 1
 F.init <- F.pattern
 
 # estimate model
-mod2 <- R2noharm( pm=pm , n=1000 ,  model.type="CFA" , 
-        F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , writename = "ACT15_indep_clusters" , 
-        noharm.path = noharm.path , dec ="," )       
+mod2 <- R2noharm( pm=pm , n=1000 ,  model.type="CFA" , F.pattern = F.pattern , 
+        F.init = F.init , P.pattern = P.pattern ,P.init = P.init , 
+        writename = "ACT15_indep_clusters" , noharm.path = noharm.path , dec ="," )       
 summary(mod2)
 
 #************
@@ -169,17 +182,47 @@ P.pattern <- matrix(0,3,3)
 P.init <- P.pattern
 diag(P.init) <- 1
 F.pattern <- matrix(0,15,3)
-F.pattern[,1] <- 1
-F.pattern[ c(1:5,11:15),2] <- 1
-F.pattern[ c(6:10,11:15),3] <- 1
+F.pattern[,1] <- 1	# all items load on g factor
+F.pattern[ c(1:5,11:15),2] <- 1   # Items 1-5 and 11-15 load on first nested factor
+F.pattern[ c(6:10,11:15),3] <- 1  # Items 6-10 and 11-15 load on second nested factor
 F.init <- F.pattern
 
 # estimate model
-mod3 <- R2noharm( pm=pm , n=1000 ,  model.type="CFA" , 
-        F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , writename = "ACT15_hierarch_model" , 
-        noharm.path = noharm.path , dec ="," )       
+mod3 <- R2noharm( pm=pm , n=1000 ,  model.type="CFA" , F.pattern = F.pattern , 
+        F.init = F.init , P.pattern = P.pattern , P.init = P.init , 
+        writename = "ACT15_hierarch_model" , noharm.path = noharm.path , dec ="," )       
 summary(mod3)
+
+#############################################################################
+# EXAMPLE 3: Rape myth scale 
+#############################################################################   
+data(data.mcdonald.rape)
+lambda <- data.mcdonald.rape$lambda
+nu <- data.mcdonald.rape$nu
+
+# obtain multiplier for factor loadings (Formula 15.5)
+k <- sum( lambda[1,] * lambda[2,] ) / sum( lambda[2,]^2 )
+##   [1] 1.263243
+
+# additive parameter (Formula 15.7)
+c <- sum( lambda[2,]*(nu[1,]-nu[2,]) ) / sum( lambda[2,]^2 )
+##   [1] 1.247697
+
+# SD in the female group
+1/k
+##   [1] 0.7916132
+
+# M in the female group
+- c/k
+##   [1] -0.9876932
+
+# Burt's coefficient of factorial congruence (Formula 15.10a)
+sum( lambda[1,] * lambda[2,] ) / sqrt( sum( lambda[1,]^2 ) * sum( lambda[2,]^2 ) )
+##   [1] 0.9727831
+
+# congruence for mean parameters
+sum(  (nu[1,]-nu[2,]) * lambda[2,] ) / sqrt( sum( (nu[1,]-nu[2,])^2 ) * sum( lambda[2,]^2 ) )
+##   [1] 0.968176
 }
 }
 \keyword{datasets}
