@@ -138,7 +138,7 @@ In case of \eqn{p_\lambda=1}, the penalty is approximately
 \eqn{f_\lambda(x) = x^2 }, in case of \eqn{p_\lambda=1/4}
 it is approximately \eqn{f_\lambda(x) = \sqrt{|x|} }.
 
-\eqn{R^2}-based effect sizes of approximate invariance have
+Effect sizes of approximate invariance based on \eqn{R^2} have
 been proposed by Asparouhov and Muthen (2013). These are
 calculated separately for item loading and intercepts, resulting
 in \eqn{R^2_\lambda} and \eqn{R^2_\nu} measures which are
@@ -164,7 +164,7 @@ A list with following entries
 \item{nu.aligned}{Aligned \eqn{ \nu_{i g ,1}} parameters}
 \item{nu.resid}{Residuals of \eqn{ \nu_{i g ,1}} parameters}
 \item{Niter}{Number of iterations for \eqn{f_\lambda} and
-\eqn{f_\nu} optimization}
+\eqn{f_\nu} optimization functions}
 \item{miniter}{Iteration index with minimum optimizatiob value}
 \item{fopt}{Minimum optimization value}
 \item{fopt.history}{Vector of iteration history of optimization function}
@@ -177,6 +177,7 @@ A list with following entries
 Asparouhov, T., & Muthen, B. (2013).
 Multiple-group factor analysis alignment.
 \emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
+\url{http://www.statmodel.com/Alignment.shtml}
 
 Vandenberg, R. J., & Lance, C. E. (2000). A review and synthesis of the
 measurement invariance literature: Suggestions, practices, and

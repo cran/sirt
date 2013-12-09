@@ -47,7 +47,7 @@ BEGIN_RCPP
      for (int nn=0;nn<N; nn++){  
          for (int ii=0;ii<I ; ii++){  
              if (dat(nn,ii)==0){  
-                 resp_patt[nn] += pow(2,(I-ii) ) - 1;  
+                 resp_patt[nn] += pow(2.0,(double)(I-ii) ) - 1;  
                  dat_ind0( freq0[ii] , ii) = nn+1 ;  
                  freq0[ii] ++ ;  
                      }  else {  
