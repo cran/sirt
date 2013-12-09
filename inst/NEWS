@@ -4,13 +4,13 @@
 
 sirt: Supplementary Item Response Theory
 
-
-                    _/              _/   
-           _/_/_/      _/  _/_/  _/_/_/_/
-        _/_/      _/  _/_/        _/     
-           _/_/  _/  _/          _/      
-      _/_/_/    _/  _/            _/_/   
-
+##     
+##                       _/              _/   
+##              _/_/_/      _/  _/_/  _/_/_/_/
+##           _/_/      _/  _/_/        _/     
+##              _/_/  _/  _/          _/      
+##         _/_/_/    _/  _/            _/_/   
+##   
 
 Alexander Robitzsch
 Federal Institute for Educational Research, Innovation and 
@@ -31,6 +31,14 @@ a.robitzsch /-\ bifie.at
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+---
+Versions 0.40 -- 2013-12-09
+---
+x fixed a bug in 'data.wide2long'
+x changed Rcpp code in eigenvalue calculation due to a CRAN request
+* included datasets: data.big5.qgraph 
+* included examples: 
 
 ---
 Versions 0.39 -- 2013-11-17

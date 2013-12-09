@@ -1,29 +1,47 @@
 \name{data.big5}
 \alias{data.big5}
+\alias{data.big5.qgraph}
+
+
 \docType{data}
 \title{
 Dataset Big 5 from \pkg{qgraph} Package
 }
+
 \description{
 This is a Big 5 dataset from the \pkg{qgraph} package (Dolen, Oorts,
 Stoel, Wicherts, 2009). It contains 500 subjects on 240 items.
 }
-\usage{data(data.big5)}
+
+\usage{
+data(data.big5)
+data(data.big5.qgraph)
+}
 
 \format{
-The format is: \cr \cr
+\itemize{
+\item The format of \code{data.big5} is: \cr 
 \code{ num [1:500, 1:240] 1 0 0 0 0 1 1 2 0 1 ...} \cr
 \code{ - attr(*, "dimnames")=List of 2} \cr
 \code{  ..$ : NULL} \cr
 \code{  ..$ : chr [1:240] "N1" "E2" "O3" "A4" ...} \cr
+
+\item The format of \code{data.big5.qgraph} is: \cr  
+
+\code{ num [1:500, 1:240] 2 3 4 4 5 2 2 1 4 2 ...} \cr
+\code{ - attr(*, "dimnames")=List of 2} \cr
+\code{  ..$ : NULL} \cr
+\code{  ..$ : chr [1:240] "N1" "E2" "O3" "A4" ...} \cr
+}
 }
 
 
 \details{
-In the dataset, there exist 48 items for each dimension. The Big 5
+In these datasets, there exist 48 items for each dimension. The Big 5
 dimensions are Neuroticism (\code{N}), Extraversion (\code{E}), 
 Openness (\code{O}), Agreeableness (\code{A}) and 
-Conscientiousness (\code{C}). Note that the original items were recoded into
+Conscientiousness (\code{C}). Note that the \code{data.big5} differs from
+\code{data.big5.qgraph} in a way that original items were recoded into
 three categories 0,1 and 2.
 }
 
@@ -41,8 +59,19 @@ factor model. \emph{Structural Equation Modeling}, \bold{16}, 295-314.
 
 
 
+
+
 \section{Example Index}{
+
+%%%%%%% data.big5
+\emph{Dataset} \code{data.big5} 	
+	
 \code{\link{conf.detect}} (Example 2)
+
+%%%%%%% data.big5.qgraph
+\emph{Dataset} \code{data.big5.qgraph} 	
+	
+%%\code{\link{mcmc.2pno.ml}} (Example 2)
 }
 
 \examples{

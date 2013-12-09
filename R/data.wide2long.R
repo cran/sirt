@@ -7,7 +7,8 @@ data.wide2long <- function( dat , id=NULL , X=NULL , Q=NULL){
     items <- setdiff( colnames(dat) , id )
     I <- length(items)
     N <- nrow(dat)
-    dat1 <- matrix( as.matrix(dat[,items]) , nrow= N*I , ncol=1 , byrow=TRUE )
+#    dat1 <- matrix( as.matrix(dat[,items]) , nrow= N*I , ncol=1 , byrow=TRUE )
+    dat1 <- matrix( t(dat[,items]) , nrow= N*I , ncol=1 , byrow=FALSE )
     dat2 <- data.frame( dat1 )
     colnames(dat2) <- "resp"
     dat1 <- data.frame( "id_index" = rep( 1:N , each=I ) )

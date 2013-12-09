@@ -43,7 +43,7 @@ BEGIN_RCPP
      // int N = dat.nrow() ;  
      int I = dat.ncol() ;  
        
-     double eps=pow(10,-10) ;  
+     double eps=1e-10;
      double l1=0;  
      double l2=0;  
      double lam1=0;  
@@ -173,7 +173,7 @@ BEGIN_RCPP
      int N = dat.nrow() ;  
      int I = dat.ncol() ;  
        
-     double eps=pow(10,-10) ;  
+     double eps=1e-10;
      double l1=0;  
      double l2=0;  
      double lam1=0;  

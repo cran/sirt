@@ -12,7 +12,7 @@ Supplementary item response theory models to complement existing functions in \R
 \tabular{ll}{
 Package: \tab \pkg{sirt} \cr
 Type: \tab Package\cr
-Version: \tab 0.39 \cr
+Version: \tab 0.40 \cr
 Publication Year: \tab 2013\cr
 License: \tab GPL (>= 2)\cr
 URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr
@@ -332,16 +332,31 @@ Markov Chain Monte Carlo estimation for item response models can also
 be found in the \pkg{MCMCpack} package (see the \code{MCMCirt} functions
 therein).
 }
-%%\examples{
-%~~ simple examples of the most important functions ~~
-%%}
+
+
+\examples{
+##  
+##   |-----------------------------------------------------------------|
+##   | sirt 0.40-4 (2013-11-26)                                        |
+##   | Supplementary Item Response Theory                              |
+##   | Maintainer: Alexander Robitzsch <a.robitzsch at bifie.at >      |
+##   | https://sites.google.com/site/alexanderrobitzsch/software       |
+##   |-----------------------------------------------------------------|
+##     
+##                       _/              _/   
+##              _/_/_/      _/  _/_/  _/_/_/_/
+##           _/_/      _/  _/_/        _/     
+##              _/_/  _/  _/          _/      
+##         _/_/_/    _/  _/            _/_/   
+##   
+}
 
 \keyword{package}
 \section{\R Function Versions }{
 \emph{automatic.recode__1.04.R}, 
 \emph{class.accuracy.rasch__0.03.R}, 
 \emph{data.prep__1.03.R}, \cr
-\emph{data.wide2long__0.02.R}, 
+\emph{data.wide2long__0.12.R}, 
 \emph{detect__0.04.R}, 
 \emph{dif.logisticregression__1.01.R}, \cr
 \emph{dif.variance__0.05.R}, 
@@ -464,7 +479,7 @@ therein).
 \emph{zzz__1.05.R}, 
 }
 \section{\emph{Rcpp} Function Versions }{
-\emph{eigenvaluessirt__2.04.cpp}, 
+\emph{eigenvaluessirt__2.06.cpp}, 
 \emph{matrixfunctions_sirt__1.01.cpp}, \cr
 \emph{md_pattern_csource__0.01.cpp}, 
 \emph{mle_pcm_group_c__0.01.cpp}, \cr
@@ -472,7 +487,7 @@ therein).
 \emph{monoreg_rowwise_c__0.03.cpp}, 
 \emph{rm_cppcode__1.03.cpp}, \cr
 \emph{smirt_cppcode__1.02.cpp}, 
-\emph{first_eigenvalue_sirt__2.13.h}, 
+\emph{first_eigenvalue_sirt__2.14.h}, 
 }
 \section{\emph{Rd} Documentation Versions }{
 \emph{automatic.recode__0.04.Rd}, 
@@ -480,7 +495,7 @@ therein).
 \emph{class.accuracy.rasch__0.09.Rd}, \cr
 \emph{conf.detect__1.17.Rd}, 
 \emph{data.activity.itempars__0.03.Rd}, 
-\emph{data.big5__0.16.Rd}, \cr
+\emph{data.big5__0.18.Rd}, \cr
 \emph{data.ess2005__0.02.Rd}, 
 \emph{data.inv4gr__0.03.Rd}, 
 \emph{data.long__0.09.Rd}, 
@@ -516,7 +531,7 @@ therein).
 \emph{gom.em__1.22.Rd}, 
 \emph{gom.jml__0.10.Rd}, 
 \emph{greenyang.reliability__1.14.Rd}, \cr
-\emph{invariance.alignment__1.07.Rd}, 
+\emph{invariance.alignment__1.09.Rd}, 
 \emph{isop.scoring__1.09.Rd}, 
 \emph{isop__3.05.Rd}, \cr
 \emph{latent.regression.em.raschtype__1.25.Rd}, 
@@ -531,7 +546,7 @@ therein).
 \emph{mcmc.list.descriptives__0.02.Rd}, 
 \emph{mcmclist2coda__0.06.Rd}, \cr
 \emph{md.pattern.sirt__0.08.Rd}, 
-\emph{mle.pcm.group__0.07.Rd}, 
+\emph{mle.pcm.group__0.11.Rd}, 
 \emph{modelfit.sirt__0.18.Rd}, \cr
 \emph{monoreg.rowwise__0.05.Rd}, 
 \emph{np.dich__0.10.Rd}, 
@@ -565,7 +580,7 @@ therein).
 \emph{sim.qm.ramsay__0.15.Rd}, 
 \emph{sim.rasch.dep__0.16.Rd}, 
 \emph{sim.raschtype__0.09.Rd}, \cr
-\emph{sirt-package__1.55.Rd}, 
+\emph{sirt-package__1.58.Rd}, 
 \emph{smirt__1.37.Rd}, 
 \emph{stratified.cronbach.alpha__0.11.Rd}, \cr
 \emph{summary.mcmc.sirt__0.05.Rd}, 

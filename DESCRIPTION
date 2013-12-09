@@ -1,8 +1,8 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 0.39-30
-Date: 2013-11-17
+Version: 0.40-9
+Date: 2013-12-09
 Author: Alexander Robitzsch
 Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
 Description: 
@@ -15,7 +15,7 @@ Suggests: eRm, ltm, MCMCglmm, mirt, mokken, mRm, plink, GPArotation,
 LinkingTo: Rcpp, RcppArmadillo
 License: GPL (>= 2)
 URL: https://sites.google.com/site/alexanderrobitzsch/software
-Packaged: 2013-11-17 18:35:52 UTC; robitzsch
+Packaged: 2013-12-09 20:41:14 UTC; ripley
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2013-11-17 19:58:41
+Date/Publication: 2013-12-09 21:41:31

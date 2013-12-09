@@ -37,7 +37,7 @@ BEGIN_RCPP
      double conv = as<double>(conv_) ;  
      Rcpp::NumericVector d1(2) ;  
        
-     int K=Xr.nrow() ;  
+     double K=Xr.nrow() ;  
        
      // Rcpp::List res2 ;  
      Rcpp::NumericVector dvec(D) ;  
@@ -86,7 +86,7 @@ END_RCPP
 
 ///////////////////////////////////////////////////
 
-Rcpp::List firsteigenvalsirt2(arma::mat X, int maxit, double conv, int K){
+Rcpp::List firsteigenvalsirt2(arma::mat X, int maxit, double conv, double K){
 
     double lambda_temp ;
     double lambda =0 ;

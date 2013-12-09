@@ -19,7 +19,7 @@ mle.pcm.group(dat, b, a = rep(1, ncol(dat)), group = NULL,
 A numeric \eqn{N \times I} matrix
 }
   \item{b}{
-Matrix wiith item thresholds
+Matrix with item thresholds
 }
   \item{a}{
 Vector of item slopes
@@ -53,7 +53,7 @@ estimating equation results: (see Penfield & Bergeron, 2005):
 where \eqn{E(X_{pi} | \theta_p )} denotes the expected item response
 conditionally on \eqn{\theta_p}.
 
-With the method of \eqn{\varepsilon}-adjustment (Bertoli-Barsotti & Punzo, 2013),
+With the method of \eqn{\varepsilon}-adjustment (Bertoli-Barsotti & Punzo, 2012),
 the observed item responses \eqn{x_{pi}} are transformed such that
 no perfect scores arise and bias is reduced. If \eqn{S_p}
 is the sum score of person \eqn{p} and \eqn{M_p} the maximum
@@ -80,14 +80,14 @@ A list with following entries:
   }
 }
 \references{
-Bertoli-Barsotti, L., Punzo, A. (2012). 
-Comparison of two bias reduction techniques for the Rasch Model.
+Bertoli-Barsotti, L., & Punzo, A. (2012). 
+Comparison of two bias reduction techniques for the Rasch model.
 \emph{Electronic Journal of Applied Statistical Analysis}, 
-\emph{5}, 360-366.
+\bold{5}, 360-366.
 
 Penfield, R. D., & Bergeron, J. M. (2005). Applying a weighted 
 maximum likelihood latent trait estimator to the generalized 
-partial credit model. \emph{Applied psychological measurement},
+partial credit model. \emph{Applied Psychological Measurement},
 \bold{29}, 218-233.
 }
 \author{
