@@ -35,4 +35,11 @@ The format is:
 \code{  ..$ Content.Domain  : Factor w/ 3 levels "Data Display",..: 3 3 3 3  ...} \cr
 \code{  ..$ Cognitive.Domain: Factor w/ 3 levels "Applying","Knowing",..: 2 3 3 ..} \cr
 }
+
+\section{Example Index}{
+\code{\link{conf.detect}} (Example 1),
+\code{\link{gom.jml}} (Example 1),
+}
+
+
 \keyword{datasets}

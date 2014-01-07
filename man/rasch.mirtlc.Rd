@@ -156,7 +156,7 @@ Alexander Robitzsch
 }
 \note{
 For the estimation of latent class models, 
-rerunning the model with starting values 
+rerunning the model with different starting values 
 (different random seeds) is recommended. 
 
 For fixed theta estimation in the multidimensional
@@ -312,7 +312,8 @@ mod3 <- rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1",
 
 summary(mod1)
 summary(mod2)            
-summary(mod3)}
+summary(mod3)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

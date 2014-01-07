@@ -135,7 +135,6 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	dev0 <- dev <- 0
 	conv <- devchange <- 1000
 	disp <- "...........................................................\n"	
-# print(Sigma)
 	#****************************************************
 	# start EM algorithm
     while( ( ( maxdevchange < devchange ) | (globconv < conv) ) &
@@ -272,7 +271,8 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		cat( " Correlations " , round( c1[lower.tri(c1)] , 3 ) , "\n")		
 		# flush.console()			
 				}
-				
+
+			
 	# *********
 	# arrange OUTPUT
 	#---

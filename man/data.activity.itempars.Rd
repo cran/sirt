@@ -39,6 +39,11 @@ item intercepts (\code{nu}):
 %%\references{
 %%  ~~ possibly secondary sources and usages ~~
 %% }
+
+\section{Example Index}{
+\code{\link{invariance.alignment}} (Example 1)
+}
+
 %%\examples{
 %%data(data.activity.itempars)
 %%## maybe str(data.activity.itempars) ; plot(data.activity.itempars) ...

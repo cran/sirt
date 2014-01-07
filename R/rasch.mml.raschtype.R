@@ -1,9 +1,19 @@
 
 ################################################
 # calculation of the likelihood
-mml_calc_like <- function (dat2,dat2resp,probs){ 
-	.Call("MML2_CALCPOST_V1", dat2,dat2resp,probs, PACKAGE = "sirt")
+mml_calc_like <- function (dat2,dat2resp,probs,pseudoll=0){ 
+	if ( pseudoll==0 ){
+		res <- .Call("MML2_CALCPOST_V1", dat2,dat2resp,probs, PACKAGE = "sirt")
+						}
+	if ( pseudoll==1 ){
+		res <- .Call("MML2_CALCPOST_V2", dat2,dat2resp,probs, PACKAGE = "sirt")
+						}
+#	if ( pseudoll==2 ){
+#		res <- .Call("MML2_CALCPOST_V2", dat2,dat2resp,probs, PACKAGE = "sirt")
+#						}						
+    return(res)						
 					}
+					
 # calculation of counts					
 mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){ 
 	.Call("MML2_RASCHTYPE_COUNTS", dat2,dat2resp,dat1,fqkyi,pik,fyiqk, PACKAGE = "sirt")
@@ -43,7 +53,7 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 .e.step.raschtype <- function( dat1 , dat2 , dat2.resp , 
 		theta.k , pi.k , I , 
 		n , b , fixed.a , fixed.c ,  fixed.d , 
-        alpha1 , alpha2 , group , f.qk.yi=NULL ){
+        alpha1 , alpha2 , group , pseudoll , f.qk.yi=NULL ){
     #...................................                    
     # arrange groups
 #vv0 <- Sys.time()	
@@ -76,7 +86,7 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 		pjkL[,2,] <- pjkt	
 		probsM <- matrix( aperm( pjkL , c(2,1,3) ) , nrow=I*2 , ncol=TP )
 		f.yi.qk <- mml_calc_like( dat2=dat2 , dat2resp = dat2.resp , 
-					probs = probsM )$fyiqk
+					probs = probsM , pseudoll=pseudoll )$fyiqk
 #cat("   calc likelihood") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1				
        f.qk.yi <- 0 * f.yi.qk
        if ( G==1 ){ pi.k <- matrix( pi.k , ncol=1 ) }
@@ -566,7 +576,7 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
 # E Step Raschtype Model: multidimensional version
 .e.step.raschtype.mirt <- function( dat1 , dat2 , dat2.resp , theta.k , pi.k , I ,
 				n , b , fixed.a , fixed.c ,  fixed.d , 
-                alpha1 , alpha2 , group ,  mu ,  Sigma.cov , Qmatrix ){
+                alpha1 , alpha2 , group ,  mu ,  Sigma.cov , Qmatrix , pseudoll ){
     #...................................                    
     # arrange groups
     if ( is.null(group) ){ group <- rep( 1 , nrow(dat1)) }
@@ -585,7 +595,7 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
 		pjkL[,2,] <- pjkt	
 		probsM <- matrix( aperm( pjkL , c(2,1,3) ) , nrow=I*2 , ncol=TP )
 		f.yi.qk <- mml_calc_like( dat2=dat2 , dat2resp = dat2.resp , 
-					probs = probsM )$fyiqk
+					probs = probsM , pseudoll=pseudoll)$fyiqk
 					
 	#******
     f.qk.yi <- 0 * f.yi.qk

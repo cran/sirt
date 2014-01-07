@@ -47,4 +47,12 @@ The format is:
 \code{  ..$ domain   : Factor w/ 3 levels "arithmetic","geometry",..: 1 1 1  ...} \cr
 \code{  ..$ subdomain: Factor w/ 9 levels "","addition",..: 2 2 2 2 7 7  ...} \cr
 }
+
+
+\section{Example Index}{
+\code{\link{dif.logistic.regression}} (Example 1),
+\code{\link{f1d.irt}} (Example 1),
+}
+
+
 \keyword{datasets}

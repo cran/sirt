@@ -290,7 +290,45 @@ summary(mod2b)
 mod3 <- mcmc.2pno.ml( dat=dat , group=group , 
              est.b.M="h" , est.b.Var="i" , est.a.M="h" , est.a.Var="i" , 
              burnin=burnin , iter=iter ,link="normal" ,  progress.iter=20  )
-summary(mod3)}
+summary(mod3)
+
+#############################################################################
+# SIMULATED EXAMPLE 3: Simulated random effects model | dichotomous items
+#############################################################################
+set.seed(7698)
+
+#*** model parameters
+sig2.lev2 <- .3^2   # theta level 2 variance
+sig2.lev1 <- .8^2   # theta level 1 variance 
+G <- 100            # number of groups
+n <- 20             # number of persons within a group
+I <- 12             # number of items
+#*** simuate theta
+theta2 <- rnorm( G , sd = sqrt(sig2.lev2) )
+theta1 <- rnorm( n*G , sd =  sqrt(sig2.lev1) )
+theta <- theta1 + rep( theta2 , each=n )
+#*** item difficulties
+b <- seq( -2 , 2 , len=I )
+#*** define group identifier
+group <- 1000 + rep(1:G , each=n )
+#*** SD of group specific difficulties for items 3 and 5
+sigma.item <- rep(0,I)
+sigma.item[c(3,5)] <- 1
+#*** simulate group specific item difficulties
+b.class <- sapply( sigma.item , FUN = function(sii){ rnorm( G , sd = sii ) } )
+b.class <- b.class[ rep( 1:G ,each=n ) , ]
+b <- matrix( b , n*G , I , byrow=TRUE ) + b.class
+#*** simulate item responses
+m1 <- pnorm( theta - b ) 
+dat <- 1 * ( m1 > matrix( runif( n*G*I ) , n*G , I ) )
+
+#*** estimate model
+mod <- mcmc.2pno.ml( dat , group=group , burnin=burnin , iter=iter , 
+            est.b.M="n" , #  prior.sigma.b = c(100000 , 0.00001 ) , 
+            est.b.Var="i" , progress.iter=20)
+summary(mod)
+plot(mod , layout=2 , ask=TRUE )
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -128,7 +128,7 @@ functions are evaluated}
   in educational research. \emph{Acta Psychologica}, \bold{37}, 359-374.
 	
   Groemping, U. (2010). Inference with linear equality and inequality 
-  constraints using \R: The package \code{ic.infer}.
+  constraints using \R: The package \pkg{ic.infer}.
   \emph{Journal of Statistical Software}, \bold{33(10)}, 1-31.  
   
 Sonnleitner, P. (2008). Using the LLTM to evaluate an item-generating system 

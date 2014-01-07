@@ -113,7 +113,7 @@ Multiple-group factor analysis alignment.
 \emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
 	
 Haberman, S. J. (2009). \emph{Linking parameter estimates derived
-from an item respone model through separate calibrations}. 
+from an item response model through separate calibrations}. 
 ETS Research Report ETS RR-09-40. Princeton, ETS.
 }
 

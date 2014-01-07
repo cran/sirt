@@ -19,6 +19,8 @@ logistic item response model is a special case of this model
 can be estimated by specifying \code{irtmodel="ramsay.qm"}. 
 Third, quite general item response functions can be estimated
 in a nonparametric framework (Rossi, Wang & Ramsay, 2002).
+Fourth, pseudo-likelihood estimation for fractional item responses can be 
+conducted for Rasch type models.
 }
 \usage{
 rasch.mml2( dat , theta.k=seq(-6,6,len=21) , group=NULL , weights=NULL ,  
@@ -279,6 +281,12 @@ Where \eqn{Y_\theta} is a design matrix of \eqn{\theta} and
 The formula \eqn{Y_\theta \beta} can be specified in the \R formula
 framework.
 
+Pseudo-likelihood estimation can be conducted for fractional item response data 
+as input (i.e. some item response \eqn{x_{pi}} do have values 
+between 0 and 1). Then the pseudo-likelihood \eqn{L_p} for person \eqn{p} is defined as
+\deqn{ L_p = \prod_i P_i ( \theta_p )^{x_{pi}} [1-P_i ( \theta_p )]^{(1-x_{pi})}}
+Note that for dichotomous responses this term corresponds to the ordinary
+likelihood. See Example 7.
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -328,6 +336,9 @@ A list with following entries
 \item{theta.k}{Grid of discretized ability distributions}
 \item{trait.weights}{Fixed vector of probabilities for the ability distribution}
 \item{ic}{Information criteria}
+\item{esttype}{Estimation type: \code{ll} (Log-Likelihood),
+	\code{pseudoll} (Pseudo-Log-Likelihood)
+}
 \item{\dots}{}
 }
 
@@ -362,11 +373,12 @@ individual differences.
 Alexander Robitzsch
 }
 \note{
-%Be careful with this function, especially with multiple groups.
-%It is just in an experimental stage.
 Multiple group estimation is not possible for
 Ramsay's quotient model.
 }
+
+%Be careful with this function, especially with multiple groups.
+%It is just in an experimental stage.
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -489,8 +501,7 @@ plot(mod1)
 
 #############################################################################
 # SIMULATED EXAMPLE 3
-#  one group, estimation of alpha parameter 
-#		in generalized logistic model
+#  one group, estimation of alpha parameter in the generalized logistic model
 #############################################################################
 
 # simulate theta values
@@ -686,6 +697,109 @@ designmatrix[ ( 1:I )+ I,1:I] <- designmatrix[1:I ,1:I] <- diag(I)
 designmatrix[ ( 1:I )+ I,I+1] <- 1
 mod2 <- rasch.mml2( dat , est.a=rep(1:2,each=I) , designmatrix=designmatrix )
 summary(mod2)
+
+#############################################################################
+# EXAMPLE 7: PIRLS dataset with missing responses
+#############################################################################
+
+data(data.pirlsmissing)
+items <- grep( "R31" , colnames(data.pirlsmissing) , value=TRUE )
+dat <- data.pirlsmissing
+
+#****
+# Model 1: recode missing responses as missing (missing are ignorable)
+
+# data recoding
+dat1 <- dat
+dat1[ dat1 == 9 ] <- NA
+# estimate Rasch model
+mod1 <- rasch.mml2( dat1[,items] , weights= dat$studwgt , group=dat$country )
+summary(mod1)
+##   Mean= 0 0.341 -0.134 0.219 
+##   SD= 1.142 1.166 1.197 0.959 
+
+#****
+# Model 2: recode missing responses as wrong
+
+# data recoding
+dat2 <- dat
+dat2[ dat2 == 9 ] <- 0
+# estimate Rasch model
+mod2 <- rasch.mml2( dat2[,items] , weights= dat$studwgt , group=dat$country )
+summary(mod2)
+##   Mean= 0 0.413 -0.172 0.446 
+##   SD= 1.199 1.263 1.32 0.996 
+
+#****
+# Model 3: recode missing responses as rho * P_i( theta ) and 
+#          apply pseudo-log-likelihood estimation
+# Missing item responses are predicted by the model implied probability
+# P_i( theta ) where theta is the ability estimate when ignoring missings (Model 1)
+# and rho is an adjustment parameter. rho=0 is equivalent to Model 2 (treating
+# missing as wrong) and rho=1 is equivalent to Model 1 (treating missing as ignorable).
+
+# data recoding
+dat3 <- dat
+# simulate theta estimate from posterior distribution
+theta <- rnorm( nrow(dat3) , mean = mod1$person$EAP , sd=mod1$person$SE.EAP )
+rho <- .3   # define a rho parameter value of .3
+for (ii in items){
+    ind <- which( dat[,ii] == 9 )
+    dat3[ind,ii] <- rho*plogis( theta[ind] - mod1$item$b[ which( items == ii ) ] )
+                }
+
+# estimate Rasch model
+mod3 <- rasch.mml2( dat3[,items] , weights= dat$studwgt , group=dat$country )
+summary(mod3)
+##   Mean= 0 0.392 -0.153 0.38 
+##   SD= 1.154 1.209 1.246 0.973 
+
+#****
+# Model 4: simulate missing responses as rho * P_i( theta )
+# The definition is the same as in Model 3. But it is now assumed
+# that the missing responses are 'latent responses'.
+set.seed(789)
+
+# data recoding
+dat4 <- dat
+# simulate theta estimate from posterior distribution
+theta <- rnorm( nrow(dat4) , mean = mod1$person$EAP , sd=mod1$person$SE.EAP )
+rho <- .3   # define a rho parameter value of .3
+for (ii in items){
+    ind <- which( dat[,ii] == 9 )
+    p3 <- rho*plogis( theta[ind] - mod1$item$b[ which( items == ii ) ] )
+    dat4[ ind , ii ] <- 1*(runif( length(ind) , 0 , 1 ) < p3)    
+                }
+
+# estimate Rasch model
+mod4 <- rasch.mml2( dat4[,items] , weights= dat$studwgt , group=dat$country )
+summary(mod4)
+##   Mean= 0 0.396 -0.156 0.382 
+##   SD= 1.16 1.216 1.253 0.979 
+
+#****
+# Model 5: recode missing responses for multiple choice items with four alternatives
+#          to 1/4 and apply pseudo-log-likelihood estimation.
+#          Missings for constructed response items are treated as incorrect.
+
+# data recoding
+dat5 <- dat
+items_mc <- items[ substring( items , 7,7) == "M" ]
+items_cr <- items[ substring( items , 7,7) == "C" ]
+for (ii in items_mc){
+    ind <- which( dat[,ii] == 9 )
+    dat5[ind,ii] <- 1/4
+                }
+for (ii in items_cr){
+    ind <- which( dat[,ii] == 9 )
+    dat5[ind,ii] <- 0
+                }
+
+# estimate Rasch model
+mod5 <- rasch.mml2( dat5[,items] , weights= dat$studwgt , group=dat$country )
+summary(mod5)
+##   Mean= 0 0.411 -0.165 0.435 
+##   SD= 1.19 1.245 1.293 0.995 
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
@@ -693,6 +807,7 @@ summary(mod2)
 \keyword{Marginal maximum likelihood (MML)}
 \keyword{Ramsay's quotient model}
 \keyword{Nonparametric item response theory}
+\keyword{Pseudo-likelihood estimation}
 \keyword{summary}
 \keyword{plot}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

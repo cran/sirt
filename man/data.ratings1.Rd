@@ -29,6 +29,12 @@ Variables \code{k1} to \code{k5} denote several rating
 criteria of writing compentency.
 }
 
+
+\section{Example Index}{
+\code{\link{rm.facets}} (Example 1, Example 2),
+\code{\link{rm.hrm}} (Example 1),
+}
+
 %\examples{
 %# include an example of rating data here	
 %}	

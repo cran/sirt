@@ -77,6 +77,10 @@ Pairwise marginal likelihood estimation (also labeled as pseudolikelihood
 estimation) can be conducted with \code{\link{rasch.pml3}}.
 }
 \examples{
+#############################################################################
+# EXAMPLE 1: Reading data set | pairwise estimation Rasch model
+#############################################################################
+
 data(data.read)
 mod <- rasch.pairwise( data.read )
 summary(mod)

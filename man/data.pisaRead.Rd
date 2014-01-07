@@ -50,4 +50,13 @@ The format is:
 \code{  ..$ TextType  : Factor w/ 3 levels "Argumentation",..: 1 1 1 3  ...} \cr
 \code{  ..$ Aspect    : Factor w/ 3 levels "Access_and_retrieve",..: 2 3 2 1 ...} \cr
 }
+
+
+\section{Example Index}{
+\code{\link{data.wide2long}} (Example 1),
+\code{\link{latent.regression.em.raschtype}} (Example 1),
+\code{\link{lsdm}} (Example 3),
+\code{\link{rasch.pml2}} (Example 2),
+}
+
 \keyword{datasets}

@@ -29,6 +29,10 @@ data(data.si01)
 
 
 \section{Example Index}{
+
+%%% data.si01
+\emph{Dataset} \code{data.si01} 
+
 \code{\link{mle.pcm.group}} (Example 1)
 }
 

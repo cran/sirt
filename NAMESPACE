@@ -87,7 +87,9 @@ export(
     invariance.alignment ,
     truescore.irt ,
     latent.regression.em.normal ,
-    mle.pcm.group
+    mle.pcm.group ,
+    fuzdiscr ,
+    fuzcluster
         )
 
 
@@ -110,7 +112,7 @@ S3method(summary,smirt)
 S3method(summary,gom)
 S3method(summary,mcmc.sirt)
 S3method(summary,isop)
-
+S3method(summary,fuzcluster)
 
 
 S3method(plot,np.dich)

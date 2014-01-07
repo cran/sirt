@@ -28,6 +28,13 @@ A data frame with raw item responses of 1200 persons on the following 77 items:
 %\references{
 %%  ~~ possibly secondary sources and usages ~~
 %}
+
+\section{Example Index}{
+\code{\link{automatic.recode}} (Example 1),
+}
+
+
+
 %\examples{
 %data(data.raw1)
 %## maybe str(data.raw1) ; plot(data.raw1) ...

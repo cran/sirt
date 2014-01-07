@@ -22,4 +22,10 @@ data(data.pisaPars)
     \item{\code{study2}}{Item difficulties of study 2}
 		}
 }
+
+\section{Example Index}{
+\code{\link{equating.rasch}} (Example 1),
+\code{\link{equating.rasch.jackknife}} (Example 1),
+}
+
 \keyword{datasets}

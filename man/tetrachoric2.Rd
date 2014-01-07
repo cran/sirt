@@ -42,7 +42,7 @@ A list with following entries
 \item{rho}{Tetrachoric correlation matrix}
 }
 \references{
-Froemel, E. C.(1971). A comparison of computer routines for the 
+Froemel, E. C. (1971). A comparison of computer routines for the 
 calculation of the tetrachoric correlation coefficient.
 \emph{Psychometrika}, \bold{36}, 165-174.                
 }

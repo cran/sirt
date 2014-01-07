@@ -23,6 +23,7 @@ data(data.noharm18)
 \itemize{	
 	
 \item  \code{data.noharmExC} \cr
+
 The format is of this dataset is
 
 \code{'data.frame':   300 obs. of  8 variables:} \cr
@@ -37,6 +38,7 @@ The format is of this dataset is
 
 
 \item \code{data.noharm18} \cr  
+
 A data frame with 200 observations on the following 18 variables \code{I01}, 
   ..., \code{I18}. The format is
   
@@ -70,6 +72,22 @@ A data frame with 200 observations on the following 18 variables \code{I01},
 %\references{
 %%  ~~ possibly secondary sources and usages ~~
 %}
+
+
+\section{Example Index}{
+
+%%%%%%% data.noharmExC
+\emph{Dataset} \code{data.noharmExC} 	
+	
+\code{\link{R2noharm}} (Example 4)
+
+%%%%%%% data.noharm18
+\emph{Dataset} \code{data.noharm18} 	
+	
+\code{\link{R2noharm}} (Example 1)
+}
+
+
 %\examples{
 %data(data.noharm)
 %## maybe str(data.noharm) ; plot(data.noharm) ...
