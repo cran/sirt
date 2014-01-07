@@ -29,7 +29,8 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 						Qmatrix = NULL , 
 						variance.fixed = NULL , 
 						mu.fixed = cbind( seq(1,ncol(Qmatrix)) , rep(0,ncol(Qmatrix)) ) ,
-						irtmodel = "raschtype" , npformula = NULL , 
+						irtmodel = "raschtype" , 
+						npformula = NULL , 
 						npirt.monotone=TRUE ,						
 						use.freqpatt = is.null(group) , 
 						... ){
@@ -231,6 +232,14 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
         freq.patt <- dp$freq.patt
         n <- dp$n
         I <- dp$I
+		#*** pseudolikelihood estimation?
+		fracresp <- "pseudoll"
+		pseudoll <- 0
+		i1 <- sum( ( dat2 > 0 ) * ( dat2 < 1) )
+		if (i1 > 10E-10 ){
+			if ( fracresp == "pseudoll") { pseudoll <- 1 }
+			if ( fracresp == "fuzzyll") { pseudoll <- 2 }			
+					}	
         # probability weights at theta.k
         if (D==1){
 			pi.k <- dnorm( theta.k ) 
@@ -330,12 +339,12 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
                                 } 
 				if (raschtype & D==1){ 
                     e1 <- .e.step.raschtype( dat1 , dat2 , dat2.resp , theta.k , pi.k , I , n , b ,
-                                    fixed.a , fixed.c , fixed.d ,  alpha1 , alpha2 , group )        
+                                    fixed.a , fixed.c , fixed.d ,  alpha1 , alpha2 , group , pseudoll)        
 									 }
 				if (raschtype & D>1){ 
                     e1 <- .e.step.raschtype.mirt( dat1 , dat2 , dat2.resp , theta.k , pi.k , I , n , b ,
                                     fixed.a , fixed.c , fixed.d ,  alpha1 , alpha2 , group ,
-									 mu , Sigma.cov , Qmatrix)        									
+									 mu , Sigma.cov , Qmatrix , pseudoll)        									
 									 }									 								 
 									 
 				if (npirt ){
@@ -445,7 +454,6 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
                 pi.k <- m1$pi.k	
 				if (!is.null( trait.weights) ){	
 						pi.k <- matrix( trait.weights , ncol=1 )
-#						print("bin ich hier??")
 							}	
 				#****************************************************
                 # latent ability distribution
@@ -976,7 +984,9 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		res$est.c <- est.c
 		res$groupindex <- ag1
 		res$n.jk <- n.jk
-		res$r.jk <- r.jk				
+		res$r.jk <- r.jk
+		res$esttype <- "ll"		
+		if ( pseudoll ){ res$esttype <- "pseudoll" }
         # computation time
         s2 <- Sys.time()
 		res$s1 <- s1
@@ -1058,8 +1068,8 @@ summary.rasch.mml <- function( object , ... ){
 	if ( object$D == 1){	
 	if ( is.null( object$trait.weights) ){
 		cat( "Trait Distribution (" , length(object$trait.distr[,1]) , " Knots )\n" , 
-				  "Mean=" , round( object$mean.trait,3) , " SD=" , round( object$sd.trait , 3) ,
-				  " Skewness=" , round( object$skewness.trait , 3) 
+				  "Mean=" , round( object$mean.trait,3) , "\n SD=" , round( object$sd.trait , 3) ,
+				  "\n Skewness=" , round( object$skewness.trait , 3) 
 				  ) 
 						}
 	if ( ! is.null( object$trait.weights) ){

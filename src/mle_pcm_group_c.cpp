@@ -1,4 +1,3 @@
-//  Code created: 2013-11-16 13:53:04
 
 
 // includes from the plugin

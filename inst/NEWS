@@ -31,6 +31,17 @@ a.robitzsch /-\ bifie.at
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+---
+Versions 0.41 -- 2013-01-07
+---
+x included maximum likelihood estimation for discrete data in the
+  belief function framework ('fuzdiscr')
+x included pseudo-log-likelihood estimation for fractional item
+  responses (values between 0 and 1) in 'rasch.mml2'
+x included clustering fur fuzzy continuous data (belief function
+  framework) ('fuzcluster')
+* included datasets: data.pirlsmissing
+* included examples:  mcmc.2pno.ml (3), rasch.mml2 (7)
 
 ---
 Versions 0.40 -- 2013-12-09

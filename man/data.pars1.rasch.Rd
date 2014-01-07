@@ -7,7 +7,7 @@
 Item Parameters for Three Studies Obtained by 1PL and 2PL Estimation
 }
 \description{
-The datasets contains item parameters to be prepared for linking
+The datasets contain item parameters to be prepared for linking
 using the function \code{\link{linking.haberman}}.
 }
 \usage{
@@ -47,6 +47,24 @@ are denoted by \code{b}. \cr
 %\references{
 %%  ~~ possibly secondary sources and usages ~~
 %}
+
+
+%data.pars1.rasch
+%data.pars1.2pl
+
+\section{Example Index}{
+
+%%%%%%% data.pars1.rasch
+\emph{Dataset} \code{data.pars1.rasch} 	
+	
+\code{\link{linking.haberman}} (Example 1)
+
+%%%%%%% data.pars1.2pl
+\emph{Dataset} \code{data.pars1.2pl} 	
+	
+\code{\link{linking.haberman}} (Example 1)
+}
+
 %\examples{
 %data(data.pars1.rasch)
 %## maybe str(data.pars1.rasch) ; plot(data.pars1.rasch) ...

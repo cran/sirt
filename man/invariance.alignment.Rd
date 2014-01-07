@@ -14,9 +14,11 @@ invariance for \eqn{G} groups and \eqn{I} items
 It is assumed that item loadings and intercepts are
 previously estimated under the assumption of a factor
 with zero mean and a variance of one. 
-
-\emph{Note that this function is in an early experimental stage.}
 }
+
+%% \emph{Note that this function is in an early experimental stage.}
+
+
 \usage{
 invariance.alignment(lambda, nu, wgt, align.scale = c(1, 1), 
     align.pow = c(1, 1), eps = 1e-04, h = 0.001, max.increment = 0.2, 

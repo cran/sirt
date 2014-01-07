@@ -24,6 +24,44 @@ variable names.
   Testlet C: \code{C1}, \code{C2}, \code{C3}, \code{C4} 
   
 }
+
+
+
+\section{Example Index}{
+	
+\code{\link{class.accuracy.rasch}} (Example 1),
+\code{\link{fit.isop}} (Example 1),
+\code{\link{greenyang.reliability}} (Example 1),
+\code{\link{isop.dich}} (Example 1),
+\code{\link{isop.scoring}} (Example 1),
+\code{\link{marginal.truescore.reliability}} (Example 3),
+\code{\link{mcmc.2pno}} (Example 1),
+\code{\link{mcmc.3pno.testlet}} (Example 1),
+\code{\link{mcmclist2coda}} (Example 1),
+\code{\link{mle.pcm.group}} (Example 2),
+\code{\link{modelfit.sirt}} (Example 1),
+\code{\link{np.dich}} (Example 1),
+\code{\link{person.parameter.rasch.copula}} (Example 1),
+\code{\link{personfit.stat}} (Example 1),
+\code{\link{prmse.subscores.scales}} (Example 1),
+\code{\link{prob.guttman}} (Example 1),
+\code{\link{rasch.copula2}} (Example 1),
+\code{\link{rasch.jml.biascorr}} (Example 1),
+\code{\link{rasch.mirtlc}} (Example 1),
+\code{\link{rasch.mml2}} (Example 1),
+\code{\link{rasch.pairwise}} (Example 1),
+\code{\link{rasch.pml2}} (Example 1),
+\code{\link{rasch.prox}} (Example),
+\code{\link{smirt}} (Example 2),
+\code{\link{stratified.cronbach.alpha}} (Example),
+\code{\link{testlet.yen.q3}} (Example 1),
+\code{\link{tetrachoric2}} (Example),
+\code{\link{truescore.irt}} (Example 2),
+\code{\link{wle.rasch}} (Example 1),
+\code{\link{wle.rasch.jackknife}} (Example 1),
+\code{\link{yen.q3}} (Example 1),
+}
+
 \examples{
 \dontrun{
 data(data.read)

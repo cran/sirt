@@ -8,7 +8,11 @@ Dataset PISA Mathematics
 This is an example PISA dataset of mathematics items. The
 dataset contains 565 students on 11 items.
 }
-\usage{data(data.pisaMath)}
+\usage{
+data(data.pisaMath)
+}
+
+
 \format{
 The dataset is a list. The list element \code{data}
 contains the dataset with the demographical variables 
@@ -46,4 +50,11 @@ The format is:
 \code{  ..$ item   : Factor w/ 11 levels "M192Q01","M406Q01",..: 1 2 3 4  ...} \cr
 \code{  ..$ testlet: chr [1:11] NA "M406" "M406" NA ...} \cr
 }
+
+\section{Example Index}{
+\code{\link{gom.em}} (Example 1),
+\code{\link{isop.dich}} (Example 2),
+
+}
+
 \keyword{datasets}

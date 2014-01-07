@@ -56,7 +56,7 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
 		f.yi.qk <- .e.step.raschtype( dat1=dat1 , dat2=y , dat2.resp=dat2.resp , 
 			theta.k=theta.list , pi.k=pi.k , I=I , 
 			n=nrow(y) , b=b , fixed.a=a , fixed.c=c ,  fixed.d=d , 
-			alpha1=alpha1 , alpha2=alpha2 , group=NULL , f.qk.yi=NULL )$f.yi.qk
+			alpha1=alpha1 , alpha2=alpha2 , group=NULL , pseudoll=0 , f.qk.yi=NULL )$f.yi.qk
 					}
 	post <- f.yi.qk / rowSums( f.yi.qk )
 	#....................................

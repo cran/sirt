@@ -1,12 +1,3 @@
- 
-# 0.01  2012-xx-yy
-
-
-# 0.01  2012-06-23  o initial release
-
-
-#-------------------------------------------------------
-
 
 
 #############################################################
@@ -163,7 +154,7 @@ rowSums.colbundles <- function( mat , ind , multmat = NULL ){
 
 #..........................................................................
 # function for calculation of Cronbach's Alpha
-            .cronbach <- function(matr){
+.cronbach <- function(matr){
                 matr <- na.omit(matr)
                 p <- ncol(matr)
                 p / ( p - 1 )* ( sum( matr ) - sum( diag( matr ) ) )/ sum(matr )
