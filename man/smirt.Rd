@@ -79,7 +79,7 @@ Number of integration nodes for quasi Monte Carlo integration (see Pan &
 Thompson, 2007). Integration points are obtained by using the function 
 \code{\link{qmc.nodes}}. Note that when using quasi Monte Carlo nodes, 
 no theta design matrix \code{theta.kDES} can be specified. 
-See Example 1, Model 11.
+See Simulated Example 1, Model 11.
 }
   \item{mu.fixed}{
 Matrix with fixed entries in the mean vector. By default, all means
@@ -187,6 +187,7 @@ as well as the mode of the posterior distribution (\code{MLE} and \code{MAP}).}
 \item{theta.k}{Used theta integration grid}
 \item{pi.k}{Distribution function evaluated at \code{theta.k}}
 \item{irtmodel}{Used IRT model}
+\item{Qmatrix}{Used Q-matrix}
 }
 \references{
 Bolt, D. M., & Lall, V. F. (2003). Estimation of compensatory and 
@@ -213,9 +214,11 @@ Alexander Robitzsch
 Other multidimensional IRT models can also be estimated
 with \code{\link{rasch.mml2}} and \code{\link{rasch.mirtlc}}.
 
+See \code{\link[CDM:itemfit.sx2]{itemfit.sx2}} (\pkg{CDM}) for item fit
+statistics.
+
 See also the \pkg{mirt} and \pkg{TAM} packages for estimation of
 multidimensional models.
-%% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
 #############################################################################

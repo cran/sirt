@@ -100,7 +100,7 @@ fuzzy data.
 #*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 # simulate data (2 classes and 3 items)
 set.seed(876)
-library(MASS)
+library(mvtnorm)
 Ntot <- 1000  # number of subjects
 # define SDs for simulating uncertainty
 sd_uncertain <- c( .2 , 1 , 2 )
@@ -114,7 +114,7 @@ Nclass <- Ntot * pi_class
 mu <- c(3,1,0)
 Sigma <- diag(3)
 # simulate data
-dat_m1 <- rmvnorm( Nclass , mean=mu , sigma = Sigma )
+dat_m1 <- mvtnorm::rmvnorm( Nclass , mean=mu , sigma = Sigma )
 dat_s1 <- matrix( runif( Nclass * 3 ) , nrow=Nclass )
 for ( ii in 1:3){ dat_s1[,ii] <- dat_s1[,ii] * sd_uncertain[ii] }
 dat_m <- rbind( dat_m , dat_m1 )
@@ -126,7 +126,7 @@ Nclass <- Ntot * pi_class
 mu <- c(0,-2,0.4)
 Sigma <- diag(c(0.5 , 2 , 2 ) )
 # simulate data
-dat_m1 <- rmvnorm( Nclass , mean=mu , sigma = Sigma )
+dat_m1 <- mvtnorm::rmvnorm( Nclass , mean=mu , sigma = Sigma )
 dat_s1 <- matrix( runif( Nclass * 3 ) , nrow=Nclass )
 for ( ii in 1:3){ dat_s1[,ii] <- dat_s1[,ii] * sd_uncertain[ii] }
 dat_m <- rbind( dat_m , dat_m1 )
@@ -174,6 +174,14 @@ summary(res3)
 ##         [,1]   [,2]   [,3]
 ##  [1,] 0.7261 1.4541 1.4586
 ##  [2,] 0.9933 0.9592 0.9535
+
+#*** Model 4: kmeans cluster analysis
+res4 <- kmeans( dat_m , centers = 2 )
+##   K-means clustering with 2 clusters of sizes 607, 393
+##   Cluster means:
+##             I1        I2          I3
+##   1 3.01550780  1.035848 -0.01662275
+##   2 0.03448309 -2.008209  0.48295067
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

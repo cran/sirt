@@ -31,6 +31,30 @@ a.robitzsch /-\ bifie.at
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+---
+Versions 0.42 -- 2013-01-31
+---
+x included further values in smirt to allow to apply itemfit.sx2
+  in the CDM package
+x fixed a bug in output of person parameters in smirt (missing
+  standard errors; thanks to Balal Izanloo)
+x included empirical item-attribute discriminations in lsdm
+x changed NAMESPACE and DESCRIPTION files due to a change in Rcpp
+x fixed a bug for constraint in mu for multidimensional models
+  in rasch.mml2
+x fixed warning messages when reading NOHARM output files
+x stabilized estimation of tetrachoric correlation coefficients
+  for Tucker method (addition of cell sizes with a value .5) 
+x included the method of Bonett and Price for calculation a
+  tetrachoric correlation
+x included additional outputs and item parameters for the 
+  HRM-SDT (thanks to a discussion with Robin Gleeson)
+x extended modelfit.sirt to objects of class R2noharm
+
+* included/modified datasets: data.timss07.G8.RUS, data.reck611
+* included/modified examples: fuzcluster (1), modelfit.sirt (1)
+
 ---
 Versions 0.41 -- 2013-01-07
 ---
@@ -41,7 +65,7 @@ x included pseudo-log-likelihood estimation for fractional item
 x included clustering fur fuzzy continuous data (belief function
   framework) ('fuzcluster')
 * included datasets: data.pirlsmissing
-* included examples:  mcmc.2pno.ml (3), rasch.mml2 (7)
+* included examples: mcmc.2pno.ml (3), rasch.mml2 (7)
 
 ---
 Versions 0.40 -- 2013-12-09

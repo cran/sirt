@@ -9,7 +9,7 @@ This function performs EAP factor score estimation of
 an item response model estimated with NOHARM.
 }
 \usage{
-R2noharm.EAP(noharmobj, theta.k = seq(-6, 6, len = 21))
+R2noharm.EAP(noharmobj, theta.k = seq(-6, 6, len = 21) , print.output=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +20,8 @@ Object of class \code{R2noharm}
 Vector of discretized theta values on which the posterior
 is evaluated. This vector applies to all dimensions.
 }
+\item{print.output}{An optional logical indicating whether output should
+be displayed at the console}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~

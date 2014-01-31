@@ -57,6 +57,10 @@ Alexander Robitzsch
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
+#############################################################################
+# EXAMPLE 1: data.read
+#############################################################################
+
 data( data.read )
 dat <- data.read
 I <- ncol(dat)

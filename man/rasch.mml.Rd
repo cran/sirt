@@ -390,7 +390,12 @@ Simulate Ramsay's quotient model with \code{\link{sim.qm.ramsay}}.
 Simulate locally dependent item response data using \code{\link{sim.rasch.dep}}.
 
 For an assessment of global model fit see \code{\link{modelfit.sirt}}.
+
+See \code{\link[CDM:itemfit.sx2]{itemfit.sx2}} (\pkg{CDM}) for item fit
+statistics.
 }
+
+% \code{\link[mice:mice]{mice}} (\pkg{mice})
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  EXAMPLES

@@ -70,7 +70,8 @@ factor model. \emph{Structural Equation Modeling}, \bold{16}, 295-314.
 
 %%%%%%% data.big5.qgraph
 \emph{Dataset} \code{data.big5.qgraph} 	
-	
+
+--
 %%\code{\link{mcmc.2pno.ml}} (Example 2)
 }
 

@@ -24,7 +24,7 @@ data(data.noharm18)
 	
 \item  \code{data.noharmExC} \cr
 
-The format is of this dataset is
+The format of this dataset is
 
 \code{'data.frame':   300 obs. of  8 variables:} \cr
 \code{ $ C1: int  1 1 1 1 1 0 1 1 1 1 ...} \cr

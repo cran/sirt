@@ -51,11 +51,11 @@ variable names.
 \code{\link{rasch.mml2}} (Example 1),
 \code{\link{rasch.pairwise}} (Example 1),
 \code{\link{rasch.pml2}} (Example 1),
-\code{\link{rasch.prox}} (Example),
+\code{\link{rasch.prox}} (Example 1),
 \code{\link{smirt}} (Example 2),
-\code{\link{stratified.cronbach.alpha}} (Example),
+\code{\link{stratified.cronbach.alpha}} (Example 1),
 \code{\link{testlet.yen.q3}} (Example 1),
-\code{\link{tetrachoric2}} (Example),
+\code{\link{tetrachoric2}} (Example 1),
 \code{\link{truescore.irt}} (Example 2),
 \code{\link{wle.rasch}} (Example 1),
 \code{\link{wle.rasch.jackknife}} (Example 1),
@@ -142,6 +142,22 @@ summary(mod2f)
 coef(mod2f)
 plot(mod2f)
 
+# M2g: R2noharm (in NOHARM, running from within R using sirt package)
+# define noharm.path where 'NoharmCL.exe' is located
+noharm.path <- "c:/NOHARM"
+# covariance matrix
+P.pattern <- matrix( 1 , ncol=1 , nrow=1 )
+P.init <- P.pattern
+P.init[1,1] <- 0
+# loading matrix
+F.pattern <- matrix(1,I,1)
+F.init <- F.pattern
+# estimate model
+mod2g <- R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern , 
+    F.init = F.init , P.pattern = P.pattern , P.init = P.init , 
+    writename = "ex2g" , noharm.path = noharm.path  , dec ="," )
+summary(mod2g)
+
 #****************
 # Model 3: 3PL model
 #****************
@@ -195,7 +211,6 @@ mod4d <- tam.mml( resp=dat , Q=Q , control=list(nodes=theta.k , maxiter=30) )
 summary(mod4d)
 
 # M4e: R2noharm (in NOHARM, running from within R using sirt package)
-# define noharm.path where 'NoharmCL.exe' is located
 noharm.path <- "c:/NOHARM"
 # covariance matrix
 P.pattern <- matrix( 1 , ncol=3 , nrow=3 )
@@ -209,6 +224,17 @@ mod4e <- R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern ,
     F.init = F.init , P.pattern = P.pattern , P.init = P.init , 
     writename = "ex4e" , noharm.path = noharm.path  , dec ="," )
 summary(mod4e)
+
+# M4f: mirt (in mirt)
+cmodel <- mirt.model(
+    'F1 = 1-4
+     F2 = 5-8 
+     F3 = 9-12
+     # equal item slopes correspond to the Rasch model
+     CONSTRAIN = (1-4, a1), (5-8, a2) , (9-12,a3)
+     COV = F1*F2, F1*F3 , F2*F3 ' )
+mod4f <- mirt(dat, cmodel , verbose=TRUE)
+summary(mod4f)
 
 #****************
 # Model 5: 3-dimensional 2PL model
@@ -248,6 +274,15 @@ mod5e <- R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern ,
     F.init = F.init , P.pattern = P.pattern , P.init = P.init , 
     writename = "ex5e" , noharm.path = noharm.path  , dec ="," )
 summary(mod5e)
+
+# M5f: mirt (in mirt)
+cmodel <- mirt.model('
+   F1 = 1-4
+   F2 = 5-8
+   F3 = 9-12
+   COV = F1*F2, F1*F3 , F2*F3 '  )
+mod5f <- mirt(dat, cmodel , verbose=TRUE)
+summary(mod5f)
 }
 }
 \keyword{datasets}

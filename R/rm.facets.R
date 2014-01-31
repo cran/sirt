@@ -104,13 +104,13 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 		a.rater0 <- a.rater
 # zz0 <- Sys.time()
 		# calculate probabilities
-		probs <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+		probs <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
 				theta.k ,RR )				
-# cat("facets.calcprob") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						
+# cat("facets.calcprob   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						
 		# calculate posterior
 		res <- .rm.posterior( dat2 , dat2.resp , TP , pi.k , K, I , probs )
-# cat("posterior") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1								
+# cat("posterior   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1								
 		f.yi.qk <- res$f.yi.qk
 		f.qk.yi <- res$f.qk.yi
 		n.ik <- res$n.ik
@@ -128,7 +128,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 			se.b.rater <- res$se.b.rater
 			b.rater.incr <- abs( b.rater0 - b.rater )
 						}
-# cat("est b rater") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1														
+# cat("est b rater   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1														
 		# estimate tau.item parameters
 		if (iter ==0){	max.b.increment -> tau.item.incr }
 		res <- .rm.facets.est.tau.item( b.item , b.rater , Qmatrix , tau.item ,
@@ -138,7 +138,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 		tau.item <- res$tau.item
 		se.tau.item <- res$se.tau.item
 		tau.item.incr  <- abs( tau.item0 - tau.item )
-# cat("est tau item") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1															
+# cat("est tau item   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1															
 		
 		# estimate a.item parameter
 		if (est.a.item){
@@ -149,7 +149,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 			a.item <- res$a.item
 			se.a.item <- res$se.a.item
 				}
-# cat("est a item") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1																
+# cat("est a item   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1																
 		# estimate a.rater parameter
 		if (est.a.rater){
 			res <- .rm.facets.est.a.rater( b.item , b.rater , Qmatrix , tau.item ,
@@ -159,7 +159,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 			a.rater <- res$a.rater
 			se.a.rater <- res$se.a.rater
 				}
-# cat("est a rater") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1																			
+# cat("est a rater   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1																			
 		flush.console()		
 		# update distribution
 		w2 <- sum( theta.k^2 * pi.k )
@@ -172,6 +172,8 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 					abs( tau.item0-tau.item) , abs( a.item - a.item0 ) )
 		iter <- iter+1
 		devchange <- abs( ( dev - dev0 ) / dev0  )
+# cat("calc ll   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1																			
+
 		
 		#****
 		# print progress			

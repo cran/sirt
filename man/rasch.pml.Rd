@@ -19,21 +19,21 @@ The other alternative is to model a residual
 error structure with itemclusters (argument \code{error.corr}).
 }
 \usage{
-rasch.pml2(dat, est.b = seq(1, ncol(dat)), est.a=rep(0,ncol(dat)) ,
-    est.sigma = TRUE, itemcluster = NULL, 
-    weight = rep(1, nrow(dat)), numdiff.parm = 0.001, 
-    b.init = NULL, a.init=NULL ,  sigma.init = NULL, 
-    error.corr = 0*diag( 1 , ncol(dat) ) ,
-    err.constraintM=NULL , err.constraintV=NULL ,
-    glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE)
-    
 rasch.pml3(dat, est.b = seq(1, ncol(dat)), est.a=rep(0,ncol(dat)) ,
     est.sigma = TRUE, itemcluster = NULL, 
     weight = rep(1, nrow(dat)), numdiff.parm = 0.001, 
     b.init = NULL, a.init=NULL ,  sigma.init = NULL, 
     error.corr = 0*diag( 1 , ncol(dat) ) ,
     err.constraintM=NULL , err.constraintV=NULL ,
-    glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE)   
+    glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE)  
+    
+rasch.pml2(dat, est.b = seq(1, ncol(dat)), est.a=rep(0,ncol(dat)) ,
+    est.sigma = TRUE, itemcluster = NULL, 
+    weight = rep(1, nrow(dat)), numdiff.parm = 0.001, 
+    b.init = NULL, a.init=NULL ,  sigma.init = NULL, 
+    error.corr = 0*diag( 1 , ncol(dat) ) ,
+    err.constraintM=NULL , err.constraintV=NULL ,
+    glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE)  
     
 \method{summary}{rasch.pml}(object,...)	    
 }
@@ -206,6 +206,12 @@ or \code{\link{rasch.pairwise.itemcluster}}.
 
 For an assessment of global model fit see \code{\link{modelfit.sirt}}.
 }
+
+%% print % operator in example by using \%
+%% see the tam.mml manual
+%% a <- E \%*\% lambda
+
+
 \examples{
 #############################################################################
 # EXAMPLE 1: Reading data set
@@ -384,10 +390,8 @@ est.corrs[ , setdiff( 1:I , c(cluster2))  ] <- 0
 itempairs0 <- mod4$itempairs
 IP <- nrow(itempairs0)
 err.constraint <- matrix( 0 , IP , 1 )
-# define function 'infct' (this is just %in%)
-infct <- function(x, table){ match(x, table, nomatch = 0) > 0 }
-err.constraint[ infct( itempairs0$item1 , cluster2 ) 
-       & infct( itempairs0$item2 , c(cluster2) )  , 1 ] <- 1
+err.constraint[ ( itempairs0$item1 \%in\% cluster2 )  
+       & ( itempairs0$item2 \%in\% cluster2 )  , 1 ] <- 1
 # set sum of error covariances to 1.2
 err.constraintV <- matrix(3*.4,1,1)
 
@@ -408,8 +412,8 @@ err.constraint[  , 1 ] <- 1
 err.constraintV[1,1] <- 0
 # sum of items cluster c(1,2,3) is 0
 cluster2 <- c(1,2,3)
-err.constraint[ infct( itempairs0$item1 ,  cluster2 ) 
-       & infct( itempairs0$item2 , cluster2 )  , 2 ] <- 1
+err.constraint[ ( itempairs0$item1 \%in\%  cluster2 ) 
+       & ( itempairs0$item2 \%in\% cluster2 )  , 2 ] <- 1
 err.constraintV[2,1] <- 0
 
 mod6 <- rasch.pml3( dat , error.corr=est.corrs , 
@@ -476,7 +480,8 @@ mod4 <- rasch.pml3( dat )
 summary(mod1)
 summary(mod2)
 summary(mod3)
-summary(mod4) }
+summary(mod4) 
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -230,7 +230,13 @@ Alexander Robitzsch
 
 \seealso{
 This function uses \code{\link{isop.scoring}},
-\code{\link{fit.isop}} and \code{\link{fit.adisop}}. 
+\code{\link{fit.isop}} and \code{\link{fit.adisop}}.
+
+See also the \pkg{ISOP} package at \emph{Rforge}: \url{http://www.rforge.net/ISOP/}. 
+
+Install this package using 
+
+\code{install.packages('ISOP',,'http://www.rforge.net/')}
 }
 
 

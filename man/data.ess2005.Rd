@@ -7,7 +7,7 @@ Dataset European Social Survey 2005
 \description{
 This dataset contains item loadings \eqn{\lambda} and intercepts \eqn{\nu}
 for 26 countries for the European Social Survey (ESS 2005;
-see Asparouhov & Muthen, 2013).
+see Asparouhov & Muthen, 2014).
 }
 
 \usage{
@@ -42,7 +42,7 @@ The format of the dataset is:
 }
 
 \references{
-Asparouhov, T., & Muthen, B. (2013).
+Asparouhov, T., & Muthen, B. (2014).
 Multiple-group factor analysis alignment.
 \emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
 }

@@ -51,13 +51,13 @@ differ.
 The classification scheme of these indices are as follows 
 (Jang & Roussos, 2007; Zhang, 2007):
 
-\tabular{lc}{
+\tabular{ll}{
  Strong multidimensionality \tab DETECT > 1.00 \cr
 Moderate multidimensionality \tab .40 < DETECT < 1.00 \cr
 Weak multidimensionality \tab .20 < DETECT < .40 \cr
 Essential unidimensionality \tab DETECT < .20 \cr
     }
-\tabular{lcc}{
+\tabular{lll}{
  Maximum value under simple structure \tab ASSI=1 \tab RATIO=1 \cr
 Essential deviation from unidimensionality \tab ASSI > .25 \tab
 RATIO > .36 \cr

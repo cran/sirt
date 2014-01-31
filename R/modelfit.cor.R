@@ -1,4 +1,20 @@
 
+##############################################################
+# summary
+summary.modelfit.sirt <- function( object , ... ){	
+	cat("Test of Global Model Fit\n")
+	obji <- object$modelfit.test
+	for (vv in seq(2,ncol(obji))){	obji[,vv] <- round( obji[,vv] , 5 ) }
+	print(obji)
+	cat("\nFit Statistics\n")
+	obji <- object$modelfit.stat
+	for (vv in seq(1,ncol(obji))){	obji[,vv] <- round( obji[,vv] , 5 ) }
+	print(obji)		
+		}
+#################################################################	
+
+
+
 ##########################################
 # Modelfit in sirt
 modelfit.sirt <- function( object ){
@@ -38,179 +54,119 @@ modelfit.sirt <- function( object ){
 		posterior <- mod$f.qk.yi
 		dat <- mod$dat
 					}	
-	# calculate modelfit.cor	
-	res <- modelfit.cor( data = dat , posterior =posterior , probs = probs ,
-			pmlobject=pmlobject)
+    if ( class(object) == "R2noharm"){			
+		  mod <- R2noharm.EAP(noharmobj=object, theta.k = seq(-6, 6, len = 15 ) ,
+				print.output=FALSE )
+		  probs <- aperm( mod$probs , c(1,3,2) )
+		  posterior <- mod$posterior
+		  dat <- object$dat		  		  
+									}
+	# calculate modelfit.cor
+    if ( class(object) == "rasch.pml" ){
+		res <- modelfit.cor.sirt.pml( data = dat , posterior =posterior , probs = probs ,
+				           pmlobject=pmlobject)
+								} else {
+		res <- CDM::modelfit.cor2( data = dat , posterior =posterior , probs = probs )								
+							}
+    class(res) <- "modelfit.sirt"							
 	return(res)
 	}
 ################################################################################
 
 #############################################################################
-modelfit.cor <-
+modelfit.cor.sirt.pml <-
 function( data=NULL , posterior=NULL , probs=NULL , pmlobject=NULL ){
-	if ( is.null(pmlobject)){
-		data.resp <- 1 - is.na(data)
-		data[ is.na(data) ] <- 9
-		data1 <- data*data.resp
-		I <- ncol(data)
-		# calculate counts (ignore weights here!!) 
-		n11 <- t(  ( data==1) * data.resp ) %*% ( ( data==1) * data.resp )
-		n10 <- t(  ( data==1) * data.resp ) %*% ( ( data==0) * data.resp )
-		n01 <- t(  ( data==0) * data.resp ) %*% ( ( data==1) * data.resp )
-		n00 <- t(  ( data==0) * data.resp ) %*% ( ( data==0) * data.resp )
-		
-		p1 <- colMeans(  ( data==1) * data.resp ) 
-		# p0 <- colMeans(  ( data==0) * data.resp ) 
-		
-		# expected counts
-		exp1 <- rep(NA, I )
-		for (ii in 1:I){
-			# ii <- 1		
-#			pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-#			p3ii <-  pr.ii1 * posterior
-#			exp1[ii] <- sum( rowSums( p3ii ) * data.resp[,ii ] ) / sum( data.resp[,ii] )
-			exp1[ii] <- sum( colSums( posterior * data.resp[,ii] ) * probs[ii,2,] ) / sum( data.resp[,ii] )
-					}
-		#********************************
-		# covariances 
-		
-		ip <- itempairs <- t( combn(I,2 ) )
-		colnames(itempairs) <- c("item1" , "item2" )
-		itempairs <- as.data.frame( itempairs )            
-		itempairs$n11 <- n11[ ip ]
-		itempairs$n10 <- n10[ ip ]
-		itempairs$n01 <- n01[ ip ]
-		itempairs$n00 <- n00[ ip ]
-		itempairs$n <- rowSums( itempairs[ , c("n11","n10", "n01","n00") ] )		
-        itempairs$Exp00 <- itempairs$Exp01 <- itempairs$Exp10 <- itempairs$Exp11 <- NA		
-						}
-	##################################################						
-    if ( ! is.null( pmlobject ) ){
 
-		ip0 <- pmlobject$itempairs
-		I <- max(pmlobject$itempairs[,c("item1","item2")])
-		itempairs <- ip0[ , c("item1","item2") ]
-		itempairs$n11 <- ip0$f11
-		itempairs$n10 <- ip0$f10		
-		itempairs$n01 <- ip0$f01		
-		itempairs$n00 <- ip0$f00		
-		itempairs$n <- rowSums( itempairs[ , c("n11","n10", "n01","n00") ] )				
+		data <- pmlobject$data
+		itempairs <- as.data.frame( pmlobject$itempairs )            
+		ip0 <- itempairs
+		itempairs$n11 <- itempairs$f11
+		itempairs$n10 <- itempairs$f10
+		itempairs$n01 <- itempairs$f01
+		itempairs$n00 <- itempairs$f00
+		itempairs$n <- rowSums( itempairs[ , c("n11","n10", "n01","n00") ] )		
 		itempairs$Exp00 <- ip0$p00 * itempairs$n
 		itempairs$Exp10 <- ip0$p10 * itempairs$n
 		itempairs$Exp01 <- ip0$p01 * itempairs$n
-		itempairs$Exp11 <- ip0$p11 * itempairs$n	
-	    p1 <- NULL		
-					}
-    itempairs$corExp <- itempairs$corObs <- NA
-    
-    m1 <- matrix( c(1,1,1,0,0,1,0,0) , 4 , 2 , byrow=T )
-    
-	# define further quantities
-	itempairs$X2 <- NA
-#	itempairs$G2 <- NA	
-	itempairs$RESIDCOV <- NA		
-	itempairs$Q3 <- NA			
-	
-	#***
-	# calculate expected score for every person and every item
-	exp.ii.jj <- posterior %*% t( probs[,2,] )
-	#***
-	
-    for (ii in 1:(I-1) ){
-        for (jj in (ii+1):I){
-    # ii <- 1
-    # jj <- 2
-        ii1 <- which ( itempairs$item1 == ii &  itempairs$item2 == jj )
-		ps.iijj <- colSums( posterior[ data.resp[,ii]*data.resp[,jj]>0 , ] )
-		
-	if ( is.null( pmlobject)){
-        diijj <- data.resp[,ii ]*data.resp[,jj ]
-#        pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-#        pr.jj1 <- matrix( probs[jj,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
-#        p3ii <-  pr.ii1 * pr.jj1 * posterior
-#        itempairs[ii1,"Exp11"] <- sum( rowSums( p3ii ) * diijj )    
-		itempairs[ii1,"Exp11"] <- sum( probs[ii,2,]*probs[jj,2,] * ps.iijj )
-	
-#        pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-#        pr.jj1 <- matrix( probs[jj,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
-#        p3ii <-  pr.ii1 * pr.jj1 * posterior
-#        itempairs[ii1,"Exp10"] <- sum( rowSums( p3ii ) * diijj )
-		itempairs[ii1,"Exp10"] <- sum( probs[ii,2,]*probs[jj,1,] * ps.iijj )
-    
-#        pr.ii1 <- matrix( probs[ii,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-#        pr.jj1 <- matrix( probs[jj,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
-#        p3ii <-  pr.ii1 * pr.jj1 * posterior
-#        itempairs[ii1,"Exp01"] <- sum( rowSums( p3ii ) * diijj )
-		itempairs[ii1,"Exp01"] <- sum( probs[ii,1,]*probs[jj,2,] * ps.iijj )		
-    
-#        pr.ii1 <- matrix( probs[ii,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-#        pr.jj1 <- matrix( probs[jj,1,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
-#        p3ii <-  pr.ii1 * pr.jj1 * posterior
-#        itempairs[ii1,"Exp00"] <- sum( rowSums( p3ii ) * diijj )
-		itempairs[ii1,"Exp00"] <- sum( probs[ii,1,]*probs[jj,1,] * ps.iijj )				
-		
-							}
-							
-        itempairs[ii1, "corObs"]  <-   .corr.wt( x = m1[,1,drop=FALSE] ,  y = m1[,2,drop=FALSE] , 
-            w = as.numeric( itempairs[ii1,c("n11","n10","n01","n00") ] ) )
-    
-        itempairs[ii1, "corExp"]  <-   .corr.wt( x = m1[,1,drop=FALSE] ,  y = m1[,2,drop=FALSE] , 
-            w = as.numeric( itempairs[ii1,c("Exp11","Exp10","Exp01","Exp00") ] ) )
-		#***
-		# Q3 statistic
-	if ( is.null( pmlobject)){		
-#        pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
-#        pr.jj1 <- matrix( probs[jj,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )    
-#        p3ii <-  pr.ii1 * posterior
-#		expii <- rowSums( p3ii )
-#        p3jj <-  pr.jj1 * posterior
-#		expjj <- rowSums( p3jj )
-		# calculate residuals
-#		data.res <- data[, c(ii,jj) ] - cbind( expii , expjj )
-#		data.res <- data.res[ diijj == 1 , ]
-#		itempairs[ii1,"Q3"] <- cor(data.res)[1,2]
-		data.res <- data[, c(ii,jj) ] - exp.ii.jj[ , c(ii,jj) ]
-		data.res <- data.res[ diijj == 1 , ]
-		itempairs[ii1,"Q3"] <- cor(data.res)[1,2]		
-		
-								}
-                            }
-# print(ii) ; flush.console()							
-                }
-    
-	##############################
-	itempairs$X2 <- ( itempairs$n00 - itempairs$Exp00 )^2 / itempairs$Exp00 +
-					( itempairs$n10 - itempairs$Exp10 )^2 / itempairs$Exp10	+
-					( itempairs$n01 - itempairs$Exp01 )^2 / itempairs$Exp01	+
-					( itempairs$n11 - itempairs$Exp11 )^2 / itempairs$Exp11						
-	# G2
-#	itempairs$G2 <- itempairs$n00 * log( itempairs$Exp00 / max( itempairs$n00 , .01 ) ) +
-#					itempairs$n01 * log( itempairs$Exp01 / max( itempairs$n01 , .01 ) ) +
-#					itempairs$n10 * log( itempairs$Exp10 / max( itempairs$n10 , .01 ) ) +
-#					itempairs$n11 * log( itempairs$Exp11 / max( itempairs$n11 , .01 ) ) 
-#    itempairs$G2 <- -2*itempairs$G2					
-	itempairs$RESIDCOV <- ( itempairs$n11 * itempairs$n00 - itempairs$n10 * itempairs$n01 ) / itempairs$n^2 -
-				( itempairs$Exp11 * itempairs$Exp00 - itempairs$Exp10 * itempairs$Exp01 ) / itempairs$n^2	
-	##############################
-	# labels
-    itempairs$item1 <- colnames(data)[ itempairs$item1 ]
-    itempairs$item2 <- colnames(data)[ itempairs$item2 ]
+		itempairs$Exp11 <- ip0$p11 * itempairs$n
 
-	modelfit <- data.frame( "est" = c( 
-			mean( abs( itempairs$corObs - itempairs$corExp ) ) ,
-			mean( itempairs$X2 ) , # mean( itempairs$G2) ,
-			mean( 100*abs(itempairs$RESIDCOV ) ) ,
-			mean( abs( itempairs$Q3 ) )
-						) )
-	rownames(modelfit) <- c("MADcor" , "MX2" , # "MG2",
-				"100*MADRESIDCOV" , "MADQ3" )
-    
-#     "pfit" <- data.frame( "item" = colnames(data) , "pObs" = p1 , "pExp" = exp1 )
-	print( round(modelfit,5) , digits=5 )   
-#    cat("MAD Correlation (Observed minus Expected)" , round( MADcor , 4 ) , "\n" )    
-    res <- list( "modelfit" = modelfit , "itempairs" = itempairs ) # , "pfit" = pfit )
+		n <- itempairs$n
+		m1 <- ( itempairs$n10 + itempairs$n11 ) / n
+		m2 <- ( itempairs$n01 + itempairs$n11 ) / n
+		t1 <- itempairs$n11 / n  - m1 * m2
+		itempairs$corObs <- t1 / sqrt( m1 * ( 1 - m1 ) * m2 * ( 1-m2 ) )
+	 
+		# observed correlation
+		m1 <- ( itempairs$Exp10 + itempairs$Exp11 ) / n
+		m2 <- ( itempairs$Exp01 + itempairs$Exp11 ) / n
+		t1 <- itempairs$Exp11 / n  - m1 * m2
+		itempairs$corExp <- t1 / sqrt( m1 * ( 1 - m1 ) * m2 * ( 1-m2 ) ) 
+
+	#    m1 <- matrix( c(1,1,1,0,0,1,0,0) , 4 , 2 , byrow=T )
+		
+		# define further quantities
+		itempairs$X2 <- NA
+		itempairs$RESIDCOV <- NA			
+			
+		##############################
+		itempairs$X2 <- ( itempairs$n00 - itempairs$Exp00 )^2 / itempairs$Exp00 +
+						( itempairs$n10 - itempairs$Exp10 )^2 / itempairs$Exp10	+
+						( itempairs$n01 - itempairs$Exp01 )^2 / itempairs$Exp01	+
+						( itempairs$n11 - itempairs$Exp11 )^2 / itempairs$Exp11						
+		
+		itempairs$RESIDCOV <- ( itempairs$n11 * itempairs$n00 - itempairs$n10 * itempairs$n01 ) / itempairs$n^2 -
+					( itempairs$Exp11 * itempairs$Exp00 - itempairs$Exp10 * itempairs$Exp01 ) / itempairs$n^2	
+		##############################
+	
+		# labels
+		itempairs$item1 <- colnames(data)[ itempairs$item1 ]
+		itempairs$item2 <- colnames(data)[ itempairs$item2 ]
+
+		# fisherz from psych package
+		# residual of correlation
+		itempairs$fcor <- psych::fisherz( itempairs$corObs ) - psych::fisherz( itempairs$corExp )
+		
+		#----
+		# p values and p value adjustments adjustments
+		
+		# X2 statistic
+		itempairs$X2_df <- 1
+		itempairs$X2_p <- 1 - pchisq(itempairs$X2 , df=1 )
+		itempairs$X2_p.holm <- p.adjust( itempairs$X2_p , method="holm")
+		itempairs$X2_sig.holm <- 1 * ( itempairs$X2_p.holm < .05 )	
+		itempairs$X2_p.fdr <- p.adjust( itempairs$X2_p , method="fdr")
+		# fcor statistic
+		itempairs$fcor_se <- ( itempairs$n - 3 )^(-1/2)
+		itempairs$fcor_z <- itempairs$fcor / itempairs$fcor_se
+		itempairs$fcor_p <- 1 - pnorm( abs(itempairs$fcor_z ) )
+		itempairs$fcor_p.holm <- p.adjust( itempairs$fcor_p , method="holm")
+		itempairs$fcor_p.fdr <- p.adjust( itempairs$fcor_p , method="fdr")
+
+		#**********************
+		# model fit
+		modelfit <- data.frame( "est" = c( 
+				mean( abs( itempairs$corObs - itempairs$corExp ) ) ,
+				sqrt( mean( ( itempairs$corObs - itempairs$corExp )^2 ) ) ,			
+				mean( itempairs$X2 ) , # mean( itempairs$G2) ,
+				mean( 100*abs(itempairs$RESIDCOV ) ) 
+						)
+							) 
+		rownames(modelfit) <- c("MADcor" , "SRMSR" , "MX2" , # "MG2",
+					"100*MADRESIDCOV" )
+		
+	#*****
+	# summary statistics
+	modelfit.test <- data.frame("type" = c("max(X2)","abs(fcor)") , 
+			"value" = c( max( itempairs$X2) , max( abs(itempairs$fcor) )  ) ,
+			"p" = c( min( itempairs$X2_p.holm) , min( itempairs$fcor_p.holm)  ) 
+				)					
+	#****
+	# print results
+    res <- list( "modelfit.stat" = modelfit , "itempairs" = itempairs , 
+		"modelfit.test" = modelfit.test  )		
     return(res)
     }
+#######################################################################
 
 #######################################################################	
 # auxiliary function: weighted correlation	
