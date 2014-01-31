@@ -92,9 +92,15 @@ export(
     fuzcluster
         )
 
+export(   
+    R2noharm,
+    summary.R2noharm,
+    R2noharm.jackknife ,
+    R2noharm.EAP
+    )
 
 
-importFrom(utils,packageDescription)
+
 
 S3method(summary,rasch.mml)
 S3method(summary,rasch.pml)
@@ -120,31 +126,21 @@ S3method(plot,mcmc.sirt)
 S3method(plot,isop)
 S3method(plot,rasch.mml)
 
-export(   
-    R2noharm,
-    summary.R2noharm,
-    R2noharm.jackknife    ,
-    R2noharm.EAP
-    )
+
 
 S3method(summary,R2noharm)
 S3method(summary,R2noharm.jackknife)
 S3method(summary,invariance.alignment)
 S3method(plot,invariance.alignment)
 S3method(summary,latent.regression)
-
+S3method(summary,modelfit.sirt)
 
 
 # imports Depends packages
 import(mvtnorm)
 import(MASS)
 import(coda)
-# import(lme4)
-#importFrom(lme4,lmer)
-#importFrom(lme4,ranef)
-#importFrom(lme4,VarCorr)
-
-
+importFrom(utils,packageDescription)
 importFrom( sfsmisc , QUnif  )
 import(TAM)
 import(CDM)
@@ -153,4 +149,6 @@ import(ic.infer)
 import(sm)
 import(psych)
 importFrom(pbivnorm,pbivnorm)
-import(gregmisc)
+importFrom( gtools , permutations )
+importFrom(Rcpp,evalCpp)
+

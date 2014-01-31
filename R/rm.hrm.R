@@ -28,7 +28,7 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 	maxK <- apply( dat , 2 , max , na.rm=T )
 	K <- max( maxK )
 	if ( is.null(Qmatrix) ){
-		Qmatrix <- matrix( 1:K , nrow=VV , ncol=K , byrow=T)
+		Qmatrix <- matrix( 1:K , nrow=VV , ncol=K , byrow=TRUE)
 					}
 	TP <- length(theta.k)
 	I <- VV*RR
@@ -257,7 +257,22 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 			"M" = colMeans( dat , na.rm=T ) )
 	for (kk in 1:K){ item[ , paste0("tau.Cat",kk) ] <- tau.item[,kk] }
     item$a <- a.item
+#	item$b <- rowMeans(tau.item)
 
+	# latent mean and standard deviation
+	me1 <- rep(NA,VV)
+	sd1 <- rep(NA,VV)
+	for (ii in 1:VV){
+		# ii <- 1
+		pii <- prob.item[ii,,]
+		qii <- matrix( c(0,Qmatrix[ii,]) , nrow= K+1 , ncol=ncol(pii) )
+		me1[ii] <- sum( colSums( qii * pii ) * pi.k )
+		sd1[ii] <- sqrt( sum( colSums( qii^2 * pii ) * pi.k ) - me1[ii]^2  )
+				}
+	item$latM <- me1
+	item$latSD <- sd1	
+	
+	
 	obji <- item
 	for (vv in seq(2,ncol(obji) )){
 		obji[,vv] <- round( obji[,vv],3 ) }
@@ -292,7 +307,8 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 	cat("EAP Reliability = " , round(EAP.rel,3) , "\n")		
 	
 	s2 <- Sys.time()
-	
+
+
     res <- list("deviance" = dev , "ic"=ic , "item"=item , "rater"=rater ,
 		"person" = person , "EAP.rel"=EAP.rel , 
 		"sigma"=sigma , 
@@ -301,7 +317,10 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 		"c.rater"=c.rater , "se.c.rater"=se.c.rater , 
 		"d.rater"=d.rater , "se.d.rater"=se.d.rater , 
 		"f.yi.qk"=f.yi.qk , "f.qk.yi"=f.qk.yi , "probs"=probs ,
-		"n.ik"=n.ik , "maxK"=maxK , "procdata" =procdata , "iter"=iter , 
+		"prob.item" = prob.item ,
+		"n.ik"=n.ik , "maxK"=maxK , "pi.k" = pi.k ,
+		"procdata" =procdata , "iter"=iter , "theta.k" = theta.k , 
+		"Qmatrix" = Qmatrix , 
 		"s1"=s1 , "s2"=s2 , "tau.item.fixed"=tau.item.fixed)
 	class(res) <- "rm.hrm"
 	return(res)

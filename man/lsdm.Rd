@@ -80,7 +80,7 @@ where \eqn{P( A_k = 1 | \theta )} are attribute response functions and
 can be rewritten by taking the logarithm
 \deqn{ \log P( X_i = 1  | \theta ) = 
 	\sum_{k=1}^K q_{ik} \log [ P( A_k = 1 | \theta ) ] }
-Evaluation item and response functions on a grid of \eqn{\theta} values and 
+Evaluation item and attribute response functions on a grid of \eqn{\theta} values and 
 collecting these values in matrices \eqn{\bold{L}= \{ \log P( X_i = 1 ) | \theta ) \} }, 
 \eqn{\bold{Q}= \{ q_{ik} \} } and
 \eqn{\bold{X}= \{ \log P( A_k = 1  | \theta ) \} } leads to a least squares
@@ -88,6 +88,12 @@ problem of the form \eqn{ \bold{L} \approx \bold{Q} \bold{X}} with the
 restriction of positive \bold{X} matrix entries. This least squares problem
 is a linear inequality constrained model which is solved by making use of
 the \pkg{ic.infer} package (Groemping, 2010).
+
+After fitting the attribute response functions, empirical item-attribute
+discriminations \eqn{w_{ik}} are calculated as the approximation of the following
+equation
+\deqn{ \log P( X_i = 1  | \theta ) = 
+\sum_{k=1}^K w_{ik} q_{ik} \log [ P( A_k = 1 | \theta ) ] }
 }
 
 
@@ -109,6 +115,7 @@ functions are evaluated}
 \item{data}{Estimated or fixed item reponse functions evaluated at \code{theta}}
 \item{Qmatrix}{Used Q-matrix}
 \item{lltm}{Model output of LLTM (\code{lm} values)}
+\item{W}{Matrix with empirical item-attribute discriminations}
 }
 \references{
   DiBello, L. V., Roussos, L. A., & Stout, W. F. (2007). Review of
@@ -228,6 +235,20 @@ summary(lsdm.res)
 ## A4       4 -1.459 0.638 -1.108   -0.738   0.309     0.062
 ## A5       2  2.410 0.509  1.564    2.673   0.451     0.002
 ## [...]
+##
+##  Discrimination Parameters
+##  
+##            A1    A2   A3    A4    A5
+##  Item1  1.723    NA   NA    NA    NA
+##  Item2     NA 1.615   NA    NA    NA
+##  Item3     NA 0.650   NA 0.798    NA
+##  Item4     NA 1.367   NA    NA    NA
+##  Item5     NA 1.001 1.26    NA    NA
+##  Item6     NA    NA   NA 0.866    NA
+##  Item7     NA 0.697   NA    NA 0.891
+##  Item8     NA    NA   NA 0.997    NA
+##  Item9     NA    NA   NA 1.312 1.074
+##  Item10 1.000    NA 0.74    NA    NA
 
 \dontrun{
 #############################################################################

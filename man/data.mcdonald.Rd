@@ -82,7 +82,7 @@ Psychology Press.
 \examples{
 \dontrun{
 #############################################################################
-# EXAMPLE 1: LSAT6 data	
+# EXAMPLE 1: LSAT6 data	| Chapter 12 McDonald (1999)
 #############################################################################	
 data(data.mcdonald.act15)
 
@@ -148,7 +148,7 @@ mod1d <- smirt(dat, Qmatrix=F.pattern, est.a= matrix(1:I,I,1), c.init=rep(.2,I))
 summary(mod1d)
 
 #############################################################################
-# EXAMPLE 2: ACT15 data	
+# EXAMPLE 2: ACT15 data	| Chapter 6 McDonald (1999)
 #############################################################################	
 data(data.mcdonald.act15)
 pm <- data.mcdonald.act15
@@ -194,7 +194,7 @@ mod3 <- R2noharm( pm=pm , n=1000 ,  model.type="CFA" , F.pattern = F.pattern ,
 summary(mod3)
 
 #############################################################################
-# EXAMPLE 3: Rape myth scale 
+# EXAMPLE 3: Rape myth scale | Chapter 15 McDonald (1999)
 #############################################################################   
 data(data.mcdonald.rape)
 lambda <- data.mcdonald.rape$lambda

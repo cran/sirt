@@ -28,7 +28,8 @@ R2noharm <- function( dat=NULL , pm=NULL , n=NULL ,model.type , weights=NULL ,
 		cat("For more informations please look at \n ")
 #		cat( "	http://people.niagaracollege.ca/cfraser/download/nhCLwindl.html\n\n")
 		cat( "  http://noharm.niagararesearch.ca/nh4cldl.html\n\n")
-		cat( paste( "Path of NOHARMCL file:" , noharm.path , "\n\n" ) )
+		cat( paste( "Path of NOHARMCL file: \n  ** " , noharm.path , "\n" ) )
+		cat( paste( "Path of NOHARM input and output files: \n  ** " , getwd() , "\n\n" ) )		
 		if (model.type == "EFA"){ 
 				cat(paste( "Exploratory Item Factor Analysis with" , dimensions , "Dimensions" ) , "\n\n" )
 				} else {             cat("Confirmatory Item Factor Analysis \n\n" ) }
@@ -190,9 +191,9 @@ R2noharm <- function( dat=NULL , pm=NULL , n=NULL ,model.type , weights=NULL ,
                 )   
 			}
 			
-        # results for noharm.efa with more than one dimension
+    # results for noharm.cfa with more than one dimension
     if (dimensions > 1 & model.type == "CFA" ){
-			modtype <- 3
+			modtype <- 3			
         res <- list( "tanaka" = .noharm.tanaka( noharmout1 ) , 
                 "rmsr" = .noharm.rmsr( noharmout1 ) ,
                 "N.itempair" = NM ,
@@ -216,7 +217,7 @@ R2noharm <- function( dat=NULL , pm=NULL , n=NULL ,model.type , weights=NULL ,
                     colnames(res$factor.cor) <- rownames(res$factor.cor) <- colnames(F.pattern)       
                                 }                                          
                  }
-
+	# CFA 1 dimension
     if ( ( dimensions == 1 ) & ( model.type == "CFA" ) ){
 					modtype <- 4				
 			if ( is.null(colnames(F.pattern) ) ){ colnames(F.pattern) <- "F1" }

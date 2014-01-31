@@ -10,7 +10,7 @@ Alignment Procedure for Linking under Approximate Invariance
 \description{
 This function does alignment under approximate
 invariance for \eqn{G} groups and \eqn{I} items
-(Asparouhov & Muthen, 2013).
+(Asparouhov & Muthen, 2014).
 It is assumed that item loadings and intercepts are
 previously estimated under the assumption of a factor
 with zero mean and a variance of one. 
@@ -131,9 +131,9 @@ Note that the standard deviations \eqn{\psi_g} are estimated
 due to minimizing the sum of \eqn{f_\lambda} functions while
 means \eqn{\alpha_g} are obtained by minimizing the \eqn{f_\nu}
 part with fixed \eqn{\psi_g} parameters. Therefore, the original approach
-of Asparouhov and Muthen (2013) is split into a two-step procedure.
+of Asparouhov and Muthen (2014) is split into a two-step procedure.
 
-Note that Asparouhov and Muthen (2013) use \eqn{a_\lambda=a_\nu=1}
+Note that Asparouhov and Muthen (2014) use \eqn{a_\lambda=a_\nu=1}
 (which can be modified in \code{align.scale})
 and \eqn{p_\lambda = p_\nu = 1/4} (which can be modified in \code{align.pow}).
 In case of \eqn{p_\lambda=1}, the penalty is approximately 
@@ -141,7 +141,7 @@ In case of \eqn{p_\lambda=1}, the penalty is approximately
 it is approximately \eqn{f_\lambda(x) = \sqrt{|x|} }.
 
 Effect sizes of approximate invariance based on \eqn{R^2} have
-been proposed by Asparouhov and Muthen (2013). These are
+been proposed by Asparouhov and Muthen (2014). These are
 calculated separately for item loading and intercepts, resulting
 in \eqn{R^2_\lambda} and \eqn{R^2_\nu} measures which are
 included in the output \code{es.invariance}. In addition, 
@@ -176,7 +176,7 @@ A list with following entries
 
 
 \references{
-Asparouhov, T., & Muthen, B. (2013).
+Asparouhov, T., & Muthen, B. (2014).
 Multiple-group factor analysis alignment.
 \emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
 \url{http://www.statmodel.com/Alignment.shtml}

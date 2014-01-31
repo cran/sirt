@@ -413,19 +413,19 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 				thetabar <- hwt%*%theta.k
 				# calculation of mu
 				mu <- colSums( thetabar * dat1$Freq ) / sum( dat1$Freq )
-
 				if ( ! is.null(mu.fixed ) ){
 				  if (is.matrix(mu.fixed) ){	
 				    mu0 <- mu
 					mu[ mu.fixed[,1] ] <- mu.fixed[,2]
-					if ( sum( as.vector(mu.fixed[1,1:2]) - c(1,0))==0 ){ 
+					if ( ( sum( as.vector(mu.fixed[1,1:2]) - c(1,0))==0 ) & 
+							(	nrow(mu.fixed)==1	) 	){ 
 						mu[-1] <- -mu0[1] + mu[-1]
 											}
 										}
 #				  if ( mu.fixed == "center"){
 #						mu <- mu - mean(mu)
 #										}
-									}				
+									}
 				# calculation of the covariance matrix
 				theta.k.adj <- theta.k - matrix( mu , nrow=nrow(theta.k) , 
 									ncol=ncol(theta.k) , byrow=TRUE)

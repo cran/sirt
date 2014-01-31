@@ -37,26 +37,44 @@ sumtau <- function(tau.item){
         VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
 		theta.k , RR ){
     # b parameter
-	pcm.param <- FALSE
-	if (pcm.param){
-		b.item0 <- b.item
-		b <- matrix( b.item0 , nrow= VV , ncol=K ) * Qmatrix + sumtau(tau.item)
-		b <- b[ item.index , ]
-		b0 <- ( matrix( b.rater , nrow= RR , ncol=K) )[ rater.index , ] * 
-				Qmatrix[ item.index ,]
-	
-		b <- b + b0				
-				} else { 
+#	pcm.param <- FALSE
+#	if (pcm.param){
+#		b.item0 <- b.item
+#		b <- matrix( b.item0 , nrow= VV , ncol=K ) * Qmatrix + sumtau(tau.item)
+#		b <- b[ item.index , ]
+#		b0 <- ( matrix( b.rater , nrow= RR , ncol=K) )[ rater.index , ] * 
+#				Qmatrix[ item.index ,]
+#	
+#		b <- b + b0				
+#				} else { 
 		b <- tau.item[ item.index , ]
 		b0 <- ( matrix( b.rater , nrow= RR , ncol=K) )[ rater.index , ] * 	Qmatrix[ item.index ,]	 
 		b <- b + b0
-			}
+#			}
 	# a parameter
 	a <- a.item[ item.index ] * a.rater[ rater.index ]
     res <- .rm.pcm.calcprobs( a , b , Qmatrix=Qmatrix[item.index,] , theta.k , I , K , TP )
 	return(res)
     }
 #############################################################################	
+# cpp implementation of calculation of facets probabilities
+.rm.facets.calcprobs2 <- function( b.item , b.rater , Qmatrix , tau.item ,
+        VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
+		theta.k , RR ){						
+	## SEXP rm_facets_calcprobs_cpp( SEXP b_item_, SEXP b_rater_, SEXP Qmatrix_, 
+	##	SEXP tau_item_, SEXP K_, SEXP I_, SEXP TP_, SEXP a_item_, SEXP a_rater_, 
+	##	SEXP item_index_, SEXP rater_index_, SEXP theta_k_ ) ;
+#	probs <- rm_facets_calcprobs_cpp( b.item , b.rater ,Qmatrix , tau.item ,
+#         K , I , TP , a.item , a.rater , item.index-1 , rater.index -1 ,
+#         theta.k )
+	probs <- .Call("rm_facets_calcprobs_cpp", 
+				b.item , b.rater ,Qmatrix , tau.item ,
+				K , I , TP , a.item , a.rater , item.index-1 , rater.index -1 ,
+				theta.k  , 
+				PACKAGE = "sirt")		 
+	probs <- array( probs , dim=c(I , K+1 , TP ) )
+	return(probs)
+	  }
 	
 #######################################################
 # calculate posterior and counts
@@ -84,7 +102,8 @@ sumtau <- function(tau.item){
 	N.ik <- array( 0 , dim=c(TP , I ) )
 	for (kk in 1:(K+1) ){
 		# kk <- 1
-		n.ik[,,kk] <- t( t(dat2.resp*(dat2==(kk-1)) ) %*% f.qk.yi )
+#		n.ik[,,kk] <- t( t(dat2.resp*(dat2==(kk-1)) ) %*% f.qk.yi )
+		n.ik[,,kk] <- crossprod( f.qk.yi , dat2.resp*(dat2==(kk-1)) )
 		N.ik <- N.ik + n.ik[,,kk]
 						}
 				
@@ -109,11 +128,11 @@ sumtau <- function(tau.item){
 	it <- 0 ;	conv1 <- 1000	
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
 		a.item0 <- a.item	
-		pjk <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+		pjk <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , diffindex , rater.index , theta.k,RR)
-		pjk1 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+		pjk1 <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item+h , a.rater , diffindex , rater.index , theta.k,RR)
-		pjk2 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+		pjk2 <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item-h , a.rater , diffindex , rater.index , theta.k,RR)
 		# numerical differentiation			
 		res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
@@ -151,11 +170,11 @@ sumtau <- function(tau.item){
 	#		kk <- 1
 			Q1 <- Q0
 			Q1[,kk] <- 1
-			pjk <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+			pjk <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
 					VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
-			pjk1 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item+h*Q1 ,
+			pjk1 <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item+h*Q1 ,
 					VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
-			pjk2 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item-h*Q1 ,
+			pjk2 <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item-h*Q1 ,
 					VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
 			# numerical differentiation			
 			res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
@@ -191,11 +210,11 @@ sumtau <- function(tau.item){
 	it <- 0 ;	conv1 <- 1000
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){
 		b0 <- b.rater
-		pjk <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+		pjk <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
-		pjk1 <- .rm.facets.calcprobs( b.item , b.rater+h , Qmatrix , tau.item ,
+		pjk1 <- .rm.facets.calcprobs2( b.item , b.rater+h , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
-		pjk2 <- .rm.facets.calcprobs( b.item , b.rater-h , Qmatrix , tau.item ,
+		pjk2 <- .rm.facets.calcprobs2( b.item , b.rater-h , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
 		# numerical differentiation			
 		res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
@@ -229,11 +248,11 @@ sumtau <- function(tau.item){
 	it <- 0 ;	conv1 <- 1000	
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
 		a.rater0 <- a.rater	
-		pjk <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+		pjk <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index , theta.k,RR)
-		pjk1 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+		pjk1 <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater+h , item.index , rater.index , theta.k,RR)
-		pjk2 <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
+		pjk2 <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater-h , item.index , rater.index , theta.k,RR)
 		# numerical differentiation			
 		res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 

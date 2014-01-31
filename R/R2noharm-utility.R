@@ -30,6 +30,9 @@
         i1 <- grep( itemlevel.type , noharmout1 )
         VV <- floor(I/9)+1 * ( I/9 != floor( I/9) )
         uniquevar <- noharmout1[ seq( i1+5 , i1 + 5 + 4*(VV-1) , 4 ) ]
+		#*** addition ARb 2014-01-29
+			uniquevar <- uniquevar[ substring( uniquevar , 1 , 1 ) == " " ]
+		#***
         uniquevar <- paste( uniquevar , collapse= "  " )
         uniquevar <- strsplit( uniquevar , split = " " )[[1]]
         uniquevar <- as.numeric( paste( uniquevar[ uniquevar != "" ] ) )

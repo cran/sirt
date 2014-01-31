@@ -1,5 +1,5 @@
 R2noharm.EAP <-
-function( noharmobj , theta.k =seq(-6,6,len=21) ){
+function( noharmobj , theta.k =seq(-6,6,len=21) , print.output=TRUE ){
     mod <- noharmobj
     guess <- mod$guesses
     f0 <- mod$final.constants
@@ -61,10 +61,10 @@ function( noharmobj , theta.k =seq(-6,6,len=21) ){
         colnames(person)[ which( colnames(person) == "EAP" ) ] <- paste("EAP.Dim" , dd , sep="")
         colnames(person)[ which( colnames(person) == "SD.EAP" ) ] <- paste("SD.EAP.Dim" , dd , sep="")                
         }
-    
-    cat("EAP Reliabilities:\n")
-    print( round (EAP.rel,3) )
-    
+    if ( print.output ){
+		cat("EAP Reliabilities:\n")
+		print( round (EAP.rel,3) )
+					}
     res <- list( "person" = person , "theta"=theta.k , 
 			"posterior" = posterior , "like"= like , 
             "EAP.rel" = EAP.rel , "probs" = probs )

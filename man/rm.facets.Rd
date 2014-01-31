@@ -180,10 +180,11 @@ dat <- data.ratings1
 dat <- dat[ paste(dat$rater) == "db01" , ]
 
 # Model 1: Partial Credit Model
-mod1 <- rm.facets( dat[ , paste0( "k",1:5) ] , maxiter=15)
+mod1 <- rm.facets( dat[ , paste0( "k",1:5) ] , pid=dat$idstud , maxiter=15)
 
 # Model 2: Generalized Partial Credit Model
-mod2 <- rm.facets( dat[ , paste0( "k",1:5) ] , est.a.item=TRUE , maxiter=15)
+mod2 <- rm.facets( dat[ , paste0( "k",1:5) ] ,  pid=dat$idstud  , 
+           est.a.item=TRUE , maxiter=15)
 
 summary(mod1)
 summary(mod2)
@@ -198,17 +199,18 @@ dat <- data.ratings1
 
 # Model 1: Partial Credit Model: no rater effects
 mod1 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
-            est.b.rater=FALSE  , maxiter=15)
+             pid=dat$idstud  , est.b.rater=FALSE  , maxiter=15)
 
 # Model 2: Partial Credit Model: intercept rater effects
-mod2 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater  , maxiter=15)
+mod2 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater  , 
+             pid=dat$idstud  , maxiter=15)
 
 # Model 2a: compare results with TAM package
 #   Results should be similar to Model 2
 library(TAM)
 mod2a <- tam.mml.mfr( resp= dat[ , paste0( "k",1:5) ] , 
-        facets= dat[ , "rater" , drop=FALSE] ,
-	pid= dat$pid , formulaA = ~ item*step + rater )
+             facets= dat[ , "rater" , drop=FALSE] ,
+             pid= dat$pid , formulaA = ~ item*step + rater )
 
 # Model 3: estimated rater slopes
 mod3 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
@@ -216,11 +218,11 @@ mod3 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater ,
 
 # Model 4: estimated item slopes
 mod4 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
-             est.a.item=TRUE , maxiter=15)
+             pid=dat$idstud  ,  est.a.item=TRUE , maxiter=15)
 
 # Model 5: estimated rater and item slopes
 mod5 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
-            est.a.rater=TRUE , est.a.item=TRUE , maxiter=15)
+             pid=dat$idstud  , est.a.rater=TRUE , est.a.item=TRUE , maxiter=15)
 
 summary(mod1)
 summary(mod2)

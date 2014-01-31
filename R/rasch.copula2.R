@@ -27,7 +27,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 	# est.b	... which b parameters shall be estimated
 	###############################################################
 	s1 <- Sys.time()
-	group = NULL	
+	group <- NULL	
 	# arrange item clusters item clusters
     t1 <- table(itemcluster)
 	itemcluster[ which( itemcluster %in% names(t1)[ t1 == 1	 ] ) ] <- 0
@@ -593,7 +593,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 		#******************************************************************************
 #cat("other pars") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						       				
 		iter <- iter + 1 
-		thetawidth <- diff( theta.k )[1]		
+#		thetawidth <- diff( theta.k )[1]		
 		#**********************
 		# deviance rasch.mml
         # ll[gg] <- sum( dat1[,2] * log( rowSums( f.yi.qk[,] * 

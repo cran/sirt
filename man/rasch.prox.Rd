@@ -62,6 +62,10 @@ Alexander Robitzsch
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
+#############################################################################
+# EXAMPLE 1: PROX data.read
+#############################################################################
+
 data(data.read)
 mod <- rasch.prox( data.read )
 mod$b       # item difficulties
