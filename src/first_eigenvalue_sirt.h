@@ -9,9 +9,9 @@ using namespace Rcpp;
 
 
 // declarations
-extern "C" {
- Rcpp::List firsteigenvalsirt(arma::mat X, int maxit, double conv, double K) ;
- }
+// extern "C" {
+// Rcpp::List firsteigenvalsirt(arma::mat X, int maxit, double conv, double K) ;
+// }
 
 
 

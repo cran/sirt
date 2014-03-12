@@ -103,14 +103,13 @@ For simulation of locally dependent data see \code{\link{sim.rasch.dep}}.
 
 
 \examples{
-############################################################
-####################### EXAMPLE 1 ##########################
-#   Example with locally dependent items
-#   12 Items: Cluster 1 -> Items 1,...,4
-#             Cluster 2 -> Items 6,...,9
-#             Cluster 3 -> Items 10,11,12
-#   Data is simulated using the sim.rasch.dep function
-############################################################
+#############################################################################
+# EXAMPLE 1: Example with locally dependent items
+#      12 Items: Cluster 1 -> Items 1,...,4
+#                Cluster 2 -> Items 6,...,9
+#                Cluster 3 -> Items 10,11,12
+#      Data is simulated using the sim.rasch.dep function
+#############################################################################	
 
 set.seed(7896)
 I <- 12                             # number of items

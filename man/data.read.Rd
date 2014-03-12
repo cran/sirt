@@ -57,6 +57,7 @@ variable names.
 \code{\link{testlet.yen.q3}} (Example 1),
 \code{\link{tetrachoric2}} (Example 1),
 \code{\link{truescore.irt}} (Example 2),
+\code{\link{unidim.test.csn}} (Example 1),
 \code{\link{wle.rasch}} (Example 1),
 \code{\link{wle.rasch.jackknife}} (Example 1),
 \code{\link{yen.q3}} (Example 1),

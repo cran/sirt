@@ -71,9 +71,14 @@ the item domain) of this procedure see \code{\link{equating.rasch.jackknife}}.
 
 For linking several studies see \code{\link{linking.haberman}}.
 
+A robust alternative to mean-mean linking is implemented in
+\code{\link{linking.robust}}.
+
 For linking under more general item response models
 see the \pkg{plink} package.
 }
+
+
 \examples{
 #############################################################################
 # EXAMPLE 1: Linking item parameters of the PISA study

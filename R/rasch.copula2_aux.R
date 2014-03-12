@@ -5,7 +5,7 @@
 #--------------------------------------------------------------------------------------
 # Function calculates necessary patterns for copula IRT models (Braeken, 2011)
 .calc.copula.itemcluster <- function(D){
-    res <- permutations(n=2, r=D, v=0:1, repeats.allowed=TRUE)
+    res <- gtools::permutations(n=2, r=D, v=0:1, repeats.allowed=TRUE)
     rownames(res) <- apply( res , 1 , FUN = function(ll){ paste("P" , paste( ll ,collapse="") ,sep="") } )
     RR <- nrow(res) 
     matr <- matrix( 0 , RR , RR )

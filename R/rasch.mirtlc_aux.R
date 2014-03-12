@@ -57,6 +57,7 @@
     n.k <- matrix( 0 , NT , G )
     r.jk <- n.jk <- array( 0 , dim=c( ncol(dat2) , NT , G) )
     ll <- rep(0,G)
+	
     for (gg in 1:G){
 		ind.gg <- which( group == gg )
 	    res <- mml_raschtype_counts( dat2=dat2[ind.gg,] , dat2resp=dat2.resp[ind.gg,] , 
@@ -143,7 +144,8 @@
 .m.step.mirtlc.mlc1 <- function( pjk , n.k , r.jk , n.jk , G , Nclasses ,
 			theta.k , b , a , I , ref.item , mstep.maxit ,
 			des.theta , des.b , theta.fixed , theta.normal , f.qk.yi,D ,
-			distribution.trait , est.a , Qmatrix ,modeltype , range.b , range.a){
+			distribution.trait , est.a , Qmatrix ,modeltype , range.b , range.a ,
+			iter , fac.iter	){
     if (G==1){ 
 		pi.k <- n.k / sum( n.k )
 			}
@@ -167,6 +169,8 @@
 	# outcome
 	y <- c( rep(1,I*Nclasses) , rep(0,I*Nclasses) )
 	wgt <- c( wc1 , wi1 )
+
+
 	if ( theta.fixed ){
 		if (D==1){ 
 			theta.offset <- rep( theta.k , each=I ) 
@@ -180,6 +184,8 @@
 				}
 					}
 	if ( ( ! theta.fixed ) ){
+	    b_old <- b
+		theta_old <- theta.k
 		# structure theta
 		# theta_1: class_1 , ... , class_D
 		# theta_2: class_1 , ... , class_D
@@ -200,9 +206,20 @@
 			theta.k0 <- theta.k
 			theta.k <- coef(mod2)[ 1:(D*Nclasses) ]	# theta
 			theta.k <- matrix( theta.k , nrow=Nclasses , ncol=D )
+			
+			theta.change <- theta.k - theta_old
+			increment <- .9^( iter^fac.iter) 
+			theta.change <- ifelse( abs( theta.change ) > increment , sign(theta.change)*increment , theta.change )
+			theta.k <- theta_old + theta.change 	
+			
 			b0 <- coef(mod2)[ -c( 1:(D*Nclasses) ) ]
 			    }
 		b[ setdiff( 1:I , ref.item ) ] <- b0
+		b.change <- b - b_old
+		b.increment <- .9^( iter^fac.iter) 
+		b.change <- ifelse( abs( b.change ) > b.increment , sign(b.change)*b.increment , b.change )
+		b <- b_old + b.change
+		
 						}
 	if ( theta.fixed ){
 		# constrained theta optimization
@@ -251,6 +268,8 @@
 						}
 		##################################################		
 						}
+						
+						
 	# range restrictions
 	b[ b < range.b[1] ] <- range.b[1]
 	b[ b > range.b[2] ] <- range.b[2]
@@ -258,10 +277,12 @@
 	if (modeltype == "MLC2" ){
 		a <- .mirtlc.est.a( theta.k=theta.k , b=b , fixed.a=a , 
 				pjk=pjk , alpha1=0 , alpha2=0 , 
-				h=.0001 , G=G , I=I , r.jk=r.jk , n.jk=n.jk , est.a=est.a , Qmatrix=Qmatrix )	
+				h=.0001 , G=G , I=I , r.jk=r.jk , n.jk=n.jk , est.a=est.a , Qmatrix=Qmatrix ,
+				iter=iter , fac.iter=fac.iter )	
  		a[ a < range.a[1] ] <- range.a[1]
 	    a[ a > range.a[2] ] <- range.a[2]
 						}
+																								
 	res <- list( "pi.k" = pi.k , "pjk" = pjk , "theta.k" = theta.k , 
 			"b" = b , "a" = a )
     return(res)
@@ -299,11 +320,12 @@
 #*********************************************************************		
 # Estimation of a parameter (discrimination parameter)		
 .mirtlc.est.a <- function( theta.k , b , fixed.a , 
-					pjk , alpha1 , alpha2 , h , G , I , r.jk , n.jk , est.a , Qmatrix ){
+					pjk , alpha1 , alpha2 , h , G , I , r.jk , n.jk , est.a , Qmatrix ,
+					iter , fac.iter ){
 				# cc <- cG[1]	
 #					est.aa <- 1 * (est.a == aa )
 					#****
-					# a
+					# a                  			
 					pjk <- .prob.raschtype.genlogis( theta.k , b , alpha1 , alpha2 , fixed.a ,
 								Qmatrix)
 					pjk <- ( pjk + .000000005 ) / 1.00000001 
@@ -340,8 +362,9 @@
 					# change in item difficulty
 					a.change <- - d1 / d2
 #					a.change <- ifelse( abs( a.change ) > .2 , .2*sign(a.change) , a.change )              
-					# dampening parameter as in tam
-					old_increment <- .2
+					# dampening parameter as in tam				
+					old_increment <- .2^( iter^fac.iter )		
+#					old_increment <- .1
 					ci <- ceiling( abs(a.change) / ( abs( old_increment) + 10^(-10) ) )
 					a.change <- ifelse( abs( a.change) > abs(old_increment)  , 
 										a.change/(2*ci) , a.change )					

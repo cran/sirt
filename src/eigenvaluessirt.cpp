@@ -17,16 +17,15 @@
 using namespace Rcpp;
 
 
-// user includes
-// #include <c:\Users\robitzsch\Dropbox\Eigene_Projekte\R-Routinen\IRT-Functions\sirt_package\Entwicklung\Eigenvalues\Code\first_eigenvalue_sirt__2.05.h>
 
 // declarations
 extern "C" {
-SEXP eigenvaluesDsirt( SEXP X_, SEXP D_, SEXP maxit_, SEXP conv_) ;
+  // first D eigenvalues
+  SEXP eigenvaluesDsirt( SEXP X_, SEXP D_, SEXP maxit_, SEXP conv_) ;
 }
 
-// definition
-
+//***************
+// first D eigenvalues
 SEXP eigenvaluesDsirt( SEXP X_, SEXP D_, SEXP maxit_, SEXP conv_ ){
 BEGIN_RCPP
   
@@ -81,64 +80,6 @@ BEGIN_RCPP
                    
 END_RCPP
 }
-
-
-
-///////////////////////////////////////////////////
-
-Rcpp::List firsteigenvalsirt2(arma::mat X, int maxit, double conv, double K){
-
-    double lambda_temp ;
-    double lambda =0 ;
-    double lambdadiff = 1000;
-    double lambda_old ;
-
-    Rcpp::NumericVector lambda_est(2);
-
-    int iter = 0 ;
-
-    //**********
-    // set matrices
-    arma::mat Xz ;
-
-
-    arma::colvec z(K) ;
-    double temp1 = 1 / sqrt( K ) ;
-    for (int ii=0;ii<K;ii++){
-        z[ii] = temp1 ;
-                }
-
-    ///////////////////////////////
-    /// algorithm
-
-    // for (int iter=0;iter < maxit;iter ++){
-    while ( ( iter < maxit ) & ( lambdadiff > conv) ){
-        lambda_old = lambda ;
-        Xz = arma::mat( X * z ) ;
-        lambda_temp = 0 ;
-        for (int ii=0;ii<K;ii++){
-            lambda_temp += Xz[ii]*Xz[ii] ;
-                    }
-        lambda = sqrt( lambda_temp ) ;
-        lambdadiff = lambda - lambda_old ;
-        if ( lambdadiff < 0 ){ lambdadiff = - lambdadiff ; }
-        z = Xz / lambda ;
-    // Rcpp::Rcout << "Iteration =" << iter << " lambda = " << lambda << std::endl ; 
-    // Rcpp::Rcout << " difference = " << lambdadiff << std::endl ; 
-            iter ++ ;
-        }
-
-    lambda_est[0] = lambda ;
-
-    ////////////////////////////////////
-    // OUTPUT:
-    return Rcpp::List::create(
-        _["u"]=z , 
-        _["lambda1"]=lambda_est 
-                ) ;
-}
-
-
 
 
 

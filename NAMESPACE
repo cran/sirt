@@ -89,15 +89,18 @@ export(
     latent.regression.em.normal ,
     mle.pcm.group ,
     fuzdiscr ,
-    fuzcluster
-        )
-
-export(   
+    fuzcluster ,
+    isop.test ,
     R2noharm,
     summary.R2noharm,
     R2noharm.jackknife ,
-    R2noharm.EAP
-    )
+    R2noharm.EAP    ,
+    rasch.evm.pcm ,
+    unidim.test.csn ,
+    linking.robust ,
+    lc.2raters ,
+    rasch.copula3
+        )
 
 
 
@@ -119,13 +122,13 @@ S3method(summary,gom)
 S3method(summary,mcmc.sirt)
 S3method(summary,isop)
 S3method(summary,fuzcluster)
-
+S3method(summary,isop.test)
 
 S3method(plot,np.dich)
 S3method(plot,mcmc.sirt)
 S3method(plot,isop)
 S3method(plot,rasch.mml)
-
+S3method(plot , linking.robust)
 
 
 S3method(summary,R2noharm)
@@ -134,7 +137,10 @@ S3method(summary,invariance.alignment)
 S3method(plot,invariance.alignment)
 S3method(summary,latent.regression)
 S3method(summary,modelfit.sirt)
-
+S3method(summary, rasch.evm.pcm)
+S3method(summary, linking.robust)
+S3method(summary, lc.2raters)
+S3method(summary, rasch.copula3)
 
 # imports Depends packages
 import(mvtnorm)

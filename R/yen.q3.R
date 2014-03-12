@@ -63,8 +63,11 @@ testlet.yen.q3 <- function( q3.res , testlet.matrix ){
         testlets <- sort( unique( testlet.matrix[,1] ) )
         testlet.q3 <- t( sapply( testlets , FUN = function(testlet){
             testlet.items <- testlet.matrix[ testlet.matrix[,1] == testlet , 2 ]
-            ti.ind <- colnames(q3.res$q3.matrix) %in% testlet.items
-            c( sum( ti.ind) , mean( q3.res$q3.matrix[ ti.ind , ti.ind ] , na.rm=T ) )
+            ti.ind <- colnames(q3.res$q3.matrix) %in% testlet.items			
+            # c( sum( ti.ind) , mean( q3.res$q3.matrix[ ti.ind , ti.ind ] , na.rm=T ) )
+			# correction thanks Thomas Kiefer (2014-03-06)
+			c( sum( ti.ind) , mean( q3.res$q3.matrix[ ti.ind , ti.ind ][ lower.tri(diag(sum(ti.ind))) ] ,
+					na.rm=TRUE ) )			
                 } ) )
         colnames(testlet.q3) <- c("N.Items" , "Mean.Q3" )
         testlet.q3 <- data.frame( "Testlet" = testlets , testlet.q3 , "mean" = mean(q3.res$q3.long[,3]) )

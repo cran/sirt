@@ -89,6 +89,8 @@ This function needs the \pkg{psych} package.
 \seealso{
 See \code{\link{f1d.irt}} for estimating the functional unidimensional
 item response model.
+
+This function uses \code{\link{reliability.nonlinearSEM}}.
 }
 
 \examples{

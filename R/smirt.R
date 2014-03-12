@@ -9,7 +9,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	theta.k=seq(-6,6,len=20) , 	theta.kDES = NULL , qmcnodes= 0 ,  
 	mu.fixed=NULL , variance.fixed=NULL , 
 	est.corr=FALSE , max.increment=1 , increment.factor=1 , 
-	numdiff.parm=.001 , maxdevchange=.10 ,
+	numdiff.parm=.00001 , maxdevchange=.10 ,
 	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001){
 	#..........................................................
 	s1 <- Sys.time()

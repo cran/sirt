@@ -1,16 +1,22 @@
 \name{rasch.copula2}
 \alias{rasch.copula2}
+\alias{rasch.copula3}
 \alias{summary.rasch.copula2}
+\alias{summary.rasch.copula3}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Rasch Copula Model
+Multidimensional IRT Copula Model
 }
 \description{
 This function handles local dependence by specifying 
-copulas for residuals in unidimensional item response
-models (Braeken, 2011; Braeken, Tuerlinckx & de Boeck, 2007).
+copulas for residuals in multidimensional item response
+models for dichotomous item responses 
+(Braeken, 2011; Braeken, Tuerlinckx & de Boeck, 2007).
 Estimation is allowed for item difficulties, item slopes and
 a generalized logistic link function (Stukel, 1988).
+
+The function \code{rasch.copula3} allows the estimation of multidimensional
+models while \code{rasch.copula2} only handles unidimensional models.
 }
 \usage{
 rasch.copula2(dat, itemcluster, copula.type ="bound.mixt" ,
@@ -18,10 +24,19 @@ rasch.copula2(dat, itemcluster, copula.type ="bound.mixt" ,
     theta.k = seq(-4, 4, len = 21), alpha1 = 0, alpha2 = 0, 
     numdiff.parm = 1e-06,  est.b = seq(1, ncol(dat)), 
     est.a = rep(1, ncol(dat)), est.delta = NULL, b.init = NULL , a.init = NULL ,  
-    est.alpha = FALSE, glob.conv = 0.001, alpha.conv = 1e-04, conv1 = 0.001,
+    est.alpha = FALSE, glob.conv = 0.0001, alpha.conv = 1e-04, conv1 = 0.001,
     dev.crit=.2) 
 
-\method{summary}{rasch.copula2}(object,...)	    
+rasch.copula3(dat, itemcluster, dims , copula.type ="bound.mixt" ,
+    progress = TRUE, mmliter = 1000, delta = NULL, 
+    theta.k = seq(-4, 4, len = 21), alpha1 = 0, alpha2 = 0, 
+    numdiff.parm = 1e-06,  est.b = seq(1, ncol(dat)), 
+    est.a = rep(1, ncol(dat)), est.delta = NULL, b.init = NULL , a.init = NULL ,  
+    est.alpha = FALSE, glob.conv = 0.0001, alpha.conv = 1e-04, conv1 = 0.001,
+    dev.crit=.2 , rho.init=.5) 
+    
+\method{summary}{rasch.copula2}(object,...)
+\method{summary}{rasch.copula3}(object,...)	
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,10 +50,9 @@ the same integers define a joint item cluster of (positively) locally
 dependent items. Values of zero indicate that the corresponding item
 is not included in any item cluster of dependent responses.
 }
-%  \item{group}{
-%A grouping variable for multiple group estimation. Note that this option
-%will only work in \code{rasch.copula}.
-%}
+\item{dims}{
+A vector indicating to which dimension an item is allocated
+}
 \item{copula.type}{
 A character or a vector containing one of the following copula
 types: \code{bound.mixt} (boundary mixture copula), 
@@ -102,6 +116,7 @@ Maximal change in item parameters for convergence
   \item{dev.crit}{
 Maximal change in the deviance. Default is \code{.2}.
 }
+\item{rho.init}{Initial value for off-diagonal elements in correlation matrix}
   \item{object}{
 Object of class \code{rasch.copula2}
 }
@@ -128,7 +143,9 @@ A list with following entries
 \item{ic}{Information criteria}
 \item{theta.k}{Discretized ability distribution}
 \item{deviance}{Deviance}
-\item{pattern}{Item response patterns}
+\item{pattern}{Item response patterns with frequencies and posterior
+distribution}
+\item{person}{Data frame with person parameters}
 \item{datalist}{List of generated data frames during estimation}
 \item{EAP.rel}{Reliability of the EAP}
 \item{copula.type}{Type of copula}
@@ -141,6 +158,10 @@ A list with following entries
     Braeken, J. (2011). A boundary mixture approach to violations 
     of conditional independence. \emph{Psychometrika}, \bold{76}, 57-76.
 
+Braeken, J., & Tuerlinckx, F. (2009). Investigating latent constructs with item 
+response models: A MATLAB IRTm toolbox. 
+\emph{Behavior Research Methods}, \bold{41}, 1127-1137.    
+    
     Braeken, J., Tuerlinckx, F., & De Boeck, P. (2007). 
     Copulas for residual dependencies. 
     \emph{Psychometrika}, \bold{72}, 393-411.
@@ -173,6 +194,9 @@ For simulating locally dependent item responses see \code{\link{sim.rasch.dep}}.
 Person parameters estimates are obtained by \code{\link{person.parameter.rasch.copula}}.
 
 See \code{\link{rasch.mml2}} for the generalized logistic link function.
+
+See also Braeken and Tuerlinckx (2009) for alternative (and more expanded)
+copula models implemented in the MATLAB software.
 }
 
 
@@ -272,7 +296,63 @@ pmod1 <- person.parameter.rasch.copula(raschcopula.object = mod1 )
 mod2 <- rasch.copula2( dat , itemcluster = itemcluster , 
         delta = rep(0,3) , est.delta = rep(0,3) )
 summary(mod1)
-summary(mod2) }
+summary(mod2) 
+
+#############################################################################
+# SIMULATED EXAMPLE 4: Two-dimensional copula model
+#############################################################################
+
+set.seed(5698)
+I <- 9
+n <- 1500                           # number of persons
+b <- seq(-2,2, len=I)               # item difficulties
+theta0 <- rnorm( n , sd = sqrt( .6 ) )
+
+#*** Dimension 1
+theta <- theta0 + rnorm( n , sd = sqrt( .4 ) )        # person abilities
+# itemcluster
+itemcluster <- rep(0,I)
+itemcluster[ c(3,5 )] <- 1
+itemcluster[c(2,4,9)] <- 2
+itemcluster1 <- itemcluster
+# residual correlations
+rho <- c( .7 , .5 )
+# simulate data
+dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+colnames(dat) <- paste("A" , seq(1,ncol(dat)) , sep="")
+dat1 <- dat
+# estimate model of dimension 1
+mod0a <- rasch.copula2( dat1 , itemcluster = itemcluster1)
+summary(mod0a)
+
+#*** Dimension 2
+theta <- theta0 + rnorm( n , sd = sqrt( .8 ) )        # person abilities
+# itemcluster
+itemcluster <- rep(0,I)
+itemcluster[ c(3,7,8 )] <- 1
+itemcluster[c(4,6)] <- 2
+itemcluster2 <- itemcluster
+# residual correlations
+rho <- c( .2, .4 )
+# simulate data
+dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+colnames(dat) <- paste("B" , seq(1,ncol(dat)) , sep="")
+dat2 <- dat
+# estimate model of dimension 2
+mod0b <- rasch.copula2( dat2 , itemcluster = itemcluster2)
+summary(mod0b)
+
+# both dimensions
+dat <- cbind( dat1 , dat2 )
+itemcluster2 <- ifelse( itemcluster2 > 0 , itemcluster2 +2 , 0 )
+itemcluster <- c( itemcluster1 , itemcluster2 )
+dims <- rep( 1:2 , each=I)
+
+# estimate two-dimensional copula model
+mod1 <- rasch.copula3( dat , itemcluster=itemcluster , dims=dims , est.a=dims ,
+            theta.k = seq(-5,5,len=15) )
+summary(mod1)
+}
 }
 
 

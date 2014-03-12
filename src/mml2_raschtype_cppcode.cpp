@@ -22,12 +22,14 @@ using namespace Rcpp;
 
 // declarations
 extern "C" {
-SEXP MML2_RASCHTYPE_COUNTS( SEXP dat2, SEXP dat2resp, SEXP dat1, SEXP fqkyi, SEXP pik, SEXP fyiqk) ;
+SEXP MML2_RASCHTYPE_COUNTS( SEXP dat2, SEXP dat2resp, SEXP dat1, SEXP fqkyi, 
+	SEXP pik, SEXP fyiqk) ;
 }
 
 // definition
 
-SEXP MML2_RASCHTYPE_COUNTS( SEXP dat2, SEXP dat2resp, SEXP dat1, SEXP fqkyi, SEXP pik, SEXP fyiqk ){
+SEXP MML2_RASCHTYPE_COUNTS( SEXP dat2, SEXP dat2resp, SEXP dat1, SEXP fqkyi, 
+	SEXP pik, SEXP fyiqk ){
 BEGIN_RCPP
   
      /////////////////////////////////////  

@@ -2,15 +2,30 @@
 
 \alias{data.sirt}
 \alias{data.si01}
+\alias{data.si02}
+\alias{data.si03}
+\alias{data.si04}
+\alias{data.si05}
+
 \docType{data}
+
+
 \title{
 Some Example Datasets for the \code{sirt} Package
 }
+
+
 \description{
 Some example datasets for the \code{sirt} package.
 }
+
+
 \usage{
 data(data.si01)
+data(data.si02)
+data(data.si03)
+data(data.si04)
+data(data.si05)
 }
 
 
@@ -23,7 +38,61 @@ data(data.si01)
 \code{ $ idgroup: int  1 1 1 1 1 1 1 1 1 1 ...} \cr
 \code{ $ item1  : int  NA NA NA NA NA NA NA NA NA NA ...} \cr
 \code{ $ item2  : int  4 4 4 4 4 4 4 2 4 4 ...} \cr
-  }
+
+\item The dataset \code{data.si02} is the Stouffer-Toby-dataset published
+in Lindsay, Clogg and Grego (1991; Table 1, p.97, Cross-classification A):
+
+\code{List of 2} \cr
+\code{ $ data   : num [1:16, 1:4] 1 0 1 0 1 0 1 0 1 0 ...} \cr
+\code{  ..- attr(*, "dimnames")=List of 2} \cr
+\code{  .. ..$ : NULL} \cr
+\code{  .. ..$ : chr [1:4] "I1" "I2" "I3" "I4"} \cr
+\code{ $ weights: num [1:16] 42 1 6 2 6 1 7 2 23 4 ...} \cr
+
+\item The format of the dataset \code{data.si03} (containing item
+parameters of two studies) is:
+
+\code{'data.frame':   27 obs. of  3 variables:} \cr
+\code{ $ item    : Factor w/ 27 levels "M1","M10","M11",..: 1 12 21 22 ...} \cr
+\code{ $ b_study1: num  0.297 1.163 0.151 -0.855 -1.653 ...} \cr
+\code{ $ b_study2: num  0.72 1.118 0.351 -0.861 -1.593 ...} \cr
+
+\item The dataset \code{data.si04} is adapted from Bartolucci, Montanari
+and Pandolfi (2012; Table 4, Table 7). The data contains 4999 persons,
+79 items on 5 dimensions.
+
+\code{List of 3} \cr
+\code{ $ data        : num [1:4999, 1:79] 0 1 1 0 1 1 0 0 1 1 ...} \cr
+\code{  ..- attr(*, "dimnames")=List of 2} \cr
+\code{  .. ..$ : NULL} \cr
+\code{  .. ..$ : chr [1:79] "A01" "A02" "A03" "A04" ...} \cr
+\code{ $ itempars    :'data.frame':   79 obs. of  4 variables:} \cr
+\code{  ..$ item      : Factor w/ 79 levels "A01","A02","A03",..: 1 2 3 4 5 6 7 8 9 10 ...} \cr
+\code{  ..$ dim       : num [1:79] 1 1 1 1 1 1 1 1 1 1 ...} \cr
+\code{  ..$ gamma     : num [1:79] 1 1 1 1 1 1 1 1 1 1 ...} \cr
+\code{  ..$ gamma.beta: num [1:79] -0.189 0.25 0.758 1.695 1.022 ...} \cr
+\code{ $ distribution: num [1:9, 1:7] 1 2 3 4 5 ...} \cr
+\code{  ..- attr(*, "dimnames")=List of 2} \cr
+\code{  .. ..$ : NULL} \cr
+\code{  .. ..$ : chr [1:7] "class" "A" "B" "C" ...} \cr
+
+\item The dataset \code{data.si05} contains double ratings of two
+exchangeable raters for three items which are in \code{Ex1}, \code{Ex2}
+and \code{Ex3}, respectively.
+
+\code{List of 3} \cr
+\code{ $ Ex1:'data.frame':    199 obs. of  2 variables:} \cr
+\code{  ..$ C7040: num [1:199] NA 1 0 1 1 0 0 0 1 0 ...} \cr
+\code{  ..$ C7041: num [1:199] 1 1 0 0 0 0 0 0 1 0 ...} \cr
+\code{ $ Ex2:'data.frame':    2000 obs. of  2 variables:} \cr
+\code{  ..$ rater1: num [1:2000] 2 0 3 1 2 2 0 0 0 0 ...} \cr
+\code{  ..$ rater2: num [1:2000] 4 1 3 2 1 0 0 0 0 2 ...} \cr
+\code{ $ Ex3:'data.frame':    2000 obs. of  2 variables:} \cr
+\code{  ..$ rater1: num [1:2000] 5 1 6 2 3 3 0 0 0 0 ...} \cr
+\code{  ..$ rater2: num [1:2000] 7 2 6 3 2 1 0 1 0 3 ...} \cr
+
+
+}
 }
 
 
@@ -34,6 +103,29 @@ data(data.si01)
 \emph{Dataset} \code{data.si01} 
 
 \code{\link{mle.pcm.group}} (Example 1)
+
+
+%%% data.si02
+\emph{Dataset} \code{data.si02} 
+
+\code{\link{rasch.mirtlc}} (Example 3)
+
+%%% data.si03
+\emph{Dataset} \code{data.si03} 
+
+\code{\link{linking.robust}} (Example 1)
+
+
+%%% data.si04
+\emph{Dataset} \code{data.si04} 
+
+\code{\link{rasch.mirtlc}} (Example 5)
+
+%%% data.si05
+\emph{Dataset} \code{data.si05} 
+
+\code{\link{lc.2raters}} (Example 1)
+
 }
 
 
@@ -43,9 +135,19 @@ data(data.si01)
 %\source{
 %%  ~~ reference to a publication or URL from which the data were obtained ~~
 %}
-%\references{
-%%  ~~ possibly secondary sources and usages ~~
-%}
+\references{
+Bartolucci, F., Montanari, G. E., & Pandolfi, S. (2012). 
+Dimensionality of the latent structure and item selection via latent 
+class multidimensional IRT models. 
+\emph{Psychometrika}, \bold{77}, 782-802.
+	
+Lindsay, B., Clogg, C. C., & Grego, J. (1991). 
+Semiparametric estimation in the Rasch model and related exponential response 
+models, including a simple latent class model for item analysis. 
+\emph{Journal of the American Statistical Association}, \bold{86}, 96-107.
+}
+
+
 %\examples{
 %data(data.si01)
 %## maybe str(data.si01) ; plot(data.si01) ...

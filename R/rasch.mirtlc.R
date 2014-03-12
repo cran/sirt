@@ -4,15 +4,17 @@
 rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" , 
 	dimensions = NULL , group = NULL ,
 	weights=rep(1,nrow(dat)) , 
-	theta.k = NULL , 
+	theta.k = NULL , ref.item = NULL , 
 	distribution.trait= FALSE ,  range.b =c(-8,8) , range.a =c(.2 , 6 ) ,  
 	progress=TRUE , glob.conv=10^(-5)  ,
-	conv1=10^(-5)  , mmliter=1000 , mstep.maxit = 3 , seed=0  , nstarts = 1){
+	conv1=10^(-5)  , mmliter=1000 , mstep.maxit = 3 , seed=0  , nstarts = 1 ,
+	fac.iter = .35 ){
 	#..................................................
 	# preliminaries
 	dat <- as.matrix(dat)
 	theta.normal <- FALSE
-	ref.item <- NULL
+	a <- c(1)
+#	ref.item <- NULL
 	if ( is.null(theta.k) ){ 
 		  theta.fixed<-FALSE  } else { 
 		  theta.fixed <- TRUE 
@@ -23,7 +25,8 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 	if ( is.null(group)){ group <- rep(1 , nrow(dat)) }
 	G <- length( unique( group ))
 	#	rescale weights
-    weights <- nrow(dat) * weights / sum(weights )
+	
+#    weights <- nrow(dat) * weights / sum(weights )
 	dat2 <- dat
 	dat2.resp <- 1* ( 1- is.na(dat ))
 	dat2[ is.na(dat) ] <- 0
@@ -56,7 +59,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 										}
 		inut <- is.null(theta.k) 
 	    if (inut){
-			theta.k <- qnorm( seq( 1 / Nclasses / 2, 1 , 1/Nclasses ) )
+			theta.k <- 2*qnorm( seq( 1 / Nclasses / 2, 1 , 1/Nclasses ) )
 							} else {
 					if (D==1){ Nclasses <- length(theta.k )  }	# works for D=1
 					if (D>1){ Nclasses <- nrow(theta.k )  }
@@ -72,7 +75,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 				 theta.kstart <- theta.k
 				 if ( seed[1] != 0 ){
 				 if (seed[1] >0){  set.seed( seed[1] ) } else{ set.seed( Sys.time() ) }
-					 theta.k <- theta.k + matrix( rnorm( Nclasses*D , sd =.7 ) , ncol=D )
+					 theta.k <- theta.k + matrix( rnorm( Nclasses*D , sd =2 ) , ncol=D )
 								}
 						} # end inut (is.null(theta.k))
             if ( D > 1 ){ Nclasses <- nrow( theta.k ) }
@@ -168,7 +171,9 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 	dev.change <- par.change <- 1000
 	# display
 	disp <- "...........................................................\n"   
-
+    NNdev <- 1*10^90
+	
+	
 	######################################
 	# begin EM algorithm
 	while ( ( dev.change > glob.conv | par.change > conv1 ) & iter < mmliter ){
@@ -181,6 +186,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 	pi.k0 <- pi.k
 	theta.k0 <- theta.k
 	dev0 <- dev
+# 	b0 <- b
 # a0 <- Sys.time()
 	# E step latent class analysis
 	if ( modeltype =="LC"){
@@ -207,11 +213,12 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 				theta.k , b , a , I , ref.item , mstep.maxit ,
 				des.theta , des.b , theta.fixed , theta.normal ,
 				f.qk.yi	, D  , distribution.trait , est.a , Qmatrix , modeltype,
-				 range.b , range.a)
+				 range.b , range.a , iter , fac.iter )
 		b <- res2$b ; theta.k <- res2$theta.k ; pi.k <- res2$pi.k
 		a <- res2$a
-#print( round(b,4)); print( round(a,4))
 					        }					  
+							
+													
 # a1 <- Sys.time() ; adiff <- a1-a0 ; cat("\nm step" , adiff ) ; a0 <- a1
 	pi.k <- res2$pi.k ;  pjk <- res2$pjk
 	# prevent label switching (modeltype == "LC")
@@ -232,7 +239,15 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 	dev.change <- abs( ( dev - dev0)/ dev0 )
 	par.change <- max( c(a1,a2,a3))
 	iter <- iter + 1
-
+	
+	# settings
+	if ( dev < NNdev ){
+		NNpjk <- pjk ; 		NNpi.k <- pi.k
+		NNdev <- dev ; 		NNll <- ll
+		NNres1 <- res1 ; NNtheta.k <- theta.k
+		NNa <- a ; NNb <- b ; NNiter <- iter			
+						}
+						
 		if ( progress  ){   
 				   cat( paste( "   Deviance = "  , 
 					round( dev , 4 ) , 
@@ -250,26 +265,35 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 							}               
 	#    print( paste( iter , ll) ) ; flush.console()
 		}
+	##### end algorithm  #***************************	
+
+		NNpjk -> pjk ; 		NNpi.k -> pi.k
+		NNdev -> dev ; 		NNll -> ll
+		NNres1 -> res1 ; NNtheta.k -> theta.k
+		NNa -> a ; NNb -> b ; NNiter -> iter			
+
+	
+	##############################################################	
 	# collect results of nstarts
 	if ( ( nn == 1 ) ){
 		NNpjk <- pjk ; 		NNpi.k <- pi.k
 		NNdev <- dev ; 		NNll <- ll ;
 		NNres1 <- res1 ; NNtheta.k <- theta.k
-		NNb <- b ; NNiter <- iter
+		NNa <- a ; NNb <- b ; NNiter <- iter
 					}
 	devL[nn] <- dev
 	if ( ( nn > 1 ) & ( dev < NNdev ) ){
 		NNpjk <- pjk ; 		NNpi.k <- pi.k
 		NNdev <- dev ; 		NNll <- ll
 		NNres1 <- res1 ; NNtheta.k <- theta.k
-		NNb <- b ; NNiter <- iter
+		NNa <- a ; NNb <- b ; NNiter <- iter
 					}
 				}
 	if (nstarts > 1){ 
 			NNpjk -> pjk ; 		NNpi.k -> pi.k
 			NNdev -> dev ; 		NNll -> ll
 			NNres1 -> res1 ; NNtheta.k -> theta.k
-			NNb -> b ; NNiter -> iter
+			NNa -> a ; NNb -> b ; NNiter -> iter
 					}
 	#############################################
 	# labels for pjk

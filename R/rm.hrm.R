@@ -5,7 +5,7 @@
 rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) , 	
 	est.a.item=FALSE , est.c.rater= "n" , 
 	est.d.rater= "n" , d.min=.5 , d.max=100 ,  d.start = 3 , 
-	max.increment=1 , numdiff.parm=.001 , maxdevchange=.10 ,
+	max.increment=1 , numdiff.parm=.00001 , maxdevchange=.10 ,
 	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001){
 	#..........................................................
 	s1 <- Sys.time()
@@ -89,7 +89,7 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 		a.item0 <- a.item
 		c.rater0 <- c.rater
 
- # a0 <- Sys.time()		
+#  a0 <- Sys.time()		
 		# calculate probabilities
 		res <- .rm.hrm.calcprobs( c.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , d.rater , item.index , rater.index ,
@@ -294,9 +294,9 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 		rater[ , paste0("c_",zz)] <- c.rater[,zz] }
 	# transformed c parameters
     for (zz in 1:(ncol(c.rater) ) ){
-		rater[ , paste0("c_",zz,".trans")] <- c.rater[,zz] / d.rater[zz] / K 
+#		rater[ , paste0("c_",zz,".trans")] <- c.rater[,zz] / d.rater[zz] / K 
+		rater[ , paste0("c_",zz,".trans")] <- c.rater[,zz] / d.rater / K 
 			}
-			
 	obji <- rater
 	for (vv in seq(2,ncol(obji) )){
 		obji[,vv] <- round( obji[,vv],3 ) }
@@ -326,3 +326,16 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 	return(res)
 
 		}
+
+		
+		
+################################
+# time stamps
+
+# many persons, one item, one rater
+
+# calcprob Time difference of 0 secs
+# posterior Time difference of 0 secs
+# est.tau Time difference of 0.07799983 secs
+# est.a Time difference of 0 secs
+# est.c.rater Time difference of 0.04680014 secs

@@ -26,7 +26,10 @@ Data frame with dichotomous responses
 Number of classes (only applies for \code{model="GOM"})
 }
   \item{problevels}{
-Probability levels for membership functions (only applies for \code{model="GOM"})
+Vector containing probability levels for membership functions 
+(only applies for \code{model="GOM"}). If a specific space of probability
+levels should be estimated, then a matrix can be supplied (see Example 1,
+Model 2a).
 }
   \item{model}{
 The type of grade of membership model. The default \code{"GOM"} 
@@ -96,16 +99,37 @@ The membership
 function of person \eqn{p} is parametrized by a location parameter \eqn{\theta_p}
 and a variability parameter \eqn{\xi_p}. Each class \eqn{k} is represented by
 a location parameter \eqn{\tilde{\theta}_k}. The membership function is defined as
-\deqn{ g_{pk} \propto exp[ -  ( \theta_p - \tilde{\theta}_k )^2 / ( 2 \xi_p^2 )]}
+\deqn{ g_{pk} \propto 
+\exp \left[ - \frac{ (\theta_p - \tilde{\theta}_k)^2 }{2 \xi_p^2 } \right]
+}
+   
 The person parameter \eqn{\theta_p} indicates the usual 'ability', while
 \eqn{\xi_p} describes the individual tendency to change between classes
 \eqn{1,\ldots,K} and their corresponding locations
 \eqn{\tilde{\theta}_1 , \ldots ,\tilde{\theta}_K}.
 The extremal class probabilities \eqn{\lambda_{ik}} follow the Rasch model
-\deqn{ \lambda_{ik} = invlogit( \tilde{\theta}_k - b_i  ) }
-            
-See Erosheva et al. (2002), Erosheva (2005) or Galyart (in press)
-for a comparison of grade of memebership models with latent trait models 
+\deqn{ \lambda_{ik} = invlogit( \tilde{\theta}_k - b_i  ) =
+\frac{ \exp( \tilde{\theta}_k - b_i ) }{ 1 + \exp( \tilde{\theta}_k - b_i ) }}
+
+Putting these assumptions together leads to the model equation
+\deqn{
+    P(X_{pi}=1 | g_{p1}, \ldots , g_{pK} ) =
+    P(X_{pi}=1 | \theta_p , \xi_p  ) =
+        \sum_k \frac{ \exp( \tilde{\theta}_k - b_i ) }{ 1 + \exp(\tilde{\theta}_k - b_i ) }
+        \cdot \exp \left[ - \frac{ (\theta_p - \tilde{\theta}_k)^2 }{2 \xi_p^2 } \right]
+                }
+
+In the extreme case of a very small \eqn{\xi_p = \varepsilon > 0} and
+\eqn{\theta_p = \theta_0}, the Rasch model is obtained
+
+\deqn{
+    P(X_{pi}=1 | \theta_p , \xi_p  ) =
+    P(X_{pi}=1 | \theta_0 , \varepsilon  )  =  
+        \frac{ \exp( \theta_0 - b_i ) }{ 1 + \exp( \theta_0 - b_i ) }
+                }
+
+See Erosheva et al. (2002), Erosheva (2005, 2006) or Galyart (in press)
+for a comparison of grade of membership models with latent trait models 
 and latent class models.
 }
 
@@ -144,7 +168,10 @@ A list with following entries:
 \references{
 Erosheva, E. A. (2005). Comparing latent structures of the grade of membership, 
 Rasch, and latent class models. \emph{Psychometrika}, \bold{70}, 619-628.
-	
+
+Erosheva, E. A. (2006). \emph{Latent class representation of the grade of membership 
+model}. Seattle: University of Washington.
+
 Erosheva, E. A., Fienberg, S. E., & Junker, B. W. (2002). 
 Alternative statistical models and representations for large sparse 
 multi-dimensional contingency tables. 
@@ -194,7 +221,33 @@ summary(mod1)
 # Model 2: Discrete GOM with 4 classes and 5 probability levels
 problevels <- seq( 0 , 1 , len=5 )
 mod2 <- gom.em( dat , K=4 , problevels ,  model="GOM"  )            
-summary(mod2)}
+summary(mod2)
+
+#***
+# Model 2a: Estimate discrete GOM with 4 classes and restricted space of probability levels
+#  the 2nd, 4th and 6th class correspond to "intermediate stages"
+problevels <- scan()
+ 1  0  0  0
+.5 .5  0  0
+ 0  1  0  0
+ 0 .5 .5  0
+ 0  0  1  0
+ 0  0 .5 .5
+ 0  0  0  1
+
+problevels <- matrix( problevels, ncol=4 , byrow=TRUE)
+mod2a <- gom.em( dat , K=4 , problevels ,  model="GOM" )            
+# probability distribution for latent classes
+cbind( mod2a$theta.k , mod2a$pi.k )
+##        [,1] [,2] [,3] [,4]       [,5]
+##   [1,]  1.0  0.0  0.0  0.0 0.17214630
+##   [2,]  0.5  0.5  0.0  0.0 0.04965676
+##   [3,]  0.0  1.0  0.0  0.0 0.09336660
+##   [4,]  0.0  0.5  0.5  0.0 0.06555719
+##   [5,]  0.0  0.0  1.0  0.0 0.27523678
+##   [6,]  0.0  0.0  0.5  0.5 0.08458620
+##   [7,]  0.0  0.0  0.0  1.0 0.25945016
+}
 
 #***
 # Model 3: Rasch GOM
@@ -205,6 +258,77 @@ summary(mod3)
 # Model 4: 'Ordinary' Rasch model
 mod4 <- rasch.mml2( dat )
 summary(mod4)
+
+\dontrun{
+#############################################################################
+# SIMULATED EXAMPLE 2: Grade of membership model with 2 classes
+#############################################################################
+
+#***** DATASET 1 *************
+# define an ordinary 2 latent class model
+set.seed(8765)
+I <- 10
+prob.class1 <- runif( I , 0 , .35 )
+prob.class2 <- runif( I , .70 , .95 )
+probs <- cbind( prob.class1 , prob.class2 )
+
+# define classes 
+N <- 1000
+latent.class <- c( rep( 1 , 1/4*N ) , rep( 2,3/4*N ) )
+
+# simulate item responses
+dat <- matrix( NA , nrow=N , ncol=I )
+for (ii in 1:I){    
+    dat[,ii] <- probs[ ii , latent.class ]
+    dat[,ii] <- 1 * ( runif(N) < dat[,ii] )
+        }
+colnames(dat) <- paste0( "I" , 1:I) 
+
+# Model 1: estimate latent class model
+mod1 <- gom.em(dat, K=2, problevels= seq(0,1,1) , model="GOM" )
+summary(mod1)
+# Model 2: estimate GOM
+mod2 <- gom.em(dat, K=2, problevels= seq(0,1,0.5) , model="GOM" )
+summary(mod2)
+# estimated distribution
+cbind( mod2$theta.k , mod2$pi.k )
+##       [,1] [,2]        [,3]
+##  [1,]  1.0  0.0 0.243925644
+##  [2,]  0.5  0.5 0.006534278
+##  [3,]  0.0  1.0 0.749540078
+
+#***** DATASET 2 *************
+# define a 2 class model with graded membership
+set.seed(8765)
+I <- 10
+prob.class1 <- runif( I , 0 , .35 )
+prob.class2 <- runif( I , .70 , .95 )
+prob.class3 <- .5*prob.class1+.5*prob.class2  # probabilities for 'fuzzy class'
+probs <- cbind( prob.class1 , prob.class2 , prob.class3)
+# define classes 
+N <- 1000
+latent.class <- c( rep(1,round(1/3*N)),rep(2,round(1/2*N)),rep(3,round(1/6*N)))
+# simulate item responses
+dat <- matrix( NA , nrow=N , ncol=I )
+for (ii in 1:I){
+    dat[,ii] <- probs[ ii , latent.class ]
+    dat[,ii] <- 1 * ( runif(N) < dat[,ii] )
+        }
+colnames(dat) <- paste0( "I" , 1:I) 
+# estimete latent class model
+mod1 <- gom.em(dat, K=2, problevels= seq(0,1,1) , model="GOM" )
+summary(mod1)
+
+# estimate GOM
+mod2 <- gom.em(dat, K=2, problevels= seq(0,1,0.5) , model="GOM" )
+summary(mod2)
+# inspect distribution
+cbind( mod2$theta.k , mod2$pi.k )
+##       [,1] [,2]      [,3]
+##  [1,]  1.0  0.0 0.3335666
+##  [2,]  0.5  0.5 0.1810114
+##  [3,]  0.0  1.0 0.4854220
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

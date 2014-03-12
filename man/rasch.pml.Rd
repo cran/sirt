@@ -13,7 +13,7 @@ Pairwise Marginal Likelihood Estimation for the Probit Rasch Model
 This function estimates unidimensional 1PL and 2PL models with
 the probit link using pairwise marginal maximum likelihood
 estimation (PMML; Renard, Molenberghs & Geys, 2004). 
-Itempairs within an itemcluster can be excluded from the 
+Item pairs within an itemcluster can be excluded from the 
 pairwise likelihood (argument \code{itemcluster}). 
 The other alternative is to model a residual
 error structure with itemclusters (argument \code{error.corr}).
@@ -140,8 +140,8 @@ An arbitrary pattern of residual correlations between
 \eqn{\epsilon_{pi}} and \eqn{\epsilon_{pj}} for item pairs \eqn{i}
 and \eqn{j} can be imposed using the \code{error.corr} argument.
 
-Linear constraints \eqn{v=Me} on residual correlations \eqn{e} 
-(in a vectorized form) can be 
+Linear constraints \eqn{Me=v} on residual correlations 
+\eqn{e=Cov( \epsilon_{pi} , \epsilon_{pj})_{ij}} (in a vectorized form) can be 
 specified using the arguments \code{err.constraintM} (matrix \eqn{M})
 and \code{err.constraintV} (vector \eqn{v}). The estimation
 is described in Neuhaus (1995).
@@ -166,9 +166,19 @@ information criterion \code{PLIC})}
 \item{eps.corr}{
 	Vectorized error correlation matrix
 		}
+\item{omega.rel}{
+	Reliability of the sum score according to Green and Yang (2009).
+	If some item pairs are excluded in the estimation, the residual
+	correlation for these item pairs is assumed to be zero.
+		}
+
 \item{\dots}{}
 }
 \references{
+Green, S. B., & Yang, Y. (2009). Reliability of summed item 
+scores using structural equation modeling: An alternative to 
+coefficient alpha. \emph{Psychometrika}, \bold{74}, 155-167.
+	
 Neuhaus, W. (1995). \emph{Optimal Estimation Under
 Linear Constraints}. Technical Report,
 Kobenhavns Universitet, Forsikringsmatematisk Laboratorium.
@@ -190,8 +200,8 @@ Alexander Robitzsch
 This function needs the \pkg{combinat} library.
 
 \code{rasch.pml2} uses the \code{pbivnorm} function from the \pkg{pbivnorm} package 
-but \code{rasch.pml3} uses the \code{\link{pbivnorm2}} from this package and 
-is somewhat faster.
+but \code{rasch.pml3} uses the \code{\link{pbivnorm2}} from this package (\pkg{sirt}) 
+and is somewhat faster.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -242,7 +252,7 @@ for ( ii in 1:3){
     error.corr[ ind.ii , ind.ii ] <- ii
         }
 # estimate the model with error correlations
-mod3 <- rasch.pml2( dat , error.corr = error.corr )
+mod3 <- rasch.pml3( dat , error.corr = error.corr )
 summary(mod3)
 
 #****
@@ -267,7 +277,7 @@ summary(mod5)
 #****
 # Model 6: estimate three item slope groups
 est.a <- rep(1:3 , each=4 )
-mod6 <- rasch.pml2( dat , est.a =est.a , est.sigma=0)
+mod6 <- rasch.pml3( dat , est.a =est.a , est.sigma=0)
 summary(mod6)
 
 #############################################################################

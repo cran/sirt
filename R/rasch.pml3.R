@@ -381,6 +381,7 @@ rasch.pml3 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 	# add results dependency parameter for item clusters
 	#item$itemcluster <- itemcluster
 	#item$delta <- 0
+	
     cat("---------------------------------------------------------------------------------------------------------- \n")
 	# print item summary
 	cat("Item Parameter Summary\n")
@@ -430,7 +431,7 @@ rasch.pml3 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 					"dat" = dat	,  "ic" = ic	, 
 					"link" =link , "itempairs" = itempairs0 ,
 					"error.corr" = error.corr0 		,
-					"eps.corr" = eps.corr , # NEW!!!
+					"eps.corr" = eps.corr , # NEW!!! 
 					"bG" = bG , "aG" = aG , "epsG" = epsG , 
 					"est.b" = est.b , "est.a" = est.a , "est.corrs" = est.corrs ,
 					"Q"=Q , "D"=D )	
@@ -438,6 +439,29 @@ rasch.pml3 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 			res$eps.corr <- eps.corr 
 			res$eps.corrM <- error.corr
 				}
+	#***
+	# reliabiity
+	
+	thresh <- - matrix( item$a * item$b , I , 1 )
+	A <- matrix( item$a * item$sigma , I , 1 )
+	# extract estimated correlation matrix
+#	corM <- mod1$eps.corrM
+	if (is.null(res$eps.corrM) ){
+		corM <- diag(I)
+			} else {
+		corM <- res$eps.corrM
+				}
+	# compute standardized factor loadings
+	facA <- 1 / sqrt( A^2 + 1 )
+	resvar <- 1 - facA^2 
+	covM <- outer( sqrt(resvar[,1]) , sqrt(resvar[,1] ) ) * corM
+	facloadings <- A *facA
+	# estimate reliability
+	rel1 <- reliability.nonlinearSEM( facloadings =facloadings ,
+			thresh =thresh , resid.cov=covM)
+	res$omega.rel <- rel1$omega.rel	
+				
+
 	res$fct <- "rasch.pml3"
 	res$s1 <- s1 ; res$s2 <- s2 
 	class(res) <- "rasch.pml"

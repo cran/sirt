@@ -26,6 +26,7 @@ data(data.pisaPars)
 \section{Example Index}{
 \code{\link{equating.rasch}} (Example 1),
 \code{\link{equating.rasch.jackknife}} (Example 1),
+\code{\link{linking.robust}} (Example 2),
 }
 
 \keyword{datasets}

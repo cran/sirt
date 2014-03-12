@@ -72,7 +72,7 @@ be weighted (specified in the fifth column of \code{itempars}).
 Effect sizes of invariance are calculated as R-squared measures
 of explained item slopes and intercepts after linking
 in comparison to item parameters across groups
-(Asparouhov & Muthen, 2013).
+(Asparouhov & Muthen, 2014).
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -108,7 +108,7 @@ A list with following entries
 
 
 \references{
-Asparouhov, T., & Muthen, B. (2013).
+Asparouhov, T., & Muthen, B. (2014).
 Multiple-group factor analysis alignment.
 \emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
 	

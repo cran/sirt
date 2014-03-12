@@ -56,17 +56,17 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
         alpha1 , alpha2 , group , pseudoll , f.qk.yi=NULL ){
     #...................................                    
     # arrange groups
-#vv0 <- Sys.time()	
+# vv0 <- Sys.time()	
     if ( is.null(group) ){ group <- rep( 1 , nrow(dat1)) }
     G <- length( unique( group) ) 
     TP <- length(theta.k)	
     # probabilities of correct item at theta_k	
     pjk <- .prob.raschtype.genlogis( theta.k , b , alpha1 , alpha2 , fixed.a )
-#cat("   probs") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1		
+# cat("   probs") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1		
     fixed.c.M <- outer( rep(1,nrow(pjk)) , fixed.c )
     fixed.d.M <- outer( rep(1,nrow(pjk)) , fixed.d )
     pjk <- fixed.c.M + ( fixed.d.M - fixed.c.M) * pjk
-#cat("   probs compute") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1			
+# cat("   probs compute") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1			
 	if ( is.null( f.qk.yi ) ){
 		#***
 		# array notation of probabilities
@@ -174,25 +174,15 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 .m.step.raschtype <- function( theta.k , b , n.k , n , n.jk , r.jk , pi.k , I , conv1 , constraints , mitermax ,
                              pure.rasch , trait.weights , fixed.a , fixed.c , fixed.d ,  alpha1 , alpha2 , h = .0025 ,
 							 designmatrix , group , numdiff.parm  , Qmatrix=NULL ,
-							 old_increment , est.b){
+							 old_increment , est.b , center.b ){
     abs.change <- 1
     miter <- 0
     # group estimation
     G <- ncol(n.k)
+	b00 <- b
     # number of subjects within groups
     n <- colSums(n.k)
 	if ( is.null(Qmatrix) ){ NT <- length(theta.k) } else { NT <- nrow(theta.k) }
-    # update pi.k 
-#    pi.k <- matrix( 0 , nrow= NT  , ncol=G)
-#    for (gg in 1:G){ 
-#        if ( is.null( trait.weights) | G > 1 ){ 
-#                pi.k[,gg] <- n.k[,gg] / n[gg]  } 
-#				else  {	
-#                 pi.k <- dnorm( theta.k)
-#                 pi.k <- pi.k/sum(pi.k) 
-#                 pi.k <- matrix( pi.k , ncol=1 )
-#                        }
-#               }
     #*****
     # begin loop
     eps <- numdiff.parm 
@@ -247,16 +237,19 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 								}						
         increment <- - d1 / d2
 #		ci <- ceiling( abs(increment) / ( abs( old_increment) + 10^(-10) ) )
-		ci <- ceiling( abs(increment) / max( abs( old_increment) + 10^(-10) ) )
+#		ci <- ceiling( abs(increment) / max( abs( old_increment) + 10^(-10) ) )
+		ci <- ceiling( abs(increment) / abs( old_increment) + 10^(-10) ) 
 		increment <- ifelse( abs( increment) > max(abs(old_increment))  , 
 								increment/(2*ci) , 
-								increment )	
+								increment )
+#		increment <- ifelse( abs( increment) > abs(old_increment)  , 
+#								sign(increment)*abs(old_increment) , 
+#								increment )														
+		# define old_increment here
+		old_increment <- increment
 		if ( ! is.null(est.b) ){
-#			ai2 <- aggregate( increment , list(est.b) , mean )								
-#			increment <- ( ai2[,2] )[ est.b ]
 			increment <- increment[ match( est.b , i1 ) ]		
 							}
-#		b.change <- ifelse( abs(b.change) > old_increment , 3*sign(b.change) , b.change )
 		b <- b + increment
         # linear parameter constraints
         if ( ! is.null( designmatrix ) & is.null(est.b) ){ 
@@ -270,9 +263,20 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 #				d2[ constraints[,1] ] <- Inf				
 					}
 
-        abs.change <- max( abs( b0 - b ) )
+        abs.change <- max( abs( b0 - b ) )			
         miter <- miter+1
         }   #*** end loop
+	   #-----
+	   # center b
+       if ( center.b ){
+		   D <- ncol(Qmatrix)
+		   for (dd in 1:D){ # dd <- 2
+			   ind.dd <- which( Qmatrix[,dd] > 0 )
+				b[ind.dd] <- b[ind.dd] - sum( Qmatrix[ind.dd,dd] * b[ ind.dd] ) / 
+						sum( Qmatrix[ind.dd,dd]  )
+							}
+						}
+	   #-----
        pjk <- .prob.raschtype.genlogis( theta.k , b , alpha1 , alpha2 , fixed.a,Qmatrix)
        pjk <- fixed.c.M + ( fixed.d.M - fixed.c.M) * pjk
         # calculate log likelihood
@@ -295,7 +299,7 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 		XX <- outer( rep(1,length(theta)) , fixed.a ) * XX
 							}
 	if ( ! is.null(Qmatrix) ){ 							
-##		XX0 <- as.matrix(theta) %*% t(Qmatrix)
+		# XX0 = Q * theta
 		XX0 <- tcrossprod( as.matrix(theta) , Qmatrix )
 		XX <- XX0 - outer( rep(1,nrow(theta)) , b )
 		XX <- as.vector(XX)
@@ -418,7 +422,7 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
 					# change in item difficulty
 					a.change <- - d1 / d2
 #					a.change <- ifelse( abs( a.change ) > .2 , .2*sign(a.change) , a.change )              
-					# dampening parameter as in tam
+					# dampening parameter as in TAM
 					old_increment <- .2
 					ci <- ceiling( abs(a.change) / ( abs( old_increment) + 10^(-10) ) )
 					a.change <- ifelse( abs( a.change) > abs(old_increment)  , 
@@ -579,6 +583,7 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
                 alpha1 , alpha2 , group ,  mu ,  Sigma.cov , Qmatrix , pseudoll ){
     #...................................                    
     # arrange groups
+# aa0 <- Sys.time()		
     if ( is.null(group) ){ group <- rep( 1 , nrow(dat1)) }
     G <- length( unique( group) )    
     # probabilities of correct item at theta_k
@@ -594,9 +599,11 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
 		pjkL[,1,] <- 1 - pjkt
 		pjkL[,2,] <- pjkt	
 		probsM <- matrix( aperm( pjkL , c(2,1,3) ) , nrow=I*2 , ncol=TP )
+# cat("- probs") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1			
 		f.yi.qk <- mml_calc_like( dat2=dat2 , dat2resp = dat2.resp , 
 					probs = probsM , pseudoll=pseudoll)$fyiqk
-					
+# cat("- likelihood") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1
+								
 	#******
     f.qk.yi <- 0 * f.yi.qk
     if ( G==1 ){ 
@@ -606,6 +613,7 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
         f.qk.yi[ group == gg , ] <- f.yi.qk[ group == gg , ] * outer( rep( 1 , nrow(dat2[ group==gg,]) ) , pi.k[,gg] )
                     }
     f.qk.yi <- f.qk.yi / rowSums( f.qk.yi )
+# cat("- posterior") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1		
     # expected counts at theta.k
     n.k <- matrix( 0 , nrow(theta.k) , G )
     r.jk <- n.jk <- array( 0 , dim=c( ncol(dat2) , nrow(theta.k) , G) )
@@ -620,6 +628,7 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
         r.jk[,,gg] <- res$rjk
 		ll[gg] <- res$ll
         }
+# cat("- counts") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1			
     res <- list( "n.k" = n.k , "n.jk" = n.jk , "r.jk" = r.jk , "f.qk.yi" = f.qk.yi , "pjk" = pjk  ,
             "f.yi.qk" = f.yi.qk , "ll" = sum(ll) )
     return(res)

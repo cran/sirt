@@ -31,7 +31,7 @@ calcpost <- function (dat2 , dat2resp , probs, dat2ind , pik , K){
 #			hwt <- hwt / nrow(theta.k) 
 #			hwt <- hwt / rowSums( hwt )
 #				}	
-		thetabar <- hwt%*%theta.k		
+		thetabar <- hwt%*%theta.k	
 		# calculation of mu
 		mu <- colSums( thetabar ) / N
 		if ( ! is.null(mu.fixed ) ){
@@ -50,7 +50,7 @@ calcpost <- function (dat2 , dat2resp , probs, dat2ind , pik , K){
 				Sigma.cov[dd1,dd2] <- sum( h1 ) / N
 				if (dd1 < dd2 ){ Sigma.cov[dd2,dd1] <- Sigma.cov[dd1,dd2] }
 									}
-								}						
+								}								
 		if ( est.corr ){ Sigma.cov <- cov2cor(Sigma.cov ) }					
 		if ( ! is.null(variance.fixed ) ){
 				Sigma.cov[ variance.fixed[,1:2,drop=FALSE] ] <- variance.fixed[,3]

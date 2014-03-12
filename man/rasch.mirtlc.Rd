@@ -7,15 +7,16 @@ Multidimensional Latent Class 1PL and 2PL Model
 }
 \description{
 This function estimates the multidimensional latent class
-Rasch (1PL) and 2PL model (Bartolucci, 2007) for dichotomous data which
-emerges from the original latent class model (Goodman, 1974).
+Rasch (1PL) and 2PL model (Bartolucci, 2007; Bartolucci, Montanari & Pandolfi,
+2012) for dichotomous data which emerges from the original latent class model 
+(Goodman, 1974) and a multidimensional IRT model.
 }
 \usage{
 rasch.mirtlc(dat, Nclasses=NULL, modeltype="LC", dimensions=NULL ,
-    group=NULL, weights=rep(1,nrow(dat)), theta.k=NULL, 
+    group=NULL, weights=rep(1,nrow(dat)), theta.k=NULL, ref.item=NULL , 
     distribution.trait= FALSE ,  range.b =c(-8,8), range.a=c(.2 , 6 ) ,  
     progress=TRUE, glob.conv=10^(-5), conv1=10^(-5), mmliter=1000, 
-    mstep.maxit=3, seed=0, nstarts=1)
+    mstep.maxit=3, seed=0, nstarts=1 , fac.iter=.35)
 
 \method{summary}{rasch.mirtlc}(object,...)	    
 }
@@ -50,6 +51,9 @@ should not be estimated. In the one-dimensional case, it
 must be a vector, in the \eqn{D}-dimensional case it must
 be a matrix of dimension \eqn{D}.
 }
+\item{ref.item}{An optional vector of integers which indicate the items
+	whose intercept and slope are fixed at 0 and 1, respectively.
+	}
 \item{distribution.trait}{A type of the assumed theta distribution can
 be specified. One alternative is \code{normal}
 for the normal distribution assumption.
@@ -89,6 +93,10 @@ the function will generate a random seed.
 	If a positive integer is provided, then a \code{nstarts}
 	starts with different starting values are conducted.
 }
+\item{fac.iter}{A parameter between 0 and 1 to control the maximum
+increment in each iteration. The larger the parameter the more increments
+will become smaller from iteration to iteration.
+}
   \item{object}{
 Object of class \code{rasch.mirtlc}
 }
@@ -111,7 +119,14 @@ vectors are estimated.
 These vectors represent the locations of latent classes. If the user
 provides a grid of theta distribution \code{theta.k} as an argument in
 \code{rasch.mirlc}, then the ability distribution is fixed.
+
+In the unidimensional Rasch model with \eqn{I} items, \eqn{(I+1)/2} 
+(if \eqn{I} odd) or \eqn{I/2 + 1} (if \eqn{I} even) trait location
+parameters are identified (see De Leeuw & Verhelst, 1986; 
+Lindsay et al., 1991; for a review see Formann, 2007).
 }
+
+
 \value{
 A list with following entries
 \item{pjk}{Item probabilities evaluated at discretized ability distribution}
@@ -138,14 +153,37 @@ A list with following entries
 \item{seedL}{Vector of seed if multiple random starts were conducted}
 \item{iter}{Number of iterations}
 }
+
+
+
 \references{
 Bartolucci, F. (2007). A class of multidimensional
 IRT models for testing unidimensionality and clustering
 items. \emph{Psychometrika}, \bold{72}, 141-157.
 
+Bartolucci, F., Montanari, G. E., & Pandolfi, S. (2012). 
+Dimensionality of the latent structure and item selection via latent 
+class multidimensional IRT models. 
+\emph{Psychometrika}, \bold{77}, 782-802.
+
+De Leeuw, J., & Verhelst, N. (1986). Maximum likelihood estimation in 
+generalized Rasch models. \emph{Journal of Educational and Behavioral Statistics}, 
+\bold{11}, 183-196.
+
+Formann, A. K. (2007). (Almost) Equivalence between conditional and mixture 
+maximum likelihood estimates for some models of the Rasch type. 
+In M. von Davier & C. H. Carstensen: 
+\emph{Multivariate and Mixture Distribution Rasch Models} (pp. 177-189). 
+Springer: New York.
+
 Goodman, L. A. (1974). Exploratory latent structure 
 analysis using both identifiable and unidentifiable 
 models. \emph{Biometrika}, \bold{61}, 215-231.
+
+Lindsay, B., Clogg, C. C., & Grego, J. (1991). 
+Semiparametric estimation in the Rasch model and related exponential response 
+models, including a simple latent class model for item analysis. 
+\emph{Journal of the American Statistical Association}, \bold{86}, 96-107.
 
 Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general 
 diagnostic model to NAEP data}. ETS Research Report ETS RR-08-27. 
@@ -286,7 +324,7 @@ mod33 <- rasch.mirtlc( dat ,  dimensions=dimensions ,
 summary(mod33)
 
 #############################################################################
-# SIMLUATED EXAMPLE 2: Skew trait distribution
+# SIMULATED EXAMPLE 2: Skew trait distribution
 #############################################################################
 set.seed(789)
 N <- 1000   # number of persons
@@ -307,13 +345,178 @@ mod2 <- rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1",
             distribution.trait="smooth3" , mmliter=30)
 
 # nonparametric distribution
-mod3 <- rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1",
-            mmliter=30)
+mod3 <- rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1", mmliter=30)
 
 summary(mod1)
 summary(mod2)            
 summary(mod3)
+
+#############################################################################
+# EXAMPLE 3: Stouffer-Toby dataset data.si02 with 5 items
+#############################################################################
+
+data(dat.si02)
+dat <- data.si02$data
+weights <- data.si02$weights   # extract weights
+
+# Model 1: 2 classes Rasch model
+mod1 <- rasch.mirtlc( dat , Nclasses=2 , modeltype="MLC1" , weights = weights , 
+           ref.item = 4 , nstarts=5)
+summary(mod1)
+
+# Model 2: 3 classes Rasch model: not all parameters are identified
+mod2 <- rasch.mirtlc( dat , Nclasses=3 , modeltype="MLC1" , weights = weights , 
+          ref.item = 4 , nstarts=5)
+summary(mod2)
+
+# Model 3: Latent class model with 2 classes
+mod3 <- rasch.mirtlc( dat , Nclasses=2 , modeltype="LC" , weights = weights , nstarts=5)
+summary(mod3)
+
+# Model 4: Rasch model with normal distribution
+mod4 <- rasch.mirtlc( dat ,  modeltype="MLC1" , weights=weights , 
+        theta.k = seq( -6 , 6 , len=21 ) , distribution.trait="normal" , ref.item=4)
+summary(mod4)
 }
+
+#############################################################################
+# SIMULATED EXAMPLE 4: 5 classes, 3 dimensions and 27 items
+#############################################################################
+
+set.seed(979)
+I <- 9
+N <- 5000
+b <- seq( - 1.5, 1.5 , len=I)
+b <- rep(b,3)
+# define class locations
+theta.k <- c(-3.0, -4.1, -2.8 , 1.7 , 2.3 , 1.8 ,
+   0.2 , 0.4 , -0.1 ,   2.6 , 0.1, -0.9, -1.1 ,-0.7 , 0.9 )
+
+Nclasses <- 5
+theta.k0 <- theta.k <- matrix( theta.k , Nclasses , 3 , byrow=TRUE )
+pi.k <- c(.20,.25,.25,.10,.15)
+theta <- theta.k[ rep( 1:Nclasses , round(N*pi.k) ) , ]
+dimensions <- rep( 1:3 , each=I)
+# simulate item responses
+dat <- matrix( NA , nrow=N , ncol=I*3)
+for (ii in 1:(3*I) ){   
+    dat[,ii] <- 1 * ( runif(N) < plogis( theta[, dimensions[ii] ] - b[ ii] ) )
+            }
+colnames(dat) <- paste0( rep( LETTERS[1:3] , each=I ) , 1:(3*I) )
+
+# estimate model
+mod1 <- rasch.mirtlc( dat , Nclasses=Nclasses , dimensions=dimensions ,  modeltype="MLC1" , 
+        ref.item= c(5,14,23) , glob.conv=.0005, conv1=.0005)
+
+round( cbind( mod1$theta.k , mod1$pi.k ) , 3 )
+##          [,1]   [,2]   [,3]  [,4]
+##   [1,] -2.776 -3.791 -2.667 0.250
+##   [2,] -0.989 -0.605  0.957 0.151
+##   [3,]  0.332  0.418 -0.046 0.246
+##   [4,]  2.601  0.171 -0.854 0.101
+##   [5,]  1.791  2.330  1.844 0.252
+cbind( theta.k , pi.k )
+##                       pi.k
+##   [1,] -3.0 -4.1 -2.8 0.20
+##   [2,]  1.7  2.3  1.8 0.25
+##   [3,]  0.2  0.4 -0.1 0.25
+##   [4,]  2.6  0.1 -0.9 0.10
+##   [5,] -1.1 -0.7  0.9 0.15
+
+# plot class locations
+plot( 1:3 , mod1$theta.k[1,] , xlim=c(1,3) , ylim=c(-5,3) , col=1 , pch=1 , type="n" , 
+    axes=FALSE, xlab="Dimension" , ylab="Location")
+axis(1 , 1:3 ) ;  axis(2) ; axis(4)
+for (cc in 1:Nclasses){ # cc <- 1
+    lines(1:3, mod1$theta.k[cc,] , col=cc , lty=cc )
+    points(1:3, mod1$theta.k[cc,] , col=cc ,  pch =cc )
+            }
+
+\dontrun{
+#------ 
+# estimate model with gdm function in CDM package
+library(CDM) 
+# define Q-matrix
+Qmatrix <- matrix(0,3*I,3)
+Qmatrix[ cbind( 1:(3*I) , rep(1:3 , each=I) ) ] <- 1
+
+set.seed(9176)
+# random starting values for theta locations
+theta.k <- matrix( 2*rnorm(5*3) , 5 , 3 )
+colnames(theta.k) <- c("Dim1","Dim2","Dim3")
+# try possibly different starting values
+
+# estimate model in CDM
+b.constraint  <- cbind( c(5,14,23) , 1 , 0 )
+mod2 <- gdm( dat , theta.k = theta.k , b.constraint=b.constraint, skillspace="est",
+               irtmodel="1PL",  Qmatrix=Qmatrix)
+summary(mod2)
+
+#------ 
+# estimate model with MultiLCIRT package
+library(MultiLCIRT)
+
+# aggregated dataset in order to input only unique response patterns
+out <- aggr_data( as.matrix(dat) , fort=TRUE)
+S <- out$data_dis
+yv <- out$freq
+# define matrix to allocate each item to one dimension
+multi1 <- matrix( 1:(3*I) , nrow=3 , byrow=TRUE )
+# define reference items in item-dimension allocation matrix
+multi1[ 1 , c(1,5)  ] <- c(5,1)
+multi1[ 2 , c(10,14) - 9  ] <- c(14,9)
+multi1[ 3 , c(19,23) - 18 ] <- c(23,19)
+
+# Rasch model with 5 latent classes (random start: start=1)
+mod3 <- est_multi_poly(S,yv,k=5,start=1,link=1,multi=multi1,tol=10^-5 , 
+           output=TRUE , disp=TRUE , fort=TRUE)
+# estimated location points and class probabilities in MultiLCIRT
+cbind( t( mod3$Th ) , mod3$piv )
+# compare results with rasch.mirtlc
+cbind( mod1$theta.k  , mod1$pi.k )
+# simulated data parameters
+cbind( theta.k , pi.k )
+
+#############################################################################
+# EXAMPLE 5: Dataset data.si04 from Bartolucci et al. (2012)
+#############################################################################
+
+data(data.si04)
+
+# define reference items
+ref.item <- c(7,17,25,44,64)
+dimensions <- data.si04$itempars$dim
+
+# estimate a Rasch latent class with 9 classes
+mod1 <- rasch.mirtlc( data.si04$data , Nclasses=9 , dimensions=dimensions ,  modeltype="MLC1" , 
+        ref.item=ref.item , glob.conv=.005, conv1=.005 , nstarts=1 , mmliter=200 )
+
+# compare estimated distribution with simulated distribution
+round( cbind( mod1$theta.k , mod1$pi.k ) , 4 ) # estimated
+##            [,1]    [,2]    [,3]    [,4]    [,5]   [,6]
+##    [1,] -3.6043 -5.1323 -5.3022 -6.8255 -4.3611 0.1341
+##    [2,]  0.2083 -2.7422 -2.8754 -5.3416 -2.5085 0.1573
+##    [3,] -2.8641 -4.0272 -5.0580 -0.0340 -0.9113 0.1163
+##    [4,] -0.3575 -2.0081 -1.7431  1.2992 -0.1616 0.0751
+##    [5,]  2.9329  0.3662 -1.6516 -3.0284  0.1844 0.1285
+##    [6,]  1.5092 -2.0461 -4.3093  1.0481  1.0806 0.1094
+##    [7,]  3.9899  3.1955 -4.0010  1.8879  2.2988 0.1460
+##    [8,]  4.3062  0.7080 -1.2324  1.4351  2.0893 0.1332
+##    [9,]  5.0855  4.1214 -0.9141  2.2744  1.5314 0.0000
+
+round(d2,4) # simulated
+##         class      A      B      C      D      E     pi
+##    [1,]     1 -3.832 -5.399 -5.793 -7.042 -4.511 0.1323
+##    [2,]     2 -2.899 -4.217 -5.310 -0.055 -0.915 0.1162
+##    [3,]     3 -0.376 -2.137 -1.847  1.273 -0.078 0.0752
+##    [4,]     4  0.208 -2.934 -3.011 -5.526 -2.511 0.1583
+##    [5,]     5  1.536 -2.137 -4.606  1.045  1.143 0.1092
+##    [6,]     6  2.042 -0.573 -0.404 -4.331 -1.044 0.0471
+##    [7,]     7  3.853  0.841 -2.993 -2.746  0.803 0.0822
+##    [8,]     8  4.204  3.296 -4.328  1.892  2.419 0.1453
+##    [9,]     9  4.466  0.700 -1.334  1.439  2.161 0.1343
+}            
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

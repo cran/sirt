@@ -103,7 +103,7 @@ model.
 
 For polytomous data, the starting point is the empirical
 distribution function
-\deqn{ P( X_i \leq k | p  ) = F( k ; p , i )  } which is increasing
+\deqn{ P( X_i \le k | p  ) = F( k ; p , i )  } which is increasing
 in the argument \eqn{k} (the item categories). 
 The ISOP model is defined to be antitonic in \eqn{p} and \eqn{i} 
 while items are ordered with respect to item P-scores and persons are ordered 
@@ -112,7 +112,7 @@ The estimated ISOP model results in a distribution
 function \eqn{F^\ast}. Using this function, the additive
 isotonic probabilistic model (ADISOP) aims at estimating
 a distribution function
-\deqn{P( X_i \leq k ; p  ) = F^{\ast \ast} ( k ; p , i ) = F^{ \ast \ast } 
+\deqn{P( X_i \le k ; p  ) = F^{\ast \ast} ( k ; p , i ) = F^{ \ast \ast } 
 	( k , \theta_p + \delta_i ) }
 which is antitonic in \eqn{k} and in \eqn{\theta_p + \delta_i}.
 Due to this additive relation, the ADISOP scale values
@@ -120,7 +120,7 @@ are claimed to be measured at interval scale level (Scheiblechner, 1999).
 
 The ADISOP model is compared to the graded response model which is
 defined by the response equation
-\deqn{P( X_i \leq k ; p  ) = g( \theta_p + \delta_i + \gamma_k ) }
+\deqn{P( X_i \le k ; p  ) = g( \theta_p + \delta_i + \gamma_k ) }
 where \eqn{g} denotes the logistic function.
 Estimated parameters are in the value \code{fit.grm}: 
 person parameters \eqn{\theta_p} (\code{person.sc}), 
@@ -206,9 +206,9 @@ Scheiblechner, H. (1999). Additive conjoint isotonic
 probabilistic models (ADISOP). \emph{Psychometrika},
 \bold{64}, 295-316.
 
-Scheiblechner, H. (2007). Nonparametric IRT:
-Testing the bi-isotonicity of istotonic probabilistic
-models (ISOP). \emph{Psychometrika}, \bold{68}, 79-96.
+Scheiblechner, H. (2007). A unified nonparametric IRT model for
+d-dimensional psychological test data (d-ISOP).
+\emph{Psychometrika}, \bold{72}, 43-67.
 
 Scheiblechner, H., & Lutz, R. (2009).
 Die Konstruktion eines optimalen eindimensionalen
@@ -231,6 +231,9 @@ Alexander Robitzsch
 \seealso{
 This function uses \code{\link{isop.scoring}},
 \code{\link{fit.isop}} and \code{\link{fit.adisop}}.
+
+Tests of the W1 axiom of the ISOP model (Scheiblechner, 1995) can be performed with 
+\code{\link{isop.test}}.
 
 See also the \pkg{ISOP} package at \emph{Rforge}: \url{http://www.rforge.net/ISOP/}. 
 

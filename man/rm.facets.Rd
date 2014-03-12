@@ -19,7 +19,7 @@ maximum likelihood.
 \usage{
 rm.facets(dat, pid=NULL, rater=NULL, Qmatrix=NULL, theta.k=seq(-9, 9, len=30), 
     est.b.rater=TRUE, est.a.item=FALSE, est.a.rater=FALSE, max.b.increment=1, 
-    numdiff.parm=0.001, maxdevchange=0.1, globconv=0.001, maxiter=1000, 
+    numdiff.parm=0.00001, maxdevchange=0.1, globconv=0.001, maxiter=1000, 
     msteps=4, mstepconv=0.001)
 
 \method{summary}{rm.facets}(object,...)	    

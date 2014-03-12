@@ -7,9 +7,9 @@ Estimation of a NOHARM Analysis from within \R
 }
 \description{
 This function enables the estimation of a NOHARM analysis
-(Fraser & McDonald, 1988; McDonald, 1997) from within \R. 
+(Fraser & McDonald, 1988; McDonald, 1982a, 1982b, 1997) from within \R. 
 NOHARM estimates a compensatory multidimensional factor analysis for dichotomous 
-response data. Arguments of this function strictly follows
+response data. Arguments of this function strictly follow
 the rules of the NOHARM manual (see Fraser & McDonald, 2012).
 }
 
@@ -102,7 +102,7 @@ item \eqn{i} the model equation is defined as
 f_{iD} \theta_{pD} ) }
 where \eqn{F=(f_{id})} is a loading matrix and \eqn{P}
 the covariance matrix of \eqn{\bold{\theta}_p}. The guessing
-parameters \eqn{c_i} must be provided as fixed inputs.
+parameters \eqn{c_i} must be provided as fixed values.
 
 For the definition of \eqn{F} and \eqn{P} matrices, please
 consult the NOHARM manual.
@@ -163,11 +163,19 @@ Fraser, C., & McDonald, R. P. (1988). NOHARM: Least squares item factor analysis
 Fraser, C., & McDonald, R. P. (2012). \emph{NOHARM 4 Manual}. 
 \url{http://noharm.niagararesearch.ca/nh4man/nhman.html}
 
+McDonald, R. P. (1982a). Linear versus models in item response theory. 
+\emph{Applied Psychological Measurement}, \bold{6}, 379-396.
+
+McDonald, R. P. (1982b). \emph{Unidimensional and multidimensional models for 
+item response theory}. I.R.T., C.A.T. conference, Minneapolis, 1982, Proceedings.
+
 McDonald, R. P. (1997). Normal-ogive multidimensional model. 
 In W. van der Linden & R. K. Hambleton (1997):
 \emph{Handbook of modern item response theory} (pp. 257-269). 
 New York: Springer.
 }
+
+
 \author{
 Alexander Robitzsch
 }

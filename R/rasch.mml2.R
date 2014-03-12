@@ -7,7 +7,7 @@
 # item discrimination and guessing parameter can be fixed
 rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weights = NULL , 
 						constraints = NULL , 
-                        glob.conv = 10^(-5) , parm.conv = 10^(-4) , mitermax = 1 , 
+                        glob.conv = 10^(-5) , parm.conv = 10^(-4) , mitermax = 4 , 
                         mmliter = 1000 , progress = TRUE ,  
                         fixed.a = rep(1,ncol(dat)) , 
                         fixed.c = rep(0,ncol(dat)) , 
@@ -21,18 +21,19 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 						min.d = 0 , max.d = 1 ,
 						est.K = NULL , min.K = 1 , max.K = 20 , 
                         pid = 1:( nrow(dat) ) , trait.weights = NULL ,
-                        center.trait = TRUE , alpha1 = 0 , alpha2 = 0 ,
+                        center.trait = TRUE , center.b = FALSE , 
+						alpha1 = 0 , alpha2 = 0 ,
                         est.alpha = FALSE , equal.alpha = FALSE , 
                         designmatrix = NULL , alpha.conv = parm.conv , 
-						numdiff.parm = 0.001 , numdiff.alpha.parm= numdiff.parm , 
-						distribution.trait = "normal" , 
+						numdiff.parm = 0.00001 , numdiff.alpha.parm= numdiff.parm , 
+						distribution.trait = "normal" ,  
 						Qmatrix = NULL , 
 						variance.fixed = NULL , 
 						mu.fixed = cbind( seq(1,ncol(Qmatrix)) , rep(0,ncol(Qmatrix)) ) ,
 						irtmodel = "raschtype" , 
 						npformula = NULL , 
 						npirt.monotone=TRUE ,						
-						use.freqpatt = is.null(group) , 
+						use.freqpatt = is.null(group) , delta.miss =0 , 
 						... ){
     #******************************************************************************************##
     # INPUT:                                                                                ***##
@@ -69,6 +70,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
     # specifications
     conv1 <- parm.conv ; nplausible = 5 
 	dat <- as.matrix(dat)
+	adaptive.quadrature <- FALSE
 # a0 <- Sys.time()	
 	# models
 	npirt <- ramsay.qm <- FALSE
@@ -92,8 +94,18 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 								}
 				npmodel <- list(1:I)
 				}	
-	# multidimensional model
-	D <- 1
+	D <- 1	
+	if (irtmodel == "missing1"){
+		D <- 2
+		theta.k <- expand.grid( theta.k , theta.k ) 
+	    dat[ dat == 9 ] <- 2	
+		dat.resp <- 1 - is.na( dat )
+		# init b parameters		
+		b.init <- - qlogis( colMeans( dat == 1 , na.rm=TRUE ) )
+		# init beta parameters
+		beta <-  qlogis( colMeans( dat == 2 , na.rm=TRUE ) )		
+			}
+	# multidimensional model	
 	if ( ! is.null( Qmatrix ) ){
 		D <- ncol(Qmatrix)
 		if ( D==2){ theta.k <- expand.grid( theta.k , theta.k ) }
@@ -149,12 +161,12 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 			colnames(dat) <- paste( "I" , 1:ncol(dat) , sep="")
 						}
 	  if ( ! is.null( constraints ) ){ 
-            center.trait <- F 
+            center.trait <- FALSE 
           if( ! is.numeric( constraints[,1] ) ){
             constraints[,1] <- match( paste(constraints[,1]) , colnames(dat) )
                                        }           
              constraints <- na.omit(constraints)
-             constraints <- constraints[ constraints[,1] <= ncol(dat) , ]
+             constraints <- constraints[ constraints[,1] <= ncol(dat) , , drop=FALSE]
                                 }
     if ( ! is.null( designmatrix) ){
             if ( ncol(dat) != nrow(designmatrix) ){ 
@@ -162,10 +174,11 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
                                 }
                         }
 	# est.b parameters
-	if (! is.null(est.b) ){
+	if ( ! is.null(est.b) ){
 #		bG <- unique( est.b ) 
 		bG <- unique( setdiff( est.b ,0 )) 
-		if ( is.null( b.init) ){ b <- rep(0 , I ) }
+		if ( is.null( b.init) ){ 
+			b <- rep(0 , I ) }  else { b <- b.init }
 
 		designmatrix <- matrix( 0 , ncol(dat) , length(bG) )	
 		for (bb in bG){
@@ -192,6 +205,13 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
         	cat("------------------------------------------------------------\n")
         flush.console()
       }
+    if ( progress & ( npirt ) ){
+        	cat("------------------------------------------------------------\n")
+			cat("Semiparametric Marginal Maximum Likelihood Estimation \n")
+			cat("Missing Data Item Response Model (Mislevy & Wu, 1996) \n") 
+        	cat("------------------------------------------------------------\n")
+        flush.console()
+      }	  
     if ( progress & ( ramsay.qm ) ){
         	cat("------------------------------------------------------------\n")
         cat("Semiparametric Marginal Maximum Likelihood Estimation \n")
@@ -225,13 +245,33 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
             }
         # data preparations 
 		if ( ! is.null( group ) ){ use.freqpatt <- FALSE }
-        dp <- .data.prep( dat , weights = weights , use.freqpatt = use.freqpatt)
-        dat1 <- dp$dat1
-        dat2 <- dp$dat2
-        dat2.resp <- dp$dat2.resp
-        freq.patt <- dp$freq.patt
-        n <- dp$n
-        I <- dp$I
+		if ( irtmodel != "missing1" ){
+			dp <- .data.prep( dat , weights = weights , use.freqpatt = use.freqpatt)
+			dat1 <- dp$dat1
+			dat2 <- dp$dat2
+			dat2.resp <- dp$dat2.resp
+			freq.patt <- dp$freq.patt
+			n <- dp$n
+			I <- dp$I
+				}
+		if ( irtmodel == "missing1" ){
+#			dat1 <- dp$dat  # frequency patterns
+            dat1 <- as.data.frame( cbind( "P" , weights ) )
+			for (ii in 1:I){
+				l1 <- dat[,ii]
+				l1 <- ifelse ( dat.resp[,ii] == 0 , 9 , l1 )
+				dat1[ , 1 ] <- paste0( dat1[,1] , l1 )
+							}
+			colnames(dat1) <- c("pattern","Freq"	)
+			dat1 <- as.data.frame(dat1)
+			freq.patt <- dat1$pattern
+			dat1$Freq <- weights
+			dat1$mean <- rowMeans( dat == 1 )			
+			dat2 <- dat
+			dat2.resp <- dat.resp
+			n <- nrow(dat2)
+			I <- ncol(dat2)
+				}				
 		#*** pseudolikelihood estimation?
 		fracresp <- "pseudoll"
 		pseudoll <- 0
@@ -248,7 +288,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		if (D > 1){
 			pi.k <- dmvnorm( theta.k , mean = rep(0,D) , sigma = Sigma.cov )	
 			pi.k <- pi.k / sum( pi.k )
-				}	
+				}		
 		G <- 1
 		pi.k <- matrix( pi.k , nrow=length(pi.k) , ncol=G )
         # group calculations
@@ -317,8 +357,20 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					ICC_model_matrix[[ii]] <- model.matrix( npformula[[ii]] , dafr )	
 						}
 				}
-	
-
+		# inits theta.k
+		theta.k0 <- as.matrix(theta.k)
+    dat2 <- as.matrix(dat2)
+	dat2.resp <- as.matrix(dat2.resp)
+	# inits probs
+	if ( irtmodel == "missing1"){
+	    TP <- nrow( theta.k)
+		CC <- 3		
+		pjk <- array( 0 , dim=c(I,CC,TP ) )
+		group_ <- rep(0,nrow(dat2) )
+		raschtype <- FALSE
+		G <- 1
+								}
+		
 #################################################	
         #--------------------------------#
         # MML Iteration Algorithm        #
@@ -328,11 +380,20 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		  cat("Iteration" , iter+1 , "   " , paste( Sys.time() ) , "\n" )
           flush.console()
 					}
-#zz0 <- Sys.time()					
-				b0 <- b
-                dev0 <- dev    		
-                # perform E Step
+# zz0 <- Sys.time()		
+	
 
+				b0 <- b
+				if ( irtmodel=="missing1" ){ beta0 <- beta }
+                dev0 <- dev    		
+				#~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
+                # perform E Step
+				if ( irtmodel == "missing1"){ 
+					e1 <- .e.step.missing1( dat2 , dat2.resp , theta.k , b , beta , delta.miss , I , CC ,
+						TP , group_ , pi.k , pjk , weights )
+					n.ik <- e1$n.ik
+					e1$ll <- e1$LL					
+							}		
                if ( ramsay.qm ){ 
 					e1 <- .e.step.ramsay( dat1 , dat2 , dat2.resp , theta.k , pi.k , I , n , b ,
 									fixed.K , group , pow.qm = pow.qm , ind.ii.list )
@@ -345,8 +406,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
                     e1 <- .e.step.raschtype.mirt( dat1 , dat2 , dat2.resp , theta.k , pi.k , I , n , b ,
                                     fixed.a , fixed.c , fixed.d ,  alpha1 , alpha2 , group ,
 									 mu , Sigma.cov , Qmatrix , pseudoll)        									
-									 }									 								 
-									 
+									 }									 								 									 
 				if (npirt ){
 					if (iter == 0){	
 							pjk <- plogis( outer( theta.k , b , "-" ) ) 
@@ -354,16 +414,16 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					e1 <- .e.step.ramsay( dat1 , dat2 , dat2.resp , theta.k , pi.k , I , n , b ,
 									fixed.K , group , pow.qm = pow.qm , ind.ii.list ,
 									pjk=pjk )				
-							}
+							}				
                 n.k <- e1$n.k
                 n.jk <- e1$n.jk
                 r.jk <- e1$r.jk
                 pjk <- e1$pjk
                 f.qk.yi <- e1$f.qk.yi
 				f.yi.qk <- e1$f.yi.qk
-                dev <- -2*e1$ll		
-#cat("e step") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
-		
+                dev <- -2*e1$ll					
+# cat("e step") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+				#~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
                 # perform M Step
 				#****
 				# Ramsay QM
@@ -383,12 +443,10 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 							alpha2 , designmatrix = designmatrix ,
 							group = group , numdiff.parm=numdiff.parm ,
 							Qmatrix = Qmatrix , old_increment=old_increment_b , 
-							est.b=est.b )
-					se.b <- m1$se.b							
+							est.b=est.b , center.b=center.b )
+					se.b <- m1$se.b
                                 }
-#cat("m step raschtype") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
-
-								
+ 							
 				# nonparametric IRT model
 				 if (npirt ){
 				    pjk0 <- pjk
@@ -397,12 +455,24 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 									ICC_model_matrix )					
 					pjk <- res$pjk
 					npmodel <- res$npmodel												
-#					pjk <- t( rjk0 / njk0 )
 					apmax <- max( pi.k[,1]*abs( pjk - pjk0)/.40 )
 					m1 <- list( "b"=b , "G" = G , 
 						"pi.k" = pi.k , "center" = FALSE )
 						}
-
+				# missing data IRT model
+				if ( irtmodel == "missing1" ){
+					m1 <- .mstep.mml.missing1( theta.k , n.ik , mitermax , conv1 , 
+						b , beta , delta.miss , pjk , numdiff.parm ,
+						constraints )
+					b <- m1$b
+					se.b <- m1$se.b
+					beta <- m1$beta
+					se.beta <- m1$se.beta
+					m1$dev <- dev
+					a1beta <- max( abs( beta - beta0 ) )		
+						}
+# cat("m step") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1							
+		#***************************************
 		# update mean and covariance in multidimensional models
 		if ( D > 1){
 			theta.k <- as.matrix(theta.k)
@@ -437,11 +507,15 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 						if (dd1 < dd2 ){ Sigma.cov[dd2,dd1] <- Sigma.cov[dd1,dd2] }
 										}
 									}
-				if ( ! is.null(variance.fixed ) ){
+				if ( ! is.null(variance.fixed ) ){				
 					Sigma.cov[ variance.fixed[,1:2,drop=FALSE] ] <- variance.fixed[,3]
-					Sigma.cov[ variance.fixed[,c(2,1),drop=FALSE] ] <- variance.fixed[,3]		
+					Sigma.cov[ variance.fixed[,c(2,1),drop=FALSE] ] <- variance.fixed[,3]												
 									}
 				diag(Sigma.cov) <- diag(Sigma.cov) + 10^(-10)
+				# adaptive estimation
+				if ( adaptive.quadrature ){ 
+					theta.k <- mu + theta.k0 %*% chol(Sigma.cov)				
+							}
 				pi.k <- matrix( dmvnorm( theta.k , mean = mu , sigma = Sigma.cov )	, ncol=1 )		
 				m1$pi.k <- pi.k <- pi.k / sum( pi.k )	
 
@@ -461,7 +535,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					delta.theta <- 1
 #					delta.theta <- theta.k[2] - theta.k[1]
 #                    sd.trait <- mean.trait <- rep(0,G)			
-				  h <- .0005
+				  h <- .0001
                     for (gg in 1:G){ 
 						pi.k0 <- pi.k
 						f.yi.qk.gg <- e1$f.yi.qk[group==gg,]
@@ -522,7 +596,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 									}
 							}
  						}  # end non-normal distribution		
-						
+# cat("trait distribution estimation") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1							
         ##############################
         # estimation of alpha, c and d parameters
         alpha.change <- 0
@@ -683,14 +757,19 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
                             }
 						}
 # cat("distribution / rest") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
-						
+#
+
+ 
             ############################
                 # possibly incorrect deviance calculated at the M step
                 #                dev <- -2*m1$ll
-                # iteration index
+                # iteration index	
                 dev.change <- abs( ( dev - dev0)/ dev0 )
                 par.change <- max( c( abs(b - b0 ) , abs(alpha.change ) , a1a , a1b , a1c , a1K ,
 								apmax) )
+				if (irtmodel=="missing1"){
+					par.change <- max( c( par.change , a1beta ))
+										}
                 # display convergence
                 if ( progress  ){   
 						cat( paste( "   Deviance = "  , 
@@ -709,6 +788,10 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
                                         cat( paste( "    Maximum a parameter change = " , 
 												paste( round(a1a ,6) , collapse=" " ) , "\n" , sep=""))
 												}
+                                    if ( irtmodel=="missing1" ){           
+                                        cat( paste( "    Maximum beta parameter change = " , 
+												paste( round(a1beta ,6) , collapse=" " ) , "\n" , sep=""))
+												}												
 									if ( sum(est.c) > 0  ){           
                                         cat( paste( "    Maximum c parameter change = " , 
 												paste( round(a1b ,6) , collapse=" " ) , "\n" , sep=""))												
@@ -739,7 +822,14 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
                      }
 		####################################### end iterations #####################
 		############################################################################
+		##**************************************************************************
+				
+			if ( irtmodel == "missing1"){
+				m1$center <- FALSE
+				G <- 1
+							}
 
+				
 			if (npirt & ( ! is.null(npformula ) ) ){
 				item <- NULL
 				for (ii in 1:I){
@@ -800,6 +890,9 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		if ( sum(est.K) > 0 ){ 
 				ic$np <- ic$np + length(kG)
 							}
+		if ( irtmodel == "missing1"){
+			ic$np <- ic$np + I
+					}
 		# parameters for multiple dimensions
 		if (D>1){ 
 			# mean vector
@@ -876,7 +969,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 			ability.est <- data.frame( dat1 , theta.k[ whichrowMaxs( f.qk.yi )$arg ] )
 			colnames(ability.est) <- c("pattern" , "AbsFreq" , "mean" , "MAP" )
 					}
-		if (D>1){					
+		if (D>1){	
 			ability.est <- data.frame( dat1 , theta.k[ whichrowMaxs( f.qk.yi )$arg ,] )
 			colnames(ability.est) <- c("pattern" , "AbsFreq" , "mean" , 
 					paste("MAP.Dim",1:D,sep="") )		
@@ -896,13 +989,18 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 								}
 						}				 
         # posterior distribution
-        rownames(f.qk.yi) <- dat1[,1]		
+        rownames(f.qk.yi) <- dat1[,1]	
         # merging ability estimates
 #        if ( ! is.null(group)){  
 		if ( G > 1 ){
                     ability.est2 <- cbind( freq.patt , ability.est[,-1] ) 
                             } else {
-                ability.est2 <- merge( freq.patt , ability.est , 1 , 1 )
+               if (irtmodel != "missing1" ){
+					ability.est2 <- merge( freq.patt , ability.est , 1 , 1 )
+						} else {
+					ability.est2 <- ability.est
+					ability.est2$index <- seq(1 , nrow(ability.est) )
+								}
                             }
         ability.est2 <- ability.est2[ order(ability.est2$index) , -c(3:5) ]   
 			
@@ -935,7 +1033,15 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		ability.est <- ability.est[ ind1  , ]
 		f.qk.yi <- f.qk.yi[ind1,]
 		f.yi.qk <- f.yi.qk[ind1,]		
-		
+		#*****
+		# item table for missing data IRT model
+		if ( irtmodel == "missing1"){
+			item$thresh <- item$est.a <- item$est.c <- item$est.d <- NULL			
+			# missing proportion
+			item$pmiss <- colSums( dat2.resp * ( dat2 == 2 ) ) / colSums( dat2.resp )
+			item$beta <- beta
+			item$delta.miss <- delta.miss		
+						}
         # output fixed.a and fixed.c         
         if ( is.null(fixed.a ) & is.null(fixed.c) ){  fixed.a <- rep(1,I) ; fixed.c <- rep(0,I) }
         # include item discrimination
@@ -1008,121 +1114,6 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 
 
 
-
-
-
-
-#*******************************************************
-# Summary for rasch.mml object                         *
-##NS S3method(summary,rasch.mml)
-summary.rasch.mml <- function( object , ... ){
-    # object      ... object from rasch.mml                #
-	
-	npirt <- object$irtmodel == "npirt"	
-	D <- object$D
-	
-	a5 <- 1*( npirt & ncol( object$item) == 5 )
-
-	cat("------------------------------------------------------------\n")
-		d1 <- packageDescription("sirt")
-		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
-		cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
-		cat("Computation time:" , print(object$s2 - object$s1), "\n\n")
-    cat("Semiparametric Marginal Maximum Likelihood Estimation \n")
-	if ( object$Rfcttype == "rasch.mml" ){ cat("Function 'rasch.mml' \n\n") }
-	if ( object$Rfcttype == "rasch.mml2" ){ cat("Function 'rasch.mml2' \n\n") }	
-	if ( ! object$ramsay.qm ){
-		cat("Rasch Type Model with Fixed Discrimination, Guessing and Slipping Parameters \n") 
-		cat("alpha1=",round(object$alpha1,3)," alpha2=" , round(object$alpha2,3) , " \n")
-		moments <- genlogis.moments( alpha1=object$alpha1 , alpha2=object$alpha2)
-		cat("Moments: \n" ); print(round(moments,2)) ; cat("\n")
-							}
-	    if ( object$ramsay.qm ){  cat("Quotient Model (Ramsay, 1989) \n") 	}
-	    if ( object$irtmodel == "npirt" ){  cat("Nonparametric IRT \n") 	}		
-        flush.console()
-	if ( sum(object$est.c) > 0){ cat(paste( "Estimated guessing parameter groups \n") )}  
-				## estimated guessing parameters
-    if ( object$G > 1 ){ cat("\nMultiple Group Estmation with",object$G , "Groups \n") 
-			print(object$groupindex) ; cat("\n")
-			}
-	cat("------------------------------------------------------------\n")
-	cat( "Number of iterations =" , object$iter , "\n" )
-    cat( "Deviance = " , round( object$deviance , 2 ) , " | " )
-    cat( "Log Likelihood = " , round( -object$deviance/2 , 2 ) , "\n" )	
-    cat( "Number of persons = " , object$ic$n , "\n" )    
-    cat( "Number of estimated parameters = " , object$ic$np , "\n" )    
-    cat( "AIC  = " , round( object$ic$AIC , 2 ) , " | penalty =" , 
-				round( object$ic$AIC - object$ic$deviance ,2 ) , 
-			"   | AIC = -2*LL + 2*p  \n" )    
-    cat( "AICc = " , round( object$ic$AICc , 2 ) ," | penalty =" , 
-				round( object$ic$AICc - object$ic$deviance ,2 ) )
-		cat("    | AICc = -2*LL + 2*p + 2*p*(p+1)/(n-p-1)  (bias corrected AIC)\n" )   	
-    cat( "BIC  = " , round( object$ic$BIC , 2 ) , " | penalty =" , 
-					round( object$ic$BIC - object$ic$deviance ,2 ) , 
-			"   | BIC = -2*LL + log(n)*p  \n" )  
-    cat( "CAIC = " , round( object$ic$CAIC , 2 ) ," | penalty =" , 
-				round( object$ic$CAIC - object$ic$deviance ,2 ) )
-		cat("   | CAIC = -2*LL + [log(n)+1]*p  (consistent AIC)\n\n" )   
-
-	#------------------------------------
-	if ( object$D == 1){	
-	if ( is.null( object$trait.weights) ){
-		cat( "Trait Distribution (" , length(object$trait.distr[,1]) , " Knots )\n" , 
-				  "Mean=" , round( object$mean.trait,3) , "\n SD=" , round( object$sd.trait , 3) ,
-				  "\n Skewness=" , round( object$skewness.trait , 3) 
-				  ) 
-						}
-	if ( ! is.null( object$trait.weights) ){
-		M1 <- weighted.mean( object$theta.k ,object$trait.weights )
-		S1 <- sqrt( weighted.mean( object$theta.k^2 ,object$trait.weights ) - M1^2	)
-		cat( "Fixed Trait Distribution (" , length(object$trait.distr[,1]) , " Knots )\n" , 
-				  "Mean=" , round( M1 ,3 ) , 
-					" SD=" , round( S1 , 3) 
-								)
-						}						
-						}
-	if ( object$ramsay.qm ){ cat( "      Note: log theta distribution is parametrized!") }
-	cat("\n")
-	if ( D > 1){
-		cat("Mean Vector\n") ; print( round( object$mu , 3 ) )
-		cat("\nCovariance Matrix\n") ; print( round( object$Sigma.cov , 3 ) )	
-		cat("\n")
-		covmat <- object$Sigma.cov 
-		covmat2 <- cov2cor( covmat )
-		diag(covmat2) <- sqrt( diag(covmat) )
-		cat("\nStandard Deviations / Correlation Matrix\n") ; print( round( covmat2 , 3 ) )	
-		cat("\n")
-				}
-	
-	if ( object$irtmodel != "npirt" ){	
-		cat( "Item Difficulty Distribution (" , nrow(object$item) , " Items )\n" , 
-				  "Mean=" , round( mean(object$item$b) ,3) , " SD=" , 
-							round( sd(object$item$b) , 3) , "\n") 
-							}
-    cat( "Distribution of Items Administered (" , nrow(object$item) , " Items )\n" , 
-              "Mean=" , round( mean(rowSums( 1 - is.na(object$dat) )) ,3) , " SD=" , 
-                        round( sd(rowSums( 1 - is.na(object$dat) )) ,3) , "\n\n") 
-	cat( "EAP Reliability: ") 
-	cat(round( object$reliability$eap.reliability,3 ) )
-	cat( "\n")
-	if ( a5 == 0 ){
-	cat("------------------------------------------------------------\n")
-		cat("Item Parameter \n")
-		if ( ! object$ramsay.qm ){ obji <- object$item } else { obji <- object$item2 }
-		rvars <- seq( 2 , ncol(obji ) )
-		ind <- which( colMeans( is.na( obji )) == 1 )
-		roundvars <- setdiff( rvars , ind )
-		if (npirt ){ 
-		  roundvars <- c("p","est","se" )
-				}		
-		for (vv in roundvars ){ 
-			obji[,vv] <- round( obji[,vv] , 3 ) 
-					}
-		rownames(obji) <- NULL
-		print( obji )                
-			}
-                }
-#*******************************************************
 
 
 

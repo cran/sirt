@@ -31,6 +31,41 @@ a.robitzsch /-\ bifie.at
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+---
+Versions 0.43 -- 2013-03-12
+---
+x included function 'isop.test' for testing the ISOP model
+x included (non-iterative) eigenvector method for estimating
+  the partial credit model -> 'rasch.evm.pcm'
+x included argument 'ref.item' in rasch.mirtlc for specification
+  of reference items
+x included test of de Gooijer and Yuan (2011) that CSN is non-positive
+   -> 'unidim.test.csn'   
+x included option for testing differential item functioning in
+  rasch.evm.pcm
+x changed convergence behavior in rasch.mirtlc for 2PL models
+x robust linking alternative to mean-mean linking ('linking.robust')
+x corrected output for hierarchical rater model ('rm.hrm')
+x included simple latent class model for two exchangeable raters 
+  ('lc.2raters')
+x extended unidimensional copula model to multiple dimensions ('rasch.copula3')
+x changed numerical differentiation parameters in several functions
+   to a smaller value
+x included missing data IRT model ('rasch.mml2', irtmodel='missing1')
+x included person (containing person parameters) as a value in rasch.copula2
+   and rasch.copula2
+x fixed a bug in testlet.yen.q3
+x allowed correlated residuals in reliability calculation of 'reliability.nonlinearSEM'
+x included reliability estimated for pseudo maximum likelihood estimation (rasch.pml3)
+x included marginal item parameters in the output in testlet model (mcmc.3pno.testlet)
+
+* included/modified datasets: data.reck73C1a, data.reck73C1b,
+  data.reck75C2, data.reck78ExA, data.reck79ExB, 
+  data.liking.science, data.si02, data.si03, data.si04, data.si05
+* included/modified examples: isop.test (1), rasch.evm.pcm (1,2,3,4,5,6),
+  data.reck (2,3), rasch.mirtlc (3,4,5), gom.em (2), unidim.test.csn (1,2),
+  gom.em (1), linking.robust (1,2,3), lc.2raters (1), data.wide2long (2),
+  rasch.copula (4), rasch.mml2 (7), reliability.nonlinearSEM (1)  
 
 ---
 Versions 0.42 -- 2013-01-31
@@ -348,7 +383,7 @@ x included simulation function for Rasch copula model
 
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-# older sirt versions (formerly sirtr)
+# older sirt versions (formerly sirtr up to 0.21)
 
 Version 0.21 -- 2012-06-23
 Version 0.20 -- 2012-06-18

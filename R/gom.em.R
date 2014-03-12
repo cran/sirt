@@ -47,7 +47,7 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 	
 	if (model=="GOM"){
 		theta.k <- .gom.calc.theta(K, problevels)
-		TP <- nrow(theta.k)	
+		TP <- nrow(theta.k)		
 		pi.k <- as.vector(rep(1/TP , TP ))
 		lambda <- matrix( .75*seq( 1/(2*K) , 1 , 1/K) , I , K , byrow=T ) 
 		theta0.k <- NULL
@@ -160,12 +160,11 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 	
 	#---
 	# person parameters
-
 	#---
 	# item
 	item <- data.frame("item" = colnames(dat))
 	item$N <- colSums( dat2.resp )
-	item$p <- colMeans( dat2 , na.rm=T)
+	item$p <- colMeans( dat2 , na.rm=TRUE)
 	item$b <- b
 	if (model != "GOMRaschxxx"){
 		for (kk in 1:K){
@@ -199,7 +198,6 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 		cat("*********************************\n")
 		cat("EAP Reliability = " , round(EAP.rel,3) , "\n")				
 		}
-	
 	#***
 	# MAP
 	maxval <- f.qk.yi[,1]
@@ -215,7 +213,14 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 	# descriptives of classes
 	
 	score <- rowSums( dat2 *dat2.resp ) / rowSums( dat2.resp )
-	PL <- length(problevels)
+	plmat <- FALSE
+	if ( is.vector(problevels) ){ 
+		PL <- length(problevels) 
+			}
+	if ( is.matrix(problevels) ){ 
+		PL <- nrow(problevels) 
+		plmat <- TRUE
+			}	
 	theta.kk0 <- theta.k
 	if ( model=="GOMRasch"){
 	    PL <- 5
@@ -231,31 +236,34 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 						} }
 		pi.k <- pi.k[,1]					
 			}  # end GOMRasch
-	classdesc <- data.frame( matrix( 0 , 2*PL+1 , K ) )
-	classdesc[1,] <- colSums( theta.kk0 * pi.k )
-	for (kk in 1:K){
-		for (ll in 1:PL){
-			ll1 <- problevels[ll]
-			classdesc[ ll+1 , kk ] <- sum( pi.k * ( theta.kk0[,kk] == ll1 ) )
-			# aggregate( pi.k , list( theta.kk0[,kk]  ) , sum )[,2]
-					}
-			}
-	rownames(classdesc)[1] <- "p.Class"
-	colnames(classdesc) <- paste0("Class" , 1:K )
-	rownames(classdesc)[2:(PL+1)] <- paste0( "p.problevel" , round( problevels , 3 ) , ".class" )
-	rownames(classdesc)[PL+2:(PL+1)] <- paste0( "M.problevel" , round( problevels , 3 ) , ".class" )
-	for (kk in 1:K){
-		# kk <- 1
-		ll.kk <- problevels
-		for (ll in 1:PL){
-			# ll <- 1
-			ind.ll <- which( theta.kk0[,kk]  == problevels[ll] )
-			rll.wt <- rowSums( f.qk.yi[ , ind.ll , drop=FALSE] )
-			ll.kk[ll] <- weighted.mean( score , rll.wt )
+		classdesc <- NULL
+	if ( ! plmat ){				
+		classdesc <- data.frame( matrix( 0 , 2*PL+1 , K ) )
+		classdesc[1,] <- colSums( theta.kk0 * pi.k )
+		for (kk in 1:K){
+			for (ll in 1:PL){
+				ll1 <- problevels[ll]
+				classdesc[ ll+1 , kk ] <- sum( pi.k * ( theta.kk0[,kk] == ll1 ) )
+				# aggregate( pi.k , list( theta.kk0[,kk]  ) , sum )[,2]
+						}
 				}
-		classdesc[ PL + 2:(PL+1) , kk ]  <- ll.kk
+				
+			rownames(classdesc)[1] <- "p.Class"
+			colnames(classdesc) <- paste0("Class" , 1:K )
+			rownames(classdesc)[2:(PL+1)] <- paste0( "p.problevel" , round( problevels , 3 ) , ".class" )
+			rownames(classdesc)[PL+2:(PL+1)] <- paste0( "M.problevel" , round( problevels , 3 ) , ".class" )
+		for (kk in 1:K){
+			# kk <- 1
+			ll.kk <- problevels
+			for (ll in 1:PL){
+				# ll <- 1
+				ind.ll <- which( theta.kk0[,kk]  == problevels[ll] )
+				rll.wt <- rowSums( f.qk.yi[ , ind.ll , drop=FALSE] )
+				ll.kk[ll] <- weighted.mean( score , rll.wt )
+					}
+			classdesc[ PL + 2:(PL+1) , kk ]  <- ll.kk
+				}
 			}
-	
 	#***
 	# output
 	s2 <- Sys.time()
@@ -269,7 +277,7 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 		"n.ik"=n.ik ,  "iter"=iter , "dat2"=dat2 , "dat2.resp"=dat2.resp , 
 		"I"=I ,  "K"=K ,  "TP"=TP , "theta.k" = theta.k , "pi.k"=pi.k ,
 		"problevels"=problevels , 	
-		"model"=model , "s1"=s1 , "s2"=s2 
+		"model"=model , "s1"=s1 , "s2"=s2  , "plmat"= plmat
 				)
 	class(res) <- "gom"
 	return(res)

@@ -21,12 +21,14 @@ using namespace Rcpp;
 
 // declarations
 extern "C" {
-SEXP mle_pcm_group_C( SEXP dat_, SEXP dat_resp_, SEXP groupM_, SEXP b_, SEXP a_, SEXP maxK_, SEXP theta0_, SEXP conv_, SEXP maxiter_) ;
+SEXP mle_pcm_group_C( SEXP dat_, SEXP dat_resp_, SEXP groupM_, SEXP b_, 
+	SEXP a_, SEXP maxK_, SEXP theta0_, SEXP conv_, SEXP maxiter_) ;
 }
 
 // definition
 
-SEXP mle_pcm_group_C( SEXP dat_, SEXP dat_resp_, SEXP groupM_, SEXP b_, SEXP a_, SEXP maxK_, SEXP theta0_, SEXP conv_, SEXP maxiter_ ){
+SEXP mle_pcm_group_C( SEXP dat_, SEXP dat_resp_, SEXP groupM_, SEXP b_, 
+	SEXP a_, SEXP maxK_, SEXP theta0_, SEXP conv_, SEXP maxiter_ ){
 BEGIN_RCPP
   
      Rcpp::NumericMatrix dat(dat_);          
@@ -152,12 +154,14 @@ END_RCPP
 
 // declarations
 extern "C" {
-SEXP mle_pcm_C( SEXP dat_, SEXP dat_resp_, SEXP b_, SEXP a_, SEXP maxK_, SEXP theta0_, SEXP conv_, SEXP maxiter_) ;
+SEXP mle_pcm_C( SEXP dat_, SEXP dat_resp_, SEXP b_, SEXP a_, SEXP maxK_, 
+	 SEXP theta0_, SEXP conv_, SEXP maxiter_) ;
 }
 
 // definition
 
-SEXP mle_pcm_C( SEXP dat_, SEXP dat_resp_, SEXP b_, SEXP a_, SEXP maxK_, SEXP theta0_, SEXP conv_, SEXP maxiter_ ){
+SEXP mle_pcm_C( SEXP dat_, SEXP dat_resp_, SEXP b_, SEXP a_, SEXP maxK_, 
+	SEXP theta0_, SEXP conv_, SEXP maxiter_ ){
 BEGIN_RCPP
   
      Rcpp::NumericMatrix dat(dat_);          

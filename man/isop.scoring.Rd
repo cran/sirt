@@ -94,9 +94,9 @@ Scoring functions and ordinal parameter estimation
 of isotonic probabilistic models (ISOP)}.
 Technical Report, Philipps-Universitaet Marburg.
 
-Scheiblechner, H. (2007). Nonparametric IRT:
-Testing the bi-isotonicity of istotonic probabilistic
-models (ISOP). \emph{Psychometrika}, \bold{68}, 79-96.
+Scheiblechner, H. (2007). A unified nonparametric IRT model for
+d-dimensional psychological test data (d-ISOP).
+\emph{Psychometrika}, \bold{72}, 43-67.
 }
 
 

@@ -17,7 +17,8 @@ data(data.ml2)
 }
 \format{
 \itemize{	
-\item  \code{data.ml1} \cr
+\item  \code{data.ml1}
+
   A data frame with 2000 student observations in 100 classes on 17 variables.
   The first variable \code{group} contains the class identifier.
   The remaining 16 variables are dichotomous test items. 
@@ -33,7 +34,8 @@ data(data.ml2)
 \code{ $ X16  : num  0 0 1 0 0 0 1 0 0 0 ...} \cr
 
   
-\item  \code{data.ml2} \cr
+\item  \code{data.ml2}
+
   A data frame with 2000 student observations in 100 classes on 6 variables.
   The first variable \code{group} contains the class identifier.
   The remaining 5 variables are polytomous test items.

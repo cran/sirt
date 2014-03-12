@@ -10,7 +10,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 						est.b = seq(1,ncol(dat)) , est.a = rep(1,ncol(dat)) , est.delta = NULL , 
 						b.init = NULL , a.init = NULL , 
 						est.alpha = FALSE , 
-						glob.conv = .001 , alpha.conv = .0001 , conv1 = .001 ,
+						glob.conv = .0001 , alpha.conv = .0001 , conv1 = .001 ,
 						dev.crit = .2
 #						pattern.off = FALSE
 										){
@@ -282,13 +282,15 @@ rasch.copula2 <- function( dat , itemcluster ,
 			# is this really necessary?
 #			wgt.theta <- rescop$pik
 						
-			rest1 <- .update.ll.rasch.copula21( theta.k , b0 + h*est.bb , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
-							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 
-							bdat2.li , bdat2.li.resp , rescop , itemcluster , pattern , GG , copula.type)
+			rest1 <- .update.ll.rasch.copula21( theta.k , b0 + h*est.bb , alpha1 , alpha2 , 
+				a , dat2.li , itemcluster0 , 
+					CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 
+					bdat2.li , bdat2.li.resp , rescop , itemcluster , pattern , GG , copula.type)
 					
-			rest2 <- .update.ll.rasch.copula21( theta.k , b0 - h*est.bb , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
-							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 
-							bdat2.li , bdat2.li.resp , rescop , itemcluster , pattern , GG , copula.type)
+			rest2 <- .update.ll.rasch.copula21( theta.k , b0 - h*est.bb , alpha1 , alpha2 , 
+					a , dat2.li , itemcluster0 , 
+					CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 
+					bdat2.li , bdat2.li.resp , rescop , itemcluster , pattern , GG , copula.type)
 			ll0 <- ll1 <- ll2 <- rep(0,I)
 			# numerical derivatives independent items
 			if ( rescop$calc.ind ){
@@ -314,7 +316,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 			ll2 <- a1[,4]			
 			b.change <- nr.numdiff( ll0=ll0 , ll1=ll1 , ll2=ll2 , h=h )	
 			hstep <- .5^( log(iter) )
-			b.change <- ifelse( abs( b.change ) > hstep , hstep*sign(b.change) , b.change )              			
+			b.change <- ifelse( abs( b.change ) > hstep , hstep*sign(b.change) , b.change )            			
 			b.change <- b.change[ match( est.b , a1[,1] ) ]		
 			b <- b + b.change
 			cat( paste( rep( "-" , prbar[bb]), collapse="") )
@@ -339,15 +341,16 @@ rasch.copula2 <- function( dat , itemcluster ,
 		for (aa in aG){
 			est.aa <- 1 * (est.a == aa )
 			rescop <- .ll.rasch.copula20( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
-							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 
+							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , 
+							delta , wgt.theta , I , 
 							bdat2.li , bdat2.li.resp  , pattern , GG , copula.type , Ncat.ld)
 			ll0 <- rescop$ll
-			ll1 <- .update.ll.rasch.copula20( theta.k , b, alpha1 , alpha2 , a + h*est.aa , dat2.li , itemcluster0 , 
-							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 
-							bdat2.li , bdat2.li.resp , rescop , itemcluster  , pattern , GG , copula.type )$ll
-			ll2 <- .update.ll.rasch.copula20( theta.k , b , alpha1 , alpha2 , a - h*est.aa , dat2.li , itemcluster0 , 
-							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 
-							bdat2.li , bdat2.li.resp , rescop , itemcluster  , pattern , GG , copula.type)$ll			
+			ll1 <- .update.ll.rasch.copula20( theta.k , b, alpha1 , alpha2 , a + h*est.aa , 
+						dat2.li , itemcluster0 , 
+						CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 
+						bdat2.li , bdat2.li.resp , rescop , itemcluster  , pattern , GG , copula.type )$ll
+			ll2 <- .update.ll.rasch.copula20( theta.k , b , alpha1 , alpha2 , a - h*est.aa , 
+						dat2.li , itemcluster0 , CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I ,	bdat2.li , bdat2.li.resp , rescop , itemcluster  , pattern , GG , copula.type)$ll			
 			d1 <- ( ll1 - ll2  ) / ( 2 * h )    
 			# second order derivative
 			# f(x+h)+f(x-h) = 2*f(x) + f''(x)*h^2
@@ -681,7 +684,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 				} )			
 	.pr(summary.delta , digits = 3)
 	cat(paste("\nEAP Reliability:" , round( EAP.Rel,3)),"\n\n")
-	cat("Generalzed logistic link function\n")
+	cat("Generalized logistic link function\n")
 	cat("alpha1=",round(alpha1,3)," alpha2=" , round(alpha2,3) , " \n\n")	
         # computational time
         s2 <- Sys.time()
@@ -698,14 +701,21 @@ rasch.copula2 <- function( dat , itemcluster ,
 					dat2.ld.resp = dat2.ld.resp , dp.ld = dp.ld , CC = CC ,
 					bdat2.li = bdat2.li , bdat2.li.resp = bdat2.li.resp , 
 					itemcluster0 = itemcluster0 , dat3.ld = dat3.ld		
-							)						
+							)				
+
+						
     # collect results
 	v1 <- datalist$pattern.in.data	
 	patternindex <- match( v1 , pattern$pattern )				
+	# person parameters
+	person <- pattern[ patternindex, ] 
+	person$freqwgt <- NULL	
+	
 	res <- list( "N.itemclusters" = CC , "item" = item , "iter" = iterend , "dev" = dev ,
 					"delta" = delta , "b" = b , "a" = a , "mu" = mu , "sigma" = sigma , 
 					"alpha1"=alpha1 , "alpha2"=alpha2 , "ic" = ic , "theta.k" = theta.k , "deviance" = dev ,
-					"pattern" = pattern	 , "datalist" = datalist	, "EAP.Rel" = EAP.Rel	,
+					"pattern" = pattern	 , "person" = person ,
+					"datalist" = datalist	, "EAP.Rel" = EAP.Rel	,
 					"copula.type" = copula.type	, "summary.delta" = summary.delta ,
 					"f.qk.yi" =(res.posterior$post)[ patternindex ,] , 
 					"f.yi.qk" =(res.posterior$post.unnorm)[ patternindex ,] , 					

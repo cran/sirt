@@ -68,18 +68,24 @@ Should theta values be saved?
 %% DETAILS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \details{
-The testlet response model for person \eqn{n} at item \eqn{i} 
+The testlet response model for person \eqn{p} at item \eqn{i} 
 is defined as 
-\deqn{ P(X_{ni} = 1 ) = c_i + ( 1 - c_i ) 
-		\Phi ( a_i \theta_n + \gamma_{n,t(i)} + b_i	) \quad , \quad
-	\theta_n \sim N ( 0  ,1 ) , \gamma_{n,t(i)} \sim N( 0 , \sigma^2_t ) }
+\deqn{ P(X_{pi} = 1 ) = c_i + ( 1 - c_i ) 
+		\Phi ( a_i \theta_p + \gamma_{p,t(i)} + b_i	) \quad , \quad
+	\theta_p \sim N ( 0  ,1 ) , \gamma_{p,t(i)} \sim N( 0 , \sigma^2_t ) }
 
 In case of \code{est.slope=FALSE}, all item slopes \eqn{a_i} are set to 1. Then
-a variance \eqn{\sigma^2} of the \eqn{\theta_n} distribution is estimated
+a variance \eqn{\sigma^2} of the \eqn{\theta_p} distribution is estimated
 which is called the Rasch testlet model in the literature (Wang & Wilson, 2005).
 
 In case of \code{est.guess=FALSE}, all guessing parameters \eqn{c_i} are
 set to 0.
+
+After fitting the testlet model, marginal item parameters are calculated (integrating
+out testlet effects \eqn{\gamma_{p,t(i)}}) according the defining response equation
+\deqn{ P(X_{pi} = 1 ) = c_i + ( 1 - c_i ) 
+		\Phi ( a_i^\ast \theta_p + b_i^\ast	) }
+
 }
 
 
@@ -88,7 +94,9 @@ set to 0.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \value{
 A list of class \code{mcmc.sirt} with following entries:
-  \item{mcmcobj}{Object of class \code{mcmc.list}}
+  \item{mcmcobj}{Object of class \code{mcmc.list} containing item parameters
+  (\code{b_marg} and \code{a_marg} denote marginal item parameters)
+  and person parameters (if requested)}
   \item{summary.mcmcobj}{Summary of the \code{mcmcobj} object. In this
   summary the Rhat statistic and the mode estimate MAP is included.
   The variable \code{PercSEratio} indicates the proportion of the Monte Carlo
@@ -98,7 +106,7 @@ A list of class \code{mcmc.sirt} with following entries:
   \item{burnin}{Number of burnin iterations}
   \item{iter}{Total number of iterations}
   \item{theta.chain}{Sampled values of \eqn{\theta_p} parameters}
-  \item{deviance.chain}{Sampled values of Deviance values}  
+  \item{deviance.chain}{Sampled values of deviance values}  
   \item{EAP.rel}{EAP reliability}
   \item{person}{Data frame with EAP person parameter estimates for 
   	  \eqn{\theta_p} and their corresponding posterior standard

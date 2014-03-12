@@ -39,8 +39,8 @@ summary.rasch.pml <- function( object , ...){
     cat( round(object$sigma , 3 ) , "\n")
 	cat("Trait SD (Logit Link) : ")
     cat( round( object$item$sigma[1] * 1.701 , 3 ) , "\n")		
-#	cat("\nCorrelation Matrix\n")
-#    print( cov2cor(object$sigma) , digits=3 )
+	cat("\nGreen-Yang Reliability \n")
+    cat( "omega =" , round( object$omega.rel , 3 ) , "\n")
     cat("-----------------------------------------------------------------\n")
 	
 	if ( object$est.corrs){

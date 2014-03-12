@@ -15,7 +15,7 @@ smirt(dat, Qmatrix, irtmodel="noncomp" , est.b = NULL, est.a = NULL,
      est.c = NULL, est.d = NULL, b.init = NULL, a.init = NULL, c.init = NULL,
      d.init=NULL, Sigma.init=NULL , theta.k=seq(-6,6,len=20), theta.kDES=NULL, 
      qmcnodes=0 , mu.fixed = NULL, variance.fixed = NULL,  est.corr = FALSE, 
-     max.increment = 1, increment.factor=1, numdiff.parm = 0.001, 
+     max.increment = 1, increment.factor=1, numdiff.parm = 0.00001, 
      maxdevchange = 0.1, globconv = 0.001, maxiter = 1000, msteps = 4, 
      mstepconv = 0.001)
 
@@ -86,7 +86,11 @@ Matrix with fixed entries in the mean vector. By default, all means
 are set to zero.
 }
   \item{variance.fixed}{
-Matrix with fixed entries in the covariance matrix (see Examples).
+Matrix (with rows and three columns) with fixed entries in the covariance matrix 
+(see Examples). The entry \eqn{c_{kd}} of the covariance between dimensions
+  \eqn{k} and \eqn{d} is set to \eqn{c_0} iff \code{variance.fixed} has a row with 
+  a \eqn{k} in the first column, a \eqn{d} in the second column and the value
+  \eqn{c_0} in the third column.
 }
   \item{est.corr}{
 Should only a correlation matrix instead of a covariance matrix
@@ -261,7 +265,7 @@ summary(mod1)
 mod2 <- smirt(dat,Qmatrix=Q , est.a="2PL" , maxiter=15 )
 summary(mod2)
 
-# avoid convergence problems with increment.factor
+# Model 2a: avoid convergence problems with increment.factor
 mod2a <- smirt(dat,Qmatrix=Q , est.a="2PL" , maxiter=30 , increment.factor=1.03)
 summary(mod2a)
 
@@ -314,6 +318,7 @@ summary(mod7)
 # Model 8: Compensatory model with within item dimensionality
 # 		assuming zero correlation between dimensions
 variance.fixed <- as.matrix( cbind( 1,2,0) )
+# set the covariance between the first and second dimension to zero
 mod8 <- smirt(dat,Qmatrix=Q , irtmodel="comp" , variance.fixed=variance.fixed ,
       maxiter=30)
 summary(mod8)
@@ -367,8 +372,7 @@ summary(mod10)
 #****
 # Model 11: Quasi Monte Carlo integration
 Qmatrix <- matrix( 1 , I , 1 )
-mod11 <- smirt( dat , irtmodel="comp" , Qmatrix=Qmatrix ,
-         qmcnodes=1000 )
+mod11 <- smirt( dat , irtmodel="comp" , Qmatrix=Qmatrix , qmcnodes=1000 )
 summary(mod11)
 
 #############################################################################
@@ -404,6 +408,8 @@ summary(mod2)
 # Model 3: 3-dimensional 2PL model with uncorrelated dimensions
 # fix entries in variance matrix
 variance.fixed <- cbind( c(1,1,2) , c(2,3,3) , 0 )
+# set the following covariances to zero: cov[1,2]=cov[1,3]=cov[2,3]=0
+
 # estimate model
 mod3 <- smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , est.a="2PL" , 
          variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)
@@ -417,6 +423,11 @@ summary(mod3)
 Qmatrix1 <- cbind( 1 , Qmatrix )
 # uncorrelated factors
 variance.fixed <- cbind( c(1,1,1,2,2,3) , c(2,3,4,3,4,4) , 0 )
+# The first dimension refers to the general factors while the other
+# dimensions refer to the specific factors.
+# The specification means that: 
+# Cov[1,2]=Cov[1,3]=Cov[1,4]=Cov[2,3]=Cov[2,4]=Cov[3,4]=0 
+
 # estimate model
 mod4 <- smirt( dat , Qmatrix=Qmatrix1 , irtmodel="comp" , est.a="2PL" , 
          variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)

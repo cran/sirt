@@ -81,6 +81,20 @@
 		colnames(sigma.testlet.chain) <- paste0("sigma.testlet[", 1:TT , "]")	
 		mcmcobj <- cbind( mcmcobj , sigma.testlet.chain )
 			}
+	#****
+	# compute marginal effects
+	if (TT>0){
+		ind <- which( testletgroups <= TT )
+		# intercept parameters	
+		st2 <- sqrt( 1 + sigma.testlet.chain[  , testletgroups[ind] ]^2 )
+		b_marg <- b.chain[,ind] * sigma.chain / st2 	
+		colnames(b_marg) <- paste0("b_marg[", (1:I)[ind] , "]")
+		mcmcobj <- cbind( mcmcobj , b_marg  )		
+		# slope parameters
+		a_marg <- a.chain[,ind] * sigma.chain / st2 	
+		colnames(a_marg) <- paste0("a_marg[", (1:I)[ind] , "]")
+		mcmcobj <- cbind( mcmcobj , a_marg  )
+		}									
 	if (save.theta){ mcmcobj <- cbind( mcmcobj , theta ) }
 	class(mcmcobj) <- "mcmc"
 	attr(mcmcobj, "mcpar") <- c( burnin+1 , burnin+SV , 1 )
@@ -133,12 +147,14 @@
 						  "SD" = colSds(theta.chain) )
 	# compute testlet effects
     TT <- ncol(gamma.testlet.chain) / N - 1
+    if (TT>0){	
 	for (tt in 1:TT){
 		# tt <- 1
 		gtc <- gamma.testlet.chain[ , 1:N + (tt-1)*N ]
 		person[ , paste0("EAP.Testlet",tt)] <- colMeans(gtc)
 		person[ , paste0("SD.Testlet",tt)] <- colSds( gtc )
 					}						  
+			}
 	# output
 	res <- list( "EAP.rel" = EAP.rel , "person" = person )
 	return(res)

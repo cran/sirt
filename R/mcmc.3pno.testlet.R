@@ -186,7 +186,7 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) ,
 				}   # end MCMC iterations
 	##############################
 	# output	
-	
+
 	# EAP reliability and person parameter estimates
 	res <- .mcmc.person.3pno.testlet( theta.chain , weights ,
 				gamma.testlet.chain )

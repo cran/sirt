@@ -46,15 +46,19 @@ A list with following entries
 \item{tau}{Item thresholds}
 \item{rho}{Tetrachoric correlation matrix}
 }
-\references{
-Froemel, E. C. (1971). A comparison of computer routines for the 
-calculation of the tetrachoric correlation coefficient.
-\emph{Psychometrika}, \bold{36}, 165-174.   
 
+
+\references{
 Bonett, D. G., & Price, R. M. (2005). Inferential methods for the tetrachoric 
 correlation coefficient. \emph{Journal of Educational and Behavioral Statistics},
 \bold{30}, 213-225.
+
+Froemel, E. C. (1971). A comparison of computer routines for the 
+calculation of the tetrachoric correlation coefficient.
+\emph{Psychometrika}, \bold{36}, 165-174.   
 }
+
+
 \author{
 Alexander Robitzsch
 

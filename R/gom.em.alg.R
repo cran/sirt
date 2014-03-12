@@ -4,15 +4,18 @@
 ###########################################################
 # calculate theta grid
 .gom.calc.theta <- function( K , problevels ){
-    PL <- length(problevels)
-    m1 <- matrix( problevels , PL , 1 )
-    for (kk in 2:K){
-        # kk <- 2
-        NM <- nrow(m1)
-        m1 <- cbind( m1[ rep( 1:NM , PL)  , ] , rep( problevels, each=NM)  )
-        m1 <- m1[ rowSums(m1) <= 1 , ]
-            }
-    m1 <- m1[ rowSums(m1) == 1 , ]
+	m1 <- problevels
+	if ( ! is.matrix(problevels) ){
+        PL <- length(problevels)	
+		m1 <- matrix( problevels , PL , 1 )
+		for (kk in 2:K){
+			# kk <- 2
+			NM <- nrow(m1)
+			m1 <- cbind( m1[ rep( 1:NM , PL)  , ] , rep( problevels, each=NM)  )
+			m1 <- m1[ rowSums(m1) <= 1 , ]
+				}
+			}
+	m1 <- m1[ rowSums(m1) == 1 , ]
     return(m1)
         }
 ################################################################

@@ -5,7 +5,7 @@
 rm.facets <- function( dat , pid=NULL , rater=NULL ,
 	Qmatrix=NULL , theta.k=seq(-9,9,len=30) , 
 	est.b.rater=TRUE , est.a.item=FALSE , est.a.rater=FALSE ,
-	max.b.increment=1 , numdiff.parm=.001 , maxdevchange=.10 ,
+	max.b.increment=1 , numdiff.parm=.00001 , maxdevchange=.10 ,
 	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001){
 	s1 <- Sys.time()
 	dat <- as.matrix(dat)

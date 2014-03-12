@@ -51,13 +51,13 @@ summary.gom <- function( object ,...){
 		cat("EAP Reliability = " , round(object$EAP.rel,3) , "\n")			
 			}
 	#*******************************************			
-#    if (object$model=="GOM"){	
+    if ( ! ( object$plmat) ){	
 		cat("----------------------------------------------------------------------------------\n")
 		cat("Membership Function Descriptives \n")
 		obji <- object$classdesc
 		obji <- round( obji , 3)
 		print( obji )   
-#				}
+				}
 	cat("----------------------------------------------------------------------------------\n")
 	cat("Item Parameters \n")
 	obji <- object$item

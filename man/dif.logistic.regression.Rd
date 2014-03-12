@@ -93,11 +93,15 @@ Alexander Robitzsch
 For assessing DIF variance see \code{\link{dif.variance}} and
 \code{\link{dif.strata.variance}}
 
+See also \code{\link{rasch.evm.pcm}} for assessing differential item
+functioning in the partial credit model.
+
 See the \pkg{difR} package for a large collection of DIF detection
 methods.
 
 For a download of the free \emph{DIF-Pack} software (SIBTEST, ...) see  
 \url{http://psychometrictools.measuredprogress.org/home}.
+
 }
 \examples{
 #############################################################################

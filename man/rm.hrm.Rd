@@ -19,7 +19,7 @@ DeCarlo, Kim & Johnson, 2011).
 \usage{
 rm.hrm(dat, pid, rater, Qmatrix = NULL, theta.k = seq(-9, 9, len = 30), 
     est.a.item = FALSE, est.c.rater = "n", est.d.rater = "n", 
-    d.min = 0.5, d.max = 100, d.start = 3, max.increment = 1, numdiff.parm = 0.001, 
+    d.min = 0.5, d.max = 100, d.start = 3, max.increment = 1, numdiff.parm = 0.00001, 
     maxdevchange = 0.1, globconv = .001, maxiter = 1000, msteps = 4, mstepconv = 0.001)
 
 \method{summary}{rm.hrm}(object,...)    
@@ -135,8 +135,8 @@ A list with following entries:
 observed mean of all ratings, respectively. \cr
 In addition to item parameters \eqn{\tau_{ik}} and \eqn{a_i}, the mean
 for the latent response (\code{latM}) is computed as
-\eqn{\sum_p P( \theta_p ) q_{ik} P( \eta_i = k | \theta_p ) } which provides
-an item parameter at the original metric of ratings. The latent standard
+\eqn{E( \eta_i ) = \sum_p P( \theta_p ) q_{ik} P( \eta_i = k | \theta_p ) } 
+which provides an item parameter at the original metric of ratings. The latent standard
 deviation (\code{latSD}) is computed in the same manner.
 }
 \item{rater}{Data frame with rater parameters.

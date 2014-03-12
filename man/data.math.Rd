@@ -24,6 +24,7 @@ Each item is allocated to one and only competence domain (\code{domain}).
 \cr
 
 The format is:
+
 \code{List of 2} \cr
 \code{ $ data:'data.frame':} \cr
 \code{  ..$ idstud: int [1:664] 1001 1002 1003 ...} \cr
