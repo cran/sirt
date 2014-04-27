@@ -84,14 +84,17 @@
 	#****
 	# compute marginal effects
 	if (TT>0){
+		sigma.testlet.chain <- cbind( sigma.testlet.chain , 0 )
 		ind <- which( testletgroups <= TT )
 		# intercept parameters	
 		st2 <- sqrt( 1 + sigma.testlet.chain[  , testletgroups[ind] ]^2 )
-		b_marg <- b.chain[,ind] * sigma.chain / st2 	
+#		b_marg <- b.chain[,ind] * sigma.chain / st2 	
+		b_marg <- b.chain[,ind] / st2 	
 		colnames(b_marg) <- paste0("b_marg[", (1:I)[ind] , "]")
 		mcmcobj <- cbind( mcmcobj , b_marg  )		
 		# slope parameters
-		a_marg <- a.chain[,ind] * sigma.chain / st2 	
+#		a_marg <- a.chain[,ind] * sigma.chain / st2 	
+		a_marg <- a.chain[,ind] / st2 	
 		colnames(a_marg) <- paste0("a_marg[", (1:I)[ind] , "]")
 		mcmcobj <- cbind( mcmcobj , a_marg  )
 		}									

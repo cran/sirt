@@ -1,7 +1,7 @@
 
 ########################################################
-# mcmc.list descriptives
-mcmc.list.descriptives <- function( mcmcobj , quantiles=c(.025,.05,.1,.9,.95,.975) ){
+# mcmclist descriptives
+mcmc.list.descriptives <- function( mcmcobj , quantiles=c(.025,.05,.1,.50,.9,.95,.975) ){
  	summary.mcmcobj <- summary(mcmcobj , quantile=quantiles)	
     dat.bugs <- mcmcobj[[1]]
     vars <- colnames(dat.bugs)
@@ -29,8 +29,27 @@ mcmc.list.descriptives <- function( mcmcobj , quantiles=c(.025,.05,.1,.9,.95,.97
 	smc3  <- res
 	smc2 <- summary.mcmcobj$statistics
 	colnames(summary.mcmcobj$quantiles) <- paste0( "Q" , 100*quantiles )
+	# calculate effective sample size
+	effSize <- coda::effectiveSize( mcmcobj )	
+	statis <- summary.mcmcobj$statistics
+	statis <- cbind( statis[ , c(1,2) ] , apply( as.matrix(mcmcobj) , 2 , mad ) , 
+				apply( as.matrix(mcmcobj) , 2 , skewness.sirt ) ,
+				statis[,c(3,4) ]	)
+	colnames(statis)[3:4] <- c("MAD" , "skewness" )
 	dfr <- data.frame( "parameter" = rownames(smc3) , 
-		summary.mcmcobj$statistics , smc3 , "PercSEratio" = 100*smc2[,4] / smc2[,2] ,
+		statis , smc3 , "PercSEratio" = 100*smc2[,4] / smc2[,2] ,
+		"sampSize" = nrow(as.matrix(mcmcobj)) , "effSize" = effSize , 
 		summary.mcmcobj$quantiles )	
     return(dfr)
         }
+
+
+#**********************************************
+# function for calculation skewness
+skewness.sirt <- function(x){		
+    n <- length(x)
+    x <- x - mean(x)
+    y <- sqrt(n) * sum(x^3)/(sum(x^2)^(3/2))
+	y <- y * ((1 - 1/n))^(3/2)
+	return(y)	
+	}

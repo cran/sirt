@@ -173,35 +173,7 @@ problong2probarray <- function( probres , I , TP ){
     res <- list("a" = a , "se.a" = se.a , "ll" = sum(res$ll0) )
     return(res)
 			}				
-
-#############################################
-# restrict maximum increment
-.adj.maxincrement.parameter <- function( oldparm , newparm , 
-		max.increment ){
-	ISMATR <- is.matrix( oldparm )
-	max.increment0 <- max.increment
-	if (ISMATR){
-		D <- ncol(newparm)	
-		for (dd in 1:D){	
-	    if ( is.matrix(max.increment) ){
-			max.increment <- max.increment0[1,dd] 
-						}		
-		#	dd <- 1
-			increment <- newparm[,dd] - oldparm[,dd]
-			increment2 <- ifelse( abs(increment) > max.increment , 
-								sign(increment)*max.increment , increment )
-			newparm[,dd] <- oldparm[,dd] + increment2
-						}
-				}
-	if (!ISMATR){
-			increment <- newparm - oldparm
-			increment2 <- ifelse( abs(increment) > max.increment , 
-								sign(increment)*max.increment , increment )
-			newparm <- oldparm + increment2
-						}
-    return(newparm)
-		}
-###########################################################			
+		
 			
 			
 ###########################################
@@ -301,37 +273,3 @@ problong2probarray <- function( probres , I , TP ){
 			}				
 			
 			
-###########################################
-# person parameter estimates
-.smirt.person.parameters <- function( data , D , theta.k ,
-	p.xi.aj , p.aj.xi , weights ){
-	#**************************
-	person <- data.frame("case" = 1:(nrow(data)) , "M" = rowMeans( data , na.rm=T)  )
-    EAP.rel <- rep(0,D)
-    names(EAP.rel) <- colnames(theta.k)
-    nstudl <- rep(1,nrow(data))
-	for (dd in 1:D){ #dd <- 1
-		dd1 <- colnames(theta.k)[dd]
-		person$EAP <- rowSums( p.aj.xi * outer( nstudl , theta.k[,dd] ) )
-		person$SE.EAP <- sqrt(rowSums( p.aj.xi * outer( nstudl , theta.k[,dd]^2 ) ) - person$EAP^2)	
-		EAP.variance <- weighted.mean( person$EAP^2 , weights ) - ( weighted.mean( person$EAP , weights ) )^2
-		EAP.error <- weighted.mean( person$SE.EAP^2 , weights )
-		EAP.rel[dd] <- EAP.variance / ( EAP.variance + EAP.error )	
-		colnames(person)[ which( colnames(person) == "EAP" ) ] <- paste("EAP." , dd1 , sep="")
-		colnames(person)[ which( colnames(person) == "SE.EAP" ) ] <- paste("SE.EAP." , dd1 , sep="")				
-		}
-	if ( is.null( names(EAP.rel) ) ){
-		names(EAP.rel) <- paste0( "Dim" , 1:(length(EAP.rel)) )
-					}
-	# MLE	
-	mle.est <- theta.k[ max.col( p.xi.aj ) , , drop=FALSE]
-	colnames(mle.est) <- paste0( "MLE." , names(EAP.rel))
-	person <- cbind( person, mle.est )
-	# MAP
-	mle.est <- theta.k[ max.col( p.aj.xi ) , , drop=FALSE]
-	colnames(mle.est) <- paste0( "MAP." , names(EAP.rel))
-	person <- cbind( person, mle.est )
-	# results	
-	res <- list( "person" = person , "EAP.rel" = EAP.rel )
-	return(res)
-		}			

@@ -40,6 +40,7 @@ variable names.
 \code{\link{mcmclist2coda}} (Example 1),
 \code{\link{mle.pcm.group}} (Example 2),
 \code{\link{modelfit.sirt}} (Example 1),
+\code{\link{noharm.sirt}} (Example 1),
 \code{\link{np.dich}} (Example 1),
 \code{\link{person.parameter.rasch.copula}} (Example 1),
 \code{\link{personfit.stat}} (Example 1),
@@ -103,7 +104,7 @@ mod1f <- mrm( dat , cl=1)
 mod1f$beta  # item parameters
 
 # M1g: mirt (in mirt)
-mod1g <- mirt( dat , model=1 , itemtype="1PL" )
+mod1g <- mirt( dat , model=1 , itemtype="Rasch" )
 summary(mod1g)
 coef(mod1g)
 
@@ -227,8 +228,8 @@ mod4e <- R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern ,
 summary(mod4e)
 
 # M4f: mirt (in mirt)
-cmodel <- mirt.model(
-    'F1 = 1-4
+cmodel <- mirt.model('
+     F1 = 1-4
      F2 = 5-8 
      F3 = 9-12
      # equal item slopes correspond to the Rasch model
@@ -284,6 +285,48 @@ cmodel <- mirt.model('
    COV = F1*F2, F1*F3 , F2*F3 '  )
 mod5f <- mirt(dat, cmodel , verbose=TRUE)
 summary(mod5f)
+
+#****************
+# Model 6: Network models (Graphical models)
+#****************
+
+# M6a: Ising model using the IsingFit package (undirected graph)
+library(IsingFit)
+library(qgraph)
+# fit Ising model using the 'OR rule'
+mod6a <- IsingFit::IsingFit(x=dat, family='binomial' , AND=FALSE)
+summary(mod6a)
+##           Network Density:                 0.29 
+##    Gamma:                  0.25 
+##    Rule used:              Or-rule 
+# plot results
+qgraph(mod6a$weiadj,fade = FALSE)
+
+#**-- graph estimation using pcalg package
+
+# some packages from Bioconductor must be downloaded at first (if not yet done)
+if (FALSE){  # set 'if (TRUE)' if packages should be downloaded 
+     source("http://bioconductor.org/biocLite.R")
+     biocLite("RBGL")
+     source("http://bioconductor.org/biocLite.R")
+     biocLite("Rgraphviz")
+	}
+library(pcalg)
+
+# M6b: graph estimation based on Pearson correlations
+V <- colnames(dat)
+mod6b <- pcalg::pc(suffStat = list(C = cor(dat), n = nrow(dat) ),
+             indepTest = gaussCItest, ## indep.test: partial correlations
+             alpha=0.05, labels = V, verbose = TRUE)
+plot(mod6b)
+summary(mod6b)
+
+# M6c: graph estimation based on tetrachoric correlations
+mod6c <- pcalg::pc(suffStat = list(C = tetrachoric2(dat)$rho, n = nrow(dat) ),
+             indepTest = gaussCItest, ## indep.test: partial correlations
+             alpha=0.05, labels = V, verbose = TRUE)
+plot(mod6c)
+summary(mod6c)
 }
 }
 \keyword{datasets}

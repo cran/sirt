@@ -3,19 +3,22 @@
 \alias{summary.smirt}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Multidimensional Noncompensatory and Compensatory Item
-Response Model
+Multidimensional Noncompensatory, Compensatory and Partially
+Compensatory Item Response Model
 }
 \description{
 This function estimates the noncompensatory and compensatory multidimensional
-item response model (Bolt & Lall, 2003; Reckase, 2009) for dichotomous data.
+item response model (Bolt & Lall, 2003; Reckase, 2009) as well as
+the partially compensatory item response model (Spray et al., 1990)
+for dichotomous data.
 }
 \usage{
 smirt(dat, Qmatrix, irtmodel="noncomp" , est.b = NULL, est.a = NULL, 
-     est.c = NULL, est.d = NULL, b.init = NULL, a.init = NULL, c.init = NULL,
-     d.init=NULL, Sigma.init=NULL , theta.k=seq(-6,6,len=20), theta.kDES=NULL, 
+     est.c = NULL, est.d = NULL, est.mu.i=NULL , b.init = NULL, a.init = NULL, 
+     c.init = NULL, d.init=NULL, mu.i.init=NULL , Sigma.init=NULL , 
+     theta.k=seq(-6,6,len=20), theta.kDES=NULL, 
      qmcnodes=0 , mu.fixed = NULL, variance.fixed = NULL,  est.corr = FALSE, 
-     max.increment = 1, increment.factor=1, numdiff.parm = 0.00001, 
+     max.increment = 1, increment.factor=1, numdiff.parm = 0.0001, 
      maxdevchange = 0.1, globconv = 0.001, maxiter = 1000, msteps = 4, 
      mstepconv = 0.001)
 
@@ -48,6 +51,9 @@ An integer vector for \eqn{c} parameters to be estimated
   \item{est.d}{
 An integer vector for \eqn{d} parameters to be estimated
 }
+  \item{est.mu.i}{
+An integer vector for \eqn{\mu_i} parameters to be estimated
+}
   \item{b.init}{
 Initial \eqn{b} coefficients. For \code{irtmodel="noncomp"} it must be a
 matrix, for \code{irtmodel="comp"} it is a vector.
@@ -59,6 +65,9 @@ Initial \eqn{a} coefficients arranged in a matrix
 Initial \eqn{c} coefficients
 }
   \item{d.init}{
+Initial \eqn{d} coefficients
+}
+\item{mu.i.init}{
 Initial \eqn{d} coefficients
 }
 \item{Sigma.init}{
@@ -151,6 +160,17 @@ with known functions \eqn{t_l} of the trait vector \eqn{\bold{\theta}_p}.
 Fixed values of the functions \eqn{t_l} are specified in the 
 \eqn{\bold{\theta}_p} design matrix \code{theta.kDES}.
 
+The partially compensatory item response model (\code{irtmodel="partcomp"}) 
+is defined by
+\deqn{P(X_{pi}=1 | \bold{\theta}_p ) = c_i + (d_i - c_i ) 
+\frac{ \exp \left( \sum_l ( a_{il}  q_{il} \theta_{pl} - b_{il} ) \right) }
+{  \mu_i \prod_l ( 1 + \exp ( a_{il}  q_{il} \theta_{pl} - b_{il} ) ) + 
+	( 1- \mu_i) ( 1 + \exp \left( \sum_l  ( a_{il}  q_{il} \theta_{pl} - b_{il} ) \right) ) 
+		} }
+with item parameters \eqn{\mu_i} indicating the degree of compensatory.
+\eqn{\mu_i=1} indicates a noncompensatory model while \eqn{\mu_i=0}
+indicates a (fully) compensatory model.
+
 The models are estimated by an EM algorithm employing marginal maximum
 likelihood.
 }
@@ -178,6 +198,8 @@ as well as the mode of the posterior distribution (\code{MLE} and \code{MAP}).}
 \item{se.c}{Vector of standard errors of \eqn{c} parameters}
 \item{d}{Vector of \eqn{d} parameters}
 \item{se.d}{Vector of standard errors of \eqn{d} parameters}
+\item{mu.i}{Vector of \eqn{\mu_i} parameters}
+\item{se.mu.i}{Vector of standard errors of \eqn{\mu_i} parameters}
 \item{f.yi.qk}{Individual likelihood}
 \item{f.qk.yi}{Individual posterior}
 \item{probs}{Probabilities of item response functions evaluated at \code{theta.k}}
@@ -204,6 +226,10 @@ Data Analysis}, \bold{51}, 5765-5775.
 	
 Reckase, M.D. (2009). \emph{Multidimensional Item Response Theory}.
 New York: Springer.
+
+Spray, J. A., Davey, T. C., Reckase, M. D., Ackerman, T. A., & Carlson, J. E. (1990). 
+\emph{Comparison of two logistic multidimensional item response theory models}.
+ACT Research Report No. ACT-RR-ONR-90-8.
 }
 \author{
 Alexander Robitzsch
@@ -432,6 +458,51 @@ variance.fixed <- cbind( c(1,1,1,2,2,3) , c(2,3,4,3,4,4) , 0 )
 mod4 <- smirt( dat , Qmatrix=Qmatrix1 , irtmodel="comp" , est.a="2PL" , 
          variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)
 summary(mod4)
+
+#############################################################################
+## SIMULATED EXAMPLE 3: Partially compensatory model
+#############################################################################
+
+#**** simulate data
+set.seed(7656)
+I <- 10		 # number of items
+N <- 2000        # number of subjects
+Q <- matrix( 0 , 3*I,2)  # Q-matrix
+Q[1:I,1] <- 1
+Q[1:I + I ,2] <- 1
+Q[1:I + 2*I ,1:2] <- 1
+b <- matrix( runif( 3*I *2, -2 , 2 ) , nrow=3*I , 2 )
+b <- b*Q
+b <- round( b , 2 )
+mui <- rep(0,3*I)
+mui[ seq(2*I+1 , 3*I) ] <- 0.65
+# generate data
+dat <- matrix( NA , N , 3*I )
+colnames(dat) <- paste0("It" , 1:(3*I) )
+# simulate item responses
+library(MASS)
+theta <- MASS::mvrnorm(N , mu=c(0,0) , Sigma = matrix( c( 1.2 , .6,.6,1.6)  ,2 , 2 ) )
+for (ii in 1:(3*I)){
+    # define probability
+    tmp1 <- exp( theta[,1] * Q[ii,1] - b[ii,1] +  theta[,2] * Q[ii,2] - b[ii,2] )
+    # non-compensatory model
+    nco1 <- ( 1 + exp( theta[,1] * Q[ii,1] - b[ii,1] ) ) * 
+                  ( 1 + exp( theta[,2] * Q[ii,2] - b[ii,2] ) )
+    co1 <- ( 1 + tmp1 )  
+    p1 <- tmp1 / ( mui[ii] * nco1 + ( 1 - mui[ii] )*co1 )
+    dat[,ii] <- 1 * ( runif(N) < p1 )
+            }
+
+#*** Model 1: Joint mu.i parameter for all items
+est.mu.i <- rep(0,3*I)
+est.mu.i[ seq(2*I+1,3*I)] <- 1
+mod1 <- smirt( dat , Qmatrix = Q , irtmodel = "partcomp" , est.mu.i=est.mu.i)
+summary(mod1)
+
+#*** Model 2: Separate mu.i parameter for all items
+est.mu.i[ seq(2*I+1,3*I)] <- 1:I
+mod2 <- smirt( dat , Qmatrix = Q , irtmodel = "partcomp" , est.mu.i=est.mu.i)
+summary(mod2)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -143,7 +143,8 @@
     r2 <- aggregate( r1 , list(rep( 1:VV , each=2 )) , mean )
     colnames(r2) <- c("index" , "index.row" )
     index.m <- data.frame( r2 , "begin" = r2[,2] + 2 , 
-                    "end" = c( r2[,2][-1] - 2 , i2-4 ) )
+#                    "end" = c( r2[,2][-1] - 2 , i2-4 ) )
+                    "end" = c( r2[,2][-1] - 2 , i2-3 ) )
     resid.matrix <- matrix(0,I,I)
     rownames(resid.matrix) <- colnames(resid.matrix) <- colnames(dat)
     for (vv in 1:VV){
@@ -155,8 +156,13 @@
         resid.vv <- sapply( resid.vv , FUN = function(ll){
                             ll1 <- strsplit( paste(ll) , split=" " )[[1]] 
                             as.numeric( ll1[ ll1 != "" ] )
-                                                } )
+                                                } )								
     if (is.list( resid.vv)){ 
+			gh1 <- lapply( resid.vv , FUN = function(ll){ length(ll) } )
+			ind1 <- which (gh1 == 0)
+			if ( length(ind1) > 0 ){
+				for (ii in ind1 ){	resid.vv[[ii]] <- NULL }
+						}
             ind.vv.row <- as.vector(unlist( lapply( resid.vv , FUN = function(ll){ ll[1] } ) ))
             resid.vv <-  lapply( resid.vv , FUN = function(ll){ ll[-1] } ) 
                         } else {
@@ -164,7 +170,6 @@
                         ind.vv.row <- resid.vv[1]
                         resid.vv <- as.list( resid.vv[-1] )
                         }
-                    
         RVV <- length(resid.vv)
         for (rvv in 1:RVV){
             resid.vv.rvv <- resid.vv[[rvv]]

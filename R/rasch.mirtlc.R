@@ -119,7 +119,9 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 		# select reference item		
 		pval <- colMeans( dat , na.rm=T )
 		p1 <- sort( pval , index.return=TRUE)$ix
-		if ( D==1 & is.null(ref.item) ){ ref.item <- p1[round(I/2)] }
+		if ( D==1 & is.null(ref.item) ){ 
+				ref.item <- p1[round(I/2)] 
+						}
 		if (D>1 & is.null(ref.item) ){ 
 			ref.item <- NULL
 			for (dd in 1:D){			
@@ -146,6 +148,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 			seed <- round(runif( nstarts , 1 , 10000 )) 
 					}
 		devL <- rep(NA , nstarts )
+		NN1dev <-  1*10^90
 		#####################################
 		# different starts
 		for (nn in 1:nstarts ){ 
@@ -171,7 +174,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 	dev.change <- par.change <- 1000
 	# display
 	disp <- "...........................................................\n"   
-    NNdev <- 1*10^90
+    NN1dev <-  1*10^90
 	
 	
 	######################################
@@ -241,11 +244,11 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 	iter <- iter + 1
 	
 	# settings
-	if ( dev < NNdev ){
-		NNpjk <- pjk ; 		NNpi.k <- pi.k
-		NNdev <- dev ; 		NNll <- ll
-		NNres1 <- res1 ; NNtheta.k <- theta.k
-		NNa <- a ; NNb <- b ; NNiter <- iter			
+	if ( dev < NN1dev ){
+		NN1pjk <- pjk ; 		NN1pi.k <- pi.k
+		NN1dev <- dev ; 		NN1ll <- ll
+		NN1res1 <- res1 ; NN1theta.k <- theta.k
+		NN1a <- a ; NN1b <- b ; NN1iter <- iter			
 						}
 						
 		if ( progress  ){   
@@ -267,11 +270,10 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 		}
 	##### end algorithm  #***************************	
 
-		NNpjk -> pjk ; 		NNpi.k -> pi.k
-		NNdev -> dev ; 		NNll -> ll
-		NNres1 -> res1 ; NNtheta.k -> theta.k
-		NNa -> a ; NNb -> b ; NNiter -> iter			
-
+		NN1pjk -> pjk ; 		NN1pi.k -> pi.k
+		NN1dev -> dev ; 		NN1ll -> ll
+		NN1res1 -> res1 ; NN1theta.k -> theta.k
+		NN1a -> a ; NN1b -> b ; NN1iter -> iter			
 	
 	##############################################################	
 	# collect results of nstarts
@@ -288,7 +290,9 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 		NNres1 <- res1 ; NNtheta.k <- theta.k
 		NNa <- a ; NNb <- b ; NNiter <- iter
 					}
+					
 				}
+				
 	if (nstarts > 1){ 
 			NNpjk -> pjk ; 		NNpi.k -> pi.k
 			NNdev -> dev ; 		NNll -> ll
@@ -301,6 +305,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 	rownames(pjk) <- paste("Class" , 1:Nclasses , sep="")
 	if (G==1 ){ names(pi.k) <- rownames(pjk) }
 	if (G>1 ){ rownames(pi.k) <- rownames(pjk) }	
+		
 	# Information criteria
     # calculations for information criteria
     ic <- list( "deviance" = dev , "n" = nrow(dat) )

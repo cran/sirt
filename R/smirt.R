@@ -4,12 +4,12 @@
 # noncompensatory and compensatory IRT models
 smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	est.b=NULL , est.a= NULL , 
-	est.c=NULL , est.d=NULL , b.init=NULL , a.init=NULL ,
-	c.init=NULL , d.init=NULL , Sigma.init =NULL , 
+	est.c=NULL , est.d=NULL , est.mu.i =NULL , b.init=NULL , a.init=NULL ,
+	c.init=NULL , d.init=NULL , mu.i.init=NULL , Sigma.init =NULL , 
 	theta.k=seq(-6,6,len=20) , 	theta.kDES = NULL , qmcnodes= 0 ,  
 	mu.fixed=NULL , variance.fixed=NULL , 
 	est.corr=FALSE , max.increment=1 , increment.factor=1 , 
-	numdiff.parm=.00001 , maxdevchange=.10 ,
+	numdiff.parm=.0001 , maxdevchange=.10 ,
 	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001){
 	#..........................................................
 	s1 <- Sys.time()
@@ -78,7 +78,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	#****
 	# init b parameters
 	if ( is.null(b.init)){ 
-		if (irtmodel=="noncomp"){
+		if (irtmodel!="comp"){
 			b <- Qmatrix * matrix( - qlogis( colMeans(dat , na.rm =TRUE ) ) ,I , D )
 				} else {	# irtmodel="comp"s
 			b <-  - qlogis( colMeans(dat , na.rm =TRUE ) )
@@ -89,8 +89,8 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	if ( ! is.null(est.b) & is.null(b.init) ){ b <- 0*b } 
 	e1 <- matrix( 1:I , I , ncol(Qmatrix) )
 	if ( is.null(est.b)){ 	
-		if (irtmodel=="noncomp"){ est.b <- Qmatrix*e1  }
-		if (irtmodel!="noncomp"){ est.b <- 1:I  }		
+		if (irtmodel!="comp"){ est.b <- Qmatrix*e1  }
+		if (irtmodel=="comp"){ est.b <- 1:I  }		
 				}			
 	#****
 	# init a parameters
@@ -114,6 +114,19 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	# init c and d parameters
 	if ( is.null(c.init)){  c <- rep(0,I)  } else { c <- c.init }
 	if ( is.null(d.init)){ 	d <- rep(1,I) } else { d <- d.init }
+	# init mu parameters for partially compensatory model
+	if ( is.null(mu.i.init)){ 	
+			mu.i <- rep(.5,I) 
+			mu.i[ ( rowSums(Qmatrix>0) == 1 ) ] <- 0
+				} else {
+			mu.i <- mu.i.init 
+			}
+	if ( irtmodel=="partcomp"){
+		if ( is.null(est.mu.i) ){
+			est.mu.i <- ( 1:I ) * ( rowSums(Qmatrix>0) > 1 )
+								}
+							}
+	
 	# calculate pi.k
 	mu <- rep(0,D)
 	if ( is.null(mu.fixed) ){ 	mu.fixed <- cbind( 1:D , 0 ) }
@@ -129,7 +142,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	# init counts
 	n.ik <- array( 0 , dim=c(TP,I , K+1) )
 	probs <- array(0 , dim=c(I,K+1,TP))	
-	se.d <- se.c <- se.b <- se.a <- NULL
+	se.mu.i <- se.d <- se.c <- se.b <- se.a <- NULL
 	# inits
 	iter <- 0
 	dev0 <- dev <- 0
@@ -140,7 +153,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
     while( ( ( maxdevchange < devchange ) | (globconv < conv) ) &
 			( iter < maxiter )
 						){
- #zz0 <- Sys.time()						
+# zz0 <- Sys.time()						
 		cat(disp)	
 		cat("Iteration" , iter+1 , "   " , paste( Sys.time() ) , "\n" )	
 		
@@ -151,18 +164,18 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		c0 <- c
 		d0 <- d
 		mu0 <- mu
-		Sigma0 <- Sigma
-		
+		mu.i0 <- mu.i
+		Sigma0 <- Sigma	
 		# calculate probabilities
 		probres <- .smirt.calcprob( a , b, Q=Qmatrix , thetak=theta.kDES , c , d ,
-						irtmodel )
+					mu.i , 	irtmodel )
 		probs <- problong2probarray( probres , I , TP )
-#cat("smirt calcprob") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
+# cat("smirt calcprob") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
 		# calculate likelihood and posterior
 		if (QMC){ pi.k <- 1+0*pi.k }
 		probsM <- matrix( aperm( probs , c(2,1,3) ) , nrow=I*2 , ncol=TP )
 		res1 <- calcpost( dat2 , dat2.resp , probsM , dat2.ind , pi.k , K )
-#cat("smirt calcpost") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
+# cat("smirt calcpost") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
 #		res2 <- calcpost2( dat2 , dat2.resp , probsM , dat2.ind , pi.k , K ,
 #				index_ind , index_indL)
 #cat("smirt calcpost2") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
@@ -172,7 +185,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		n.ik <- array( res1$n.ik , dim=dim(n.ik) )
 		N.ik <- res1$N.ik
 		# estimate b parameters
-		res2 <- .smirt.est.b(   b , a , c , d , Qmatrix , est.b , 
+		res2 <- .smirt.est.b(   b , a , c , d , mu.i , Qmatrix , est.b , 
 				theta.k=theta.kDES , 
 				n.ik , I , K , TP , D ,  numdiff.parm=numdiff.parm , 
 				max.increment=max.increment,
@@ -180,11 +193,11 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		b <- res2$b
 		se.b <- res2$se.b
 #		ll <- res2$ll
-#cat("smirt est.b") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
+# cat("smirt est.b") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
 
 		# estimate a parameters
 		if ( sum (est.a) > 0 ){
-			res2 <- .smirt.est.a(   b , a , c , d , Qmatrix , est.a , 
+			res2 <- .smirt.est.a(   b , a , c , d , mu.i , Qmatrix , est.a , 
 			    theta.k=theta.kDES , 
 				n.ik , I , K , TP , D=TD ,  numdiff.parm=numdiff.parm , 
 				max.a.increment=max.a.increment,
@@ -196,7 +209,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 						
 		# estimate c parameters
 		if ( sum (est.c) > 0 ){
-			res2 <- .smirt.est.c(   b , a , c , d , Qmatrix , est.c , 
+			res2 <- .smirt.est.c(   b , a , c , d , mu.i , Qmatrix , est.c , 
 				theta.k=theta.kDES , 
 				n.ik , I , K , TP , D ,  numdiff.parm=numdiff.parm , 
 				max.increment=max.increment,
@@ -207,7 +220,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 
 		# estimate d parameters
 		if ( sum (est.d) > 0 ){
-			res2 <- .smirt.est.d(   b , a , c , d , Qmatrix , est.d , 
+			res2 <- .smirt.est.d(   b , a , c , d , mu.i , Qmatrix , est.d , 
 				theta.k=theta.kDES , 
 				n.ik , I , K , TP , D ,  numdiff.parm=numdiff.parm , 
 				max.increment=max.increment,
@@ -216,7 +229,14 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 			se.d <- res2$se.d
 							}								
 							
-		
+		# estimate mu.i parameters
+		if ( sum(est.mu.i) > 0 ){
+			res2 <- .smirt.est.mu.i.partcomp(   b , a , c , d , mu.i , Qmatrix , est.mu.i , theta.k , 
+				n.ik , I , K , TP , D , numdiff.parm , max.increment=max.increment,
+				msteps ,  mstepconv  , increment.factor)
+			mu.i <- res2$mu.i
+			se.mu.i <- res2$se.mu.i
+							}							
 #		 print(a1-a0) ; a0 <- a1 ;									
 		flush.console()		
 
@@ -234,7 +254,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		Sigma <- m1$Sigma
 		pi.k <- m1$pi.k
 # cat("smirt est.covariance") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
-# stop("here") 
+
 		#**
 		# calculate deviance
 		pi.k <- matrix( pi.k , ncol=1 )	
@@ -248,7 +268,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 				} 				
 		dev <- -2*ll
 		# convergence criteria
-		conv <- max( abs(a-a0) , abs(b-b0)  , abs(c-c0) , abs(d-d0) )
+		conv <- max( abs(a-a0) , abs(b-b0)  , abs(c-c0) , abs(d-d0) , abs(mu.i - mu.i0) )
 		iter <- iter+1
 		devchange <- abs( ( dev - dev0 ) / dev0  )
 		#****
@@ -264,6 +284,11 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 				paste( round(max(abs(c-c0)) ,6) , collapse=" " ) , "\n" , sep=""))
 		cat( paste( "    Maximum d parameter change = " , 
 				paste( round(max(abs(d-d0)) ,6) , collapse=" " ) , "\n" , sep=""))				
+		if (irtmodel=="partcomp"){
+			cat( paste( "    Maximum mu.i parameter change = " , 
+				paste( round(max(abs(mu.i-mu.i0)) ,6) , collapse=" " ) , "\n" , sep=""))				
+					}
+				
 		#--- distribution parameters
 		cat( " Means: " , round( mu , 3 ) , "\n")				
 		cat( " Standard deviations: " , round( sqrt(diag(Sigma)) , 3 ) , "\n")
@@ -291,8 +316,9 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 			}
 	ic$np.item.c <- length( setdiff( unique( est.c ) , 0 ) )			
 	ic$np.item.d <- length( setdiff( unique( est.d ) , 0 ) )	
+	ic$np.item.mu.i <- length( setdiff( unique( est.mu.i ) , 0 ) )	
 	# sum over all item parameters
-	ic$np.item <- ic$np.item.b + ic$np.item.a + ic$np.item.c + ic$np.item.d
+	ic$np.item <- ic$np.item.b + ic$np.item.a + ic$np.item.c + ic$np.item.d + ic$np.item.mu.i
 	# covariance matrix
 	ic$np.cov <- 0
 	
@@ -323,8 +349,8 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	# item
 	item <- data.frame("item" = colnames(dat))
 	item$N <- colSums( dat2.resp )
-	item$p <- colMeans( dat2 , na.rm=T)
-	if ( irtmodel == "noncomp"){
+	item$p <- colSums( dat2 , na.rm=TRUE) / item$N
+	if ( irtmodel != "comp"){
 		for (dd in 1:( ncol(Qmatrix)) ){
 			b[ Qmatrix[,dd] == 0 , dd ] <- NA
 			se.b[ est.b[,dd] == 0 , dd ] <- NA		
@@ -343,6 +369,10 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 					}
 	item$c <- c
 	item$d <- d
+	if ( irtmodel == "partcomp" ){
+	    mu.i[ rowSums( Qmatrix > 0 ) == 1 ] <- NA
+		item$mu.i <- mu.i
+				}
 	
 	
 	obji <- item
@@ -362,7 +392,8 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		"mean.trait"=mu , "sd.trait" = sqrt( diag(Sigma ) ) ,
 		"Sigma"=Sigma , "cor.trait"= cov2cor(Sigma ) , 
 		"b"=b , "se.b" = se.b , "a"=a , "se.a"=se.a ,
-		"c"=c , "se.c" = se.c , "d"=d , "se.d"=se.d ,		
+		"c"=c , "se.c" = se.c , "d"=d , "se.d"=se.d ,	
+		"mu.i"=mu.i , 	"se.mu.i" = se.mu.i , 
 		"f.yi.qk"=f.yi.qk , "f.qk.yi"=f.qk.yi , "probs"=probs ,
 		"n.ik"=n.ik ,  "iter"=iter , "dat2"=dat2 , "dat2.resp"=dat2.resp , 
 		"dat" = dat0 , 

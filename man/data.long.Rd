@@ -77,7 +77,7 @@ mod1b <- smirt(dat, Qmatrix=Q , irtmodel="comp" , est.b= itemnr ,
 # assume equal item difficulty of I3T1 and I3T2, I4T1 and I4T2, ...
 # create draft design matrix and modify it
 A <- designMatrices(resp=dat)$A
-dimnames(A)[[1]] <- colnames(dat)[-1]
+dimnames(A)[[1]] <- colnames(dat)
 ##   > str(A)
 ##    num [1:12, 1:2, 1:12] 0 0 0 0 0 0 0 0 0 0 ...
 ##    - attr(*, "dimnames")=List of 3

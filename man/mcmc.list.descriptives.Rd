@@ -12,7 +12,7 @@ length. The MAP is the mode estimate of the posterior distribution which is
 approximated by the mode of the kernel density estimate. 
 }
 \usage{
-mcmc.list.descriptives( mcmcobj , quantiles=c(.025,.05,.1,.9,.95,.975) )
+mcmc.list.descriptives( mcmcobj , quantiles=c(.025,.05,.1,.5,.9,.95,.975) )
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -40,11 +40,59 @@ Alexander Robitzsch
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%}
-%\examples{
-%}
+\seealso{
+See \code{\link{mcmclist2coda}} for writing an object of class \code{mcmc.list}
+into a coda file (see also the \pkg{coda} package).
+}
+
+\examples{
+\dontrun{
+#############################################################################
+# EXAMPLE 1: Logistic regression with rcppbugs
+#############################################################################
+
+library(rcppbugs)
+library(coda)
+
+#*** simulate data
+set.seed(8765)
+N <- 500
+x1 <- rnorm(N)
+x2 <- rnorm(N)
+y <- 1*( plogis( -.6 + .7*x1 + 1.1 *x2 ) > runif(N) )
+
+#*** estimate logistic regression with glm
+mod <- glm( y ~ x1 + x2 , family="binomial" )
+summary(mod)
+
+#*** define rcppbugs model
+b <- mcmc.normal(rnorm(3),mu=0,tau=0.0001)
+y.hat <- deterministic(function(x1,x2,b) { plogis( b[1] + b[2]*x1 + b[3]*x2 ) }, 
+             x1 , x2 , b)
+y.lik <- mcmc.bernoulli( y , p = y.hat, observed = TRUE)
+m <- create.model(b, y.hat, y.lik)
+
+#*** estimate model in rcppbugs; 5000 iterations, 1000 burnin iterations
+ans <- run.model(m, iterations=5000, burn=1000, adapt=1000, thin=5)
+print(get.ar(ans))   # get acceptance rate
+print(apply(ans[["b"]],2,mean))  # get means of posterior
+
+#*** convert rcppbugs into mcmclist object
+mcmcobj <- data.frame( ans$b  )
+colnames(mcmcobj) <- paste0("b",1:3)
+mcmcobj <- as.matrix(mcmcobj)
+class(mcmcobj) <- "mcmc"
+attr(mcmcobj, "mcpar") <- c( 1 , nrow(mcmcobj) , 1 )
+mcmcobj <- as.mcmc.list( mcmcobj )
+
+# plot results
+plot(mcmcobj)
+
+# summary
+summ1 <-  mcmc.list.descriptives( mcmcobj )
+summ1
+}
+}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 %\keyword{ ~kwd1 }

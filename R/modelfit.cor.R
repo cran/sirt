@@ -18,6 +18,18 @@ summary.modelfit.sirt <- function( object , ... ){
 ##########################################
 # Modelfit in sirt
 modelfit.sirt <- function( object ){
+	#****
+	# object of class tam.mml, tam.mml.2pl or tam.fa
+	# Note that only dichotomous responses are allowed
+	if (class(object) %in% c("tam.mml","tam.mml.2pl")){
+		mod <- object
+		# fmod1b <- modelfit.cor2(data=dat, 
+		#	posterior=mod1b$post, probs=mod1b$rprobs)
+		posterior <- mod$hwt
+		probs <- mod$rprobs
+		dat <- mod$resp
+		dat[ mod$resp.ind == 0 ] <- NA
+					}
 	#*****
 	# rasch.mml
 	if (class(object)=="rasch.mml"){
@@ -43,7 +55,7 @@ modelfit.sirt <- function( object ){
 	#******
 	# rasch.pml
 	if ( class(object) !="rasch.pml"){ pmlobject <- NULL } else {
-		data <- NULL ; posterior <- NULL ; probs <- NULL ; pmlobject <- object }
+		data <- NULL ; posterior <- NULL ; probs <- NULL ; pmlobject <- object }	
 	#*******
 	# smirt	
 	if (class(object) == "smirt"){
@@ -53,8 +65,20 @@ modelfit.sirt <- function( object ){
 		probs <- mod$probs
 		posterior <- mod$f.qk.yi
 		dat <- mod$dat
-					}	
-    if ( class(object) == "R2noharm"){			
+					}
+	#******
+	# R2noharm, noharm.sirt
+    if ( class(object) %in% c("R2noharm","noharm.sirt") ){
+		# exclusion criteria for noharm.sirt
+		if ( class(object) == "noharm.sirt") {
+			if ( object$estpars$estPsi > 0 ){
+				stop("Model fit cannot be calculated because of correlated residuals")
+										}
+			if ( ! ( object$wgtm.default ) ){
+				stop("Model fit cannot be calculated because not all item pairs are used for estimation")
+										}										
+								}
+		  # evaluation of posterior
 		  mod <- R2noharm.EAP(noharmobj=object, theta.k = seq(-6, 6, len = 15 ) ,
 				print.output=FALSE )
 		  probs <- aperm( mod$probs , c(1,3,2) )

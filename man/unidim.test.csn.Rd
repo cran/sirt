@@ -8,7 +8,7 @@ Test for Unidimensionality of CSN
 
 \description{
 This function tests whether item covariances given the sum
-score is non-positive (CSN), i.e. for items \eqn{i} and \eqn{j} it holds
+score are non-positive (CSN), i.e. for items \eqn{i} and \eqn{j} it holds
 that 
 \deqn{ Cov( X_i , X_j | X^+ ) \le 0 }
 Note that this function only works for dichotomous data.

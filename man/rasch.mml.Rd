@@ -58,8 +58,7 @@ rasch.mml2( dat , theta.k=seq(-6,6,len=21) , group=NULL , weights=NULL ,
 
 \arguments{
   \item{dat}{
-An \eqn{N \times I} data frame of dichotomous item responses.
-
+An \eqn{N \times I} data frame of dichotomous item responses. \cr
 For the missing data item response model (\code{irtmodel='missing1'}),
 code item responses by \code{9} which should be treated by the missing
   data model. Other missing responses can be coded by \code{NA}.
@@ -304,8 +303,9 @@ between 0 and 1). Then the pseudo-likelihood \eqn{L_p} for person \eqn{p} is def
 Note that for dichotomous responses this term corresponds to the ordinary
 likelihood. See Example 7.
 
-A special two-dimensional missing data item response model is implemented
-according to Mislevy and Wu (1996). Besides an unidimensional ability \eqn{\theta_p},
+A special two-dimensional missing data item response model (\code{irtmodel="missing1"}) 
+is implemented according to Mislevy and Wu (1996). 
+Besides an unidimensional ability \eqn{\theta_p},
 an individual response propensity \eqn{\xi_p} is proposed. We define
 item responses \eqn{X_{pi}} and response indicators \eqn{R_{pi}} indicating whether
 item responses \eqn{X_{pi}} are observed or not. Denoting the logistic function

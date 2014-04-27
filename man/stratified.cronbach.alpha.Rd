@@ -81,7 +81,7 @@ stratified.cronbach.alpha( data.read , itemstrata=itemstrata )
 #**************************
 # reliability analysis in psych package
 library(psych)
-# Cromnbach's alpha and item discriminations
+# Cronbach's alpha and item discriminations
 psych::alpha( dat )
 # McDonald's omega
 psych::omega(dat , nfactors=1)     # 1 factor

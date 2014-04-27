@@ -61,7 +61,9 @@ The options \code{smooth2}, \code{smooth3} and
 \code{smooth4} use the log-linear smoothing of
  Xu and von Davier (2008) to smooth the distribution
  up to two, three or four moments, respectively.
-This function only works in unidimensional models.
+This function only works in unidimensional models. \cr
+If a different string is provided as an input (e.g. \code{no}),
+then no smoothing is conducted.
     }
   \item{range.b}{
  Range of item difficulties which are allowed for estimation
@@ -118,7 +120,7 @@ a set of \eqn{C} \eqn{D}-dimensional \eqn{\{\theta_{cd} \}_{cd}}{{\theta_{cd} }_
 vectors are estimated.
 These vectors represent the locations of latent classes. If the user
 provides a grid of theta distribution \code{theta.k} as an argument in
-\code{rasch.mirlc}, then the ability distribution is fixed.
+\code{rasch.mirtlc}, then the ability distribution is fixed.
 
 In the unidimensional Rasch model with \eqn{I} items, \eqn{(I+1)/2} 
 (if \eqn{I} odd) or \eqn{I/2 + 1} (if \eqn{I} even) trait location
@@ -242,7 +244,7 @@ summary(mod3)
 # 3 starts with different seeds
 mod4 <- rasch.mirtlc( dat , Nclasses = 4 ,seed= -30 ,  nstarts=3 )   
 # display different solutions
-sort(mod1$devL)
+sort(mod4$devL)
 summary(mod4)
 
 # latent class multiple group model

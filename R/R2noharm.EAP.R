@@ -1,17 +1,20 @@
 R2noharm.EAP <-
 function( noharmobj , theta.k =seq(-6,6,len=21) , print.output=TRUE ){
     mod <- noharmobj
-    guess <- mod$guesses
+    mod$guess <- guess <- mod$guesses
     f0 <- mod$final.constants
     FL <- mod$loadings.theta
     D <- mod$dimensions
     P <- mod$factor.cor
-    I <- length(guess)
+    I <- length(mod$guess)
     dat <- mod$dat
     N <- nrow(dat)
     theta.k <- as.matrix( expand.grid( as.data.frame( matrix( rep( theta.k , D) , ncol = D ) ) ) )
+    TT <- nrow(theta.k)		
+	if ( TT > 1000 ){
+		theta.k <- qmc.nodes( snodes = 1000 , ndim=D )
+						}
     TT <- nrow(theta.k) 
-    
     #***
     # calculate probabilities
     probs <- matrix( f0 , nrow= I  , ncol=TT , byrow=F)
@@ -19,8 +22,9 @@ function( noharmobj , theta.k =seq(-6,6,len=21) , print.output=TRUE ){
         # dd <- 1
         probs <- probs + outer( FL[,dd] , theta.k[,dd] )
                 }
-    guessM <- matrix( guess , nrow=I , ncol=TT )
-    probs1 <- guessM + ( 1 - guessM) * pnorm( probs )
+    guessM <- matrix( mod$guess , nrow=I , ncol=TT )
+    upperM <- matrix( mod$upper , nrow=I , ncol=TT )	
+    probs1 <- guessM + ( upperM - guessM) * pnorm( probs )
     probs <- array( 0 , dim=c(I , TT , 2 ) )
     probs[,,1] <- 1-probs1
     probs[,,2] <- probs1
@@ -39,8 +43,7 @@ function( noharmobj , theta.k =seq(-6,6,len=21) , print.output=TRUE ){
     posterior <- like * prior.density
     # posterior <- like
     posterior <- posterior / rowSums( posterior )
-    
-    
+        
     #***
     # calculate EAP of all dimensions and reliabilities
     person <- data.frame( "case" = 1:N)

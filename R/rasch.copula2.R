@@ -11,7 +11,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 						b.init = NULL , a.init = NULL , 
 						est.alpha = FALSE , 
 						glob.conv = .0001 , alpha.conv = .0001 , conv1 = .001 ,
-						dev.crit = .2
+						dev.crit = .2 , increment.factor = 1.01
 #						pattern.off = FALSE
 										){
 	###############################################################
@@ -26,6 +26,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 	# numdiff.parm ... numerical differentiation parameter
 	# est.b	... which b parameters shall be estimated
 	###############################################################
+# vv0 <- Sys.time()	
 	s1 <- Sys.time()
 	group <- NULL	
 	# arrange item clusters item clusters
@@ -90,6 +91,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 	# patttern in data
 #	pattern.in.data <- data.frame(match( patt , pattern$pattern )
 	pattern.in.data <- patt
+	
 	# calculate frequencies in multiple group case
 	if (G > 1 ){ 
 		for (gg in 1:G){
@@ -112,6 +114,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 	if ( G > 1){ 
 #			mu[2] <- 1 ; sigma[2] <- 1.2 
 				}
+				
 	#------------------------
 	dat <- dat0
 	dat2 <- dat
@@ -126,11 +129,19 @@ rasch.copula2 <- function( dat , itemcluster ,
 							}	# initial estimate of delta
 			if ( is.null(est.delta)){ est.delta <- 1:CC }
 			dp.ld <- as.list( 1:CC )
+			
 			# item pattern
 			for (cc in 1:CC){	
 	#			cc <- 1
+
 				icl.cc <- which( itemcluster == cc )
-				dp.ld.cc <- .calc.copula.itemcluster( D = length(icl.cc) )
+			
+				# !!! This is the most time consuming function!
+#				dp.ld.cc <- .calc.copula.itemcluster( D = length(icl.cc) )								
+#cat("   ***  calc copula itemcluster") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1
+				dp.ld.cc <- .calc.copula.itemcluster2( D = length(icl.cc) )								
+#cat("   ***  calc copula itemcluster2") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1
+# stop()													
 				dp.ld.cc$items <- icl.cc
 				dp.ld.cc$N.items <- NCC <- length(icl.cc)
 				dp.ld.cc$itemlabels <- colnames(dat)[icl.cc]
@@ -186,7 +197,6 @@ rasch.copula2 <- function( dat , itemcluster ,
 										}
 		# descriptives itemcluster
 		Ncat.ld <- max( unlist( lapply( dp.ld , FUN = function(ll){ nrow(ll$patt) } ) ))
-				
 		# design table for estimating item difficulties
 		b.design <- NULL
 		if (length(itemcluster0) > 0){
@@ -209,8 +219,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 							}
 		b1 <- setdiff( 1:max(b.design$b.indexgroup) , 
 						setdiff( b.design$b.indexgroup , 0 ) )
-		if ( length(b1) > 0 ){ 	b.design$b.indexgroup <- 1:I }						
-		
+		if ( length(b1) > 0 ){ 	b.design$b.indexgroup <- 1:I }		
 	#########################################################################
 	#--------------------------------------------------
 	# initial estimate of item difficulty
@@ -234,7 +243,9 @@ rasch.copula2 <- function( dat , itemcluster ,
 	iter <- 0
 	# prelimanaries
 	M2 <- outer( rep(1,nrow(pattern)), wgt.theta )	
-	
+	# maximum increments
+	hstep_b <- .6
+	hstep_delta <- .2
 	
 	#************************************************************************
 	#************************************************************************
@@ -245,7 +256,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 	while ( ( ( absdev.change > dev.crit | dev.change > glob.conv | 
 					par.change > conv1 | maxalphachange > alpha.conv ) & iter < mmliter ) ){
 
-#zz0 <- Sys.time()					
+# zz0 <- Sys.time()					
 		cat( paste(rep("-" , 70), collapse="") , "\n")
 		k1 <- floor( log10(iter+1) )
 		x1 <- "        |" 
@@ -269,7 +280,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 		prbar <- c( prbar[1] , diff(prbar) )
 		cat(" Estimation of b:     |")		
 		for (bb in bG){
-#vv0 <- Sys.time()		
+# vv0 <- Sys.time()		
 			est.bb <- 1 * ( b.design$b.indexgroup == bb )
 			b.design.bb <- b.design[ b.design$b.indexgroup == bb , ]
 			if (bb == 1 ){ 
@@ -315,20 +326,25 @@ rasch.copula2 <- function( dat , itemcluster ,
 			ll1 <- a1[,3]
 			ll2 <- a1[,4]			
 			b.change <- nr.numdiff( ll0=ll0 , ll1=ll1 , ll2=ll2 , h=h )	
-			hstep <- .5^( log(iter) )
+#			hstep <- .5^( log(iter) )
+			if (bb == bG[1] ){
+				hstep_b <- hstep <- hstep_b * ( 1 / increment.factor )
+							}
 			b.change <- ifelse( abs( b.change ) > hstep , hstep*sign(b.change) , b.change )            			
 			b.change <- b.change[ match( est.b , a1[,1] ) ]		
 			b <- b + b.change
 			cat( paste( rep( "-" , prbar[bb]), collapse="") )
 			flush.console()	
-#cat("end b item") ; vv1 <- Sys.time(); print(vv1-zz0) ; vv0 <- vv1				
+
+# cat("end b item") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1				
 					}
         a1b <- max( abs( b - b0 ) )
 		cat("|     max. parm. change" , round( a1b , 5),"\n")
 		
 		wm1 <- sum( theta.k * rescop$pik )
 		wsd <- sqrt( sum( ( theta.k - wm1 )^2 * rescop$pik ) )	
-#cat("end b") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+# cat("end b") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1
+# stop()	
 		#******************************************************************************
 		# estimation of a parameters
 		a0 <- a
@@ -368,7 +384,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 		if ( length(aG) < 2 ){ cat( paste( rep( "-" , 10 - length(aG) ), collapse="") ) }
 		a1a <- max( abs( a - a0 ) )
 		cat("|     max. parm. change" , round( a1a , 5),"\n")
-#cat("end a") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+# cat("end a") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 		#******************************************************************************
 		# estimation of delta parameters
 		delta0 <- delta
@@ -408,7 +424,10 @@ rasch.copula2 <- function( dat , itemcluster ,
 			ct <- sapply( dG , FUN = function(dd){
 					( copula.type[ est.delta == dd ] )[1] } )
 			maxstep <- ifelse( copula.type=="bound.mixt" , .2 , .9 )
-			hstep <- maxstep^( log( 2+iter))
+			#hstep <- maxstep^( log( 2+iter))
+
+			hstep_delta <- hstep <- hstep_delta * ( 1 / increment.factor )
+			
 			delta.change <- ifelse( abs( delta.change ) > hstep , 
 							hstep*sign(delta.change) , delta.change )              														
 			delta.change <- delta.change[ match( est.delta , a1[,1] ) ]
@@ -421,7 +440,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 							}
         a1d <- max( abs( delta - delta0 ) )
 		cat("|     max. parm. change" , round( a1d , 5),"\n")
-#cat("end delta") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+# cat("end delta") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 		#******************************************************************************
 		# estimation of alpha parameters
 		alpha10 <- alpha1
@@ -594,7 +613,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 #		cat("   mu parameters: " , paste( round( mu , 3 ) , collapse= " " ) , "\n" )		
 #		cat("   sigma parameters: " , paste( round( sigma , 3 ) , collapse= " " ) , "\n" )
 		#******************************************************************************
-#cat("other pars") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						       				
+# cat("other pars") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						       				
 		iter <- iter + 1 
 #		thetawidth <- diff( theta.k )[1]		
 		#**********************
@@ -611,10 +630,10 @@ rasch.copula2 <- function( dat , itemcluster ,
 		absdev.change <- abs( dev- dev0 )
         par.change <- max( a1a , a1b , a1d , a1k , a1m , a1s)
 		cat( "Deviance = "  ,   round( dev , 5 ) , 
-				" | Deviance change = " , round( absdev.change , 4 ) , 
+				" | Deviance change = " , - round( dev- dev0 , 4 ) , 
 				"| max. parm. change = " ,  round( par.change , 6 ) ,  " \n"   )  
 		if ( ( dev > dev0 ) & ( iter > 4 ) ){ cat("   Deviance has increased! Convergence Problems?\n") }
-#cat("rest") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						       						
+# cat("rest") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						       						
 		flush.console()
 			}
 	# end MML iterations

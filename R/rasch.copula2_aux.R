@@ -5,14 +5,17 @@
 #--------------------------------------------------------------------------------------
 # Function calculates necessary patterns for copula IRT models (Braeken, 2011)
 .calc.copula.itemcluster <- function(D){
+#aa0 <- Sys.time()
     res <- gtools::permutations(n=2, r=D, v=0:1, repeats.allowed=TRUE)
     rownames(res) <- apply( res , 1 , FUN = function(ll){ paste("P" , paste( ll ,collapse="") ,sep="") } )
     RR <- nrow(res) 
     matr <- matrix( 0 , RR , RR )
     rownames(matr) <- colnames(matr) <- rownames(res) 
     colnames(matr) <- gsub( "P" , "F" , colnames(matr) )
+#cat("   ***  permutations") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1	
     vec <- 1:RR
     # calculation of formulas
+	# This loop must be simplified!!!
     for (rr in vec){
         # rr <- 2
         res.rr <- outer( rep(1,nrow(res)) , res[rr,] ) - res
@@ -23,10 +26,34 @@
         g1.rr <- g1.rr[ind.rr]
         matr[ rr , a1.rr ]  <- g1.rr
             }
+# cat("   ***  after outer") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1			
+# print(matr)
     res1 <- list( "patt" = res , "calc" = matr )
     return(res1)
     }
 #--------------------------------------------------------------------------------------
+
+
+
+#--------------------------------------------------------------------------------------
+# Function calculates necessary patterns for copula IRT models (Braeken, 2011)
+.calc.copula.itemcluster2 <- function(D){
+#aa0 <- Sys.time()
+    res <- gtools::permutations(n=2, r=D, v=0:1, repeats.allowed=TRUE)
+    rownames(res) <- apply( res , 1 , FUN = function(ll){ paste("P" , paste( ll ,collapse="") ,sep="") } )
+    RR <- nrow(res) 
+    matr <- matrix( 0 , RR , RR )
+    rownames(matr) <- colnames(matr) <- rownames(res) 
+    colnames(matr) <- gsub( "P" , "F" , colnames(matr) )
+#cat("   ***  permutations") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1	
+    matr <- .Call( "calc_copula_itemcluster_C" , D , res , package="sirt" )$matr	
+# cat("   ***  after outer") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1			
+# print(matr)
+    res1 <- list( "patt" = res , "calc" = matr )
+    return(res1)
+    }
+#--------------------------------------------------------------------------------------
+
 
 
 
@@ -38,6 +65,7 @@
 		# use this function for log likelihood calculation
 		# look for items which change parameters for necessary update
 		G <- GG
+# vv0 <- Sys.time()		
 		# calculation of terms of independent itemclusters?
 		calc.ind <- length(itemcluster0) > 0	
 		eps1 <- 10^(-14)		
@@ -58,6 +86,7 @@
 				v1
 					} )
 		ld.update <- unique( union( ind.delta , unlist( ld.update) ) )
+# cat("    ---- ld.update") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1		
 		###########################################################################
 		ndat2 <- nrow(dat2.ld)
 		M1 <- rep(1,ndat2)
@@ -72,13 +101,17 @@
 								} else  {
 			pjk.theta.k0 <- NULL
 								}
+# cat("    ---- probs independence") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1										
 		# probabilities for dependent items
 		pjk.theta.kCC <- rescopula$pjk.theta.kCC
 		for (cc in ld.update){
+# cat("     ***" , 'cc=' , cc )
+# hh0 <- Sys.time()		
 			# cc <- 2	# itemcluster cc
 			dp.ld.cc <- dp.ld[[cc]]
 			m1.cc <- pjk.theta.k01[ , dp.ld.cc$independent$items ]		
 			v1.cc <- dp.ld.cc$independent$N.Index1
+# cat("    ---- cc begin probs") ; hh1 <- Sys.time(); print(hh1-hh0) ; hh0 <- hh1													
 			#--------------------------------------------
 			# Boundary Mixture Copula (Braeken, 2011)
 			if (copula.type[cc] == "bound.mixt" ){			
@@ -87,12 +120,20 @@
 				# likelihood under dependence
 				m1.cc <- pjk.theta.k01[ , dp.ld.cc$dependent$items ]		
 				v1.cc <- dp.ld.cc$dependent$N.Index1
-				pjk.cc <- .rowMins2.bundle( m1 = m1.cc , v1 = v1.cc)
+
+#cat("    ---- cc before bundle") ; hh1 <- Sys.time(); print(hh1-hh0) ; hh0 <- hh1				
+											
+				pjk.cc <- .rowMins2cpp.bundle( m1 = m1.cc , v1 = v1.cc)
+#cat("    ---- cc after bundle") ; hh1 <- Sys.time(); print(hh1-hh0) ; hh0 <- hh1				
+
+# This function is most time consuming!!!!
 #				F1pjk.cc <- t( dp.ld.cc$calc %*% t( pjk.cc ) )
                 # t( A * t(B) ) = B * t(A) 
 				F1pjk.cc <- tcrossprod(  pjk.cc ,  dp.ld.cc$calc  ) 
 				pjk.theta.kCC[[cc]] <- ( 1 - delta[cc] ) * F0pjk.cc + delta[cc] * F1pjk.cc
+# cat("    ---- cc clac pjk.theta.kCC") ; hh1 <- Sys.time(); print(hh1-hh0) ; hh0 <- hh1																											
 										}
+
 			#-----------------------------------------------
 			# Cook-Johnson Copula
 			if (copula.type[cc] == "cook.johnson" ){			
@@ -133,7 +174,7 @@
 							} # end Frank copula
 						}							
 		#---------------------------------------------------------------
-
+# cat("    ---- probs dependence") ; vv1 <- Sys.time(); print(vv1-vv0) ; vv0 <- vv1										
 		
 		#####################################
 		# rearrange output
@@ -201,7 +242,7 @@
 				# likelihood under dependence
 				m1.cc <- pjk.theta.k01[ , dp.ld.cc$dependent$items ]		
 				v1.cc <- dp.ld.cc$dependent$N.Index1
-				pjk.cc <- .rowMins2.bundle( m1 = m1.cc , v1 = v1.cc)
+				pjk.cc <- .rowMins2cpp.bundle( m1 = m1.cc , v1 = v1.cc)
 #				F1pjk.cc <- t( dp.ld.cc$calc %*% t( pjk.cc ) )
 				F1pjk.cc <- tcrossprod(  pjk.cc ,  dp.ld.cc$calc  )
 				pjk.theta.kCC[[cc]] <- ( 1 - delta[cc] ) * F0pjk.cc + delta[cc] * F1pjk.cc
@@ -328,7 +369,7 @@
 				# likelihood under dependence
 				m1.cc <- pjk.theta.k01[ , dp.ld.cc$dependent$items ]		
 				v1.cc <- dp.ld.cc$dependent$N.Index1
-				pjk.cc <- .rowMins2.bundle( m1 = m1.cc , v1 = v1.cc)
+				pjk.cc <- .rowMins2cpp.bundle( m1 = m1.cc , v1 = v1.cc)
 #				F1pjk.cc <- t( dp.ld.cc$calc %*% t( pjk.cc ) )
 				F1pjk.cc <- tcrossprod(  pjk.cc ,  dp.ld.cc$calc  )
 				pjk.theta.kCC[[cc]] <- ( 1 - delta[cc] ) * F0pjk.cc + delta[cc] * F1pjk.cc
@@ -565,7 +606,7 @@
                 # product under dependence  
                 m1.cc <-  pqjk.theta.k.tt[ , dp.ld.cc$dependent$items ] 
                 v1.cc <- dp.ld.cc$dependent$N.Index1
-                F0pjk.cc <- .rowMins2.bundle( m1 = m1.cc , v1 = v1.cc)
+                F0pjk.cc <- .rowMins2cpp.bundle( m1 = m1.cc , v1 = v1.cc)
 #                F1pjk.cc <- F0pjk.cc %*% t(dp.ld.cc$calc)
                 F1pjk.cc <- tcrossprod( F0pjk.cc , dp.ld.cc$calc )
                 g2.tt <- ( rowSums(F1pjk.cc * dat3.ld.cc) )^dat2.ld.resp[ ,cc]
@@ -784,7 +825,6 @@ person.parameter.rasch.copula <- function( raschcopula.object , numdiff.parm = .
 #*********************************************************************************
 ##################################################################################
 # product of rows in a matrix m1 | bundlewise calculated by a vector v1
-
 .rowMins2.bundle <- function( m1 , v1 ){
 	L1 <- length(v1)
 	m1min <- matrix( 0 , nrow=nrow(m1) , ncol= L1 )
@@ -797,6 +837,11 @@ person.parameter.rasch.copula <- function( raschcopula.object , numdiff.parm = .
 	m1min
 		}
 ##################################################################################
+
+.rowMins2cpp.bundle <- function( m1 , v1 ){
+	m1min <- .Call( "rowmins2_bundle_C" , m1 , v1 , PACKAGE="sirt" )
+	return(m1min)
+		}
 
 
 

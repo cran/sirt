@@ -191,7 +191,7 @@ Stanford, D. C., & Raftery, A. E. (2002).
 Approximate Bayes factors for image segmentation: 
 The pseudolikelihood information criterion (PLIC).
 \emph{IEEE Transactions on Pattern Analysis and
-Machine Intelligence, 24}, 1517-1520.
+Machine Intelligence}, \bold{24}, 1517-1520.
 }
 \author{
 Alexander Robitzsch

@@ -99,7 +99,10 @@ export(
     unidim.test.csn ,
     linking.robust ,
     lc.2raters ,
-    rasch.copula3
+    rasch.copula3 ,
+    testlet.marginalized ,
+    noharm.sirt ,
+    polychoric2
         )
 
 
@@ -123,6 +126,7 @@ S3method(summary,mcmc.sirt)
 S3method(summary,isop)
 S3method(summary,fuzcluster)
 S3method(summary,isop.test)
+S3method(summary,noharm.sirt)
 
 S3method(plot,np.dich)
 S3method(plot,mcmc.sirt)
@@ -154,6 +158,7 @@ import(combinat)
 import(ic.infer)
 import(sm)
 import(psych)
+import(qgraph)
 importFrom(pbivnorm,pbivnorm)
 importFrom( gtools , permutations )
 importFrom(Rcpp,evalCpp)

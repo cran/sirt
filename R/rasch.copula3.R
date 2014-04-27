@@ -12,7 +12,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 						b.init = NULL , a.init = NULL , 
 						est.alpha = FALSE , 
 						glob.conv = .0001 , alpha.conv = .0001 , conv1 = .001 ,
-						dev.crit = .2 , rho.init = .5 
+						dev.crit = .2 , rho.init = .5 , increment.factor = 1.01
 #						pattern.off = FALSE
 										){
 	###############################################################
@@ -152,7 +152,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 			for (cc in 1:CC){	
 	#			cc <- 1
 				icl.cc <- which( itemcluster == cc )
-				dp.ld.cc <- .calc.copula.itemcluster( D = length(icl.cc) )
+				dp.ld.cc <- .calc.copula.itemcluster2( D = length(icl.cc) )
 				dp.ld.cc$items <- icl.cc
 				dp.ld.cc$N.items <- NCC <- length(icl.cc)
 				dp.ld.cc$itemlabels <- colnames(dat)[icl.cc]
@@ -264,7 +264,9 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 	Qmatrix[ cbind(1:I , dims ) ] <- 1
 	# define mu.fixed
 	mu.fixed <- cbind( 1:D , rep(0,D) )
-	
+	# maximum increments
+	hstep_b <- .6
+	hstep_delta <- .2
 
 
 	
@@ -353,7 +355,10 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 			ll1 <- a1[,3]
 			ll2 <- a1[,4]			
 			b.change <- nr.numdiff( ll0=ll0 , ll1=ll1 , ll2=ll2 , h=h )	
-			hstep <- .5^( log(iter) )
+#			hstep <- .5^( log(iter) )
+			if (bb == bG[1] ){
+				hstep_b <- hstep <- hstep_b * ( 1 / increment.factor )
+							}
 			b.change <- ifelse( abs( b.change ) > hstep , hstep*sign(b.change) , b.change )            			
 			b.change <- b.change[ match( est.b , a1[,1] ) ]		
 			b <- b + b.change
@@ -452,7 +457,9 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 			ct <- sapply( dG , FUN = function(dd){
 					( copula.type[ est.delta == dd ] )[1] } )
 			maxstep <- ifelse( copula.type=="bound.mixt" , .2 , .9 )
-			hstep <- maxstep^( log( 2+iter))
+			# hstep <- maxstep^( log( 2+iter))
+			hstep_delta <- hstep <- hstep_delta * ( 1 / increment.factor )			
+			
 			delta.change <- ifelse( abs( delta.change ) > hstep , 
 							hstep*sign(delta.change) , delta.change )              														
 			delta.change <- delta.change[ match( est.delta , a1[,1] ) ]
@@ -682,7 +689,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 		absdev.change <- abs( dev- dev0 )
         par.change <- max( a1a , a1b , a1d , a1k , a1m , a1s)
 		cat( "Deviance = "  ,   round( dev , 5 ) , 
-				" | Deviance change = " , round( absdev.change , 4 ) , 
+				" | Deviance change = " , - round( dev- dev0 , 4 ) ,
 				"| max. parm. change = " ,  round( par.change , 6 ) ,  " \n"   )  
 		if ( ( dev > dev0 ) & ( iter > 4 ) ){ cat("   Deviance has increased! Convergence Problems?\n") }
 #cat("rest") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						       						

@@ -25,7 +25,7 @@ rasch.copula2(dat, itemcluster, copula.type ="bound.mixt" ,
     numdiff.parm = 1e-06,  est.b = seq(1, ncol(dat)), 
     est.a = rep(1, ncol(dat)), est.delta = NULL, b.init = NULL , a.init = NULL ,  
     est.alpha = FALSE, glob.conv = 0.0001, alpha.conv = 1e-04, conv1 = 0.001,
-    dev.crit=.2) 
+    dev.crit=.2 , increment.factor=1.01) 
 
 rasch.copula3(dat, itemcluster, dims , copula.type ="bound.mixt" ,
     progress = TRUE, mmliter = 1000, delta = NULL, 
@@ -33,7 +33,7 @@ rasch.copula3(dat, itemcluster, dims , copula.type ="bound.mixt" ,
     numdiff.parm = 1e-06,  est.b = seq(1, ncol(dat)), 
     est.a = rep(1, ncol(dat)), est.delta = NULL, b.init = NULL , a.init = NULL ,  
     est.alpha = FALSE, glob.conv = 0.0001, alpha.conv = 1e-04, conv1 = 0.001,
-    dev.crit=.2 , rho.init=.5) 
+    dev.crit=.2 , rho.init=.5 , increment.factor=1.01) 
     
 \method{summary}{rasch.copula2}(object,...)
 \method{summary}{rasch.copula3}(object,...)	
@@ -117,6 +117,9 @@ Maximal change in item parameters for convergence
 Maximal change in the deviance. Default is \code{.2}.
 }
 \item{rho.init}{Initial value for off-diagonal elements in correlation matrix}
+\item{increment.factor}{A numeric value larger than one which controls the
+	size of increments in iterations. To stabilize convergence,
+	choose values 1.1 or 1.2 in some situations.}
   \item{object}{
 Object of class \code{rasch.copula2}
 }
@@ -196,7 +199,8 @@ Person parameters estimates are obtained by \code{\link{person.parameter.rasch.c
 See \code{\link{rasch.mml2}} for the generalized logistic link function.
 
 See also Braeken and Tuerlinckx (2009) for alternative (and more expanded)
-copula models implemented in the MATLAB software.
+copula models implemented in the MATLAB software. See
+\url{http://ppw.kuleuven.be/okp/software/irtm/}.
 }
 
 

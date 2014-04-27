@@ -88,7 +88,7 @@ summary.linking.robust <- function( object , ... ){
 #    cat( paste0("Number of jackknife units = " , object$JJ , "\n\n" ) )
     cat(paste0( "Optimal trimming parameter k = " , round( object$kopt , 4 ) , " | "))	
 	cat(paste0( " non-robust parameter k = " , 0 , " \n"))
-    cat(paste0( "Linking contant = " , round( object$meanpars.kopt , 4 ) , " | "))
+    cat(paste0( "Linking constant = " , round( object$meanpars.kopt , 4 ) , " | "))
     cat(paste0( " non-robust estimate = " , round( object$meanpars[ 1 ] , 4 ) , " \n"))
     cat(paste0( "Standard error = " , round( object$se.kopt , 4 ) , " | "))
     cat(paste0( " non-robust estimate = " , round( object$se[1] , 4 ) , " \n"))

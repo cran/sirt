@@ -324,8 +324,7 @@ dat <- 1 * ( m1 > matrix( runif( n*G*I ) , n*G , I ) )
 
 #*** estimate model
 mod <- mcmc.2pno.ml( dat , group=group , burnin=burnin , iter=iter , 
-            est.b.M="n" , #  prior.sigma.b = c(100000 , 0.00001 ) , 
-            est.b.Var="i" , progress.iter=20)
+            est.b.M="n" , est.b.Var="i" , progress.iter=20)
 summary(mod)
 plot(mod , layout=2 , ask=TRUE )
 }

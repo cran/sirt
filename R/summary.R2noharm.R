@@ -32,7 +32,7 @@ summary.R2noharm <- function( object , logfile=NULL , ...){
 		cat( paste( "Number of Estimated Parameters : " , object$Nestpars , sep="") , "\n" )			
 		cat( paste( "Chi2                           : " , round(object$chisquare,3) , sep="") , "\n" )			
 		cat( paste( "Degrees of Freedom (df)        : " , object$df , sep="") , "\n" )		
-		cat( paste( "p(Chi2,df)                     : " , round(1-object$p.chisquare,3) , sep="") , "\n" )			
+		cat( paste( "p(Chi2,df)                     : " , round(object$p.chisquare,3) , sep="") , "\n" )			
 		cat( paste( "Chi2 / df                      : " , round(object$chisquare / object$df,3) , sep="") , "\n" )			
 		cat( paste( "RMSEA                          : " , round(object$rmsea,3) , sep="") , "\n\n" )				
 						}
@@ -80,7 +80,7 @@ summary.R2noharm <- function( object , logfile=NULL , ...){
 		# item parameter
 		l1 <- object$loadings.theta
 		cat("\nItem Parameters - Promax Rotated Parameters\n",
-				"Loadings, Constants, Guessing Parameters and Decriptives\n\n")
+				"Loadings, Constants, Guessing Parameters and Descriptives\n\n")
 		l1 <- object$promax.theta
 		l1 <- data.frame( l1 , "final.constants" = object$final.constants , 
 					"guess" = object$guesses , "N" = diag(object$N.itempair) , "p" = diag(object$pm) )

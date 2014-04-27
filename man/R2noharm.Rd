@@ -189,7 +189,9 @@ specification.
 \seealso{
 For estimating standard errors see \code{\link{R2noharm.jackknife}}.
 
-For EAP person parameter estimates see \code{\link{R2noharm.EAP}}. 
+For EAP person parameter estimates see \code{\link{R2noharm.EAP}}.
+
+For an \R implementation of the NOHARM model see \code{\link{noharm.sirt}}. 
 }
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 
@@ -462,6 +464,23 @@ ex4 <- R2noharm( dat=data.noharmExC , , model.type="CFA" ,
         P.pattern = P.pattern, P.init = P.init , writename = "ex3_noharmExC" , 
         noharm.path = noharm.path , dec ="," )
 summary(ex4)
+
+# modify F pattern matrix
+# f11 = f51 (since both have equal pattern values of 2),
+# f21 = f61 (since both have equal pattern values of 3),
+# f31 = f71 (since both have equal pattern values of 4),
+# f41 = f81 (since both have equal pattern values of 5).
+F.pattern[ c(1,5) ] <- 2
+F.pattern[ c(2,6) ] <- 3
+F.pattern[ c(3,7) ] <- 4
+F.pattern[ c(4,8) ] <- 5
+F.init <- .5+0*F.init 
+
+ex4a <- R2noharm( dat=data.noharmExC , , model.type="CFA" ,  
+        guesses=guesses , F.pattern = F.pattern , F.init = F.init , 
+        P.pattern = P.pattern, P.init = P.init , writename = "ex3_noharmExC1" , 
+        noharm.path = noharm.path , dec ="," )
+summary(ex4a)
 }
 }
 

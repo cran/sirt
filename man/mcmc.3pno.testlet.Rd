@@ -5,7 +5,7 @@
 3PNO Testlet Model
 }
 \description{
-This function estimates the 3PNO testlet model (Wang, Bradlow & Wainer, 2002)
+This function estimates the 3PNO testlet model (Wang, Bradlow & Wainer, 2002, 2007)
 by Markov Chain Monte Carlo methods (Glas, 2012).
 }
 \usage{

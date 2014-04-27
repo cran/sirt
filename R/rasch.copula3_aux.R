@@ -4,7 +4,6 @@
 
 
 
-
 #----------------------------------------------------------------------------------------------
 .ll.rasch.copula320 <- function( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
 		CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 
@@ -50,7 +49,7 @@
 				# likelihood under dependence
 				m1.cc <- pjk.theta.k01[ , dp.ld.cc$dependent$items ]		
 				v1.cc <- dp.ld.cc$dependent$N.Index1
-				pjk.cc <- .rowMins2.bundle( m1 = m1.cc , v1 = v1.cc)
+				pjk.cc <- .rowMins2cpp.bundle( m1 = m1.cc , v1 = v1.cc)
 #				F1pjk.cc <- t( dp.ld.cc$calc %*% t( pjk.cc ) )
 				F1pjk.cc <- tcrossprod(  pjk.cc ,  dp.ld.cc$calc  )
 				pjk.theta.kCC[[cc]] <- ( 1 - delta[cc] ) * F0pjk.cc + delta[cc] * F1pjk.cc
@@ -271,7 +270,7 @@
 				# likelihood under dependence
 				m1.cc <- pjk.theta.k01[ , dp.ld.cc$dependent$items ]		
 				v1.cc <- dp.ld.cc$dependent$N.Index1
-				pjk.cc <- .rowMins2.bundle( m1 = m1.cc , v1 = v1.cc)
+				pjk.cc <- .rowMins2cpp.bundle( m1 = m1.cc , v1 = v1.cc)
 #				F1pjk.cc <- t( dp.ld.cc$calc %*% t( pjk.cc ) )
                 # t( A * t(B) ) = B * t(A) 
 				F1pjk.cc <- tcrossprod(  pjk.cc ,  dp.ld.cc$calc  ) 
@@ -387,7 +386,7 @@
 				# likelihood under dependence
 				m1.cc <- pjk.theta.k01[ , dp.ld.cc$dependent$items ]		
 				v1.cc <- dp.ld.cc$dependent$N.Index1
-				pjk.cc <- .rowMins2.bundle( m1 = m1.cc , v1 = v1.cc)
+				pjk.cc <- .rowMins2cpp.bundle( m1 = m1.cc , v1 = v1.cc)
 #				F1pjk.cc <- t( dp.ld.cc$calc %*% t( pjk.cc ) )
 				F1pjk.cc <- tcrossprod(  pjk.cc ,  dp.ld.cc$calc  )
 				pjk.theta.kCC[[cc]] <- ( 1 - delta[cc] ) * F0pjk.cc + delta[cc] * F1pjk.cc

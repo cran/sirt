@@ -21,7 +21,7 @@ http://www.bifie.at
 See also URL: 
 https://sites.google.com/site/alexanderrobitzsch/software
 
-Questions or suggestions about sirt can be sent to
+Questions or suggestions about sirt can be sent to:
 a.robitzsch /-\ bifie.at
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -30,6 +30,35 @@ a.robitzsch /-\ bifie.at
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+---
+Versions 0.44 -- 2013-04-27
+---
+x fixed a bug in calculation of marginal parameters for testlet model
+x included the partially compensatory item response model
+  (irtmodel='partcomp' in 'smirt')
+x speeded rasch.copula functions a bit
+x included argument increment.factor in rasch.copula to improve
+  convergence behavior
+x fixed a bug in rasch.mirtlc in saved parameter estimates for
+   models with different initial estimates (n.starts>0)
+x included function for calculating marginal item parameters for
+   testlet (bifactor) model ('testlet.marginalized')
+x extended 'modelfit.sirt' for objects of class tam.mml, tam.mml.2pl
+   and tam.fa (from the TAM package)
+x fixed a bug in parsing residual matrix from NOHARM output in 'R2noharm'
+x extended output in mcmc.list. descriptives
+x changed chi square p value in R2noharm in Values according to summary
+x included R implementation of NOHARM ('noharm.sirt')
+x modelfit.sirt also allows for objects of class noharm.sirt
+x included Divgi estimation method of tetrachoric correlation
+x included maximum likelihood estimation of polychoric correlation
+
+* included/modified datasets: ---
+* included/modified examples: data.wide2long (1), smirt (3), modelfit.sirt (1),
+  R2noharm (4), mcmc.list.descriptives (1), noharm.sirt (1,2), data.read,
+  tetrachoric (2), polychoric2 (1)
 
 ---
 Versions 0.43 -- 2013-03-12

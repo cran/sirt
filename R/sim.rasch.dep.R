@@ -17,7 +17,7 @@ sim.rasch.dep <- function( theta , b , itemcluster , rho ){
                 for (jj in v1) { 
                         if ( ii != jj ){ cov.dep[ii,jj] <- rho[cc] 
                                 } } }
-            }
+            }	
     random.gen <- pnorm( mvrnorm( n , mu = rep(0,I) , Sigma = cov.dep ) )
     dat <- 1 * ( probmat > random.gen )
 	colnames(dat) <- paste( "I" , substring(100+1:I,2) , sep="")	

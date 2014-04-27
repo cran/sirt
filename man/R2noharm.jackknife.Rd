@@ -7,7 +7,7 @@ Jackknife Estimation of NOHARM Analysis
 }
 \description{
 This function performs a jackknife estimation of NOHARM analysis
-to get standard errors based on a replication method.
+to get standard errors based on a replication method (see Christoffersson, 1977).
 }
 \usage{
 R2noharm.jackknife(object, jackunits = NULL)
@@ -52,9 +52,12 @@ A list of lists with following entries:
         }
 \item{u.jacknunits}{Unique jackknife elements}
 }
-%\references{
-%% ~put references to the literature/web site here ~
-%}
+
+
+\references{
+Christoffersson, A. (1977). Two-step weighted least squares factor analysis of 
+dichotomized variables. \emph{Psychometrika}, \bold{42}, 433-438.
+}
 \author{
 Alexander Robitzsch
 }

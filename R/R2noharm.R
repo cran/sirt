@@ -295,7 +295,7 @@ R2noharm <- function( dat=NULL , pm=NULL , n=NULL ,model.type , weights=NULL ,
 		# calculate RMSEA
 		res$rmsea <- rmsea <- sqrt(max(c( (X2 / res$Nobs ) / df - 1/res$Nobs , 0)))
 		# calculate p values
-		res$p.chisquare <- pchisq( res$chisquare , df = res$df )
+		res$p.chisquare <- 1 - pchisq( res$chisquare , df = res$df )
 			}
 	# display
 	if (display){
@@ -309,6 +309,8 @@ R2noharm <- function( dat=NULL , pm=NULL , n=NULL ,model.type , weights=NULL ,
 		   res$dat <- NULL
 			}			
 	res$inputdat <- inputdat
+	res$upper <- 1+0*res$guess
+	res$lower <- res$guess
 	class(res) <- "R2noharm"
     return( res )
     }

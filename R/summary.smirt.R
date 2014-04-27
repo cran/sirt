@@ -12,7 +12,11 @@ summary.smirt <- function( object , ...){
 					}
 	if (object$irtmodel == "comp"){
 		cat("   Compensatory item response model\n\n")
-					}					
+					}				
+	if (object$irtmodel == "partcomp"){
+		cat("   Partially compensatory item response model\n\n")
+					}
+					
 #	modeltype <- object$irtmodel
 		cat( "   " , object$ic$n , "Cases, " , ncol(object$dat2) , "Items, " , # object$G , "Group(s)", "," ,
 				object$D , "Dimension(s)\n")  
@@ -29,6 +33,7 @@ summary.smirt <- function( object , ...){
     cat( "               a parameters = " , object$ic$np.item.a , "\n" ) 		
     cat( "               c parameters = " , object$ic$np.item.c , "\n" ) 
     cat( "               d parameters = " , object$ic$np.item.d , "\n" ) 			
+	cat( "            mu.i parameters = " , object$ic$np.item.mu.i , "\n" )
     cat( "  Number of estimated distribution parameters = " , object$ic$np.cov , 
 				"\n" )    
     cat( "               Means = " , object$ic$np.cov.mu , "\n" ) 

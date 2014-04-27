@@ -69,20 +69,19 @@ dat.long <- data.wide2long( dat=dat1 , id="idstud" , X=X , Q=Q )
 
 #***
 # Model 1: Rasch model
-mod1 <- lmer( resp ~ 0 + ( 1 | idstud ) + as.factor(item) , data = dat.long ,
-         family="binomial" , verbose=TRUE)
+mod1 <- glmer( resp ~ 0 + ( 1 | idstud ) + as.factor(item) , data = dat.long ,
+            family="binomial" , verbose=TRUE)
 summary(mod1)
 
 #***
 # Model 2: Rasch model and inclusion of person predictors
-mod2 <- lmer( resp ~ 0 + ( 1 | idstud ) + as.factor(item) + 
-        female + hisei + migra  , data = dat.long ,
-         family="binomial" , verbose=TRUE)
+mod2 <- glmer( resp ~ 0 + ( 1 | idstud ) + as.factor(item) + female + hisei + migra,
+           data = dat.long , family="binomial" , verbose=TRUE)
 summary(mod2)
 
 #***
 # Model 3: LLTM
-mod3 <- lmer(resp ~ (1|idstud) + as.factor(ItemFormat) + as.factor(TextType), 
+mod3 <- glmer(resp ~ (1|idstud) + as.factor(ItemFormat) + as.factor(TextType), 
             data = dat.long , family="binomial" , verbose=TRUE)
 summary(mod3)
 

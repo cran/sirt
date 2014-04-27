@@ -14,7 +14,7 @@ R2noharm.EAP(noharmobj, theta.k = seq(-6, 6, len = 21) , print.output=TRUE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{noharmobj}{
-Object of class \code{R2noharm}
+Object of class \code{R2noharm} or \code{noharm.sirt}
 }
   \item{theta.k}{
 Vector of discretized theta values on which the posterior
@@ -54,7 +54,7 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-For examples see \code{\link{R2noharm}}
+For examples see \code{\link{R2noharm}} and \code{\link{noharm.sirt}}.
 }
 %\examples{
 %}
