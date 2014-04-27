@@ -32,8 +32,9 @@ CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+
 ---
-Versions 0.44 -- 2013-04-27
+Versions 0.44 -- 2014-04-27
 ---
 x fixed a bug in calculation of marginal parameters for testlet model
 x included the partially compensatory item response model
@@ -61,7 +62,7 @@ x included maximum likelihood estimation of polychoric correlation
   tetrachoric (2), polychoric2 (1)
 
 ---
-Versions 0.43 -- 2013-03-12
+Versions 0.43 -- 2014-03-12
 ---
 x included function 'isop.test' for testing the ISOP model
 x included (non-iterative) eigenvector method for estimating
@@ -97,7 +98,7 @@ x included marginal item parameters in the output in testlet model (mcmc.3pno.te
   rasch.copula (4), rasch.mml2 (7), reliability.nonlinearSEM (1)  
 
 ---
-Versions 0.42 -- 2013-01-31
+Versions 0.42 -- 2014-01-31
 ---
 x included further values in smirt to allow to apply itemfit.sx2
   in the CDM package
@@ -120,7 +121,7 @@ x extended modelfit.sirt to objects of class R2noharm
 * included/modified examples: fuzcluster (1), modelfit.sirt (1)
 
 ---
-Versions 0.41 -- 2013-01-07
+Versions 0.41 -- 2014-01-07
 ---
 x included maximum likelihood estimation for discrete data in the
   belief function framework ('fuzdiscr')

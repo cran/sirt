@@ -1,4 +1,4 @@
-28ce455f8b66042203adcb75008b40a6 *DESCRIPTION
+72b6b300db047dbdac00e1a8fce53563 *DESCRIPTION
 186b72d6a01e0044590f95809923a89c *NAMESPACE
 72c399a814b24ea1804364b210ecca3e *R/R2noharm-utility.R
 defdbfbc2aa97534767b335f32d1d277 *R/R2noharm.EAP.R
@@ -23,7 +23,6 @@ b901a1d370895a9067d1f428a73450e3 *R/f1d.irt.R
 8e96982e05f5af7bd6ee759e1cf08e57 *R/fit.isop.R
 9d3f99f8d0ed95df5dc0997f0e446cf1 *R/fit.logistic.R
 5d43a1a176a19271799777f0265dafad *R/fit.logistic_alg.R
-0bc27041c404080148b292e92a924ece *R/formann.slca.R
 21ce3cb6b96e0b9bb1eef2be2fa5aae5 *R/fuzcluster.R
 0970c5c6d0e84dac11517195620faba3 *R/fuzcluster_alg.R
 8b8fc519f2f3cb580e66423cbfc4cb05 *R/fuzdiscr.R
@@ -196,7 +195,7 @@ a4adba95f19e0fedb869466a7b2f38d3 *data/data.si03.rda
 d03675ab3d24eeb5e0186125d93353b9 *data/data.si05.rda
 c5738eff5cf7ba5fa1952591922b9e5f *data/data.timss.rda
 4cc02798ad77faea7417e28f2df67a74 *data/data.timss07.G8.RUS.rda
-9c8d5e7c36ced9a55ab77831db228fbc *inst/NEWS
+73b637e9e9bf7bc3cc16c1b089769fa3 *inst/NEWS
 6727d78d0889581f1a776b85aafeeec9 *man/R2noharm.EAP.Rd
 40e6d4553fb68c814e50ae9e8d223b2e *man/R2noharm.Rd
 bf3502d5da7318b9ccff745e9cc559bf *man/R2noharm.jackknife.Rd
@@ -222,8 +221,8 @@ e4d578e7f08d6195a51049f24eaab3ee *man/data.pisaMath.Rd
 a92bc18767f7d5b0f8b61cb4749de281 *man/data.pisaRead.Rd
 d3703c0d84a1abec82b35b97bd6e67b3 *man/data.ratings1.Rd
 421b9c8bed73c40cd355884f39268ec7 *man/data.raw1.Rd
-d459cffd666e40223398a162288e4328 *man/data.read.Rd
-425adb90f4d71f1439a1576171b0275a *man/data.reck.Rd
+79f78f94eac957285989a7b272850abb *man/data.read.Rd
+70b9984247c04e6cb396e1f5d97f09af *man/data.reck.Rd
 db35beaa93af47a71b28b397c23f09e5 *man/data.si.Rd
 491cf0fdf994086167966a716ad4ba97 *man/data.timss.Rd
 33bd9c4fde5b21c78535281f5a0fdbdc *man/data.timss07.G8.RUS.Rd
@@ -246,7 +245,7 @@ aa4e145f51c60602a8e3284d0caeb8ab *man/fuzdiscr.Rd
 dd52921665279e1438121308ef287022 *man/gom.em.Rd
 28db64e55854f3db7ebf52008f2d0116 *man/gom.jml.Rd
 11e6d22b960a339a72ca8e10a4467977 *man/greenyang.reliability.Rd
-3305f73ec0eeaa0dac16ac0c023ecfb8 *man/invariance.alignment.Rd
+d392d64c6d6a529e0fee2be78f7c6c7d *man/invariance.alignment.Rd
 55f0158383c129c37784a3dc3fc92078 *man/isop.Rd
 dbec501f7f100fc32929e3412314b155 *man/isop.scoring.Rd
 db8680855f57d443189706954fc6100a *man/isop.test.Rd
@@ -298,7 +297,7 @@ c8fed61d830f5bdb526e8d07fee51a25 *man/rasch.copula.Rd
 7bebd4406e89fa46d7e101b731fd7baa *man/sim.qm.ramsay.Rd
 7fe49a0557c4e14eeff6f8e0a367b66c *man/sim.rasch.dep.Rd
 f30ad55b01dc84957f39ff12cefaa011 *man/sim.raschtype.Rd
-dbb393a450e4d5ba5a01357017e2d47b *man/sirt-package.Rd
+76030dc0ce2cab1352d8839873a09616 *man/sirt-package.Rd
 9ac9c0e8fc816146b5f4368013420180 *man/smirt.Rd
 97c5936746ecb91a2a509f25bb3c5024 *man/stratified.cronbach.alpha.Rd
 cc589bf37aee21e8d7c900ccaf7d2e13 *man/summary.mcmc.sirt.Rd
@@ -322,7 +321,7 @@ c74400e42936e34eb61a058924ed45c8 *src/first_eigenvalue_sirt.h
 a272f89a54747056ae676765e32a55a5 *src/matrixfunctions_sirt.cpp
 c71aedbacf29c443ccb3838d6d5650f3 *src/mle_pcm_group_c.cpp
 3294a8b59b79efb8f1ccdce453a237bf *src/noharm_sirt_auxfunctions.cpp
-cc1265cdaf998a0c458e8fb0a25a779d *src/pbivnorm_rcpp_aux.h
-8df48ccf309d0f5c30cddf07e9d9d21e *src/polychoric2_tetrachoric2_rcpp_aux.cpp
+c66153d97e0ef2e1a62260e17c5a0f26 *src/pbivnorm_rcpp_aux.h
+6cf65131aa44168dd5620b37847141db *src/polychoric2_tetrachoric2_rcpp_aux.cpp
 35789f60d4db5593201e690d489f6a35 *src/probs_multcat_items_counts_csirt.cpp
 a23cacb59ca65a94a0570d3c25e2d612 *src/rm_smirt_mml2_code.cpp

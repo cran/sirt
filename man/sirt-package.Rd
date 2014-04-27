@@ -390,12 +390,11 @@ for reviews of psychometrics packages in \R.
 \emph{fit.isop__2.05.R}, \cr
 \emph{fit.logistic__2.03.R}, 
 \emph{fit.logistic_alg__0.04.R}, 
-\emph{formann.slca__0.03.R}, \cr
-\emph{fuzcluster__0.07.R}, 
+\emph{fuzcluster__0.07.R}, \cr
 \emph{fuzcluster_alg__0.10.R}, 
 \emph{fuzdiscr__0.02.R}, 
-\emph{fuzirt__0.01.R}, \cr
-\emph{fuzlc__0.01.R}, 
+\emph{fuzirt__0.01.R}, 
+\emph{fuzlc__0.01.R}, \cr
 \emph{gom.em.alg__5.04.R}, 
 \emph{gom.em__5.06.R}, 
 \emph{gom.jml__0.08.R}, 
@@ -539,8 +538,8 @@ for reviews of psychometrics packages in \R.
 \emph{matrixfunctions_sirt__1.07.cpp}, \cr
 \emph{mle_pcm_group_c__1.02.cpp}, 
 \emph{noharm_sirt_auxfunctions__2.09.cpp}, \cr
-\emph{pbivnorm_rcpp_aux__0.27.h}, 
-\emph{polychoric2_tetrachoric2_rcpp_aux__2.01.cpp}, \cr
+\emph{pbivnorm_rcpp_aux__0.29.h}, 
+\emph{polychoric2_tetrachoric2_rcpp_aux__2.02.cpp}, \cr
 \emph{probs_multcat_items_counts_csirt__2.03.cpp}, 
 \emph{rm_smirt_mml2_code__4.05.cpp}, 
 }
@@ -567,8 +566,8 @@ for reviews of psychometrics packages in \R.
 \emph{data.pisaRead__0.05.Rd}, 
 \emph{data.ratings1__0.09.Rd}, 
 \emph{data.raw1__0.03.Rd}, 
-\emph{data.read__1.20.Rd}, \cr
-\emph{data.reck__0.13.Rd}, 
+\emph{data.read__1.22.Rd}, \cr
+\emph{data.reck__0.14.Rd}, 
 \emph{data.si__0.15.Rd}, 
 \emph{data.timss__0.05.Rd}, \cr
 \emph{data.timss07.G8.RUS__0.02.Rd}, 
@@ -591,7 +590,7 @@ for reviews of psychometrics packages in \R.
 \emph{gom.em__1.37.Rd}, 
 \emph{gom.jml__0.10.Rd}, 
 \emph{greenyang.reliability__1.14.Rd}, \cr
-\emph{invariance.alignment__1.11.Rd}, 
+\emph{invariance.alignment__1.12.Rd}, 
 \emph{isop.scoring__1.11.Rd}, 
 \emph{isop.test__0.08.Rd}, \cr
 \emph{isop__3.13.Rd}, 
@@ -646,7 +645,7 @@ for reviews of psychometrics packages in \R.
 \emph{sim.qm.ramsay__0.15.Rd}, 
 \emph{sim.rasch.dep__0.16.Rd}, \cr
 \emph{sim.raschtype__0.09.Rd}, 
-\emph{sirt-package__1.74.Rd}, 
+\emph{sirt-package__1.76.Rd}, 
 \emph{smirt__2.09.Rd}, \cr
 \emph{stratified.cronbach.alpha__0.13.Rd}, 
 \emph{summary.mcmc.sirt__0.05.Rd}, \cr

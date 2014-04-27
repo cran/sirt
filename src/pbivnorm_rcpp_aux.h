@@ -13,10 +13,6 @@ using namespace Rcpp;
 //**********************************************************************
 // bivariate normal distribution
 
-extern "C" {
-Rcpp::NumericVector pbivnorm2_rcpp( Rcpp::NumericVector x_ , Rcpp::NumericVector y_  , 
-	Rcpp::NumericVector rho_  );
- } 
 
 Rcpp::NumericVector pbivnorm2_rcpp( Rcpp::NumericVector x_ , Rcpp::NumericVector y_  , 
 	Rcpp::NumericVector rho_  ) 
@@ -112,10 +108,6 @@ Rcpp::NumericVector pbivnorm2_rcpp( Rcpp::NumericVector x_ , Rcpp::NumericVector
 //**********************************************************************
 // bivariate normal density
 
-extern "C" {
-Rcpp::NumericVector dmvnorm_2dim_rcpp( Rcpp::NumericVector x_, 
-  	   Rcpp::NumericVector y_, Rcpp::NumericVector rho_) ;
-}
 
 Rcpp::NumericVector dmvnorm_2dim_rcpp( Rcpp::NumericVector x_, 
    	   Rcpp::NumericVector y_, Rcpp::NumericVector rho_){
@@ -142,13 +134,6 @@ Rcpp::NumericVector dmvnorm_2dim_rcpp( Rcpp::NumericVector x_,
 //**********************************************************************
 // calculation estimating equation polychoric correlation
 
-extern "C" {
-Rcpp::NumericVector polychoric2_estequation( Rcpp::NumericMatrix frtab ,
-	int maxK , Rcpp::NumericVector rho , Rcpp::NumericVector thresh1n ,
-	Rcpp::NumericVector thresh2n , int maxK1 , int maxK2 
-  	   ) 
-;
-}
 
 Rcpp::NumericVector polychoric2_estequation( Rcpp::NumericMatrix frtab ,
 	int maxK , Rcpp::NumericVector rho , Rcpp::NumericVector thresh1n ,
@@ -165,7 +150,7 @@ Rcpp::NumericVector polychoric2_estequation( Rcpp::NumericMatrix frtab ,
    Rcpp::NumericVector tmp1ii(1) ;
    Rcpp::NumericVector tmp1jj(1) ;
    Rcpp::NumericVector tmp2(1);
-   double eps2 = pow(10.0 , -15.0 ) ;	
+   double eps2 = 1e-15 ;
 	// compute distribution and density
 	for ( int ii=0 ; ii < maxK1+1 ; ii++){
 	for ( int jj=0 ; jj < maxK2+1 ; jj++){	
@@ -194,12 +179,6 @@ Rcpp::NumericVector polychoric2_estequation( Rcpp::NumericMatrix frtab ,
 //**********************************************************************
 // calculation polychoric correlation for one item pair
 
-extern "C" {
-Rcpp::List polychoric2_itempair( Rcpp::NumericVector v1 , Rcpp::NumericVector v2 ,
-	int maxK , int maxiter
-  	   ) 
-;
-}
 
 
 Rcpp::List polychoric2_itempair( Rcpp::NumericVector v1 , Rcpp::NumericVector v2 ,
@@ -210,9 +189,9 @@ Rcpp::List polychoric2_itempair( Rcpp::NumericVector v1 , Rcpp::NumericVector v2
 
 maxK = maxK + 1 ;
 int CC = v1.size() ;
-double eps =pow(10,-3.0) ;
-double numdiffparm =pow(10,-6) ;
-double conv = pow(10, -10.0) ;
+double eps=1e-3;
+double numdiffparm =1e-6 ;
+double conv=1e-10;
 
 //////////*********** FREQUENCIES ************************//////
 

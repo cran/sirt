@@ -228,13 +228,13 @@ mod4e <- R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern ,
 summary(mod4e)
 
 # M4f: mirt (in mirt)
-cmodel <- mirt.model('
+cmodel <- mirt.model("
      F1 = 1-4
      F2 = 5-8 
      F3 = 9-12
      # equal item slopes correspond to the Rasch model
      CONSTRAIN = (1-4, a1), (5-8, a2) , (9-12,a3)
-     COV = F1*F2, F1*F3 , F2*F3 ' )
+     COV = F1*F2, F1*F3 , F2*F3 " )
 mod4f <- mirt(dat, cmodel , verbose=TRUE)
 summary(mod4f)
 
@@ -278,11 +278,11 @@ mod5e <- R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern ,
 summary(mod5e)
 
 # M5f: mirt (in mirt)
-cmodel <- mirt.model('
+cmodel <- mirt.model("
    F1 = 1-4
    F2 = 5-8
    F3 = 9-12
-   COV = F1*F2, F1*F3 , F2*F3 '  )
+   COV = F1*F2, F1*F3 , F2*F3 "  )
 mod5f <- mirt(dat, cmodel , verbose=TRUE)
 summary(mod5f)
 
@@ -315,16 +315,19 @@ library(pcalg)
 
 # M6b: graph estimation based on Pearson correlations
 V <- colnames(dat)
-mod6b <- pcalg::pc(suffStat = list(C = cor(dat), n = nrow(dat) ),
+n <- nrow(dat)
+mod6b <- pcalg::pc(suffStat = list(C = cor(dat), n = n ),
              indepTest = gaussCItest, ## indep.test: partial correlations
              alpha=0.05, labels = V, verbose = TRUE)
 plot(mod6b)
+# plot in qgraph package
+qgraph::qgraph(mod6b , label.color= rep( c( "red" , "blue","darkgreen" ) , each=4 ) ,
+         edge.color="black")
 summary(mod6b)
 
 # M6c: graph estimation based on tetrachoric correlations
-mod6c <- pcalg::pc(suffStat = list(C = tetrachoric2(dat)$rho, n = nrow(dat) ),
-             indepTest = gaussCItest, ## indep.test: partial correlations
-             alpha=0.05, labels = V, verbose = TRUE)
+mod6c <- pcalg::pc(suffStat = list(C = tetrachoric2(dat)$rho, n = n ),
+             indepTest = gaussCItest, alpha=0.05, labels = V, verbose = TRUE)
 plot(mod6c)
 summary(mod6c)
 }

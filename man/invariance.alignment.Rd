@@ -279,10 +279,10 @@ data(data.inv4gr)
 dat <- data.inv4gr
 library(semTools)
 
-model1 <- '
+model1 <- "
     F =~ I01 + I02 + I03 + I04 + I05 + I06 + I07 + I08 + I09 + I10 + I11
     F ~~ 1*F
-    '
+    "
 
 res <- measurementInvariance(model1, std.lv =TRUE , data=dat , group="group")
 ##   Measurement invariance tests:

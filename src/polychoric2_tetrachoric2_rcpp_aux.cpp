@@ -46,9 +46,9 @@ BEGIN_RCPP
      double L1;  
      double aincr=1 ;  
      double incr=0;  
-     double maxincr = pow(10.0,-9.0) ;  
-     double eps = pow(10.0,-10.0) ;  
-       
+     double maxincr = 1e-9 ;
+     double eps=1e-10;
+     
      int iter=0 ;  
        
      for (int zz = 0 ; zz<ZZ;zz++){  

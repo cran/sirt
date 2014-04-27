@@ -235,11 +235,11 @@ mod2c <- rasch.mml2( dat ,Qmatrix =Qmatrix , est.a= 1:30 ,
 summary(mod2c)
 
 #-- Model 2d: mirt in mirt
-cmodel <- mirt.model(
-    'F1 = 1-10
+cmodel <- mirt.model("
+     F1 = 1-10
      F2 = 21-30
      F3 = 11-20
-     COV = F1*F2, F1*F3 , F2*F3 ' )
+     COV = F1*F2, F1*F3 , F2*F3 " )
 mod2d <- mirt(dat, cmodel , verbose=TRUE)
 summary(mod2d)
 coef(mod2d)
