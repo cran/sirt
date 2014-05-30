@@ -20,7 +20,7 @@ reliability.nonlinearSEM <- function( facloadings , thresh ,
                         } 
 		if ( is.null(resid.cov) ){
 			resid.cov <- diag(I )			
-				}
+				}	
         # number of items
         I <- nrow(facloadings)
         # transform thresholds
@@ -29,7 +29,7 @@ reliability.nonlinearSEM <- function( facloadings , thresh ,
         rho.exp <- matrix( 0 , I , I )
         colnames(rho.exp) <- rownames(rho.exp) <- rownames(facloadings)
         # reliability matrix
-        rel.matrix2 <- rel.matrix <- rho.exp       
+        rel.matrix2 <- rel.matrix <- rho.exp  
         for (ii1 in 1:I){
             for (ii2 in 1:ii1){ 
                 #        ii1 <- 2
@@ -37,7 +37,7 @@ reliability.nonlinearSEM <- function( facloadings , thresh ,
                 rho.exp[ii1,ii2] <- as.vector(facloadings[ii1,]) %*% cor.factors  %*% 
 											matrix( as.vector(facloadings[ii2,]) , ncol=1 )
                 rho.exp[ii2,ii1] <- rho.exp[ii1,ii2] 
-                r1 <- rho.exp[ii1,ii2]
+                r1 <- rho.exp[ii1,ii2]			
                 rel.matrix[ii1,ii2] <- pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
                                          corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - 
 										 pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
@@ -50,10 +50,11 @@ reliability.nonlinearSEM <- function( facloadings , thresh ,
 				rel.matrix2[ii2,ii1] <- rel.matrix2[ii1,ii2] 
                 if (ii1 == ii2){
                     r1 <- 1
+#					r1 <- 1 - 1e-6
                     rel.matrix2[ii1,ii2] <- pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
                                             corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
                     rel.matrix2[ii2,ii1] <- rel.matrix2[ii1,ii2]
-                                    }                
+                                    }					
                                 }
                         }                    
         # calculation of reliability

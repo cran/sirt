@@ -8,8 +8,8 @@ Test for Unidimensionality of CSN
 
 \description{
 This function tests whether item covariances given the sum
-score are non-positive (CSN), i.e. for items \eqn{i} and \eqn{j} it holds
-that 
+score are non-positive (CSN; see Junker 1993), 
+i.e. for items \eqn{i} and \eqn{j} it holds that 
 \deqn{ Cov( X_i , X_j | X^+ ) \le 0 }
 Note that this function only works for dichotomous data.
 }
@@ -70,6 +70,10 @@ De Gooijer, J. G., & Yuan, A. (2011). Some exact tests for
 manifest properties of latent trait models.
 \emph{Computational Statistics and Data Analysis}, \bold{55},
 34-44.
+
+Junker, B.W. (1993). Conditional association, essential independence, and 
+monotone unidimensional item response models. 
+\emph{Annals of Statististics}, \bold{21}, 1359-1378.
 }
 \author{
 Alexander Robitzsch

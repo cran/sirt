@@ -111,7 +111,6 @@ noharm.sirt <- function(dat,weights=NULL,Fval=NULL,Fpatt=NULL,
 		parchange <- max( c(changeP,changeF,changePsi) )
 		iter <- iter + 1 
 		}
-print(Pval)		
 	#****************
 	# calculate final constants
 	if (modesttype==2){
@@ -168,7 +167,6 @@ print(Pval)
 	Nestpars$Psi <- 1/2 * sum( Psipatt == 1 )
 	Nestpars$total <- Nestpars$total + Nestpars$Psi
 	res$Nestpars <- Nestpars
-	
 	#******************
     # chi square statistics	
 	if (modesttype==1){	
@@ -193,10 +191,24 @@ print(Pval)
 	# positive definiteness
 #	rf1 <- psych::cor.smooth( res$factor.cor )
     res$omega.rel <- NA
-	try( res$omega.rel <- reliability.nonlinearSEM(facloadings=res$loadings.theta, thresh=res$thresholds, 
-        resid.cov = res$residcorr  , cor.factors = res$factor.cor )$omega.rel )
+		L0 <- sqrt( diag(Pval ) )
+		N1 <- length(L0)
+		L1inv <- L1 <- matrix( 0 , N1 , N1 )
+		rownames(L1) <- rownames(L1inv) <- colnames(L1) <- 
+				colnames(L1inv) <- rownames(Pval)
+		diag(L1) <- L0	
+		diag(L1inv) <- 1 / L0
+		Fval2 <- Fval %*% L1
+		Pval2 <- L1inv %*% Pval %*% L1inv
+		dj <- sqrt( diag( Fval2 %*% Pval2 %*% t(Fval2) ) )
+		ej <- sqrt( 1+dj^2 )
+		Fval2 <- Fval2 / ej
+		standardized.solution <- list( "Fval"=Fval2 , "Pval" = Pval2 )					
+		res$omega.rel <- reliability.nonlinearSEM(facloadings= Fval2 , 
+			thresh=res$thresholds, 
+        	resid.cov = res$residcorr  , cor.factors = Pval2 )$omega.rel
 	if ( sum(v1) + I < I^2 ){	res$omega.rel <- NA  } 
-	
+
 	#***********************
 	# rotated solution
 	
@@ -221,6 +233,7 @@ print(Pval)
 	res$modesttype <- modesttype
 	res$guesses <- res$lower
 	res$wgtm.default <- wgtm.default
+	res$standardized.solution <- standardized.solution
 	#****************************
 	# return
 	class(res) <- "noharm.sirt"

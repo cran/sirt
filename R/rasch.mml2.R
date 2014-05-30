@@ -75,6 +75,13 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 	# models
 	npirt <- ramsay.qm <- FALSE
 	I <- ncol(dat)
+	
+#	m1r <- FALSE
+#	if (irtmodel == "missing1r"){
+#		m1r <- TRUE
+#		irtmodel <- "missing1"		
+#			} 
+	
 	if ( irtmodel == "ramsay.qm" ){ 
 		ramsay.qm <- TRUE
 		kG <- NULL
@@ -512,6 +519,12 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					Sigma.cov[ variance.fixed[,c(2,1),drop=FALSE] ] <- variance.fixed[,3]												
 									}
 				diag(Sigma.cov) <- diag(Sigma.cov) + 10^(-10)
+#				if (m1r){
+#				    d11 <- sqrt( Sigma.cov[1,1]*Sigma.cov[2,2] )- .001				
+#					Sigma.cov[2,1] <- Sigma.cov[1,2] <- d11
+#						}
+				
+						
 				# adaptive estimation
 				if ( adaptive.quadrature ){ 
 					theta.k <- mu + theta.k0 %*% chol(Sigma.cov)				

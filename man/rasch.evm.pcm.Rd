@@ -214,7 +214,7 @@ library(CDM)
 data(data.mg,package="CDM")
 dat <- data.mg[ , paste0("I",1:11) ]
 
-# estimate partial credit model
+#*** Model 1: estimate partial credit model
 mod1 <- rasch.evm.pcm( dat )
 # item parameters
 round( mod1$b , 3 )
@@ -230,6 +230,15 @@ round( mod1$b , 3 )
 ##  I9   0.766     NA    NA
 ##  I10  0.069     NA    NA
 ##  I11 -1.122  1.159 2.689
+
+#*** Model 2: estimate PCM with pairwise package
+library(pairwise)
+mod2 <- pairwise::pair(daten=dat)
+summary(mod2)
+plot(mod2)
+# xompute standard errors
+semod2 <- pairwise::pairSE(daten=dat,  nsample = 20)
+semod2
 
 #############################################################################
 # EXAMPLE 5: Differential item functioning for dataset data.mg

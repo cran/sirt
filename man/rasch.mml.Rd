@@ -891,22 +891,22 @@ summary(mod8)
 #*** Model 9: estimate missing data model 'missing1' assuming a missingness
 #       parameter delta.miss of zero
 dat2 <-  dat[,items]    # note that missing item responses must be defined by 9
-mod9 <- rasch.mml2( dat2 , constraints=constraints , irtmodel=irtmodel , 
-          theta.k=seq(-5,5,len=10) , delta.miss= 0 , mitermax= 4 , mmliter=20 , 
+mod9 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
+          theta.k=seq(-5,5,len=10) , delta.miss= 0 , mitermax= 4 , mmliter=200 , 
           mu.fixed=NULL )        
 summary(mod9)
 
 #*** Model 10: estimate missing data model with a large negative missing delta parameter
 #       => This model is equivalent to treating missing responses as wrong
-mod10 <- rasch.mml2( dat2 , constraints=constraints , irtmodel=irtmodel , 
-             theta.k=seq(-5 , 5 , len=10) , delta.miss= -10 , mitermax= 4 , mmliter=20 , 
+mod10 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
+             theta.k=seq(-5 , 5 , len=10) , delta.miss= -10 , mitermax= 4 , mmliter=200 , 
              mu.fixed=NULL )        
 summary(mod10)
 
 #*** Model 11: choose a missingness delta parameter of -1
-mod11 <- rasch.mml2( dat2 , constraints=constraints , irtmodel=irtmodel , 
+mod11 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
              theta.k=seq(-5 , 5 , len=10) , delta.miss= -1 , mitermax= 4 , 
-             mmliter=20 , mu.fixed=NULL )        
+             mmliter=200 , mu.fixed=NULL )        
 summary(mod11)
 }
 }

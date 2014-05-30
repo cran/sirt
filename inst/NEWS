@@ -31,10 +31,20 @@ a.robitzsch /-\ bifie.at
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+---
+Versions 0.45 -- 2014-05-30  --  CRAN sirt 0.45-23
+---
+x fixed a bug in reliability calculation in noharm.sirt
+x included plots for 'noharm.sirt' using the semPlot package
+x included first version of statistical implicative analysis ('sia.sirt')
+x included function 'rasch.conquest' for running ConQuest from within R
 
+* included/modified datasets: ---
+* included/modified examples: data.mixed1, noharm.sirt (1,2),
+  sia.sirt (1), data.read, rasch.evm.pcm (4)
 
 ---
-Versions 0.44 -- 2014-04-27
+Versions 0.44 -- 2014-04-27  --  CRAN sirt 0.44-48
 ---
 x fixed a bug in calculation of marginal parameters for testlet model
 x included the partially compensatory item response model
@@ -62,7 +72,7 @@ x included maximum likelihood estimation of polychoric correlation
   tetrachoric (2), polychoric2 (1)
 
 ---
-Versions 0.43 -- 2014-03-12
+Versions 0.43 -- 2014-03-12  --  CRAN sirt 0.43-70
 ---
 x included function 'isop.test' for testing the ISOP model
 x included (non-iterative) eigenvector method for estimating
@@ -98,7 +108,7 @@ x included marginal item parameters in the output in testlet model (mcmc.3pno.te
   rasch.copula (4), rasch.mml2 (7), reliability.nonlinearSEM (1)  
 
 ---
-Versions 0.42 -- 2014-01-31
+Versions 0.42 -- 2014-01-31  --  CRAN sirt 0.42-25
 ---
 x included further values in smirt to allow to apply itemfit.sx2
   in the CDM package
@@ -121,7 +131,7 @@ x extended modelfit.sirt to objects of class R2noharm
 * included/modified examples: fuzcluster (1), modelfit.sirt (1)
 
 ---
-Versions 0.41 -- 2014-01-07
+Versions 0.41 -- 2014-01-07  --  CRAN sirt 0.41-21
 ---
 x included maximum likelihood estimation for discrete data in the
   belief function framework ('fuzdiscr')
@@ -133,7 +143,7 @@ x included clustering fur fuzzy continuous data (belief function
 * included examples: mcmc.2pno.ml (3), rasch.mml2 (7)
 
 ---
-Versions 0.40 -- 2013-12-09
+Versions 0.40 -- 2013-12-09  --  CRAN sirt 0.40-9
 ---
 x fixed a bug in 'data.wide2long'
 x changed Rcpp code in eigenvalue calculation due to a CRAN request
@@ -141,7 +151,7 @@ x changed Rcpp code in eigenvalue calculation due to a CRAN request
 * included examples: 
 
 ---
-Versions 0.39 -- 2013-11-17
+Versions 0.39 -- 2013-11-17  --  CRAN sirt 0.39-30
 ---
 x included approximating function of expected percent score in
   truescore.irt
@@ -164,7 +174,7 @@ x included plot method for function 'invariance.alignment'
   plausible.value.imputation.raschtype (2,3)
 
 ---
-Versions 0.38 -- 2013-10-23
+Versions 0.38 -- 2013-10-23  --  CRAN sirt 0.38-25
 ---
 x included function for automated finding of a scoring key in
   a data frame with raw item responses ('automatic.recode')
@@ -178,7 +188,7 @@ x included function truescore.irt for conversion of trait scores
   into true scores for unidimensional item response models
 
 ---
-Versions 0.37 -- 2013-10-02
+Versions 0.37 -- 2013-10-02  --  CRAN sirt 0.37-24
 ---
 x renamed 'data.noharm' into 'data.noharm18'
 x fixed a bug in rasch.mirtlc with multiple starts in latent
@@ -194,7 +204,7 @@ x included eigenvalue decomposition function 'eigenvalues.sirt'
 x included data conversion function 'data.wide2long'
   
 ---
-Versions 0.35/0.36 -- 2013-09-08
+Versions 0.35/0.36 -- 2013-09-08  --  CRAN sirt 0.36-30
 ---
 x corrected legends and labels in plot.isop function
 x included function rowKSmallest2.sirt
@@ -228,7 +238,7 @@ x included plot method for rasch.mml2 function
 x removed rasch.testlet.glmer function
 
 ---
-Version 0.34 -- 2013-08-13
+Version 0.34 -- 2013-08-13  --  CRAN sirt 0.34-46
 ---
 x included estimation of ISOP and ADISOP models
 x included example data.big5
@@ -251,7 +261,7 @@ x included plot method for ISOP models (isop.dich and
   isop.poly)
 
 ---
-Version 0.33 -- 2013-07-09
+Version 0.33 -- 2013-07-09  --  CRAN sirt 0.33-16
 ---
 x included R2NOHARM functions into this package for running
   NOHARM from within R
@@ -274,7 +284,8 @@ x included mcmc.2pno.ml function for estimating a multilevel
   IRT model for dichotomous and normally distributed data
 
 ---
-Version 0.31 -- 2013-05-27  [*** First CRAN Release ***]
+Version 0.31 -- 2013-05-27  --  CRAN sirt 0.31-20
+[*** First CRAN Release ***]
 ---
 x speeded rasch.pml2 a bit
 x fixed a bug in smirt function (thanks to Izanloo Balal)

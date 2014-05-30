@@ -190,7 +190,7 @@ coef(mod3d) # => numerical instabilities
 Q <- matrix( 0 , nrow=12 , ncol=3 )
 Q[ cbind(1:12 , rep(1:3,each=4) ) ] <- 1
 rownames(Q) <- colnames(dat)
-colnames(Q) <- c("A","B" , "C")
+colnames(Q) <- c("A","B","C")
 
 # define nodes
 theta.k <- seq(-6,6,len=13 )

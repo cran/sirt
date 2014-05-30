@@ -53,7 +53,8 @@ estimating equation results: (see Penfield & Bergeron, 2005):
 where \eqn{E(X_{pi} | \theta_p )} denotes the expected item response
 conditionally on \eqn{\theta_p}.
 
-With the method of \eqn{\varepsilon}-adjustment (Bertoli-Barsotti & Punzo, 2012),
+With the method of \eqn{\varepsilon}-adjustment (Bertoli-Barsotti & Punzo, 2012;
+Bertoli-Barsotti, Lando & Punzo, 2014),
 the observed item responses \eqn{x_{pi}} are transformed such that
 no perfect scores arise and bias is reduced. If \eqn{S_p}
 is the sum score of person \eqn{p} and \eqn{M_p} the maximum
@@ -84,6 +85,12 @@ Bertoli-Barsotti, L., & Punzo, A. (2012).
 Comparison of two bias reduction techniques for the Rasch model.
 \emph{Electronic Journal of Applied Statistical Analysis}, 
 \bold{5}, 360-366.
+
+Bertoli-Barsotti, L., Lando, T., & Punzo, A. (2014). 
+Estimating a Rasch Model via fuzzy empirical probability functions.
+In D. Vicari, A. Okada, G. Ragozini &  C. Weihs (Eds.).
+\emph{Analysis and Modeling of Complex Data in Behavioural and Social Sciences},
+Springer.
 
 Penfield, R. D., & Bergeron, J. M. (2005). Applying a weighted 
 maximum likelihood latent trait estimator to the generalized 

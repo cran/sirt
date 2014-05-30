@@ -262,6 +262,12 @@ mod2e <- R2noharm( dat = dat , model.type="CFA" , P.pattern=P.pattern,
             writename = "reck61__3dim_cfa", noharm.path = "c:/NOHARM" ,dec = ",")
 summary(mod2e)
 
+#-- Model 2f: CFA with noharm.sirt
+mod2f <- noharm.sirt( dat = dat , Fval=F.init , Fpatt = F.pattern ,
+            Pval=P.init , Ppatt = P.pattern )                      
+summary(mod2f)
+
+
 #############################################################################
 # EXAMPLE 3: DETECT analysis data.reck78ExA and data.reck79ExB
 ############################################################################# 

@@ -102,8 +102,18 @@ export(
     rasch.copula3 ,
     testlet.marginalized ,
     noharm.sirt ,
-    polychoric2
-        )
+    polychoric2 ,
+    sia.sirt,
+    rasch.conquest,
+    read.show,
+    read.show.term,
+    read.show.regression,
+    read.pv,
+    read.multidimpv,
+    read.pimap
+)    
+    
+    
 
 
 
@@ -133,7 +143,7 @@ S3method(plot,mcmc.sirt)
 S3method(plot,isop)
 S3method(plot,rasch.mml)
 S3method(plot , linking.robust)
-
+S3method(plot , noharm.sirt)
 
 S3method(summary,R2noharm)
 S3method(summary,R2noharm.jackknife)
@@ -145,6 +155,7 @@ S3method(summary, rasch.evm.pcm)
 S3method(summary, linking.robust)
 S3method(summary, lc.2raters)
 S3method(summary, rasch.copula3)
+S3method(summary, rasch.conquest)
 
 # imports Depends packages
 import(mvtnorm)
@@ -162,4 +173,7 @@ import(qgraph)
 importFrom(pbivnorm,pbivnorm)
 importFrom( gtools , permutations )
 importFrom(Rcpp,evalCpp)
-
+import(lavaan)
+import(semPlot)
+import(igraph)
+# importFrom(inline,getDynLib)

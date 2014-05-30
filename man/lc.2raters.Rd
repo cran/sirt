@@ -97,7 +97,7 @@ in the presence of high agreement.
 \bold{61}, 29-48.
 
 Gwet, K. L. (2010). \emph{Handbook of Inter-Rater Reliability}.
-Advanced Analytics, Gaithersburg.
+Advanced Analytics, Gaithersburg. \url{http://www.agreestat.com/}
 	
 Uebersax, J. S., & Grove, W. M. (1990). Latent class analysis of diagnostic 
 agreement. \emph{Statistics in Medicine}, \bold{9}, 559-572.

@@ -70,7 +70,8 @@
 	if (is.null(colnames(Fpatt) ) ){
 		colnames(Fpatt) <- cn }
 	if (is.null(colnames(Fval) ) ){
-		colnames(Fval) <- colnames(Fpatt) }		
+		colnames(Fval) <- colnames(Fpatt) 
+					}		
 	
 	if (is.null(colnames(Pval))){ 
 			colnames(Pval) <- colnames(Ppatt) 
@@ -79,7 +80,7 @@
 			colnames(Pval) <- colnames(Fval) 
 					}
 	rownames(Pval) <- colnames(Pval)
-
+	
 	#*****
 	# matrix conversion
 	#****

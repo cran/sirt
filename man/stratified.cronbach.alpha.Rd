@@ -21,7 +21,7 @@ An \eqn{N \times I} data frame
 A matrix with two columns defining the item stratification.
 The first column contains the item names, the second column
 the item stratification label (these can be integers).
-The default \eqn{NULL} does only compute Cronbach's Alpha
+The default \code{NULL} does only compute Cronbach's Alpha
 for the whole scale.
 }
 }
