@@ -65,18 +65,18 @@ itemnr <- as.numeric( substring( colnames(dat) ,2,2) )
 mu.fixed <- cbind( 2,0 )
 
 #--- M1a: rasch.mml2 (in sirt)
-mod1a <- rasch.mml2(dat, Q=Q , est.b=itemnr , mu.fixed=mu.fixed)
+mod1a <- sirt::rasch.mml2(dat, Q=Q , est.b=itemnr , mu.fixed=mu.fixed)
 summary(mod1a)
 
 #--- M1b: smirt (in sirt)
-mod1b <- smirt(dat, Qmatrix=Q , irtmodel="comp" , est.b= itemnr , 
-        mu.fixed=mu.fixed )
+mod1b <- sirt::smirt(dat, Qmatrix=Q , irtmodel="comp" , est.b= itemnr , 
+                  mu.fixed=mu.fixed )
 
 #--- M1c: tam.mml (in TAM)
 
 # assume equal item difficulty of I3T1 and I3T2, I4T1 and I4T2, ...
 # create draft design matrix and modify it
-A <- designMatrices(resp=dat)$A
+A <- TAM::designMatrices(resp=dat)$A
 dimnames(A)[[1]] <- colnames(dat)
 ##   > str(A)
 ##    num [1:12, 1:2, 1:12] 0 0 0 0 0 0 0 0 0 0 ...
@@ -107,7 +107,7 @@ dimnames(A1)[[3]] <- substring( dimnames(A1)[[3]],1,2)
 # estimate model
 # set intercept of second dimension (T2) to zero
 beta.fixed <- cbind( 1 , 2 , 0 )
-mod1c <- tam.mml( resp=dat , Q=Q , A=A1 , beta.fixed=beta.fixed)
+mod1c <- TAM::tam.mml( resp=dat , Q=Q , A=A1 , beta.fixed=beta.fixed)
 summary(mod1c)
 
 #***
@@ -117,8 +117,8 @@ summary(mod1c)
 variance.fixed <- cbind( 2,2,1)
 
 # M2a: rasch.mml2 (in sirt)
-mod2a <- rasch.mml2(dat, Q=Q , est.b=itemnr , est.a=itemnr , mu.fixed=mu.fixed,
-        variance.fixed=variance.fixed , mmliter=100)
+mod2a <- sirt::rasch.mml2(dat, Q=Q , est.b=itemnr , est.a=itemnr , mu.fixed=mu.fixed,
+             variance.fixed=variance.fixed , mmliter=100)
 summary(mod2a)
 }
 }

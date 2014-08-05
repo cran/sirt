@@ -69,19 +69,19 @@ dat.long <- data.wide2long( dat=dat1 , id="idstud" , X=X , Q=Q )
 
 #***
 # Model 1: Rasch model
-mod1 <- glmer( resp ~ 0 + ( 1 | idstud ) + as.factor(item) , data = dat.long ,
+mod1 <- lme4::glmer( resp ~ 0 + ( 1 | idstud ) + as.factor(item) , data = dat.long ,
             family="binomial" , verbose=TRUE)
 summary(mod1)
 
 #***
 # Model 2: Rasch model and inclusion of person predictors
-mod2 <- glmer( resp ~ 0 + ( 1 | idstud ) + as.factor(item) + female + hisei + migra,
+mod2 <- lme4::glmer( resp ~ 0 + ( 1 | idstud ) + as.factor(item) + female + hisei + migra,
            data = dat.long , family="binomial" , verbose=TRUE)
 summary(mod2)
 
 #***
 # Model 3: LLTM
-mod3 <- glmer(resp ~ (1|idstud) + as.factor(ItemFormat) + as.factor(TextType), 
+mod3 <- lme4::glmer(resp ~ (1|idstud) + as.factor(ItemFormat) + as.factor(TextType), 
             data = dat.long , family="binomial" , verbose=TRUE)
 summary(mod3)
 
@@ -93,13 +93,13 @@ set.seed(765)
 N <- 1000  # number of persons
 I <- 10    # number of items
 b <- seq(-2,2,length=I)
-dat <- sim.raschtype( rnorm(N,sd=1.2) , b=b )
+dat <- sirt::sim.raschtype( rnorm(N,sd=1.2) , b=b )
 dat.long <- data.wide2long( dat=dat )
 #***
 # estimate Rasch model with lmer
 library(lme4)
-mod1 <- glmer( resp ~ 0 + as.factor( item ) + ( 1 | id_index) , data = dat.long ,
-        verbose=TRUE , family="binomial")
+mod1 <- lme4::glmer( resp ~ 0 + as.factor( item ) + ( 1 | id_index) , data = dat.long ,
+             verbose=TRUE , family="binomial")
 summary(mod1)
 ##   Random effects:
 ##    Groups   Name        Variance Std.Dev.

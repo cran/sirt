@@ -45,9 +45,11 @@ plot.noharm.sirt <- function( x , what="est" , efa.load.min=.3 , ... ){
 	var_connected <- setdiff( varnames , varnames[indvar_unconnected] )
 	
 	# thresholds
-	lavmodel <- paste0( paste0( var_connected , collapse="+" ) , " | t1 \n" )
-
-	
+    if (length(var_connected) > 0 ){
+			lavmodel <- paste0( paste0( var_connected , collapse="+" ) , " | t1 \n" )
+					} else {
+			lavmodel <- NULL 
+					}
 	# loadings for all dimensions
 	D <- ncol(Fval)
 	# loading matrix
@@ -119,18 +121,18 @@ if ( ! is.null( Psival) ){
 						
 	# lavaanified model
 	lavmodelM <- lavaan::lavaanify(lavmodel)
-# print(lavmodelM)
-# stop()	
 	
 	# collect estimates
 	est <- c( object$thresholds[ indvar_connected ]  , desF$est , desP$est )
 	if ( ! is.null( desPsi) ){ est <- c( est , desPsi$est ) }
 	if ( unconvars ){ est <- c( est , rep(1,IV) ) }
-	# pseudo lavaan object
+	# create pseudo lavaan object
+	# data(..., envir = environment())		
+	data(HolzingerSwineford1939, package="lavaan" , envir= environment() )
 	HS.model <- ' visual  =~ x1 + x2 + x3
 				  textual =~ x4 + x5 + x6
 				  speed   =~ x7 + x8 + x9 '
-	lavfit <- cfa(HS.model, data=HolzingerSwineford1939)
+	lavfit <- lavaan::cfa(HS.model, data=HolzingerSwineford1939)
 	# modify resulting object
 	lavfit1 <- lavfit
 	lpt <- lavfit1@ParTable
@@ -138,7 +140,7 @@ if ( ! is.null( Psival) ){
 	lavfit1@Fit@est <- est
 	lavfit1@Fit@se <- 0
 	# sem paths
-	plotres <- semPaths(object= lavfit1 , what="est" , ... )
+	plotres <- semPlot::semPaths(object= lavfit1 , what="est" , ... )
 #	plotres$lavmodel
 #	plotres$lavfit1
 	invisible(plotres)

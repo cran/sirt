@@ -16,7 +16,7 @@ rasch.pml3 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 			error.corr = 0*diag( 1 , ncol(dat) ) ,
 			err.constraintM=NULL , err.constraintV=NULL ,
             glob.conv= 10^(-6) , conv1 = 10^(-4) , pmliter = 300 ,
-			progress = TRUE  ){
+			progress = TRUE , use.maxincrement=TRUE ){
 	##################################
 	# multidimensional version does not work
 	Q <- NULL ; combs <- zero.corrs <- NULL
@@ -175,8 +175,9 @@ rasch.pml3 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 			deseps00[ ii.bb , bb ] <- 1
 					 }			
 				}
-
-
+	
+	max.increment.a <- .3
+#	use.maxincrement <- TRUE			
 	
 	#............................				
     iter <- 0
@@ -219,6 +220,7 @@ rasch.pml3 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 		
         #************************************
         # estimation of a parameters
+			
         a0 <- a
         # identify different a parameter groups
         aG <- setdiff( unique( est.a ) , 0 )
@@ -228,9 +230,15 @@ rasch.pml3 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 				h , desa00 , desa01 , desa10  , desa11 , a.items )
 			a <- respml0$a
 			dev <- -2*respml0$ll
-				a1a <- max( abs( a - a0 ) )
-				cat("----------|     max. parm. change" , round( a1a , 5),"\n")		
-				flush.console()
+            if ( use.maxincrement ){
+				incr <- a - a0
+				incr <- ifelse( abs(incr) > max.increment.a , sign(incr)*max.increment.a , incr )			
+				a <- a0 + incr
+				max.increment.a <- max.increment.a / 1.2
+						}						
+			a1a <- max( abs( a - a0 ) )
+			cat("----------|     max. parm. change" , round( a1a , 5),"\n")		
+			flush.console()
 						}		
 		######################################
 		# estimation sigma

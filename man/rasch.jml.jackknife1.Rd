@@ -70,7 +70,6 @@ summary(mod)
 
 # reestimate the Rasch model using Jackknife
 mod2 <- rasch.jml.jackknife1( mod )
-
 ##   
 ##   Joint Maximum Likelihood Estimation 
 ##   Jackknife Estimation

@@ -40,7 +40,7 @@ A logical which indicates if iteration progress should be displayed
 %%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-A list wit folowing entries
+A list with folowing entries
 \item{item.stat}{Data frame with item name, p value, item discrimination
 and the calculated key}
 \item{data.scored}{Scored data frame using calculated keys 

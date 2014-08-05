@@ -172,8 +172,7 @@ X <- cbind( 1 , dat[ , c("female","hisei","migra" ) ] )
 # estimate Rasch model
 mod1 <- rasch.mml2( dat[,items] )
 # latent regression model
-lm1 <- latent.regression.em.raschtype( data=dat[,items ],
-            X = X , b = mod1$item$b )
+lm1 <- latent.regression.em.raschtype( data=dat[,items ], X = X , b = mod1$item$b )
 
 \dontrun{            
 #***
@@ -192,7 +191,7 @@ itemclusters <- match( testlets , unique(testlets) )
 mod3 <- rasch.copula2( dat[,items] , itemcluster=itemclusters )
 # use model estimated likelihood for latent regression model
 lm3 <- latent.regression.em.raschtype( f.yi.qk=mod3$f.yi.qk , 
-           X = X , theta.list=mod3$theta.k) 
+                X = X , theta.list=mod3$theta.k) 
 
 #############################################################################
 # SIMULATED EXAMPLE 2: Simulated data according to the Rasch model
@@ -286,7 +285,7 @@ X1 <- as.matrix(data.frame( "intercept"=1 , "X"=X , "Z"=Z ))
 
 # latent regression model
 res <- latent.regression.em.raschtype( f.yi.qk=f.yi.qk , 
-            X= X1 , theta.list=theta.list)
+                    X= X1 , theta.list=theta.list)
 ##   Regression Parameters
 ##   
 ##                est se.simple     se       t      p   beta    fmi N.simple pseudoN.latent

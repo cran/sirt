@@ -298,7 +298,7 @@ cbind( mod2$theta.k , mod2$pi.k )
 ##  [3,]  0.0  1.0 0.749540078
 
 #***** DATASET 2 *************
-# define a 2 class model with graded membership
+# define a 2-class model with graded membership
 set.seed(8765)
 I <- 10
 prob.class1 <- runif( I , 0 , .35 )

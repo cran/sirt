@@ -235,7 +235,7 @@ I <- 11                             # number of items
 n <- 1500                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
 theta <- rnorm( n , sd = 1 )        # person abilities
-# itemcluster
+# define item clusters
 itemcluster <- rep(0,I)
 itemcluster[ c(3,5 )] <- 1
 itemcluster[c(2,4,9)] <- 2
@@ -250,7 +250,7 @@ colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
 mod1 <- rasch.copula2( dat , itemcluster = itemcluster )
 summary(mod1)
 
-# both itemclusters have Cook-Johnson copula as dependency
+# both item clusters have Cook-Johnson copula as dependency
 mod1c <- rasch.copula2( dat , itemcluster = itemcluster ,
 			copula.type ="cook.johnson")
 summary(mod1c)
@@ -298,7 +298,7 @@ pmod1 <- person.parameter.rasch.copula(raschcopula.object = mod1 )
 
 # Rasch model estimation
 mod2 <- rasch.copula2( dat , itemcluster = itemcluster , 
-        delta = rep(0,3) , est.delta = rep(0,3) )
+             delta = rep(0,3) , est.delta = rep(0,3) )
 summary(mod1)
 summary(mod2) 
 

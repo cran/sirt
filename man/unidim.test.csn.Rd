@@ -50,7 +50,8 @@ hypothesis of non-positivity of conditional covariances.
 The distribution of the test statistic \eqn{h} under the null
 hypothesis is empirically obtained by column wise permutation
 of items within all score groups. In the population, this procedure
-corresponds to conditional covariances of zero.
+corresponds to conditional covariances of zero. See de Gooijer and Yuan (2011)
+for more details.
 }
 
 \value{
@@ -73,7 +74,7 @@ manifest properties of latent trait models.
 
 Junker, B.W. (1993). Conditional association, essential independence, and 
 monotone unidimensional item response models. 
-\emph{Annals of Statististics}, \bold{21}, 1359-1378.
+\emph{Annals of Statistics}, \bold{21}, 1359-1378.
 }
 \author{
 Alexander Robitzsch

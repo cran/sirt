@@ -128,7 +128,8 @@ plot( mod1$mcmcobj , ask=TRUE )
 # define weights
 weights <- c( rep( 5 , N/4 ) , rep( .2 , 3/4*N ) )
 mod2 <- mcmc.2pno( dat , weights=weights , iter= 1500 , burnin=500)
-mod1$summary.mcmcobj}
+mod1$summary.mcmcobj
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

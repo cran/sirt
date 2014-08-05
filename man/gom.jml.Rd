@@ -137,7 +137,8 @@ summary(m2)
 \dontrun{
 # 3 Classes with fixed seed and maximum number of iterations
 m3 <- gom.jml(dat,K=3 , maxiter=50,seed=89)
-summary(m3) }
+summary(m3) 
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

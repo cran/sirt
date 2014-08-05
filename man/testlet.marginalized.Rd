@@ -97,7 +97,7 @@ var.testlet <- c( .8 , .2 , 0 )  # testlet variances
 
 # apply function
 res <- testlet.marginalized( a1=a1 , d1=d1 , testlet=testlet , 
-        a.testlet=a.testlet , var.testlet=var.testlet )
+            a.testlet=a.testlet , var.testlet=var.testlet )
 round( res , 2 )
 ##    item testlet a1    d1 a.testlet var.testlet a1_marg d1_marg
 ##  1    1       1  1 -1.25         1         0.8    0.89   -1.11
@@ -121,7 +121,8 @@ maxiter <-  100
 
 # Model 1: Rasch testlet model with 3 testlets
 dims <- substring( colnames(resp),1,1 )  # define dimensions
-mod1 <- tam.fa( resp=resp , irtmodel="bifactor1" , dims=dims , control=list(maxiter=maxiter) )
+mod1 <- TAM::tam.fa( resp=resp , irtmodel="bifactor1" , dims=dims , 
+               control=list(maxiter=maxiter) )
 # marginal item parameters
 res1 <- testlet.marginalized( mod1 )
 
@@ -130,7 +131,8 @@ res1 <- testlet.marginalized( mod1 )
 #           specific factors
 dims1 <- dims
 dims1[c(3,5)] <- NA
-mod2 <- tam.fa( resp=resp , irtmodel="bifactor2" , dims=dims1 , control=list(maxiter=maxiter) ) 
+mod2 <- TAM::tam.fa( resp=resp , irtmodel="bifactor2" , dims=dims1 , 
+              control=list(maxiter=maxiter) ) 
 res2 <- testlet.marginalized( mod2 )
 res2
 }

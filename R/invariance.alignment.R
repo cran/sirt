@@ -1,5 +1,5 @@
 ################################################################
-invariance.alignment <- function( lambda , nu , wgt ,
+invariance.alignment__sirt045 <- function( lambda , nu , wgt ,
    align.scale=c(1,1) , align.pow=c(1,1) , eps=.0001 , 
    h= .001 ,max.increment=.2 , increment.factor=1.001 ,  maxiter =3000 ,
    conv=.0001 , fac.oldpar = 0.85  , psi0.init=NULL , alpha0.init=NULL ,

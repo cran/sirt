@@ -25,7 +25,8 @@ rasch.pml3(dat, est.b = seq(1, ncol(dat)), est.a=rep(0,ncol(dat)) ,
     b.init = NULL, a.init=NULL ,  sigma.init = NULL, 
     error.corr = 0*diag( 1 , ncol(dat) ) ,
     err.constraintM=NULL , err.constraintV=NULL ,
-    glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE)  
+    glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE,
+    use.maxincrement=TRUE )  
     
 rasch.pml2(dat, est.b = seq(1, ncol(dat)), est.a=rep(0,ncol(dat)) ,
     est.sigma = TRUE, itemcluster = NULL, 
@@ -115,6 +116,10 @@ Maximum number of iterations
   \item{progress}{
 Display progress?
 }
+\item{use.maxincrement}{Optional logical whether increments in 
+	slope parameters should be controlled in size in iterations.
+	The default is \code{TRUE}.
+}
   \item{object}{
 Object of class \code{rasch.pml}
 }
@@ -144,7 +149,7 @@ Linear constraints \eqn{Me=v} on residual correlations
 \eqn{e=Cov( \epsilon_{pi} , \epsilon_{pj})_{ij}} (in a vectorized form) can be 
 specified using the arguments \code{err.constraintM} (matrix \eqn{M})
 and \code{err.constraintV} (vector \eqn{v}). The estimation
-is described in Neuhaus (1995).
+is described in Neuhaus (1996).
 
 For the pseudo likelihood information criterion (PLIC)
 see Stanford and Raftery (2002).
@@ -179,9 +184,8 @@ Green, S. B., & Yang, Y. (2009). Reliability of summed item
 scores using structural equation modeling: An alternative to 
 coefficient alpha. \emph{Psychometrika}, \bold{74}, 155-167.
 	
-Neuhaus, W. (1995). \emph{Optimal Estimation Under
-Linear Constraints}. Technical Report,
-Kobenhavns Universitet, Forsikringsmatematisk Laboratorium.
+Neuhaus, W. (1996). Optimal Estimation Under
+Linear Constraints. \emph{Astin Bulletin}, \bold{26}, 233-245. 
 
 Renard, D., Molenberghs, G., & Geys, H. (2004). A pairwise likelihood
 approach to estimation in multilevel probit models. \emph{Computational Statistics
@@ -339,7 +343,7 @@ summary(mod1)
 # estimation with rasch.mml2 function
 mod2 <- rasch.mml3( dat )
 
-# estimate 5 item parameter groups
+# estimate item parameters for groups with five item parameters each
 est.b <- rep( 1:(I/2) , each=2 )
 mod3 <- rasch.pml3( dat , est.b=est.b )
 summary(mod3)
@@ -406,7 +410,7 @@ err.constraint[ ( itempairs0$item1 \%in\% cluster2 )
 err.constraintV <- matrix(3*.4,1,1)
 
 mod5 <- rasch.pml3( dat , error.corr=est.corrs , 
-    err.constraintM=err.constraint, err.constraintV=err.constraintV)
+         err.constraintM=err.constraint, err.constraintV=err.constraintV)
 
 #****
 # Model 6: Constraint on sum of all correlations

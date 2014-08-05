@@ -96,12 +96,12 @@ wle2 <- wle.rasch.jackknife(dat, b =res$item$thresh )
 
 # SE(WLE) for testlets A, B and C
 wle3 <- wle.rasch.jackknife(dat, b =res$item$thresh , 
-        testlet = substring( colnames(dat),1,1) )
+           testlet = substring( colnames(dat),1,1) )
 ## WLE Reliability = 0.572 
 		
 # SE(WLE) for item strata A,B, C
 wle4 <- wle.rasch.jackknife(dat, b =res$item$thresh , 
-         stratum = substring( colnames(dat),1,1) )
+             stratum = substring( colnames(dat),1,1) )
 ## WLE Reliability = 0.683 
 
 # SE (WLE) for finite item strata
@@ -110,8 +110,8 @@ wle4 <- wle.rasch.jackknife(dat, b =res$item$thresh ,
 size.itempop <- c(10,7,4)
 names(size.itempop) <- c("A","B","C")
 wle5 <- wle.rasch.jackknife(dat, b =res$item$thresh , 
-         stratum = substring( colnames(dat),1,1) ,
-         size.itempop = size.itempop )
+             stratum = substring( colnames(dat),1,1) ,
+             size.itempop = size.itempop )
 ## Stratum  A (Mean) Correction Factor 0.6 
 ## Stratum  B (Mean) Correction Factor 0.42857 
 ## Stratum  C (Mean) Correction Factor 0 

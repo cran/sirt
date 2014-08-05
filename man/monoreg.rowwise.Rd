@@ -76,8 +76,8 @@ wM[2,] <- c(1,3,4, 3 )
 # fit rowwise monotone regression
 monoreg.rowwise( yM , wM )
 # compare results with monoreg function from fdrtool package
-monoreg(x=yM[1,] , w=wM[1,])$yf
-monoreg(x=yM[2,] , w=wM[2,])$yf
+fdrtool::monoreg(x=yM[1,] , w=wM[1,])$yf
+fdrtool::monoreg(x=yM[2,] , w=wM[2,])$yf
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

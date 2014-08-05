@@ -128,7 +128,7 @@ dif1$unweighted.DIFSD
 # calculate stratified DIF variance
 # stratification based on domains
 dif2 <- dif.strata.variance( dif=mod1$uniformDIF , se.dif = mod1$se.uniformDIF ,
-        itemcluster = data.math$item$domain )
+              itemcluster = data.math$item$domain )
 ## $unweighted.DIFSD
 ## [1] 0.1455916
 
@@ -137,13 +137,13 @@ dif2 <- dif.strata.variance( dif=mod1$uniformDIF , se.dif = mod1$se.uniformDIF ,
 # Likelihood ratio test and graphical model test in eRm package
 library(eRm)
 # estimate Rasch model
-res <- RM( dat[,items] )
+res <- eRm::RM( dat[,items] )
 summary(res)
 # LR-test with respect to female
-lrres <- LRtest(res, splitcr = dat$female)
+lrres <- eRm::LRtest(res, splitcr = dat$female)
 summary(lrres)
 # graphical model test
-plotGOF(lrres) 
+eRm::plotGOF(lrres) 
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

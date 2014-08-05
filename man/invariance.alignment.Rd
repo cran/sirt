@@ -20,15 +20,12 @@ with zero mean and a variance of one.
 
 
 \usage{
-invariance.alignment(lambda, nu, wgt, align.scale = c(1, 1), 
-    align.pow = c(1, 1), eps = 1e-04, h = 0.001, max.increment = 0.2, 
-    increment.factor = 1.001, maxiter = 3000, conv = 1e-04, 
-    fac.oldpar=.85 , psi0.init = NULL, alpha0.init = NULL, progress = TRUE)
+invariance.alignment(lambda, nu, wgt=NULL, align.scale = c(1, 1), 
+    align.pow = c(1, 1), eps = .01, h = 0.001, max.increment = 0.2, 
+    increment.factor = c(1.001,1.02,1.04,1.08), maxiter = 300, conv = 1e-04, 
+    fac.oldpar= c(.01,.2,.5,.85), psi0.init = NULL, alpha0.init = NULL, progress = TRUE)
 
 \method{summary}{invariance.alignment}(object,...)
-
-# plot of convergence behavior of optimization functions
-\method{plot}{invariance.alignment}(x,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -87,9 +84,6 @@ An optional logical indicating whether computational
 should be printed.
 }
   \item{object}{
-Object of class \code{invariance.alignment}
-  }
-  \item{x}{
 Object of class \code{invariance.alignment}
   }
   \item{\dots}{
@@ -169,7 +163,6 @@ A list with following entries
 \eqn{f_\nu} optimization functions}
 \item{miniter}{Iteration index with minimum optimizatiob value}
 \item{fopt}{Minimum optimization value}
-\item{fopt.history}{Vector of iteration history of optimization function}
 \item{align.scale}{Used alignment scale parameters}
 \item{align.pow}{Used alignment power parameters}
 }
@@ -191,11 +184,9 @@ Methods}, \bold{3}, 4-70.
 Alexander Robitzsch
 }
 
-\note{
-In case of nonconvergence, decrease \code{max.increments}
-or set \code{increment.factor} to a value larger than one
-(maybe 1.01 or 1.05).
-}
+%\note{
+%xxxx
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -224,15 +215,14 @@ mod1 <- invariance.alignment( lambda , nu , wgt )
 summary(mod1)
 ##   Effect Sizes of Approximate Invariance 
 ##          loadings intercepts
-##   R2       0.9266     0.9735
-##   sqrtU2   0.2709     0.1628
-##   rbar     0.9265     0.9738
+##   R2       0.9944     0.9988
+##   sqrtU2   0.0748     0.0346
+##   rbar     0.9265     0.9735
 
 #****
 # Model 2: Different powers for alignment
-mod2 <- invariance.alignment( lambda , nu , wgt , 
-        align.pow=c(.25,1/2) , align.scale=c(.95,.95) ,
-        max.increment=.1)
+mod2 <- invariance.alignment( lambda , nu , wgt ,  align.pow=c(.25,1/2) , 
+              align.scale=c(.95,.95) ,  max.increment=.1)
 summary(mod2)
 
 # compare means from Models 1 and 2
@@ -246,12 +236,8 @@ round( mod2$nu.resid ,3 )
 #****
 # Model 3: Low powers for alignment of scale and power
 # Note that setting increment.factor larger than 1 seems necessary
-mod3 <- invariance.alignment( lambda , nu , wgt , 
-        align.pow=c(.25,.35) , align.scale=c(.55,.55) ,
-        max.increment=.05 , increment.factor=1.01 , maxiter=500,
-        psi0.init=mod1$psi0 , alpha0.init = mod1$alpha0 )
-# plot iteration history
-plot( mod3 )
+mod3 <- invariance.alignment( lambda , nu , wgt , align.pow=c(.25,.35) , 
+            align.scale=c(.55,.55) , psi0.init=mod1$psi0 , alpha0.init = mod1$alpha0 )
 summary(mod3)
 
 # compare mean and SD estimates of Models 1 and 3
@@ -259,12 +245,12 @@ plot( mod1$pars$alpha0 , mod3$pars$alpha0 , pch=16)
 plot( mod1$pars$psi0 , mod3$pars$psi0 , pch=16)
 
 # compare residuals for Models 1 and 3   
-# lambda
+# plot lambda
 plot( abs(as.vector(mod1$lambda.resid)) , abs(as.vector(mod3$lambda.resid)) ,
       pch=16 , xlab="Residuals lambda (Model 1)" ,
       ylab="Residuals lambda (Model 3)" , xlim=c(0,.1) , ylim=c(0,.1))
 lines( c(-3,3),c(-3,3) , col="gray")    
-# nu
+# plot nu
 plot( abs(as.vector(mod1$nu.resid)) , abs(as.vector(mod3$nu.resid)) ,
       pch=16 , xlab="Residuals nu (Model 1)" , ylab="Residuals nu (Model 3)" , 
       xlim=c(0,.4),ylim=c(0,.4))
@@ -284,7 +270,7 @@ model1 <- "
     F ~~ 1*F
     "
 
-res <- measurementInvariance(model1, std.lv =TRUE , data=dat , group="group")
+res <- semTools::measurementInvariance(model1, std.lv =TRUE , data=dat , group="group")
 ##   Measurement invariance tests:
 ##   
 ##   Model 1: configural invariance:
@@ -313,24 +299,22 @@ res <- measurementInvariance(model1, std.lv =TRUE , data=dat , group="group")
 ##   
 
 # extract item parameters separate group analyses
-ipars <- parameterEstimates(res$fit.configural)
+ipars <- lavaan::parameterEstimates(res$fit.configural)
 # extract lambda's: groups are in rows, items in columns
 lambda <- matrix( ipars[ ipars$op == "=~" , "est"] , nrow=4 ,  byrow=TRUE)
 colnames(lambda) <- colnames(dat)[-1]
 # extract nu's
 nu <- matrix( ipars[ ipars$op == "~1"  & ipars$se != 0 , "est" ], nrow=4 ,  byrow=TRUE)
 colnames(nu) <- colnames(dat)[-1]
-# define wgt
-wgt <- 1+0*nu
 
 # Model 1: least squares optimization
-mod1 <- invariance.alignment( lambda=lambda , nu=nu ,wgt=wgt)
+mod1 <- invariance.alignment( lambda=lambda , nu=nu )
 summary(mod1)
 ##   Effect Sizes of Approximate Invariance 
 ##          loadings intercepts
-##   R2       0.7007     0.8146
-##   sqrtU2   0.5471     0.4305
-##   rbar     0.6237     0.7822
+##   R2       0.9826     0.9972
+##   sqrtU2   0.1319     0.0526
+##   rbar     0.6237     0.7821
 ##   -----------------------------------------------------------------
 ##   Group Means and Standard Deviations 
 ##     alpha0  psi0
@@ -340,46 +324,20 @@ summary(mod1)
 ##   4  0.171 0.935
 
 # Model 2: sparse target function
-mod2 <- invariance.alignment( lambda=lambda , nu=nu ,wgt=wgt , align.pow=c(1/4,1/4) , 
-            increment.factor=1.01)
+mod2 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(1/4,1/4) )
 summary(mod2)
 ##   Effect Sizes of Approximate Invariance 
 ##          loadings intercepts
-##   R2       0.6980     0.8063
-##   sqrtU2   0.5495     0.4402
-##   rbar     0.6237     0.7839
+##   R2       0.9824     0.9972
+##   sqrtU2   0.1327     0.0529
+##   rbar     0.6237     0.7856
 ##   -----------------------------------------------------------------
 ##   Group Means and Standard Deviations 
 ##     alpha0  psi0
-##   1  0.000 0.948
-##   2 -0.042 1.106
-##   3  0.003 0.990
-##   4  0.089 0.964
-
-# compare residuals
-round( mod1$nu.resid , 2)
-round( mod2$nu.resid , 2)
-##   > round( mod1$nu.resid , 2)
-##          I01   I02   I03   I04   I05   I06   I07   I08   I09   I10   I11
-##   [1,]  0.16  0.08  0.00  0.08 -0.19 -0.08  0.08 -0.09 -0.07 -0.23  0.07
-##   [2,]  0.09  0.14 -0.12 -0.03 -0.03 -0.04  0.12 -0.15 -0.17 -0.17  0.18
-##   [3,] -0.17 -0.16  0.16  0.09  0.16  0.01 -0.16  0.08  0.25  0.12 -0.12
-##   [4,] -0.07 -0.06 -0.04 -0.14  0.05  0.10 -0.04  0.15  0.00  0.28 -0.13
-##   > round( mod2$nu.resid , 2)
-##          I01   I02   I03   I04   I05   I06   I07   I08   I09   I10   I11
-##   [1,]  0.17  0.09  0.01  0.09 -0.18 -0.07  0.09 -0.08 -0.06 -0.23  0.08
-##   [2,]  0.06  0.13 -0.13 -0.05 -0.05 -0.06  0.09 -0.17 -0.19 -0.19  0.14
-##   [3,] -0.22 -0.20  0.12  0.06  0.14 -0.02 -0.20  0.07  0.22  0.10 -0.16
-##   [4,] -0.02 -0.02  0.01 -0.09  0.10  0.15  0.03  0.19  0.04  0.32 -0.06
-
-summary( abs( as.vector( mod1$nu.resid )) )
-summary( abs( as.vector( mod2$nu.resid )) )
-##   > summary( abs( as.vector( mod1$nu.resid )) )
-##        Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
-##   0.0002706 0.0732800 0.1080000 0.1116000 0.1596000 0.2775000 
-##   > summary( abs( as.vector( mod2$nu.resid )) )
-##       Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-##   0.006102 0.062720 0.090370 0.112300 0.171800 0.318900
+##   1 -0.002 0.965
+##   2 -0.107 1.098
+##   3 -0.083 1.011
+##   4  0.170 0.935
 
 #############################################################################
 # EXAMPLE 3: European Social Survey data.ess2005 
@@ -388,56 +346,231 @@ summary( abs( as.vector( mod2$nu.resid )) )
 data(data.ess2005)
 lambda <- data.ess2005$lambda
 nu <- data.ess2005$nu
-wgt <- 1+0*lambda
 
 # Model 1: least squares optimization
-mod1 <- invariance.alignment( lambda=lambda , nu=nu ,wgt=wgt)
+mod1 <- invariance.alignment( lambda=lambda , nu=nu )
+summary(mod1)
+
+# Model 2: sparse target function and definition of scales
+mod2 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(1/4,1/4) , 
+            align.scale= c( .2 , .3)  )
+summary(mod2)
+
+# compare results of Model 1 and Model 2
+round( cbind( mod1$pars , mod2$pars ) , 2 )
+##      alpha0 psi0 alpha0 psi0
+##   1    0.06 0.87   0.05 0.91
+##   2   -0.51 1.03  -0.37 0.99
+##   3    0.18 0.97   0.25 1.04
+##   4   -0.67 0.90  -0.53 0.90
+##   5    0.09 0.98   0.10 0.99
+##   6    0.23 1.03   0.28 1.00
+##   7    0.27 0.97   0.14 1.10
+##   8    0.18 0.90   0.07 0.89
+##   [...]
+
+# look at nu residuals to explain differences in means
+round( mod1$nu.resid , 2)
+##         ipfrule ipmodst ipbhprp imptrad
+##    [1,]    0.15   -0.25   -0.01    0.01
+##    [2,]   -0.18    0.23    0.10   -0.24
+##    [3,]    0.22   -0.34    0.05   -0.02
+##    [4,]    0.29   -0.04    0.12   -0.53
+##    [5,]   -0.32    0.19    0.00    0.13
+##    [6,]    0.05   -0.21    0.05    0.04
+##    [7,]   -0.26    0.54   -0.15   -0.02
+##    [8,]    0.07   -0.05   -0.10    0.12
+round( mod2$nu.resid , 2)
+##         ipfrule ipmodst ipbhprp imptrad
+##    [1,]    0.16   -0.25    0.00    0.02
+##    [2,]   -0.27    0.14    0.00   -0.30
+##    [3,]    0.18   -0.37    0.00   -0.05
+##    [4,]    0.19   -0.13    0.00   -0.60
+##    [5,]   -0.33    0.19   -0.01    0.12
+##    [6,]    0.00   -0.23    0.00    0.01
+##    [7,]   -0.16    0.64   -0.01    0.04
+##    [8,]    0.15    0.02   -0.02    0.19
+
+round( rowMeans( mod1$nu.resid )[1:8] , 2 )
+##   [1] -0.02 -0.02 -0.02 -0.04  0.00 -0.02  0.03  0.01
+round( rowMeans( mod2$nu.resid )[1:8] , 2 )
+##   [1] -0.02 -0.11 -0.06 -0.14 -0.01 -0.06  0.13  0.09
+
+#############################################################################
+# SIMULATED EXAMPLE 4: Linking with item parameters containing outliers 
+#############################################################################
+    
+# see Help file in linking.robust
+    
+# simulate some item difficulties in the Rasch model
+I <- 38
+set.seed(18785)
+itempars <- data.frame("item" = paste0("I",1:I) )
+itempars$study1 <- rnorm( I , mean = .3 , sd =1.4 )
+# simulate DIF effects plus some outliers
+bdif <- rnorm(I,mean=.4,sd=.09)+(runif(I)>.9 )* rep( 1*c(-1,1)+.4 , each=I/2 )
+itempars$study2 <- itempars$study1 + bdif
+# create input for function invariance.alignment
+nu <- t( itempars[,2:3] )
+colnames(nu) <- itempars$item
+lambda <- 1+0*nu
+
+# linking using least squares optimization
+mod1 <- invariance.alignment( lambda=lambda , nu=nu )
 summary(mod1)
 ##   Group Means and Standard Deviations 
-##      alpha0  psi0
-##   1   0.000 0.870
-##   2  -0.566 1.034
-##   3   0.121 0.970
-##   4  -0.724 0.899
-##   5   0.028 0.976
-##   6   0.168 1.028
+##          alpha0 psi0
+##   study1 -0.286    1
+##   study2  0.286    1
 
-# Model 2: sparse target function
-mod2 <- invariance.alignment( lambda=lambda , nu=nu ,wgt=wgt , 
-            align.pow=c(1/4,1/4) , align.scale= c( .2 , .3) , 
-            increment.factor=1.01 , max.increment = .05 )
-plot(mod2)
+# linking using powers of .5
+mod2 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(.5,.5) )
 summary(mod2)
-## Group Means and Standard Deviations 
-##    alpha0  psi0
-## 1   0.000 0.894
-## 2  -0.414 1.008
-## 3   0.194 1.008
-## 4  -0.584 0.930
-## 5   0.037 1.010
-## 6   0.234 1.028
+##   Group Means and Standard Deviations 
+##          alpha0 psi0
+##   study1 -0.213    1
+##   study2  0.213    1
 
-plot( mod1$pars$alpha0 , mod2$pars$alpha0 , pch=16)
-lines( c(-5,5) , c(-5,5) , col="gray" )
+# linking using powers of .25
+mod3 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(.25,.25) )
+summary(mod3)
+##   Group Means and Standard Deviations 
+##          alpha0 psi0
+##   study1 -0.207    1
+##   study2  0.207    1
 
-round( mod1$nu.resid[1:10,] , 2 )
-round( mod2$nu.resid[1:10,] , 2 )
-##   > round( mod1$nu.resid[1:10,] , 2 )
-##         ipfrule ipmodst ipbhprp imptrad
-##    [1,]    0.16   -0.26    0.00    0.01
-##    [2,]   -0.19    0.24    0.10   -0.24
-##    [3,]    0.22   -0.34    0.06   -0.02
-##    [4,]    0.29   -0.04    0.11   -0.54
-##    [5,]   -0.33    0.20    0.00    0.13
-##    [6,]    0.06   -0.21    0.05    0.04
-##   > round( mod2$nu.resid[1:10,] , 2 )
-##         ipfrule ipmodst ipbhprp imptrad
-##    [1,]    0.17   -0.25    0.01    0.02
-##    [2,]   -0.27    0.14    0.00   -0.30
-##    [3,]    0.18   -0.37    0.01   -0.05
-##    [4,]    0.18   -0.13    0.00   -0.61
-##    [5,]   -0.32    0.20    0.01    0.13
-##    [6,]    0.01   -0.23    0.01    0.01
+#############################################################################
+# EXAMPLE 5: Linking gender groups with data.math 
+#############################################################################
+
+data(data.math)
+dat <- data.math$data
+dat.male <- dat[ dat$female == 0 , substring( colnames(dat) ,1,1) == "M"  ]
+dat.female <- dat[ dat$female == 1 , substring( colnames(dat) ,1,1) == "M"  ]
+
+#*************************
+# Model 1: Linking using the Rasch model
+mod1m <- rasch.mml2( dat.male )
+mod1f <- rasch.mml2( dat.female )
+
+# create objects for invariance.alignment
+nu <- rbind( mod1m$item$thresh , mod1f$item$thresh )
+colnames(nu) <- mod1m$item$item
+rownames(nu) <- c("male" , "female")
+lambda <- 1+0*nu
+
+# mean of item difficulties
+round( rowMeans(nu) , 3 )
+##     male female 
+##   -0.081 -0.049 
+
+# Linking using least squares optimization
+res1a <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) )
+summary(res1a)
+##   Effect Sizes of Approximate Invariance 
+##          loadings intercepts
+##   R2            1     0.9801
+##   sqrtU2        0     0.1412
+##   rbar          1     0.9626
+##   -----------------------------------------------------------------
+##   Group Means and Standard Deviations 
+##          alpha0 psi0
+##   male   -0.016    1
+##   female  0.016    1
+
+# Linking using optimization with absolute values
+res1b <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) ,
+                align.pow=c( .5 , .5 ) )
+summary(res1b)
+##   Group Means and Standard Deviations 
+##          alpha0 psi0
+##   male   -0.045    1
+##   female  0.045    1
+
+#-- compare results with Haberman linking
+I <- ncol(dat.male)
+itempartable <- data.frame( "study" = rep( c("male" , "female") , each=I ) )
+itempartable$item <- c( paste0(mod1m$item$item)  ,  paste0(mod1f$item$item) )
+itempartable$a <- 1
+itempartable$b <- c( mod1m$item$b , mod1f$item$b )
+# estimate linking parameters
+res1c <- linking.haberman( itempars= itempartable )
+##   Transformation parameters (Haberman linking)
+##      study At     Bt
+##   1 female  1  0.000
+##   2   male  1 -0.032
+##   Linear transformation for person parameters theta
+##      study A_theta B_theta
+##   1 female       1   0.000
+##   2   male       1   0.032
+##   R-Squared Measures of Invariance
+##          slopes intercepts
+##   R2          1     0.9801
+##   sqrtU2      0     0.1412
+
+#-- results of equating.rasch
+x <- itempartable[ 1:I , c("item" , "b") ]
+y <- itempartable[ I + 1:I , c("item" , "b") ]
+res1d <- equating.rasch( x , y )
+round( res1d$B.est , 3 )
+##     Mean.Mean Haebara Stocking.Lord
+##   1     0.032   0.032         0.029
+
+#*************************
+# Model 2: Linking using the 2PL model
+I <- ncol(dat.male)
+mod2m <- rasch.mml2( dat.male , est.a=1:I)
+mod2f <- rasch.mml2( dat.female , est.a=1:I)
+
+# create objects for invariance.alignment
+nu <- rbind( mod2m$item$thresh , mod2f$item$thresh )
+colnames(nu) <- mod2m$item$item
+rownames(nu) <- c("male" , "female")
+lambda <- rbind( mod2m$item$a , mod2f$item$a )
+colnames(lambda) <- mod2m$item$item
+rownames(lambda) <- c("male" , "female")
+
+res2a <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) )
+summary(res2a)
+##   Effect Sizes of Approximate Invariance 
+##          loadings intercepts
+##   R2       0.9589     0.9682
+##   sqrtU2   0.2027     0.1782
+##   rbar     0.5177     0.9394
+##   -----------------------------------------------------------------
+##   Group Means and Standard Deviations 
+##          alpha0  psi0
+##   male   -0.044 0.968
+##   female  0.047 1.034
+
+res2b <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) ,
+                align.pow=c( .5 , .5 ) )
+summary(res2b)
+##   Group Means and Standard Deviations 
+##          alpha0  psi0
+##   male   -0.046 1.053
+##   female  0.041 0.951
+
+# compare results with Haberman linking
+I <- ncol(dat.male)
+itempartable <- data.frame( "study" = rep( c("male" , "female") , each=I ) )
+itempartable$item <- c( paste0(mod2m$item$item)  ,  paste0(mod2f$item$item ) )
+itempartable$a <- c( mod2m$item$a , mod2f$item$a )
+itempartable$b <- c( mod2m$item$b , mod2f$item$b )
+# estimate linking parameters
+res2c <- linking.haberman( itempars= itempartable )
+##   Transformation parameters (Haberman linking)
+##      study    At   Bt
+##   1 female 1.000 0.00
+##   2   male 1.041 0.09
+##   Linear transformation for person parameters theta
+##      study A_theta B_theta
+##   1 female   1.000    0.00
+##   2   male   1.041   -0.09
+##   R-Squared Measures of Invariance
+##          slopes intercepts
+##   R2     0.9554     0.9484
+##   sqrtU2 0.2111     0.2273
 }
 }
 
@@ -447,3 +580,4 @@ round( mod2$nu.resid[1:10,] , 2 )
 \keyword{Approximate Invariance}
 \keyword{Alignment}
 \keyword{summary}
+

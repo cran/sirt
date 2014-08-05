@@ -164,7 +164,8 @@ summary(mod)
 # plot
 plot(mod$mcmcobj , ask=TRUE)
 # write coda files
-mcmclist2coda( mod$mcmcobj , name = "simul_2pnoh" )}	
+mcmclist2coda( mod$mcmcobj , name = "simul_2pnoh" )
+}	
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

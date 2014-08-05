@@ -226,15 +226,15 @@ F.pattern <- matrix( 0 , nrow=I , ncol=1 )
 F.init <- 1 + 0*F.pattern       # 
 # estimate model
 mod <- R2noharm( dat = dat , model.type="CFA" ,  
-        F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , writename = "ex1__1dim_1pl" , 
-	noharm.path = noharm.path , dec ="," )
+           F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+           P.init = P.init , writename = "ex1__1dim_1pl" , 
+	   noharm.path = noharm.path , dec ="," )
 # summary
 summary(mod , logfile="ex1__1dim_1pl__SUMMARY")
 # jackknife
 jmod <- R2noharm.jackknife( mod , jackunits = 20 )
 summary(jmod, logfile="ex1__1dim_1pl__JACKKNIFE")
-# compute factor scores
+# compute factor scores (EAPs)
 emod <- R2noharm.EAP(mod)
 
 #*****-----
@@ -242,9 +242,9 @@ emod <- R2noharm.EAP(mod)
 N <- nrow(dat)
 weights <- runif( N , 1 , 5 )
 mod1b <- R2noharm( dat = dat , model.type="CFA" ,  weights=weights ,  
-        F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , writename = "ex1__1dim_1pl_w" , 
-        noharm.path = noharm.path , dec ="," )
+            F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+            P.init = P.init , writename = "ex1__1dim_1pl_w" , 
+            noharm.path = noharm.path , dec ="," )
 summary(mod1b)
 
 #****************************************
@@ -258,9 +258,9 @@ F.pattern <- matrix( 1 , nrow=I , ncol=1 )
 F.init <- 1 + 0*F.pattern       
 
 mod <- R2noharm( dat = dat , model.type="CFA" ,  
-          F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-          P.init = P.init , writename = "ex2__1dim_2pl" , 
-          noharm.path = noharm.path , dec = "," )
+            F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+            P.init = P.init , writename = "ex2__1dim_2pl" , 
+            noharm.path = noharm.path , dec = "," )
 
 summary(mod)
 jmod <- R2noharm.jackknife( mod , jackunits = 20 )
@@ -426,9 +426,9 @@ diag(P.pattern) <- 0
 P.init <- 1+P.pattern
 
 ex3 <- R2noharm( pm=pm , n=125, , model.type="CFA" ,  
-        F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-        P.init = P.init , writename = "ex3_noharmExB" , 
-        noharm.path = noharm.path , dec ="," )
+           F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+           P.init = P.init , writename = "ex3_noharmExB" , 
+           noharm.path = noharm.path , dec ="," )
 summary(ex3)
 
 #############################################################################
@@ -460,9 +460,9 @@ P.pattern <- matrix(0,1,1)
 P.init <- 1 + 0 * P.pattern
 
 ex4 <- R2noharm( dat=data.noharmExC , , model.type="CFA" ,  
-        guesses=guesses , F.pattern = F.pattern , F.init = F.init , 
-        P.pattern = P.pattern, P.init = P.init , writename = "ex3_noharmExC" , 
-        noharm.path = noharm.path , dec ="," )
+           guesses=guesses , F.pattern = F.pattern , F.init = F.init , 
+           P.pattern = P.pattern, P.init = P.init , writename = "ex3_noharmExC" , 
+           noharm.path = noharm.path , dec ="," )
 summary(ex4)
 
 # modify F pattern matrix
@@ -477,9 +477,9 @@ F.pattern[ c(4,8) ] <- 5
 F.init <- .5+0*F.init 
 
 ex4a <- R2noharm( dat=data.noharmExC , , model.type="CFA" ,  
-        guesses=guesses , F.pattern = F.pattern , F.init = F.init , 
-        P.pattern = P.pattern, P.init = P.init , writename = "ex3_noharmExC1" , 
-        noharm.path = noharm.path , dec ="," )
+           guesses=guesses , F.pattern = F.pattern , F.init = F.init , 
+           P.pattern = P.pattern, P.init = P.init , writename = "ex3_noharmExC1" , 
+           noharm.path = noharm.path , dec ="," )
 summary(ex4a)
 }
 }

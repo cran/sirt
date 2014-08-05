@@ -500,13 +500,12 @@ plot(mod2)	# plot 2PL item response curves
 \dontrun{
 # 3PL model
 mod3 <- rasch.mml2( dat , est.a = 1:I , est.c = 1:I , 
-        mmliter = 400 # maximal 400 iterations
+              mmliter = 400 # maximal 400 iterations
                  )
 summary(mod3)
 
-# 3PL model with fixed guessing paramters of 1/4
-# equal slopes
-mod4 <- rasch.mml2( dat , fixed.c = rep(1/4 , I )   )
+# 3PL model with fixed guessing paramters of .25 and equal slopes
+mod4 <- rasch.mml2( dat , fixed.c = rep( .25 , I )   )
 summary(mod4)
 
 # 3PL model with equal guessing paramters for all items
@@ -519,7 +518,7 @@ summary(mod6)
 
 # 4PL model
 mod7 <- rasch.mml2( dat , est.a = 1:I , est.c=1:I , est.d = 1:I  ,
-        min.d = .95 , max.c = .25)  
+            min.d = .95 , max.c = .25)  
         # set minimal d and maximal c parameter to .95 and .25
 summary(mod7)
 
@@ -533,7 +532,7 @@ summary(mod8)
 theta.k <- seq( 0.01 , .99 , len=20 )
 trait.weights <- rep( 1/length(theta.k) , length(theta.k) )
 mod9 <- rasch.mml2( dat , theta.k=theta.k , trait.weights = trait.weights ,
-            normal.trait=FALSE , est.a = 1:12  )
+              normal.trait=FALSE , est.a = 1:12  )
 summary(mod9)
 
 #############################################################################
@@ -555,7 +554,7 @@ mu.fixed <- cbind(1,0)
 
 # Model 1: 2-dimensional Rasch model
 mod1 <- rasch.mml2( dat , Qmatrix=Qmatrix , miterstep=4,
-    est.b = est.b   ,  mu.fixed = mu.fixed , mmliter=30 )
+            est.b = est.b   ,  mu.fixed = mu.fixed , mmliter=30 )
 summary(mod1)
 plot(mod1)
 ##     Plot function is only applicable for unidimensional models
@@ -591,7 +590,8 @@ summary(mod1c)
 
 # Ramsay QM
 mod2a <- rasch.mml2( dat , irtmodel ="ramsay.qm" )
-summary(mod2a)}
+summary(mod2a)
+}
 
 # Ramsay QM with estimated K parameters
 mod2b <- rasch.mml2( dat , irtmodel ="ramsay.qm" , est.K=1:15 , mmliter=30)
@@ -615,21 +615,21 @@ plot(mod3b)
 # B-Spline estimation of ICCs
 library(splines)
 mod3c <- rasch.mml2( dat , irtmodel ="npirt" , 
-        npformula = "y~bs(theta,df=3)" , theta.k = seq(-3,3,len=15) )
+             npformula = "y~bs(theta,df=3)" , theta.k = seq(-3,3,len=15) )
 summary(mod3c)
 round( t(mod3c$pjk)[1:6,] , 3 )
 plot(mod3c)
 
 # estimation of quadratic item response functions: ~ theta + I( theta^2) 
 mod3d <- rasch.mml2( dat , irtmodel ="npirt" , 
-        npformula = "y~theta + I(theta^2)" )
+             npformula = "y~theta + I(theta^2)" )
 summary(mod3d)
 plot(mod3d)
 
 # estimation of a stepwise ICC function
 # ICCs are constant on the theta domains: [-Inf,-1], [-1,1], [1,Inf]
 mod3e <- rasch.mml2( dat , irtmodel ="npirt" , 
-        npformula = "y~I(theta>-1 )+I(theta>1)" )
+             npformula = "y~I(theta>-1 )+I(theta>1)" )
 summary(mod3e)
 plot(mod3e , xlim=c(-2.5,2.5) )
 
@@ -665,7 +665,7 @@ summary(mod1)
 set.seed(785)
 library(mvtnorm)
 N <- 500
-theta <- rmvnorm( N,mean=c(0,0), sigma=matrix( c(1.45,.5,.5,1.7) , 2 , 2 ))
+theta <- mvtnorm::rmvnorm( N,mean=c(0,0), sigma=matrix( c(1.45,.5,.5,1.7) , 2 , 2 ))
 I <- 10
 # 10 items load on the first dimension
 p1 <- plogis( outer( theta[,1] , seq( -2 , 2 , len=I ) , "-" ) )
@@ -892,8 +892,8 @@ summary(mod8)
 #       parameter delta.miss of zero
 dat2 <-  dat[,items]    # note that missing item responses must be defined by 9
 mod9 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
-          theta.k=seq(-5,5,len=10) , delta.miss= 0 , mitermax= 4 , mmliter=200 , 
-          mu.fixed=NULL )        
+            theta.k=seq(-5,5,len=10) , delta.miss= 0 , mitermax= 4 , mmliter=200 , 
+            mu.fixed=NULL )        
 summary(mod9)
 
 #*** Model 10: estimate missing data model with a large negative missing delta parameter

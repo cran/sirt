@@ -79,7 +79,7 @@ loading matrix \eqn{\bold{F}} should be positive}
 \item{pos.variance}{An optional logical indicating whether all variances (i.e.
 	diagonal entries in \eqn{\bold{P}}) should be positive}
 \item{pos.residcorr}{An optional logical indicating whether all 
-	entries in the matrix of residual correlations \eqn{\bold{\Psi}}) should
+	entries in the matrix of residual correlations \eqn{\bold{\Psi}} should
 	be positive}
   \item{maxiter}{
 Maximum number of iterations
@@ -293,9 +293,9 @@ noharm.path <- "c:/NOHARM"
 P.pattern <- Ppatt ; P.init <- Pval
 F.pattern <- Fpatt ; F.init <- Fval
 mod3b <- R2noharm( dat = dat , model.type="CFA" ,  
-          F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-          P.init = P.init , writename = "example_sim_2dim_rasch" , 
-          noharm.path = noharm.path  , dec = "," )
+             F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
+             P.init = P.init , writename = "example_sim_2dim_rasch" , 
+             noharm.path = noharm.path  , dec = "," )
 summary(mod3b)
 
 #############################################################################
@@ -329,11 +329,11 @@ diag(Psipatt) <- 0
 Psival <- .6*(Psipatt>0)
 # estimation
 mod3 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
-        Psival=Psival , Psipatt=Psipatt )
+            Psival=Psival , Psipatt=Psipatt )
 summary(mod3)
 # allow only positive residual correlations
 mod3b <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
-        Psival=Psival , Psipatt=Psipatt , pos.residcorr=TRUE)
+            Psival=Psival , Psipatt=Psipatt , pos.residcorr=TRUE)
 summary(mod3b)
 plot(mod3 , fade=FALSE)
 
@@ -348,7 +348,7 @@ mod4 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  
 summary(mod4)
 # allow only positive variance entries
 mod4b <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
-        pos.variance=TRUE )
+               pos.variance=TRUE )
 summary(mod4b)
 
 #**** Model 5: Bifactor model
@@ -363,7 +363,7 @@ mod5 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  
 summary(mod5)
 # allow only positive loadings
 mod5b <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
-            pos.loading=TRUE )                        
+              pos.loading=TRUE )                        
 summary(mod5b)
 summary( modelfit.sirt(mod5b))
 plot(x= mod5b ,what="stand" ,  ThreshAtSide=TRUE , fade=FALSE , residuals= TRUE )

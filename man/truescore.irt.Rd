@@ -91,9 +91,9 @@ dat <- data.mixed1
 # Model 1: Partial credit model
 # estimate model with TAM package
 library(TAM)
-mod1 <- tam.mml( dat )
+mod1 <- TAM::tam.mml( dat )
 # estimate person parameter estimates
-wmod1 <- tam.wle( mod1 )
+wmod1 <- TAM::tam.wle( mod1 )
 wmod1 <- wmod1[ order(wmod1$theta) , ]
 # extract item parameters
 A <- mod1$B[,-1,1]
@@ -122,9 +122,9 @@ par(mfrow=c(1,1))
 \dontrun{
 #****
 # Model 2: Generalized partial credit model
-mod2 <- tam.mml.2pl( dat , irtmodel="GPCM")
+mod2 <- TAM::tam.mml.2pl( dat , irtmodel="GPCM")
 # estimate person parameter estimates
-wmod2 <- tam.wle( mod2 )
+wmod2 <- TAM::tam.wle( mod2 )
 # extract item parameters
 A <- mod2$B[,-1,1]
 B <- mod2$AXsi[,-1]

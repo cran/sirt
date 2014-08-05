@@ -104,17 +104,17 @@ data( data.read )
 dat <- data.read
 
 # calculate matrix of tetrachoric correlations
-dat.tetra <- tetrachoric(dat)      # using tetrachoric from psych package
+dat.tetra <- psych::tetrachoric(dat)      # using tetrachoric from psych package
 dat.tetra2 <- tetrachoric2(dat)	   # using tetrachoric2 from sirt package
 
 # perform parallel factor analysis
-fap <- fa.parallel.poly(dat , n.iter = 1 )
+fap <- psych::fa.parallel.poly(dat , n.iter = 1 )
 ##   Parallel analysis suggests that the number of factors =  3  
 ##   and the number of components =  2 
 
 # parallel factor analysis based on tetrachoric correlation matrix 
 ##       (tetrachoric2)
-fap2 <- fa.parallel(dat.tetra2$rho , n.obs=nrow(dat) ,  n.iter = 1 )
+fap2 <- psych::fa.parallel(dat.tetra2$rho , n.obs=nrow(dat) ,  n.iter = 1 )
 ## Parallel analysis suggests that the number of factors =  6  
 ## and the number of components =  2 
 ## Note that in this analysis, uncertainty with respect to thresholds is ignored.

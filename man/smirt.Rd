@@ -346,7 +346,7 @@ summary(mod7)
 variance.fixed <- as.matrix( cbind( 1,2,0) )
 # set the covariance between the first and second dimension to zero
 mod8 <- smirt(dat,Qmatrix=Q , irtmodel="comp" , variance.fixed=variance.fixed ,
-      maxiter=30)
+            maxiter=30)
 summary(mod8)
 
 #***
@@ -375,7 +375,7 @@ Qmatrix[ c(3,6,7) , 2 ] <- 1
 colnames(Qmatrix) <- c("F1" , "F1sq" )
 # estimate model
 mod9 <- smirt(dat,Qmatrix=Qmatrix , maxiter=50 , irtmodel="comp" , 
-      theta.k=theta.k , theta.kDES=theta.kDES , est.a="2PL" )           
+           theta.k=theta.k , theta.kDES=theta.kDES , est.a="2PL" )           
 summary(mod9)
 
 #***
@@ -421,13 +421,13 @@ Qmatrix[9:12,3] <- 1
 
 # estimate model
 mod1 <- smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , est.a="2PL" ,
-        qmcnodes=1000 , maxiter=20)
+            qmcnodes=1000 , maxiter=20)
 summary(mod1)
 
 #***
 # Model 2: 3-dimensional Rasch model
 mod2 <- smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , 
-        qmcnodes=1000 , maxiter=20)
+              qmcnodes=1000 , maxiter=20)
 summary(mod2)
 
 #***
@@ -438,7 +438,7 @@ variance.fixed <- cbind( c(1,1,2) , c(2,3,3) , 0 )
 
 # estimate model
 mod3 <- smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , est.a="2PL" , 
-         variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)
+             variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)
 summary(mod3)
 
 #***
@@ -456,7 +456,7 @@ variance.fixed <- cbind( c(1,1,1,2,2,3) , c(2,3,4,3,4,4) , 0 )
 
 # estimate model
 mod4 <- smirt( dat , Qmatrix=Qmatrix1 , irtmodel="comp" , est.a="2PL" , 
-         variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)
+             variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)
 summary(mod4)
 
 #############################################################################

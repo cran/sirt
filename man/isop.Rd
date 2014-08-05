@@ -280,7 +280,8 @@ dat <- dat[ , grep("M" , colnames(dat) ) ]
 # Note that for this model many iterations are needed
 #   to reach convergence for ADISOP
 mod1 <- isop.dich( dat , maxit=4000)
-summary(mod1)}
+summary(mod1)
+}
 
 #############################################################################
 # EXAMPLE 3: Dataset Students (polytomous items)

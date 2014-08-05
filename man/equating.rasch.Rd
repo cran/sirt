@@ -69,7 +69,8 @@ Alexander Robitzsch
 For estimating standard errors (due to inference with respect to
 the item domain) of this procedure see \code{\link{equating.rasch.jackknife}}.
 
-For linking several studies see \code{\link{linking.haberman}}.
+For linking several studies see \code{\link{linking.haberman}} or 
+\code{\link{invariance.alignment}}.
 
 A robust alternative to mean-mean linking is implemented in
 \code{\link{linking.robust}}.
@@ -97,15 +98,15 @@ mod <- equating.rasch(x=pars[,c("item","study1")], y=pars[,c("item","study2")])
 library(plink)
 # define common items
 I <- nrow(pars)
-pm <- as.poly.mod(I)
+pm <- plink::as.poly.mod(I)
 # define item parameters for plink
 plink.pars <- list( "study1" = cbind( 1 , pars$study1 , 0 ) ,
         "study2" = cbind( 1 , pars$study2 , 0 ) )
 # set parameter structure for plink
-x <- as.irt.pars( pars=plink.pars, cbind(1:I , 1:I), cat=list(rep(2,I),rep(2,I)) , 
-        poly.mod=list(pm,pm) )
+x <- plink::as.irt.pars( pars=plink.pars, cbind(1:I , 1:I), cat=list(rep(2,I),rep(2,I)) , 
+             poly.mod=list(pm,pm) )
 # linking with plink
-out <- plink(x, rescale="MS", base.grp=2, D=1.7)
+out <- plink::plink(x, rescale="MS", base.grp=2, D=1.7)
 summary(out)        # summary
 ##   -------  group1/group2*  -------
 ##   Linking Constants
@@ -114,8 +115,9 @@ summary(out)        # summary
 ##   Mean/Sigma    1.000000 0.088280
 ##   Haebara       1.000000 0.088605
 ##   Stocking-Lord 1.000000 0.096617
-constants <- link.con(out) # Extract linking constants
-constants }
+constants <- plink::link.con(out) # Extract linking constants
+constants 
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

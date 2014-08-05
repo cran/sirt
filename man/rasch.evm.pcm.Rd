@@ -129,7 +129,7 @@ summary(mod1)
 \dontrun{
 # compare results with TAM
 library(TAM)
-mod2 <- tam.mml( dat )
+mod2 <- TAM::tam.mml( dat )
 r1 <- mod2$xsi$xsi
 r1 <- r1 - mean(r1)
 # item parameters are very similar
@@ -236,7 +236,7 @@ library(pairwise)
 mod2 <- pairwise::pair(daten=dat)
 summary(mod2)
 plot(mod2)
-# xompute standard errors
+# compute standard errors
 semod2 <- pairwise::pairSE(daten=dat,  nsample = 20)
 semod2
 

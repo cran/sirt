@@ -208,7 +208,7 @@ mod2 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater  ,
 # Model 2a: compare results with TAM package
 #   Results should be similar to Model 2
 library(TAM)
-mod2a <- tam.mml.mfr( resp= dat[ , paste0( "k",1:5) ] , 
+mod2a <- TAM::tam.mml.mfr( resp= dat[ , paste0( "k",1:5) ] , 
              facets= dat[ , "rater" , drop=FALSE] ,
              pid= dat$pid , formulaA = ~ item*step + rater )
 

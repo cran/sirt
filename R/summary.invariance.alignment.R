@@ -9,15 +9,15 @@ summary.invariance.alignment <- function( object , ...){
     cat("  Function 'invariance.alignment' \n")
 
     cat("-----------------------------------------------------------------\n")
-	cat( "Number of iterations =" , object$Niter[1] , 
-			"(LAMBDA) | " , object$Niter[2] , "(NU)\n" )
-	cat( "Iteration with minimum function value =" , 
-		object$miniter[1] , 	"(LAMBDA) | " , object$miniter[2] , "(NU)\n" )
+#	cat( "Number of iterations =" , object$Niter[1] , 
+#			"(LAMBDA) | " , object$Niter[2] , "(NU)\n" )
+#	cat( "Iteration with minimum function value =" , 
+#		object$miniter[1] , 	"(LAMBDA) | " , object$miniter[2] , "(NU)\n" )
     cat( "Optimization Function Value (minimum value) = " , 
-		object$fopt[1] , 	"(LAMBDA) | " , object$fopt[2] , "(NU)\n" )
-    cat( "Optimization Function Value (last value) = " , 
-				object$fopt.history[object$Niter[1]-1,1] , 	"(LAMBDA) | " , 
-				object$fopt.history[object$Niter[2]-1,2] , "(NU)\n" )
+		round(object$fopt[1],4) , 	"(LAMBDA) | " , round(object$fopt[2],4) , "(NU)\n" )
+#    cat( "Optimization Function Value (last value) = " , 
+#				object$fopt.history[object$Niter[1]-1,1] , 	"(LAMBDA) | " , 
+#				object$fopt.history[object$Niter[2]-1,2] , "(NU)\n" )
 #    cat( "Log Likelihood = " , round( -object$deviance/2 , 2 ) , "\n" )	
 #    cat( "Number of persons = " , object$ic$n , "\n" )    
     cat("-----------------------------------------------------------------\n")
@@ -34,12 +34,12 @@ summary.invariance.alignment <- function( object , ...){
 	obji <- round( obji , 3)
 	print( obji )   
     cat("-----------------------------------------------------------------\n")
-	cat("Summary Absolute Residuals Loadings lambda \n")
+	cat("Summary Absolute Residuals Loadings LAMBDA \n")
 	obji <- as.vector( abs( object$lambda.resid  ))
 	obji <- round( summary(obji) , 4)
 	print( obji )   
     cat("-----------------------------------------------------------------\n")
-	cat("Summary Absolute Residuals Intercepts nu \n")
+	cat("Summary Absolute Residuals Intercepts NU \n")
 	obji <- as.vector( abs( object$nu.resid  ))
 	obji <- round( summary(obji) , 4)
 	print( obji )   

@@ -66,15 +66,15 @@ mod <- glm( y ~ x1 + x2 , family="binomial" )
 summary(mod)
 
 #*** define rcppbugs model
-b <- mcmc.normal(rnorm(3),mu=0,tau=0.0001)
-y.hat <- deterministic(function(x1,x2,b) { plogis( b[1] + b[2]*x1 + b[3]*x2 ) }, 
+b <- rcppbugs::mcmc.normal(rnorm(3),mu=0,tau=0.0001)
+y.hat <- rcppbugs::deterministic(function(x1,x2,b) { plogis( b[1] + b[2]*x1 + b[3]*x2 ) }, 
              x1 , x2 , b)
-y.lik <- mcmc.bernoulli( y , p = y.hat, observed = TRUE)
-m <- create.model(b, y.hat, y.lik)
+y.lik <- rcppbugs::mcmc.bernoulli( y , p = y.hat, observed = TRUE)
+m <- rcppbugs::create.model(b, y.hat, y.lik)
 
 #*** estimate model in rcppbugs; 5000 iterations, 1000 burnin iterations
-ans <- run.model(m, iterations=5000, burn=1000, adapt=1000, thin=5)
-print(get.ar(ans))   # get acceptance rate
+ans <- rcppbugs::run.model(m, iterations=5000, burn=1000, adapt=1000, thin=5)
+print(rcppbugs::get.ar(ans))   # get acceptance rate
 print(apply(ans[["b"]],2,mean))  # get means of posterior
 
 #*** convert rcppbugs into mcmclist object

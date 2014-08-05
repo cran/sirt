@@ -127,12 +127,13 @@ summary(mod1)
 
 # Rasch model estimation
 mod2 <- rasch.copula2( dat , itemcluster = itemcluster , 
-        delta = rep(0,3) , est.delta = rep(0,3) )
+            delta = rep(0,3) , est.delta = rep(0,3) )
 summary(mod2)
 
 # estimation with pairwise Rasch model
 mod3 <- rasch.pairwise( dat )
-summary(mod3) }
+summary(mod3) 
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -173,7 +173,7 @@ summary(mod3)
 
 # JML estimation in TAM
 library(TAM)
-mod4 <- tam.jml2( resp=dat )
+mod4 <- TAM::tam.jml2( resp=dat )
 
 #******
 # item parameter constraints in JML estimation

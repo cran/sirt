@@ -130,7 +130,7 @@ marginal.truescore.reliability( b=mod$item$b , a=mod$item$a)
 # compare results with Cronbach's alpha and McDonald's omega
 # posing a 'wrong model' for normally distributed data
 library(psych)
-omega(dat , nfactors=1)     # 1 factor
+psych::omega(dat , nfactors=1)     # 1 factor
 ##  Omega_h for 1 factor is not meaningful, just omega_t
 ##   Omega 
 ##   Call: omega(m = dat, nfactors = 1)

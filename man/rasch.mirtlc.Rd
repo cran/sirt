@@ -138,7 +138,7 @@ A list with following entries
 \item{trait}{Estimated ability distribution (\code{theta.k} and \code{pi.k})}
 \item{mean.trait}{Estimated mean of ability distribution}
 \item{sd.trait}{Estimated standard deviation of ability distribution}
-\item{skewness.trait}{Estimated skewnessof ability distribution}
+\item{skewness.trait}{Estimated skewness of ability distribution}
 \item{cor.trait}{Estimated correlation between abilities (only applies for 
 	multidimensional models)}
 \item{ic}{Information criteria}
@@ -267,17 +267,17 @@ summary(mod12)
 
 # 1PL model with 11 classes and fixed specified theta values
 mod13 <- rasch.mirtlc( dat ,  modeltype="MLC1" , 
-    theta.k = seq( -4 , 4 , len=11 ) , mmliter=100)
+             theta.k = seq( -4 , 4 , len=11 ) , mmliter=100)
 summary(mod13)
 
 # 1PL model with fixed theta values and normal distribution
 mod14 <- rasch.mirtlc( dat ,  modeltype="MLC1" , mmliter=30 , 
-        theta.k = seq( -4 , 4 , len=11 ) , distribution.trait="normal")
+             theta.k = seq( -4 , 4 , len=11 ) , distribution.trait="normal")
 summary(mod14)
 
 # 1PL model with a smoothed trait distribution (up to 3 moments)
 mod15 <- rasch.mirtlc( dat ,  modeltype="MLC1" , mmliter=30 , 
-        theta.k = seq( -4, 4 , len=11 ) ,  distribution.trait="smooth3")
+             theta.k = seq( -4, 4 , len=11 ) ,  distribution.trait="smooth3")
 summary(mod15)
 
 # 2PL with 3 classes
@@ -286,7 +286,7 @@ summary(mod16)
 
 # 2PL with fixed theta and smoothed distribution
 mod17 <- rasch.mirtlc( dat, theta.k=seq(-4,4,len=12) , mmliter=30 ,
-          modeltype="MLC2" , distribution.trait="smooth4"  )
+             modeltype="MLC2" , distribution.trait="smooth4"  )
 summary(mod17)
 
 # 1PL multiple group model with 8 classes
@@ -304,12 +304,12 @@ dimensions <- rep( 1:3 , each = 4 )
 
 # 3-dimensional model with 8 classes and seed 145
 mod31 <- rasch.mirtlc( dat , Nclasses = 8 , mmliter=30 , 
-        modeltype="MLC1" , seed = 145 , dimensions = dimensions )
+             modeltype="MLC1" , seed = 145 , dimensions = dimensions )
 summary(mod31)
 
 # try the model above with different starting values
 mod31s <- rasch.mirtlc( dat , Nclasses = 8 ,
-        modeltype="MLC1" , seed = -30 , nstarts=30 , dimensions = dimensions )
+             modeltype="MLC1" , seed = -30 , nstarts=30 , dimensions = dimensions )
 summary(mod31s)     
 
 # estimation with fixed theta vectors
@@ -317,12 +317,12 @@ summary(mod31s)
 theta.k <- seq(-4 , 4 , len=6 )
 theta.k <- as.matrix( expand.grid( theta.k , theta.k , theta.k ) )
 mod32 <- rasch.mirtlc( dat ,  dimensions=dimensions , 
-        theta.k= theta.k , modeltype="MLC1"  )
+              theta.k= theta.k , modeltype="MLC1"  )
 summary(mod32)
 
 # 3-dimensional 2PL model
 mod33 <- rasch.mirtlc( dat ,  dimensions=dimensions , 
-       theta.k= theta.k , modeltype="MLC2"  )
+              theta.k= theta.k , modeltype="MLC2"  )
 summary(mod33)
 
 #############################################################################
@@ -340,11 +340,11 @@ dat <- sim.raschtype( theta , b=seq(-2,2,len=I ) )
 
 # normal distribution
 mod1 <- rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1",
-            distribution.trait="normal" , mmliter=30)
+               distribution.trait="normal" , mmliter=30)
 
 # allow for skew distribution with smoothed distribution
 mod2 <- rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1",
-            distribution.trait="smooth3" , mmliter=30)
+               distribution.trait="smooth3" , mmliter=30)
 
 # nonparametric distribution
 mod3 <- rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1", mmliter=30)
@@ -363,12 +363,12 @@ weights <- data.si02$weights   # extract weights
 
 # Model 1: 2 classes Rasch model
 mod1 <- rasch.mirtlc( dat , Nclasses=2 , modeltype="MLC1" , weights = weights , 
-           ref.item = 4 , nstarts=5)
+                 ref.item = 4 , nstarts=5)
 summary(mod1)
 
 # Model 2: 3 classes Rasch model: not all parameters are identified
 mod2 <- rasch.mirtlc( dat , Nclasses=3 , modeltype="MLC1" , weights = weights , 
-          ref.item = 4 , nstarts=5)
+                ref.item = 4 , nstarts=5)
 summary(mod2)
 
 # Model 3: Latent class model with 2 classes
@@ -377,7 +377,7 @@ summary(mod3)
 
 # Model 4: Rasch model with normal distribution
 mod4 <- rasch.mirtlc( dat ,  modeltype="MLC1" , weights=weights , 
-        theta.k = seq( -6 , 6 , len=21 ) , distribution.trait="normal" , ref.item=4)
+            theta.k = seq( -6 , 6 , len=21 ) , distribution.trait="normal" , ref.item=4)
 summary(mod4)
 }
 
@@ -408,7 +408,7 @@ colnames(dat) <- paste0( rep( LETTERS[1:3] , each=I ) , 1:(3*I) )
 
 # estimate model
 mod1 <- rasch.mirtlc( dat , Nclasses=Nclasses , dimensions=dimensions ,  modeltype="MLC1" , 
-        ref.item= c(5,14,23) , glob.conv=.0005, conv1=.0005)
+              ref.item= c(5,14,23) , glob.conv=.0005, conv1=.0005)
 
 round( cbind( mod1$theta.k , mod1$pi.k ) , 3 )
 ##          [,1]   [,2]   [,3]  [,4]
@@ -450,7 +450,7 @@ colnames(theta.k) <- c("Dim1","Dim2","Dim3")
 
 # estimate model in CDM
 b.constraint  <- cbind( c(5,14,23) , 1 , 0 )
-mod2 <- gdm( dat , theta.k = theta.k , b.constraint=b.constraint, skillspace="est",
+mod2 <- CDM::gdm( dat , theta.k = theta.k , b.constraint=b.constraint, skillspace="est",
                irtmodel="1PL",  Qmatrix=Qmatrix)
 summary(mod2)
 
@@ -459,7 +459,7 @@ summary(mod2)
 library(MultiLCIRT)
 
 # aggregated dataset in order to input only unique response patterns
-out <- aggr_data( as.matrix(dat) , fort=TRUE)
+out <- MultiLCIRT::aggr_data( as.matrix(dat) , fort=TRUE)
 S <- out$data_dis
 yv <- out$freq
 # define matrix to allocate each item to one dimension
@@ -470,8 +470,8 @@ multi1[ 2 , c(10,14) - 9  ] <- c(14,9)
 multi1[ 3 , c(19,23) - 18 ] <- c(23,19)
 
 # Rasch model with 5 latent classes (random start: start=1)
-mod3 <- est_multi_poly(S,yv,k=5,start=1,link=1,multi=multi1,tol=10^-5 , 
-           output=TRUE , disp=TRUE , fort=TRUE)
+mod3 <- MultiLCIRT::est_multi_poly(S,yv,k=5,start=1,link=1,multi=multi1,tol=10^-5 , 
+                 output=TRUE , disp=TRUE , fort=TRUE)
 # estimated location points and class probabilities in MultiLCIRT
 cbind( t( mod3$Th ) , mod3$piv )
 # compare results with rasch.mirtlc

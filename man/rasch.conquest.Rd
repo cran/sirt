@@ -306,16 +306,16 @@ raters <- as.numeric( substring( paste( dat$rater ) , 3 ) )
 #***
 # Model 31: Rater model 'item+item*step+rater'
 mod31 <- rasch.conquest(dat=dat[,items] , path.conquest=path.conquest , 
-          itemcodes= 0:3 , model="item+item*step+rater" , 
-          pid=dat$idstud , X=data.frame("rater"=raters)  , 
-          regression="" , name="mod31")
+              itemcodes= 0:3 , model="item+item*step+rater" , 
+              pid=dat$idstud , X=data.frame("rater"=raters)  , 
+              regression="" , name="mod31")
 
 #***
 # Model 32: Rater model 'item+item*step+rater+item*rater'
 mod32 <- rasch.conquest(dat=dat[,items] , path.conquest=path.conquest , 
-          itemcodes= 0:3 , model="item+item*step+rater+item*rater" , 
-          pid=dat$idstud , X=data.frame("rater"=raters)  , 
-          regression="" , name="mod32")      
+              itemcodes= 0:3 , model="item+item*step+rater+item*rater" , 
+              pid=dat$idstud , X=data.frame("rater"=raters)  , 
+              regression="" , name="mod32")      
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

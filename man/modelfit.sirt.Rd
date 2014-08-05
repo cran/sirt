@@ -9,7 +9,8 @@ Item Pair Correlations
 This function computes several measures of absolute model fit and local
 dependence indices for dichotomous item responses which are 
 based on comparing observed and expected frequencies of item pairs
-(Chen, de la Torre & Zhang, 2013; see Details).
+(Chen, de la Torre & Zhang, 2013; see \code{\link[CDM:modelfit.cor]{modelfit.cor}}
+for more details).
 }
 \usage{
 modelfit.sirt(object)
@@ -32,7 +33,7 @@ A list with following entries:
         (DiBello et al., 2007) 
 
    \code{SRSMR}: standardized mean square root of squared residuals 
-        (Maydeu-Olivares, 2013)        
+        (Maydeu-Olivares, 2013; Maydeu-Olivares & Joe, 2014)        
         
     \code{MX2}: Mean of \eqn{\chi^2} statistics of all item pairs 
     		(Chen & Thissen, 1997) 
@@ -41,7 +42,10 @@ A list with following entries:
     		covariances (McDonald & Mok, 1995)
     		
     \code{MADQ3}: Mean of absolute values of \eqn{Q_3} statistic (Yen, 1984)
+
+    \code{MADaQ3}: Mean of absolute values of centered \eqn{Q_3} statistic  
             }
+            
   \item{itempairs}{Fit of every item pair} 
 }
 \references{
@@ -58,6 +62,9 @@ Maydeu-Olivares, A. (2013). Goodness-of-fit assessment of item response
 theory models (with discussion). 
 \emph{Measurement: Interdisciplinary Research and Perspectives},
 \bold{11}, 71-137.  
+
+Maydeu-Olivares, A., & Joe, H. (2014). Assessing approximate fit in categorical 
+data analysis. \emph{Multivariate Behavioral Research}, \bold{49}, 305-328.
   
   McDonald, R. P., & Mok, M. M.-C. (1995). Goodness of fit in item response models.
   \emph{Multivariate Behavioral Research}, \bold{30}, 23-40.
@@ -100,7 +107,7 @@ fmod1 <- modelfit.sirt( mod1 )
 summary(fmod1)
 
 #*** Model 1b: Rasch model in TAM package
-mod1b <- tam.mml(dat)
+mod1b <- TAM::tam.mml(dat)
 fmod1b <- modelfit.sirt( mod1b )
 summary(fmod1b)
 
@@ -115,12 +122,12 @@ fmod3 <- modelfit.sirt( mod3 )
 summary(fmod3 )
 
 #*** Model 3: 2PL model in TAM package
-mod3b <- tam.mml.2pl( dat )
+mod3b <- TAM::tam.mml.2pl( dat )
 fmod3b <- modelfit.sirt( mod3b )
 summary(fmod3b )
 
 #*** Model 4: 3PL model with equal guessing parameter
-mod4 <- rasch.mml2( dat, distribution.trait="smooth3", est.a=1:I, est.c=rep(1,I) )
+mod4 <- TAM::rasch.mml2( dat, distribution.trait="smooth3", est.a=1:I, est.c=rep(1,I) )
 fmod4 <- modelfit.sirt( mod4 )
 summary(fmod4 )
 

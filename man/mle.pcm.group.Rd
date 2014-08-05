@@ -119,7 +119,7 @@ data(data.si01)
 dat <- data.si01
 # item parameter estimation (partial credit model) in TAM
 library(TAM)
-mod <- tam.mml( dat[,2:3] , irtmodel="PCM")
+mod <- TAM::tam.mml( dat[,2:3] , irtmodel="PCM")
 # extract item difficulties
 b <- matrix( mod$xsi$xsi , nrow=2 , byrow=TRUE )
 # groupwise estimation
@@ -139,14 +139,14 @@ data.read <- data.read[ order(score) , ]
 score <- score[ order(score) ]
 # compare different epsilon-adjustments
 res30 <- mle.pcm.group( data.read , b = matrix( mod$item$b , 12 , 1 ) ,
-        adj_eps=.3 )$person
+               adj_eps=.3 )$person
 res10 <- mle.pcm.group( data.read , b = matrix( mod$item$b , 12 , 1 ) ,
-        adj_eps=.1 )$person
+             adj_eps=.1 )$person
 res05 <- mle.pcm.group( data.read , b = matrix( mod$item$b , 12 , 1 ) ,
-        adj_eps=.05 )$person
+              adj_eps=.05 )$person
 # plot different scorings
 plot( score , res05$theta , type="l" , xlab="Raw score" , ylab=expression(theta[epsilon]),
-    main="Scoring with different epsilon-adjustments")
+         main="Scoring with different epsilon-adjustments")
 lines( score , res10$theta , col=2 , lty=2 )
 lines( score , res30$theta , col=4 , lty=3 )
 }

@@ -171,7 +171,7 @@ iter <- 500
 #***
 # Model 1: 1PNO model
 mod1 <- mcmc.3pno.testlet( dat ,  est.slope=FALSE , est.guess=FALSE , 
-        burnin=burnin, iter=iter )
+            burnin=burnin, iter=iter )
 summary(mod1)
 plot(mod1,ask=TRUE) # plot MCMC chains in coda style
 plot(mod1,ask=TRUE , layout=2) # plot MCMC output in different layout
@@ -179,7 +179,7 @@ plot(mod1,ask=TRUE , layout=2) # plot MCMC output in different layout
 #***
 # Model 2: 3PNO model with Beta(5,17) prior for guessing parameters
 mod2 <- mcmc.3pno.testlet( dat ,  guess.prior=c(5,17) ,
-            burnin=burnin, iter=iter )
+               burnin=burnin, iter=iter )
 summary(mod2)
 
 #***
@@ -221,7 +221,7 @@ ut <- ut[ , rep(1:TT,each=I) ]
 prob <- matrix( pnorm( theta + ut + matrix( b , nrow=N , ncol=ITT , 
 		byrow=TRUE ) ) , N, ITT)
 Y <- (matrix( runif(N*ITT) , N , ITT) < prob )*1
-# colMeans(Y)
+colMeans(Y)
 
 # define testlets
 testlets <- rep(1:TT , each=I )
@@ -232,7 +232,7 @@ iter <- 1000
 #***
 # Model 1: 1PNO model (without testlet structure)
 mod1 <- mcmc.3pno.testlet( dat=Y ,  est.slope=FALSE , est.guess=FALSE , 
-        burnin=burnin, iter=iter , testlets= testlets )        
+            burnin=burnin, iter=iter , testlets= testlets )        
 summary(mod1)        
 
 summ1 <- mod1$summary.mcmcobj
@@ -244,7 +244,7 @@ cbind( sdt , summ1[ grep("sigma\\.testlet" , summ1$parameter ) , "Mean" ] )
 #***
 # Model 2: 1PNO model (without testlet structure)
 mod2 <- mcmc.3pno.testlet( dat=Y ,  est.slope=TRUE , est.guess=FALSE , 
-        burnin=burnin, iter=iter , testlets= testlets )        
+           burnin=burnin, iter=iter , testlets= testlets )        
 summary(mod2)        
 
 summ2 <- mod2$summary.mcmcobj
@@ -292,7 +292,7 @@ iter <- 1500
 #***
 # Model 1: 2PNO model
 mod1 <- mcmc.3pno.testlet( dat=Y ,  est.slope=TRUE , est.guess=FALSE , 
-        burnin=burnin, iter=iter , testlets= testlets )                               
+             burnin=burnin, iter=iter , testlets= testlets )                               
 summary(mod1)        
 
 summ1 <- mod1$summary.mcmcobj

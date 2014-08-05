@@ -134,6 +134,9 @@ See the \pkg{plink} package for a wide diversity of linking methods.
 Mean-mean linking, Stocking-Lord and Haebara linking in the generalized
 logistic item response model can be conducted with 
 \code{\link{equating.rasch}}.
+
+For more general linking functions than the Haberman method
+see \code{\link{invariance.alignment}}.
 }
 
 
@@ -353,16 +356,16 @@ round( psych::describe( linkhab1$personpars[[2]] ) , 2 )
 #*** Model 2: 2PL in TAM
 library(TAM)
 # 2PL Study 1
-mod1 <- tam.mml.2pl( resp=dat1 , irtmodel="2PL" )
-pvmod1 <- tam.pv(mod1, ntheta=300 , normal.approx=TRUE) # draw plausible values
+mod1 <- TAM::tam.mml.2pl( resp=dat1 , irtmodel="2PL" )
+pvmod1 <- TAM::tam.pv(mod1, ntheta=300 , normal.approx=TRUE) # draw plausible values
 summary(mod1)
 # 2PL Study 2
-mod2 <- tam.mml.2pl( resp=dat2 , irtmodel="2PL" )
-pvmod2 <- tam.pv(mod2, ntheta=300 , normal.approx=TRUE)
+mod2 <- TAM::tam.mml.2pl( resp=dat2 , irtmodel="2PL" )
+pvmod2 <- TAM::tam.pv(mod2, ntheta=300 , normal.approx=TRUE)
 summary(mod2)
 # 2PL Study 3
-mod3 <- tam.mml.2pl( resp=dat3 , irtmodel="2PL" )
-pvmod3 <- tam.pv(mod3, ntheta=300 , normal.approx=TRUE)
+mod3 <- TAM::tam.mml.2pl( resp=dat3 , irtmodel="2PL" )
+pvmod3 <- TAM::tam.pv(mod3, ntheta=300 , normal.approx=TRUE)
 summary(mod3)
 
 # collect item parameters

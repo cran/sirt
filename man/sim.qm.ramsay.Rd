@@ -117,7 +117,8 @@ summary(mod7)
 
 # estimate separate guessing (c) parameters
 mod8 <- rasch.mml2( dat , est.c = 1:I  )
-summary(mod8) } 
+summary(mod8) 
+} 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

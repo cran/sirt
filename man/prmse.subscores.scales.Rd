@@ -60,7 +60,7 @@ Alexander Robitzsch
 
 data( data.read )
 p1 <- prmse.subscores.scales(data=data.read, 
-    subscale = substring( colnames(data.read) , 1 ,1 ) )
+         subscale = substring( colnames(data.read) , 1 ,1 ) )
 print( p1 , digits= 3 )
 ## > print( p1 , digits= 3 )
 ##                 A       B       C

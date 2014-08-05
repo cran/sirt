@@ -190,7 +190,7 @@ detect1 <- conf.detect( data = dat , score = score , itemcluster = itemcluster )
 
 # Exploratory DETECT
 detect5 <- expl.detect( data = dat , score = score  , 
-                nclusters = 9 , N.est = nrow(dat)  )
+                     nclusters = 9 , N.est = nrow(dat)  )
 ## DETECT (unweighted)
 ## Optimal Cluster Size is  6  (Maximum of DETECT Index)
 ##   N.Cluster N.items N.est N.val      size.cluster DETECT.est ASSI.est RATIO.est

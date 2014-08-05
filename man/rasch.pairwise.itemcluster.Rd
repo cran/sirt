@@ -108,7 +108,6 @@ For simulation of locally dependent data see \code{\link{sim.rasch.dep}}.
 #      12 Items: Cluster 1 -> Items 1,...,4
 #                Cluster 2 -> Items 6,...,9
 #                Cluster 3 -> Items 10,11,12
-#      Data is simulated using the sim.rasch.dep function
 #############################################################################	
 
 set.seed(7896)
@@ -185,7 +184,7 @@ round( apply( M1 , 2 , sd ) , 3 )
 # set item parameters of first item to 0 and of second item to -0.7
 b.fixed <- cbind( c(1,2) , c(0,-.7) )
 mod5 <- rasch.pairwise.itemcluster( dat = dat , b.fixed=b.fixed, 
-      itemcluster = itemcluster )
+             itemcluster = itemcluster )
 # difference between estimations 'mod' and 'mod5'
 dfr <- cbind( mod5$item$b , mod$item$b )
 plot( mod5$item$b , mod$item$b , pch=16)

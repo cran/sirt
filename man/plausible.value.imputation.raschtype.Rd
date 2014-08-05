@@ -150,7 +150,7 @@ dat1 <- sim.raschtype( theta = theta , b = b )
 
 # Plausible value draws
 pv1 <- plausible.value.imputation.raschtype(data=dat1 , X=dfr[,-1] , b = b ,
-    nplausible=3 , iter=10 , burnin=5)
+            nplausible=3 , iter=10 , burnin=5)
 # estimate linear regression based on first plausible value
 mod1 <- lm( pv1$pvdraws[,1] ~ x+y )
 summary(mod1)

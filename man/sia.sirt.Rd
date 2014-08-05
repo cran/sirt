@@ -131,7 +131,7 @@ res.graph <- new("graphNEL", nodes= res$graph.edges , edgemode="directed")
 # add edges
 RR <- nrow(grmatrix)
 for (rr in 1:RR){
-    res.graph <- addEdge(grmatrix[rr,1], grmatrix[rr,2], res.graph , 1)
+    res.graph <- Rgraphviz::addEdge(grmatrix[rr,1], grmatrix[rr,2], res.graph , 1)
                     }                                                          
 # define cex sizes and shapes
 V <- length(res$graph.edges)

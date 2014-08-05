@@ -115,8 +115,8 @@ colMeans( X )
 # plot parameter estimates as function of alpha
 alpha <- seq( 0 , 1 , len=100 )
 res <- sapply( alpha , FUN = function(aa){
-        X <- X_alpha( alpha=aa ) 
-        c( fuzdiscr( X )[1] , colMeans( X )[1] )
+             X <- X_alpha( alpha=aa ) 
+             c( fuzdiscr( X )[1] , colMeans( X )[1] )
                     } )
 # plot
 plot( alpha , res[1,] , xlab = expression(alpha) , ylab=expression( theta[alpha] ) , type="l" ,
@@ -138,8 +138,8 @@ X_alpha <- function( alpha ){
 X <- X_alpha( alpha=.5 )
 alpha <- seq( 0 , 1 , len=100 )
 res <- sapply( alpha , FUN = function(aa){
-        X <- X_alpha( alpha=aa ) 
-        c( fuzdiscr( X )[1] , colMeans( X )[1] )
+           X <- X_alpha( alpha=aa ) 
+           c( fuzdiscr( X )[1] , colMeans( X )[1] )
                     } )
 # plot                    
 plot( alpha , res[1,] , xlab = expression(alpha) , ylab=expression( theta[alpha] ) , type="l" ,

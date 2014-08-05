@@ -84,68 +84,85 @@ dat <- data.big5[ , items ]
 I <- ncol(dat)
 summary(dat)
 
-# load needed packages
-library(TAM); library(eRm); library(CDM); library(mirt);
-library(ltm); library(mokken)
+# list of needed packages for the following examples
+packages <- scan(what="character")
+     sirt   TAM   eRm   CDM   mirt  ltm   mokken  psychotools  psychomix
+     psych
+     
+# install packages     
+if (FALSE){  # default is FALSE
+   install.packages(packages)
+   	  }
+# load packages
+for (pack in packages){ 
+    library(pack, character.only=TRUE) 
+        }
 
+# descriptive statistics
+psych::describe(dat)
+        
 #****************
 # Model 1: Partial Credit Model
 #****************
 
-# M1a: rm.facets (in sirt)
-m1a <- rm.facets( dat )
+#-- M1a: rm.facets (in sirt)
+m1a <- sirt::rm.facets( dat )
 summary(m1a)
 
-# M1b: tam.mml (in TAM)
-m1b <- tam.mml( resp=dat )
+#-- M1b: tam.mml (in TAM)
+m1b <- TAM::tam.mml( resp=dat )
 summary(m1b)
 
-# M1c: gdm (in CDM)
+#-- M1c: gdm (in CDM)
 theta.k <- seq(-6,6,len=21)
-m1c <- gdm( dat , irtmodel="1PL" ,theta.k=theta.k , skillspace="normal")
+m1c <- CDM::gdm( dat , irtmodel="1PL" ,theta.k=theta.k , skillspace="normal")
 summary(m1c)
 # compare results with loglinear skillspace
-m1c2 <- gdm( dat , irtmodel="1PL" ,theta.k=theta.k , skillspace="loglinear")
+m1c2 <- CDM::gdm( dat , irtmodel="1PL" ,theta.k=theta.k , skillspace="loglinear")
 summary(m1c2)
 
-# M1d: PCM (in eRm)
-m1d <- PCM( dat )
+#-- M1d: PCM (in eRm)
+m1d <- eRm::PCM( dat )
 summary(m1d)
 
-# M1e: gpcm (in ltm)
-m1e <- gpcm( dat , constraint = "1PL" , control=list(verbose=TRUE))
+#-- M1e: gpcm (in ltm)
+m1e <- ltm::gpcm( dat , constraint = "1PL" , control=list(verbose=TRUE))
 summary(m1e)
 
-# M1f: mirt (in mirt)
-m1f <- mirt( dat , model=1 , itemtype="1PL" , verbose=TRUE)
+#-- M1f: mirt (in mirt)
+m1f <- mirt::mirt( dat , model=1 , itemtype="1PL" , verbose=TRUE)
 summary(m1f)
 coef(m1f)
 
+#-- M1g: PCModel.fit (in psychotools)
+mod1g <- psychotools::PCModel.fit(dat)
+summary(mod1g)
+plot(mod1g)
+
 #****************
-# Model 2: Generalized partial credit model
+# Model 2: Generalized Partial Credit Model
 #****************
 
-# M2a: rm.facets (in sirt)
-m2a <- rm.facets( dat , est.a.item=TRUE)
+#-- M2a: rm.facets (in sirt)
+m2a <- sirt::rm.facets( dat , est.a.item=TRUE)
 summary(m2a)
 # Note that in rm.facets the mean of item discriminations is fixed to 1
 
-# M2b: tam.mml.2pl (in TAM)
-m2b <- tam.mml.2pl( resp=dat , irtmodel="GPCM")
+#-- M2b: tam.mml.2pl (in TAM)
+m2b <- TAM::tam.mml.2pl( resp=dat , irtmodel="GPCM")
 summary(m2b)
 
-# M2c: gdm (in CDM)
-theta.k <- seq(-6,6,len=21)
-m2c <- gdm( dat , irtmodel="2PL" ,theta.k=theta.k ,
-            skillspace="normal" , standardized.latent=TRUE)
+#-- M2c: gdm (in CDM)
+m2c <- CDM::gdm( dat , irtmodel="2PL" ,theta.k=seq(-6,6,len=21) ,
+                   skillspace="normal" , standardized.latent=TRUE)
 summary(m2c)
 
-# M2d: gpcm (in ltm)
-m2d <- gpcm( dat , control=list(verbose=TRUE))
+#-- M2d: gpcm (in ltm)
+m2d <- ltm::gpcm( dat , control=list(verbose=TRUE))
 summary(m2d)
 
-# M2e: mirt (in mirt)
-m2e <- mirt( dat , model=1 ,  verbose=TRUE)
+#-- M2e: mirt (in mirt)
+m2e <- mirt::mirt( dat , model=1 ,  verbose=TRUE)
 summary(m2e)
 coef(m2e)
 
@@ -153,22 +170,23 @@ coef(m2e)
 # Model 3: Nonparametric Item Response Model
 #****************
 
-# M3a: ISOP and ADISOP model - isop.poly (in sirt)
-m3a <- isop.poly( dat )
+#-- M3a: ISOP and ADISOP model - isop.poly (in sirt)
+m3a <- sirt::isop.poly( dat )
 summary(m3a)
 plot(m3a)
 
-# M3b: Mokken scale analysis (in mokken) 
+#-- M3b: Mokken scale analysis (in mokken) 
 # Scalability coefficients
-coefH(dat)
+mokken::coefH(dat)
 # Assumption of monotonicity
-monotonicity.list <- check.monotonicity(dat)
+monotonicity.list <- mokken::check.monotonicity(dat)
 summary(monotonicity.list)
 plot(monotonicity.list)
 # Assumption of non-intersecting ISRFs using method restscore
-restscore.list <- check.restscore(dat)
+restscore.list <- mokken::check.restscore(dat)
 summary(restscore.list)
-plot(restscore.list) }
+plot(restscore.list) 
+}
 }
 
 

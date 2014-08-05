@@ -247,14 +247,14 @@ plot(mod2, ask=TRUE , layout=2 )
 # Model 3: 2PNO with cluster item effects of item difficulties but
 #          joint item slopes
 mod3 <- mcmc.2pno.ml( dat , group , est.b.Var="i" , est.a.M="h" , 
-           burnin=burnin , iter=iter )
+              burnin=burnin , iter=iter )
 summary(mod3)
 
 #***
 # Model 4: 2PNO with cluster item effects of item difficulties and
 #          cluster item effects with a jointly estimated SD
 mod4 <- mcmc.2pno.ml( dat , group , est.b.Var="i" , est.a.M="h" ,
-             est.a.Var="j" , burnin=burnin , iter=iter )
+                est.a.Var="j" , burnin=burnin , iter=iter )
 summary(mod4)
 
 #############################################################################
@@ -281,15 +281,15 @@ summary(mod2a)
 #***
 # Model 2b: homogeneous intercept variance, no slopes
 mod2b <- mcmc.2pno.ml( dat=dat , group=group , est.b.Var="j" , 
-           burnin=burnin , iter=iter ,link="normal" ,  progress.iter=20  )
+              burnin=burnin , iter=iter ,link="normal" ,  progress.iter=20  )
 summary(mod2b)
 
 #***
 # Model 3: intercept variance and slope variances
 #          hierarchical item and slope parameters
 mod3 <- mcmc.2pno.ml( dat=dat , group=group , 
-             est.b.M="h" , est.b.Var="i" , est.a.M="h" , est.a.Var="i" , 
-             burnin=burnin , iter=iter ,link="normal" ,  progress.iter=20  )
+               est.b.M="h" , est.b.Var="i" , est.a.M="h" , est.a.Var="i" , 
+               burnin=burnin , iter=iter ,link="normal" ,  progress.iter=20  )
 summary(mod3)
 
 #############################################################################
@@ -306,7 +306,7 @@ I <- 12             # number of items
 #*** simuate theta
 theta2 <- rnorm( G , sd = sqrt(sig2.lev2) )
 theta1 <- rnorm( n*G , sd =  sqrt(sig2.lev1) )
-theta <- theta1 + rep( theta2 , each=n )
+theta  <- theta1 + rep( theta2 , each=n )
 #*** item difficulties
 b <- seq( -2 , 2 , len=I )
 #*** define group identifier
