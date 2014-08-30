@@ -202,27 +202,27 @@ nu <- data.mcdonald.rape$nu
 
 # obtain multiplier for factor loadings (Formula 15.5)
 k <- sum( lambda[1,] * lambda[2,] ) / sum( lambda[2,]^2 )
-##   [1] 1.263243
+  ##   [1] 1.263243
 
 # additive parameter (Formula 15.7)
 c <- sum( lambda[2,]*(nu[1,]-nu[2,]) ) / sum( lambda[2,]^2 )
-##   [1] 1.247697
+  ##   [1] 1.247697
 
 # SD in the female group
 1/k
-##   [1] 0.7916132
+  ##   [1] 0.7916132
 
 # M in the female group
 - c/k
-##   [1] -0.9876932
+  ##   [1] -0.9876932
 
 # Burt's coefficient of factorial congruence (Formula 15.10a)
 sum( lambda[1,] * lambda[2,] ) / sqrt( sum( lambda[1,]^2 ) * sum( lambda[2,]^2 ) )
-##   [1] 0.9727831
+  ##   [1] 0.9727831
 
 # congruence for mean parameters
 sum(  (nu[1,]-nu[2,]) * lambda[2,] ) / sqrt( sum( (nu[1,]-nu[2,])^2 ) * sum( lambda[2,]^2 ) )
-##   [1] 0.968176
+  ##   [1] 0.968176
 }
 }
 \keyword{datasets}

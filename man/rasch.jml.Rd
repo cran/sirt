@@ -178,8 +178,9 @@ mod4 <- TAM::tam.jml2( resp=dat )
 #******
 # item parameter constraints in JML estimation
 # fix item difficulties: b[4]=-.76 and b[6]= .10
-constraints <- matrix( cbind( 4 , -.76 , 
-                              6 , .10 ) , ncol=2 , byrow=TRUE )
+constraints <- matrix( cbind( 4 , -.76 ,
+                              6 , .10 ) , 
+                  ncol=2 , byrow=TRUE )
 mod4 <- rasch.jml( dat , constraints = constraints )
 summary(mod4)
 # For constrained item parameters, it this not obvious

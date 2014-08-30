@@ -57,7 +57,8 @@ mod <- mcmc.2pno( dat=data.read , iter=3000 , burnin=500 )
 # plot MCMC chains
 plot( mod$mcmcobj , ask=TRUE )
 # write sampled chains into codafile
-mcmclist2coda( mod$mcmcobj , name = "dataread_2pl" ) }
+mcmclist2coda( mod$mcmcobj , name = "dataread_2pl" ) 
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

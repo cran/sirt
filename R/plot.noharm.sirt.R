@@ -127,7 +127,8 @@ if ( ! is.null( Psival) ){
 	if ( ! is.null( desPsi) ){ est <- c( est , desPsi$est ) }
 	if ( unconvars ){ est <- c( est , rep(1,IV) ) }
 	# create pseudo lavaan object
-	# data(..., envir = environment())		
+	# data(..., envir = environment())	
+    HolzingerSwineford1939 <- NULL	
 	data(HolzingerSwineford1939, package="lavaan" , envir= environment() )
 	HS.model <- ' visual  =~ x1 + x2 + x3
 				  textual =~ x4 + x5 + x6

@@ -10,7 +10,7 @@ Alignment Procedure for Linking under Approximate Invariance
 \description{
 This function does alignment under approximate
 invariance for \eqn{G} groups and \eqn{I} items
-(Asparouhov & Muthen, 2014).
+(Asparouhov & Muthen, 2014; Muthen, 2014).
 It is assumed that item loadings and intercepts are
 previously estimated under the assumption of a factor
 with zero mean and a variance of one. 
@@ -174,6 +174,11 @@ Multiple-group factor analysis alignment.
 \emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
 \url{http://www.statmodel.com/Alignment.shtml}
 
+Muthen, B. (2014). IRT studies of many groups: The alignment method. 
+\emph{Frontiers in Psychology | Quantitative Psychology and Measurement},
+\bold{5:978}. doi: 10.3389/fpsyg.2014.00978,
+\url{http://journal.frontiersin.org/Journal/10.3389/fpsyg.2014.00978/abstract}.
+
 Vandenberg, R. J., & Lance, C. E. (2000). A review and synthesis of the
 measurement invariance literature: Suggestions, practices, and
 recommendations for organizational research. \emph{Organizational Research
@@ -213,11 +218,11 @@ wgt <- matrix( sqrt(Ng) , length(Ng) , ncol(nu) )
 #   -> use the default of align.pow=c(1,1) and align.scale=c(1,1)
 mod1 <- invariance.alignment( lambda , nu , wgt )
 summary(mod1)
-##   Effect Sizes of Approximate Invariance 
-##          loadings intercepts
-##   R2       0.9944     0.9988
-##   sqrtU2   0.0748     0.0346
-##   rbar     0.9265     0.9735
+  ##   Effect Sizes of Approximate Invariance 
+  ##          loadings intercepts
+  ##   R2       0.9944     0.9988
+  ##   sqrtU2   0.0748     0.0346
+  ##   rbar     0.9265     0.9735
 
 #****
 # Model 2: Different powers for alignment
@@ -271,32 +276,32 @@ model1 <- "
     "
 
 res <- semTools::measurementInvariance(model1, std.lv =TRUE , data=dat , group="group")
-##   Measurement invariance tests:
-##   
-##   Model 1: configural invariance:
-##       chisq        df    pvalue       cfi     rmsea       bic 
-##     162.084   176.000     0.766     1.000     0.000 95428.025 
-##   
-##   Model 2: weak invariance (equal loadings):
-##       chisq        df    pvalue       cfi     rmsea       bic 
-##     519.598   209.000     0.000     0.973     0.039 95511.835 
-##   
-##   [Model 1 versus model 2]
-##     delta.chisq      delta.df delta.p.value     delta.cfi 
-##         357.514        33.000         0.000         0.027 
-##   
-##   Model 3: strong invariance (equal loadings + intercepts):
-##       chisq        df    pvalue       cfi     rmsea       bic 
-##    2197.260   239.000     0.000     0.828     0.091 96940.676 
-##   
-##   [Model 1 versus model 3]
-##     delta.chisq      delta.df delta.p.value     delta.cfi 
-##        2035.176        63.000         0.000         0.172 
-##   
-##   [Model 2 versus model 3]
-##     delta.chisq      delta.df delta.p.value     delta.cfi 
-##        1677.662        30.000         0.000         0.144 
-##   
+  ##   Measurement invariance tests:
+  ##   
+  ##   Model 1: configural invariance:
+  ##       chisq        df    pvalue       cfi     rmsea       bic 
+  ##     162.084   176.000     0.766     1.000     0.000 95428.025 
+  ##   
+  ##   Model 2: weak invariance (equal loadings):
+  ##       chisq        df    pvalue       cfi     rmsea       bic 
+  ##     519.598   209.000     0.000     0.973     0.039 95511.835 
+  ##   
+  ##   [Model 1 versus model 2]
+  ##     delta.chisq      delta.df delta.p.value     delta.cfi 
+  ##         357.514        33.000         0.000         0.027 
+  ##   
+  ##   Model 3: strong invariance (equal loadings + intercepts):
+  ##       chisq        df    pvalue       cfi     rmsea       bic 
+  ##    2197.260   239.000     0.000     0.828     0.091 96940.676 
+  ##   
+  ##   [Model 1 versus model 3]
+  ##     delta.chisq      delta.df delta.p.value     delta.cfi 
+  ##        2035.176        63.000         0.000         0.172 
+  ##   
+  ##   [Model 2 versus model 3]
+  ##     delta.chisq      delta.df delta.p.value     delta.cfi 
+  ##        1677.662        30.000         0.000         0.144 
+  ##   
 
 # extract item parameters separate group analyses
 ipars <- lavaan::parameterEstimates(res$fit.configural)
@@ -310,34 +315,34 @@ colnames(nu) <- colnames(dat)[-1]
 # Model 1: least squares optimization
 mod1 <- invariance.alignment( lambda=lambda , nu=nu )
 summary(mod1)
-##   Effect Sizes of Approximate Invariance 
-##          loadings intercepts
-##   R2       0.9826     0.9972
-##   sqrtU2   0.1319     0.0526
-##   rbar     0.6237     0.7821
-##   -----------------------------------------------------------------
-##   Group Means and Standard Deviations 
-##     alpha0  psi0
-##   1  0.000 0.965
-##   2 -0.105 1.098
-##   3 -0.081 1.011
-##   4  0.171 0.935
+  ##   Effect Sizes of Approximate Invariance 
+  ##          loadings intercepts
+  ##   R2       0.9826     0.9972
+  ##   sqrtU2   0.1319     0.0526
+  ##   rbar     0.6237     0.7821
+  ##   -----------------------------------------------------------------
+  ##   Group Means and Standard Deviations 
+  ##     alpha0  psi0
+  ##   1  0.000 0.965
+  ##   2 -0.105 1.098
+  ##   3 -0.081 1.011
+  ##   4  0.171 0.935
 
 # Model 2: sparse target function
 mod2 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(1/4,1/4) )
 summary(mod2)
-##   Effect Sizes of Approximate Invariance 
-##          loadings intercepts
-##   R2       0.9824     0.9972
-##   sqrtU2   0.1327     0.0529
-##   rbar     0.6237     0.7856
-##   -----------------------------------------------------------------
-##   Group Means and Standard Deviations 
-##     alpha0  psi0
-##   1 -0.002 0.965
-##   2 -0.107 1.098
-##   3 -0.083 1.011
-##   4  0.170 0.935
+  ##   Effect Sizes of Approximate Invariance 
+  ##          loadings intercepts
+  ##   R2       0.9824     0.9972
+  ##   sqrtU2   0.1327     0.0529
+  ##   rbar     0.6237     0.7856
+  ##   -----------------------------------------------------------------
+  ##   Group Means and Standard Deviations 
+  ##     alpha0  psi0
+  ##   1 -0.002 0.965
+  ##   2 -0.107 1.098
+  ##   3 -0.083 1.011
+  ##   4  0.170 0.935
 
 #############################################################################
 # EXAMPLE 3: European Social Survey data.ess2005 
@@ -358,43 +363,43 @@ summary(mod2)
 
 # compare results of Model 1 and Model 2
 round( cbind( mod1$pars , mod2$pars ) , 2 )
-##      alpha0 psi0 alpha0 psi0
-##   1    0.06 0.87   0.05 0.91
-##   2   -0.51 1.03  -0.37 0.99
-##   3    0.18 0.97   0.25 1.04
-##   4   -0.67 0.90  -0.53 0.90
-##   5    0.09 0.98   0.10 0.99
-##   6    0.23 1.03   0.28 1.00
-##   7    0.27 0.97   0.14 1.10
-##   8    0.18 0.90   0.07 0.89
-##   [...]
+  ##      alpha0 psi0 alpha0 psi0
+  ##   1    0.06 0.87   0.05 0.91
+  ##   2   -0.51 1.03  -0.37 0.99
+  ##   3    0.18 0.97   0.25 1.04
+  ##   4   -0.67 0.90  -0.53 0.90
+  ##   5    0.09 0.98   0.10 0.99
+  ##   6    0.23 1.03   0.28 1.00
+  ##   7    0.27 0.97   0.14 1.10
+  ##   8    0.18 0.90   0.07 0.89
+  ##   [...]
 
 # look at nu residuals to explain differences in means
 round( mod1$nu.resid , 2)
-##         ipfrule ipmodst ipbhprp imptrad
-##    [1,]    0.15   -0.25   -0.01    0.01
-##    [2,]   -0.18    0.23    0.10   -0.24
-##    [3,]    0.22   -0.34    0.05   -0.02
-##    [4,]    0.29   -0.04    0.12   -0.53
-##    [5,]   -0.32    0.19    0.00    0.13
-##    [6,]    0.05   -0.21    0.05    0.04
-##    [7,]   -0.26    0.54   -0.15   -0.02
-##    [8,]    0.07   -0.05   -0.10    0.12
+  ##         ipfrule ipmodst ipbhprp imptrad
+  ##    [1,]    0.15   -0.25   -0.01    0.01
+  ##    [2,]   -0.18    0.23    0.10   -0.24
+  ##    [3,]    0.22   -0.34    0.05   -0.02
+  ##    [4,]    0.29   -0.04    0.12   -0.53
+  ##    [5,]   -0.32    0.19    0.00    0.13
+  ##    [6,]    0.05   -0.21    0.05    0.04
+  ##    [7,]   -0.26    0.54   -0.15   -0.02
+  ##    [8,]    0.07   -0.05   -0.10    0.12
 round( mod2$nu.resid , 2)
-##         ipfrule ipmodst ipbhprp imptrad
-##    [1,]    0.16   -0.25    0.00    0.02
-##    [2,]   -0.27    0.14    0.00   -0.30
-##    [3,]    0.18   -0.37    0.00   -0.05
-##    [4,]    0.19   -0.13    0.00   -0.60
-##    [5,]   -0.33    0.19   -0.01    0.12
-##    [6,]    0.00   -0.23    0.00    0.01
-##    [7,]   -0.16    0.64   -0.01    0.04
-##    [8,]    0.15    0.02   -0.02    0.19
+  ##         ipfrule ipmodst ipbhprp imptrad
+  ##    [1,]    0.16   -0.25    0.00    0.02
+  ##    [2,]   -0.27    0.14    0.00   -0.30
+  ##    [3,]    0.18   -0.37    0.00   -0.05
+  ##    [4,]    0.19   -0.13    0.00   -0.60
+  ##    [5,]   -0.33    0.19   -0.01    0.12
+  ##    [6,]    0.00   -0.23    0.00    0.01
+  ##    [7,]   -0.16    0.64   -0.01    0.04
+  ##    [8,]    0.15    0.02   -0.02    0.19
 
 round( rowMeans( mod1$nu.resid )[1:8] , 2 )
-##   [1] -0.02 -0.02 -0.02 -0.04  0.00 -0.02  0.03  0.01
+  ##   [1] -0.02 -0.02 -0.02 -0.04  0.00 -0.02  0.03  0.01
 round( rowMeans( mod2$nu.resid )[1:8] , 2 )
-##   [1] -0.02 -0.11 -0.06 -0.14 -0.01 -0.06  0.13  0.09
+  ##   [1] -0.02 -0.11 -0.06 -0.14 -0.01 -0.06  0.13  0.09
 
 #############################################################################
 # SIMULATED EXAMPLE 4: Linking with item parameters containing outliers 
@@ -418,26 +423,26 @@ lambda <- 1+0*nu
 # linking using least squares optimization
 mod1 <- invariance.alignment( lambda=lambda , nu=nu )
 summary(mod1)
-##   Group Means and Standard Deviations 
-##          alpha0 psi0
-##   study1 -0.286    1
-##   study2  0.286    1
+  ##   Group Means and Standard Deviations 
+  ##          alpha0 psi0
+  ##   study1 -0.286    1
+  ##   study2  0.286    1
 
 # linking using powers of .5
 mod2 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(.5,.5) )
 summary(mod2)
-##   Group Means and Standard Deviations 
-##          alpha0 psi0
-##   study1 -0.213    1
-##   study2  0.213    1
+  ##   Group Means and Standard Deviations 
+  ##          alpha0 psi0
+  ##   study1 -0.213    1
+  ##   study2  0.213    1
 
 # linking using powers of .25
 mod3 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(.25,.25) )
 summary(mod3)
-##   Group Means and Standard Deviations 
-##          alpha0 psi0
-##   study1 -0.207    1
-##   study2  0.207    1
+  ##   Group Means and Standard Deviations 
+  ##          alpha0 psi0
+  ##   study1 -0.207    1
+  ##   study2  0.207    1
 
 #############################################################################
 # EXAMPLE 5: Linking gender groups with data.math 
@@ -461,31 +466,31 @@ lambda <- 1+0*nu
 
 # mean of item difficulties
 round( rowMeans(nu) , 3 )
-##     male female 
-##   -0.081 -0.049 
+  ##     male female 
+  ##   -0.081 -0.049 
 
 # Linking using least squares optimization
 res1a <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) )
 summary(res1a)
-##   Effect Sizes of Approximate Invariance 
-##          loadings intercepts
-##   R2            1     0.9801
-##   sqrtU2        0     0.1412
-##   rbar          1     0.9626
-##   -----------------------------------------------------------------
-##   Group Means and Standard Deviations 
-##          alpha0 psi0
-##   male   -0.016    1
-##   female  0.016    1
+  ##   Effect Sizes of Approximate Invariance 
+  ##          loadings intercepts
+  ##   R2            1     0.9801
+  ##   sqrtU2        0     0.1412
+  ##   rbar          1     0.9626
+  ##   -----------------------------------------------------------------
+  ##   Group Means and Standard Deviations 
+  ##          alpha0 psi0
+  ##   male   -0.016    1
+  ##   female  0.016    1
 
 # Linking using optimization with absolute values
 res1b <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) ,
                 align.pow=c( .5 , .5 ) )
 summary(res1b)
-##   Group Means and Standard Deviations 
-##          alpha0 psi0
-##   male   -0.045    1
-##   female  0.045    1
+  ##   Group Means and Standard Deviations 
+  ##          alpha0 psi0
+  ##   male   -0.045    1
+  ##   female  0.045    1
 
 #-- compare results with Haberman linking
 I <- ncol(dat.male)
@@ -495,26 +500,26 @@ itempartable$a <- 1
 itempartable$b <- c( mod1m$item$b , mod1f$item$b )
 # estimate linking parameters
 res1c <- linking.haberman( itempars= itempartable )
-##   Transformation parameters (Haberman linking)
-##      study At     Bt
-##   1 female  1  0.000
-##   2   male  1 -0.032
-##   Linear transformation for person parameters theta
-##      study A_theta B_theta
-##   1 female       1   0.000
-##   2   male       1   0.032
-##   R-Squared Measures of Invariance
-##          slopes intercepts
-##   R2          1     0.9801
-##   sqrtU2      0     0.1412
+  ##   Transformation parameters (Haberman linking)
+  ##      study At     Bt
+  ##   1 female  1  0.000
+  ##   2   male  1 -0.032
+  ##   Linear transformation for person parameters theta
+  ##      study A_theta B_theta
+  ##   1 female       1   0.000
+  ##   2   male       1   0.032
+  ##   R-Squared Measures of Invariance
+  ##          slopes intercepts
+  ##   R2          1     0.9801
+  ##   sqrtU2      0     0.1412
 
 #-- results of equating.rasch
 x <- itempartable[ 1:I , c("item" , "b") ]
 y <- itempartable[ I + 1:I , c("item" , "b") ]
 res1d <- equating.rasch( x , y )
 round( res1d$B.est , 3 )
-##     Mean.Mean Haebara Stocking.Lord
-##   1     0.032   0.032         0.029
+  ##     Mean.Mean Haebara Stocking.Lord
+  ##   1     0.032   0.032         0.029
 
 #*************************
 # Model 2: Linking using the 2PL model
@@ -532,24 +537,24 @@ rownames(lambda) <- c("male" , "female")
 
 res2a <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) )
 summary(res2a)
-##   Effect Sizes of Approximate Invariance 
-##          loadings intercepts
-##   R2       0.9589     0.9682
-##   sqrtU2   0.2027     0.1782
-##   rbar     0.5177     0.9394
-##   -----------------------------------------------------------------
-##   Group Means and Standard Deviations 
-##          alpha0  psi0
-##   male   -0.044 0.968
-##   female  0.047 1.034
+  ##   Effect Sizes of Approximate Invariance 
+  ##          loadings intercepts
+  ##   R2       0.9589     0.9682
+  ##   sqrtU2   0.2027     0.1782
+  ##   rbar     0.5177     0.9394
+  ##   -----------------------------------------------------------------
+  ##   Group Means and Standard Deviations 
+  ##          alpha0  psi0
+  ##   male   -0.044 0.968
+  ##   female  0.047 1.034
 
 res2b <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) ,
                 align.pow=c( .5 , .5 ) )
 summary(res2b)
-##   Group Means and Standard Deviations 
-##          alpha0  psi0
-##   male   -0.046 1.053
-##   female  0.041 0.951
+  ##   Group Means and Standard Deviations 
+  ##          alpha0  psi0
+  ##   male   -0.046 1.053
+  ##   female  0.041 0.951
 
 # compare results with Haberman linking
 I <- ncol(dat.male)
@@ -559,18 +564,18 @@ itempartable$a <- c( mod2m$item$a , mod2f$item$a )
 itempartable$b <- c( mod2m$item$b , mod2f$item$b )
 # estimate linking parameters
 res2c <- linking.haberman( itempars= itempartable )
-##   Transformation parameters (Haberman linking)
-##      study    At   Bt
-##   1 female 1.000 0.00
-##   2   male 1.041 0.09
-##   Linear transformation for person parameters theta
-##      study A_theta B_theta
-##   1 female   1.000    0.00
-##   2   male   1.041   -0.09
-##   R-Squared Measures of Invariance
-##          slopes intercepts
-##   R2     0.9554     0.9484
-##   sqrtU2 0.2111     0.2273
+  ##   Transformation parameters (Haberman linking)
+  ##      study    At   Bt
+  ##   1 female 1.000 0.00
+  ##   2   male 1.041 0.09
+  ##   Linear transformation for person parameters theta
+  ##      study A_theta B_theta
+  ##   1 female   1.000    0.00
+  ##   2   male   1.041   -0.09
+  ##   R-Squared Measures of Invariance
+  ##          slopes intercepts
+  ##   R2     0.9554     0.9484
+  ##   sqrtU2 0.2111     0.2273
 }
 }
 

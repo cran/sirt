@@ -100,7 +100,7 @@ data(data.read)
 dat <- data.read
 set.seed(778)
 res <- unidim.test.csn( dat )
-##  CSN Statistic = 0.04737 , p = 0.02 
+  ##  CSN Statistic = 0.04737 , p = 0.02 
 
 \dontrun{
 #############################################################################
@@ -118,7 +118,7 @@ dat1 <- sim.raschtype(t1 , b=seq(-1.5,1.5,length=I/2) )
 dat2 <- sim.raschtype(t2 , b=seq(-1.5,1.5,length=I/2) ) 
 dat <- as.matrix(cbind( dat1 , dat2) )
 res <- unidim.test.csn( dat )
-##  CSN Statistic = 0.06056 , p = 0.02
+  ##  CSN Statistic = 0.06056 , p = 0.02
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

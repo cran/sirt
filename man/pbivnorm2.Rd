@@ -66,14 +66,14 @@ rho <- c( .2 , .8 , -.4 , .6 , .5 )
 pbiv2 <- pbivnorm2( x = x , y = y , rho = rho )
 pbiv <- pbivnorm::pbivnorm(  x ,  y , rho = rho )
 max( abs(pbiv-pbiv2))
-## [1] 0.0030626
+  ## [1] 0.0030626
 round( cbind( x , y , rho ,pbiv, pbiv2 ) , 4 )
-##          x    y  rho   pbiv  pbiv2
-##   [1,] 0.0  0.0  0.2 0.2820 0.2821
-##   [2,] 0.0 -0.5  0.8 0.2778 0.2747
-##   [3,] 0.5  1.0 -0.4 0.5514 0.5514
-##   [4,] 1.0  3.0  0.6 0.8412 0.8412
-##   [5,] 1.0  0.5  0.5 0.6303 0.6304
+  ##          x    y  rho   pbiv  pbiv2
+  ##   [1,] 0.0  0.0  0.2 0.2820 0.2821
+  ##   [2,] 0.0 -0.5  0.8 0.2778 0.2747
+  ##   [3,] 0.5  1.0 -0.4 0.5514 0.5514
+  ##   [4,] 1.0  3.0  0.6 0.8412 0.8412
+  ##   [5,] 1.0  0.5  0.5 0.6303 0.6304
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

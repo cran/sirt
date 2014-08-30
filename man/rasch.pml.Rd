@@ -184,8 +184,8 @@ Green, S. B., & Yang, Y. (2009). Reliability of summed item
 scores using structural equation modeling: An alternative to 
 coefficient alpha. \emph{Psychometrika}, \bold{74}, 155-167.
 	
-Neuhaus, W. (1996). Optimal Estimation Under
-Linear Constraints. \emph{Astin Bulletin}, \bold{26}, 233-245. 
+Neuhaus, W. (1996). Optimal estimation under
+linear constraints. \emph{Astin Bulletin}, \bold{26}, 233-245. 
 
 Renard, D., Molenberghs, G., & Geys, H. (2004). A pairwise likelihood
 approach to estimation in multilevel probit models. \emph{Computational Statistics
@@ -297,7 +297,7 @@ dat <- dat[ , substring(colnames(dat),1,1)=="R" ]
 #******
 # Model 1: Rasch model with PML estimation
 mod1 <- rasch.pml3( as.matrix(dat) )
-## Trait SD (Logit Link) : 1.419 
+  ## Trait SD (Logit Link) : 1.419 
 
 #******
 # Model 2: Model correlations within testlets
@@ -310,7 +310,7 @@ for ( ii in 1:(length(unique(testlets))) ){
         }
 # estimate the model with error correlations
 mod2 <- rasch.pml3( dat , error.corr = error.corr )
-## Trait SD (Logit Link) : 1.384
+  ## Trait SD (Logit Link) : 1.384
 
 #****
 # Model 3: model separate residual correlations        
@@ -319,7 +319,7 @@ error.corr1 <- matrix( 1:(I*I) , ncol= I )
 error.corr <- error.corr1 * ( error.corr > 0 )  
 # estimate the model with error correlations
 mod3 <- rasch.pml3( dat , error.corr = error.corr )
-## Trait SD (Logit Link) : 1.384 
+  ## Trait SD (Logit Link) : 1.384 
 
 #############################################################################
 # SIMULATED EXAMPLE 3: 10 locally independent items

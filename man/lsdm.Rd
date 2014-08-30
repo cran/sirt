@@ -190,21 +190,21 @@ rownames(Qmatrix) <- paste("Item",1:29,sep="")
 # Perform a LSDM analysis
 lsdm.res <- lsdm( b = b, Qmatrix = Qmatrix )
 summary(lsdm.res)
-## Model Fit
-## Model Fit LSDM   -  Mean MAD:  0.071     Median MAD:   0.07 
-## Model Fit LLTM   -  Mean MAD:  0.079     Median MAD:  0.063    R^2= 0.615 
-## ................................................................................ 
-## Attribute Parameters
-##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
-## A1      27 -2.101 1.615 -2.664   -1.168   0.404     0.009
-## A2       8 -3.736 3.335 -5.491   -0.645   0.284     0.034
-## A3      12 -5.491 0.360 -2.685   -0.013   0.284     0.963
-## A4      22 -0.081 0.744 -0.059    1.495   0.350     0.000
-## A5       7 -2.306 0.580 -1.622    0.243   0.301     0.428
-## A6      10 -1.946 0.542 -1.306    0.447   0.243     0.080
-## A7       5 -4.247 1.283 -4.799   -0.147   0.316     0.646
-## A8       5 -2.670 0.663 -2.065    0.077   0.310     0.806
-## [...]
+  ## Model Fit
+  ## Model Fit LSDM   -  Mean MAD:  0.071     Median MAD:   0.07 
+  ## Model Fit LLTM   -  Mean MAD:  0.079     Median MAD:  0.063    R^2= 0.615 
+  ## ................................................................................ 
+  ## Attribute Parameters
+  ##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
+  ## A1      27 -2.101 1.615 -2.664   -1.168   0.404     0.009
+  ## A2       8 -3.736 3.335 -5.491   -0.645   0.284     0.034
+  ## A3      12 -5.491 0.360 -2.685   -0.013   0.284     0.963
+  ## A4      22 -0.081 0.744 -0.059    1.495   0.350     0.000
+  ## A5       7 -2.306 0.580 -1.622    0.243   0.301     0.428
+  ## A6      10 -1.946 0.542 -1.306    0.447   0.243     0.080
+  ## A7       5 -4.247 1.283 -4.799   -0.147   0.316     0.646
+  ## A8       5 -2.670 0.663 -2.065    0.077   0.310     0.806
+  ## [...]
 
 #############################################################################
 # EXAMPLE 2 DATA HENNING (see Dimitrov, 2007)
@@ -224,31 +224,31 @@ rownames(Qmatrix) <- paste("Item",1:10,sep="")
 # LSDM analysis
 lsdm.res <- lsdm( b = b, a=a , Qmatrix = Qmatrix )
 summary(lsdm.res)
-## Model Fit LSDM   -  Mean MAD:  0.061     Median MAD:   0.06 
-## Model Fit LLTM   -  Mean MAD:  0.069     Median MAD:  0.069    R^2= 0.902 
-## ................................................................................ 
-## Attribute Parameters
-##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
-## A1       2 -2.727 0.786 -2.367   -1.592   0.478     0.021
-## A2       5 -2.099 0.794 -1.834   -0.934   0.295     0.025
-## A3       2 -0.763 0.401 -0.397    1.260   0.507     0.056
-## A4       4 -1.459 0.638 -1.108   -0.738   0.309     0.062
-## A5       2  2.410 0.509  1.564    2.673   0.451     0.002
-## [...]
-##
-##  Discrimination Parameters
-##  
-##            A1    A2   A3    A4    A5
-##  Item1  1.723    NA   NA    NA    NA
-##  Item2     NA 1.615   NA    NA    NA
-##  Item3     NA 0.650   NA 0.798    NA
-##  Item4     NA 1.367   NA    NA    NA
-##  Item5     NA 1.001 1.26    NA    NA
-##  Item6     NA    NA   NA 0.866    NA
-##  Item7     NA 0.697   NA    NA 0.891
-##  Item8     NA    NA   NA 0.997    NA
-##  Item9     NA    NA   NA 1.312 1.074
-##  Item10 1.000    NA 0.74    NA    NA
+  ## Model Fit LSDM   -  Mean MAD:  0.061     Median MAD:   0.06 
+  ## Model Fit LLTM   -  Mean MAD:  0.069     Median MAD:  0.069    R^2= 0.902 
+  ## ................................................................................ 
+  ## Attribute Parameters
+  ##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
+  ## A1       2 -2.727 0.786 -2.367   -1.592   0.478     0.021
+  ## A2       5 -2.099 0.794 -1.834   -0.934   0.295     0.025
+  ## A3       2 -0.763 0.401 -0.397    1.260   0.507     0.056
+  ## A4       4 -1.459 0.638 -1.108   -0.738   0.309     0.062
+  ## A5       2  2.410 0.509  1.564    2.673   0.451     0.002
+  ## [...]
+  ##
+  ##  Discrimination Parameters
+  ##  
+  ##            A1    A2   A3    A4    A5
+  ##  Item1  1.723    NA   NA    NA    NA
+  ##  Item2     NA 1.615   NA    NA    NA
+  ##  Item3     NA 0.650   NA 0.798    NA
+  ##  Item4     NA 1.367   NA    NA    NA
+  ##  Item5     NA 1.001 1.26    NA    NA
+  ##  Item6     NA    NA   NA 0.866    NA
+  ##  Item7     NA 0.697   NA    NA 0.891
+  ##  Item8     NA    NA   NA 0.997    NA
+  ##  Item9     NA    NA   NA 1.312 1.074
+  ##  Item10 1.000    NA 0.74    NA    NA
 
 \dontrun{
 #############################################################################
@@ -274,14 +274,14 @@ mod2 <- np.dich( dat=dat , theta=theta , thetagrid = seq(-3,3,len=100) )
 # LSDM analysis
 lsdm.res <- lsdm( data=mod2$estimate , Qmatrix=Qmatrix , theta=mod2$thetagrid)
 summary(lsdm.res)
-## Model Fit
-## Model Fit LSDM   -  Mean MAD:  0.215     Median MAD:  0.151 
-## Model Fit LLTM   -  Mean MAD:  0.193     Median MAD:  0.119    R^2= 0.285 
-## ................................................................................ 
-## Attribute Parameter
-##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
-## A0       5  1.326 0.705  1.289   -0.455   0.965     0.648
-## A1       7 -1.271 1.073 -1.281   -1.585   0.816     0.081
+  ## Model Fit
+  ## Model Fit LSDM   -  Mean MAD:  0.215     Median MAD:  0.151 
+  ## Model Fit LLTM   -  Mean MAD:  0.193     Median MAD:  0.119    R^2= 0.285 
+  ## ................................................................................ 
+  ## Attribute Parameter
+  ##    N.Items  b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
+  ## A0       5  1.326 0.705  1.289   -0.455   0.965     0.648
+  ## A1       7 -1.271 1.073 -1.281   -1.585   0.816     0.081
 
 #############################################################################
 # EXAMPLE 4: Fraction subtraction dataset
@@ -298,17 +298,17 @@ mod1 <- rasch.mml2( data , est.a=1:nrow(q.matrix) )
 # LSDM analysis
 lsdm.res1 <- lsdm( b=mod1$item$b , a=mod1$item$a , Qmatrix=q.matrix )
 summary(lsdm.res1)
-##   
-##   Model Fit LSDM   -  Mean MAD:  0.076     Median MAD:  0.055 
-##   Model Fit LLTM   -  Mean MAD:  0.153     Median MAD:  0.155    R^2= 0.801 
-##   ................................................................................ 
-##   Attribute Parameter  
-##       N.Items   b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
-##   QT1      14  -0.741 2.991 -1.115   -0.815   0.217     0.004
-##   QT2       8 -80.387 0.031 -4.806   -0.025   0.262     0.925
-##   QT3      12  -2.461 0.711 -2.006   -0.362   0.268     0.207
-##   QT4       9  -0.019 3.873 -0.100    1.465   0.345     0.002
-##   QT5       3  -3.062 0.375 -1.481    0.254   0.280     0.387
+  ##   
+  ##   Model Fit LSDM   -  Mean MAD:  0.076     Median MAD:  0.055 
+  ##   Model Fit LLTM   -  Mean MAD:  0.153     Median MAD:  0.155    R^2= 0.801 
+  ##   ................................................................................ 
+  ##   Attribute Parameter  
+  ##       N.Items   b.2PL a.2PL  b.1PL eta.LLTM se.LLTM pval.LLTM
+  ##   QT1      14  -0.741 2.991 -1.115   -0.815   0.217     0.004
+  ##   QT2       8 -80.387 0.031 -4.806   -0.025   0.262     0.925
+  ##   QT3      12  -2.461 0.711 -2.006   -0.362   0.268     0.207
+  ##   QT4       9  -0.019 3.873 -0.100    1.465   0.345     0.002
+  ##   QT5       3  -3.062 0.375 -1.481    0.254   0.280     0.387
 
 #****
 # Model 2: 1PL estimation  
@@ -317,9 +317,9 @@ mod2 <- rasch.mml2( data  )
 # LSDM analysis
 lsdm.res2 <- lsdm( b=mod1$item$b , Qmatrix=q.matrix )
 summary(lsdm.res2)
-##   
-##   Model Fit LSDM   -  Mean MAD:  0.046     Median MAD:   0.03 
-##   Model Fit LLTM   -  Mean MAD:  0.041     Median MAD:  0.042    R^2= 0.772
+  ##   
+  ##   Model Fit LSDM   -  Mean MAD:  0.046     Median MAD:   0.03 
+  ##   Model Fit LLTM   -  Mean MAD:  0.041     Median MAD:  0.042    R^2= 0.772
 
 #############################################################################
 # EXAMPLE 5: Dataset LLTM Sonnleitner Reading Comprehension (Sonnleitner, 2008)
@@ -341,7 +341,7 @@ Qmatrix <- scan()
    0 1 0 0 1 0 0 5 1 0 0 1   0 1 0 0 0 0 1 7 2 0 0 1   0 0 0 0 0 1 0 5 1 0 0 1
   
 Qmatrix <- matrix( as.numeric(Qmatrix) , nrow=21 , ncol=12 , byrow=TRUE ) 
-colnames(Qmatrix) <- scan( what="character")
+colnames(Qmatrix) <- scan( what="character" , nlines=1)
    pc ic ier inc iui igc ch nro ncro td a t
 
 # divide Q-matrix entries by maximum in each column
@@ -349,9 +349,9 @@ Qmatrix <- round(Qmatrix / matrix(apply(Qmatrix,2,max),21,12,byrow=TRUE) ,3)
 # LSDM analysis   
 res <- lsdm( b=b , Qmatrix=Qmatrix )
 summary(res)
-##   
-##   Model Fit LSDM   -  Mean MAD:  0.217     Median MAD:  0.178 
-##   Model Fit LLTM   -  Mean MAD:  0.087     Median MAD:  0.062    R^2= 0.785 
+  ##   
+  ##   Model Fit LSDM   -  Mean MAD:  0.217     Median MAD:  0.178 
+  ##   Model Fit LLTM   -  Mean MAD:  0.087     Median MAD:  0.062    R^2= 0.785 
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

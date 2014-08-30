@@ -214,6 +214,16 @@ mod1b <- sirt::R2noharm( dat = dat , model.type="EFA" ,  dimensions = 3 ,
               writename = "reck61__3dim_efa", noharm.path = "c:/NOHARM" ,dec = ",")
 summary(mod1b)
 
+# Model 1c: EFA with noharm.sirt
+mod1c <- sirt::noharm.sirt( dat=dat , dimensions=3  )
+summary(mod1c)
+plot(mod1c)
+
+# Model 1d: EFA with 2 dimensions in noharm.sirt
+mod1d <- sirt::noharm.sirt( dat=dat , dimensions=2  )
+summary(mod1d)
+plot(mod1d , efa.load.min=.2)   # plot loadings of at least .20
+
 #***
 # Model 2: Confirmatory factor analysis
 

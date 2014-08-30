@@ -66,7 +66,9 @@ factor model. \emph{Structural Equation Modeling}, \bold{16}, 295-314.
 %%%%%%% data.big5
 \emph{Dataset} \code{data.big5} 	
 	
-\code{\link{conf.detect}} (Example 2)
+\code{\link{conf.detect}} (Example 2),
+\code{\link{lavaan2mirt}} (Example 3),
+\code{\link{tam2mirt}} (Example 4)
 
 %%%%%%% data.big5.qgraph
 \emph{Dataset} \code{data.big5.qgraph} 	
@@ -162,7 +164,7 @@ m2d <- ltm::gpcm( dat , control=list(verbose=TRUE))
 summary(m2d)
 
 #-- M2e: mirt (in mirt)
-m2e <- mirt::mirt( dat , model=1 ,  verbose=TRUE)
+m2e <- mirt::mirt( dat , model=1 ,  itemtype="GPCM" , verbose=TRUE)
 summary(m2e)
 coef(m2e)
 

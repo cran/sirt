@@ -27,7 +27,8 @@ noharm.sirt <- function(dat,weights=NULL,Fval=NULL,Fpatt=NULL,
 	res <- .noharm.sirt.preproc( dat , weights , Fpatt , Fval , 
 		Ppatt , Pval , Psipatt , Psival, wgtm , dimensions )	
 	# attach objects locally
-	.attach.environment.sirt( res , envir =e1)	
+	.attach.environment.sirt( res , envir =e1)
+    D <- ncol(Fval)
 #	modesttype <- 1		# NOHARM estimation
 #	modesttype <- 2		# estimation using tetrachoric correlations
 	if (modesttype==2){
@@ -110,7 +111,8 @@ noharm.sirt <- function(dat,weights=NULL,Fval=NULL,Fpatt=NULL,
 					}
 		parchange <- max( c(changeP,changeF,changePsi) )
 		iter <- iter + 1 
-		}
+			
+		}	
 	#****************
 	# calculate final constants
 	if (modesttype==2){
@@ -223,7 +225,7 @@ noharm.sirt <- function(dat,weights=NULL,Fval=NULL,Fpatt=NULL,
 		rownames(res$factor.cor) <- colnames(res$factor.cor) <- colnames(Pval)
 		# conversion to THETA parametrization
 		h1 <- rowSums( p1^2 )
-		p2 <- p1 / sqrt( 1 - h1 )	
+		p2 <- p1 / sqrt( max(1 - h1 , .0001 ) )	
 		res$promax.theta <- p2
 				}
     if (modesttype==2){ res$tetracor <- pm }

@@ -80,7 +80,7 @@ Alexander Robitzsch
 %}
 \examples{
 pgenlogis( x=c(-.3 , 0 , .25 , 1 ) , alpha1=0 , alpha2= .6 )
-##   [1] 0.4185580 0.5000000 0.5621765 0.7310586
+  ##   [1] 0.4185580 0.5000000 0.5621765 0.7310586
 
 ####################################################################
 # compare link functions
@@ -95,8 +95,8 @@ points( x , y , pch=1 , col=2 )
 #***
 # probit link 
 round( genlogis.moments( alpha1=.165 , alpha2=.165 ) , 3 )
-##       M    SD   Var 
-##   0.000 1.472 2.167 
+  ##       M    SD   Var 
+  ##   0.000 1.472 2.167 
 # SD of generalized logistic link function is 1.472
 y <- pgenlogis( x * 1.47 , alpha1=.165 , alpha2=.165 )
 plot( x , pnorm(x) , type="l" , main="Probit Link" , lwd=2)

@@ -32,6 +32,52 @@ CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ---
+Versions 0.47 -- 2014-08-30  --  CRAN sirt 0.47-36
+---
+ADDED * included wrapper function of mirt output of extracting
+        item parameters ('mirt.wrapper.coef')
+EXAMP * added more examples for model estimation in mirt package
+        using customized item response functions and/or 
+        customized latent structure distributions
+          o Ramsay's quotient model ('sim.qm.ramsay', Example 1)
+          o Latent class analysis ('data.read', Model 7)
+          o Mixed Rasch model ('data.read', Model 8)
+          o Located latent class model/Latent class IRT model
+            ('data.read', Model 12; 'rasch.mirtlc', Example 4, Model 4)
+          o Probabilistic Guttman model ('prob.guttman', Example 1, 
+            Model 3)
+          o Nonparametric item response model with monotone item
+            response functions ('prob.guttman', Example 4, Model 4)          
+          o Discrete grade of membership model ('gom.em', Simulated 
+            Example 2, Model 2m)
+          o Multimensional item response model with discrete traits
+            ('data.read', Model 13)   
+          o DINA model ('data.read', Model 14)       
+          o Rasch copula model ('rasch.copula2', Example 5)  
+          o Rasch model with non-normal distibution ('data.read', Model 15)          
+ADDED * included wrapper function of mirt output for extracting
+        likelihood, posterior and expected counts 
+ADDED * extended modelfit.sirt for fitted objects from mirt package
+ADDED * included function 'lavaan2mirt' for converting syntax for the
+        lavaan package to syntax for the mirt package
+ADDED * included function 'tam2mirt' for converting a fitted object
+        in TAM package into an object of class mirt in the mirt package
+NOTE  * corrected some typos and improved some examples (thanks to Phil Chalmers)
+EXAMP * included an example for running Mplus from within R using the
+        MplusAutomation package ('data.read', Model 1)
+NOTE  * renamed functionrasch.conquest into R2conquest -> function rasch.conquest
+        can still be used
+ADDED * included function 'mirt.wrapper.fscores' for computing EAPs, MAPs and MLEs
+        for objects of class mirt
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: mirt.wrapper (1,2,3,4,5),
+        sim.qm.ramsay (1), modelfit.sirt (1), data.read (1,3,7,8,12,13,14),
+        lavaan2mirt (1,2,3), tam2mirt (1,2,3,4), prob.guttman (1), gom.em (2),
+        equating.rasch (1), data.reck (2), rasch.mirtlc (4),
+        rasch.copula2 (5)
+
+---
 Versions 0.46 -- 2014-08-05  --  CRAN sirt 0.46-15
 ---
 NOTE  * used the operator '::' for functions which are used from 

@@ -264,7 +264,7 @@ summary(mod4)
 # SIMULATED EXAMPLE 2: Grade of membership model with 2 classes
 #############################################################################
 
-#***** DATASET 1 *************
+#********* DATASET 1 *************
 # define an ordinary 2 latent class model
 set.seed(8765)
 I <- 10
@@ -285,7 +285,7 @@ for (ii in 1:I){
 colnames(dat) <- paste0( "I" , 1:I) 
 
 # Model 1: estimate latent class model
-mod1 <- gom.em(dat, K=2, problevels= seq(0,1,1) , model="GOM" )
+mod1 <- gom.em(dat, K=2, problevels= c(0,1) , model="GOM" )
 summary(mod1)
 # Model 2: estimate GOM
 mod2 <- gom.em(dat, K=2, problevels= seq(0,1,0.5) , model="GOM" )
@@ -297,7 +297,7 @@ cbind( mod2$theta.k , mod2$pi.k )
 ##  [2,]  0.5  0.5 0.006534278
 ##  [3,]  0.0  1.0 0.749540078
 
-#***** DATASET 2 *************
+#********* DATASET 2 *************
 # define a 2-class model with graded membership
 set.seed(8765)
 I <- 10
@@ -315,11 +315,12 @@ for (ii in 1:I){
     dat[,ii] <- 1 * ( runif(N) < dat[,ii] )
         }
 colnames(dat) <- paste0( "I" , 1:I) 
-# estimete latent class model
-mod1 <- gom.em(dat, K=2, problevels= seq(0,1,1) , model="GOM" )
+
+#** Model 1: estimate latent class model
+mod1 <- gom.em(dat, K=2, problevels= c(0,1) , model="GOM" )
 summary(mod1)
 
-# estimate GOM
+#** Model 2: estimate GOM
 mod2 <- gom.em(dat, K=2, problevels= seq(0,1,0.5) , model="GOM" )
 summary(mod2)
 # inspect distribution
@@ -328,6 +329,70 @@ cbind( mod2$theta.k , mod2$pi.k )
 ##  [1,]  1.0  0.0 0.3335666
 ##  [2,]  0.5  0.5 0.1810114
 ##  [3,]  0.0  1.0 0.4854220
+
+#***
+# Model2m: estimate discrete GOM in mirt
+# define latent classes
+Theta <- scan( nlines=1)
+   1 0   .5 .5    0 1 
+Theta <- matrix( Theta , nrow=3 , ncol=2,byrow=TRUE)
+# define mirt model
+I <- ncol(dat) 
+#*** create customized item response function for mirt model
+name <- 'gom'
+par <- c("a1" = -1 , "a2" = 1 )
+est <- c(TRUE, TRUE)
+P.gom <- function(par,Theta,ncat){
+    # GOM for two extremal classes
+    pext1 <- plogis(par[1])
+    pext2 <- plogis(par[2]) 
+    P1 <- Theta[,1]*pext1 + Theta[,2]*pext2     
+    cbind(1-P1, P1)
+}
+# create item response function
+icc_gom <- mirt::createItem(name, par=par, est=est, P=P.gom)
+#** define prior for latent class analysis
+lca_prior <- function(Theta,Etable){
+  # number of latent Theta classes
+  TP <- nrow(Theta)
+  # prior in initial iteration
+  if ( is.null(Etable) ){ prior <- rep( 1/TP , TP ) }    
+  # process Etable (this is correct for datasets without missing data)
+  if ( ! is.null(Etable) ){  
+    # sum over correct and incorrect expected responses 
+    prior <- ( rowSums(Etable[ , seq(1,2*I,2)]) + rowSums(Etable[,seq(2,2*I,2)]) )/I
+                 }
+  prior <- prior / sum(prior)  
+  return(prior)
+}
+#*** estimate discrete GOM in mirt package
+mod2m <- mirt::mirt(dat, 1, rep( "icc_gom",I) , customItems=list("icc_gom"=icc_gom), 
+           technical = list( customTheta=Theta , customPriorFun = lca_prior)  )
+# correct number of estimated parameters
+mod2m@nest <- as.integer(sum(mod.pars$est) + nrow(Theta)-1 ) 
+# extract log-likelihood and compute AIC and BIC
+mod2m@logLik
+( AIC <- -2*mod2m@logLik+2*mod2m@nest )
+( BIC <- -2*mod2m@logLik+log(mod2m@Data$N)*mod2m@nest )
+# extract coefficients
+( cmod2m <- mirt.wrapper.coef(mod2m) )
+# compare estimated distributions
+round( cbind( "sirt"  = mod2$pi.k , "mirt" = mod2m@Prior[[1]] ) , 5 )
+##           sirt    mirt
+##   [1,] 0.33357 0.33627
+##   [2,] 0.18101 0.17789
+##   [3,] 0.48542 0.48584
+# compare estimated item parameters
+dfr <- data.frame( "sirt" = mod2$item[,4:5] )
+dfr$mirt <- apply(cmod2m$coef[ , c("a1" , "a2") ] , 2 , plogis )
+round(dfr,4)
+##      sirt.lam.Cl1 sirt.lam.Cl2 mirt.a1 mirt.a2
+##   1        0.1157       0.8935  0.1177  0.8934
+##   2        0.0790       0.8360  0.0804  0.8360
+##   3        0.0743       0.8165  0.0760  0.8164
+##   4        0.0398       0.8093  0.0414  0.8094
+##   5        0.1273       0.7244  0.1289  0.7243
+##   [...]
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -83,8 +83,8 @@ res1$item.stat
 
 library(TAM)
 data(data.timssAusTwn,package="TAM")
-raw_resp <- data.timssAusTwn[,1:11]
-res2 <- automatic.recode( data=raw_resp )
+raw.resp <- data.timssAusTwn[,1:11]
+res2 <- automatic.recode( data=raw.resp )
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -365,6 +365,8 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
     return(dfr)
     }
 #................................................................#
+R2conquest <- rasch.conquest
+
 
 read.pv <- .read.pv
 read.multidimpv <- .read.multidimpv
@@ -392,7 +394,7 @@ summary.rasch.conquest <- function( object , ... ){
     print( object$item[ , c("N" , "p" , "itemdiff" , "emp.discrim" , "outfit" , "infit" )] )                
                 }
 #*******************************************************
-
+summary.R2conquest <- summary.rasch.conquest
 
 
 

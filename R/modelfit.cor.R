@@ -66,6 +66,15 @@ modelfit.sirt <- function( object ){
 		posterior <- mod$f.qk.yi
 		dat <- mod$dat
 					}
+	#*******
+	# mirt	
+	if (class(object) == "ConfirmatoryClass" | class(object)=="ExploratoryClass" ){
+		mod <- object
+		mod <- mirt.wrapper.posterior(mod)		
+		probs <- mod$probs
+		posterior <- mod$f.qk.yi
+		dat <- mod$dat
+					}					
 	#******
 	# R2noharm, noharm.sirt
     if ( class(object) %in% c("R2noharm","noharm.sirt") ){

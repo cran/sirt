@@ -76,7 +76,7 @@ t0 <- psych::polychoric( dat )$rho
 t1 <- polychoric2( dat )$rho
 # maximum absolute difference
 max( abs( t0 - t1 ) )
-##   [1] 0.006914892
+  ##   [1] 0.006914892
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

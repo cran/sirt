@@ -71,11 +71,11 @@ stratified.cronbach.alpha( data.read  )
 # define item strata
 itemstrata <- cbind( colnames(dat) , substring( colnames(dat) , 1 ,1 ) )
 stratified.cronbach.alpha( data.read , itemstrata=itemstrata )
-##   scale  I alpha mean.tot var.tot alpha.stratified
-## 1 total 12 0.677    8.680   5.668            0.703
-## 2     A  4 0.545    2.616   1.381               NA
-## 3     B  4 0.381    2.811   1.059               NA
-## 4     C  4 0.640    3.253   1.107               NA
+  ##   scale  I alpha mean.tot var.tot alpha.stratified
+  ## 1 total 12 0.677    8.680   5.668            0.703
+  ## 2     A  4 0.545    2.616   1.381               NA
+  ## 3     B  4 0.381    2.811   1.059               NA
+  ## 4     C  4 0.640    3.253   1.107               NA
 
 \dontrun{
 #**************************
@@ -85,14 +85,15 @@ library(psych)
 psych::alpha( dat )
 # McDonald's omega
 psych::omega(dat , nfactors=1)     # 1 factor
-##   Alpha:                 0.69 
-##   Omega Total            0.69 
+  ##   Alpha:                 0.69 
+  ##   Omega Total            0.69 
 ##  => Note that alpha in this function is the standardized Cronbach's
 ##     alpha, i.e. alpha computed for standardized variables.
 psych::omega(dat , nfactors=2)     # 2 factors
-##   Omega Total            0.72 
+  ##   Omega Total            0.72 
 psych::omega(dat , nfactors=3)     # 3 factors  
-##   Omega Total            0.74 }
+  ##   Omega Total            0.74 
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

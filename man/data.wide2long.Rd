@@ -101,18 +101,18 @@ library(lme4)
 mod1 <- lme4::glmer( resp ~ 0 + as.factor( item ) + ( 1 | id_index) , data = dat.long ,
              verbose=TRUE , family="binomial")
 summary(mod1)
-##   Random effects:
-##    Groups   Name        Variance Std.Dev.
-##    id_index (Intercept) 1.454    1.206   
-##   Number of obs: 10000, groups: id_index, 1000
-##   
-##   Fixed effects:
-##                        Estimate Std. Error z value Pr(>|z|)    
-##   as.factor(item)I0001  2.16365    0.10541  20.527  < 2e-16 ***
-##   as.factor(item)I0002  1.66437    0.09400  17.706  < 2e-16 ***
-##   as.factor(item)I0003  1.21816    0.08700  14.002  < 2e-16 ***
-##   as.factor(item)I0004  0.68611    0.08184   8.383  < 2e-16 ***
-##   [...]
+  ##   Random effects:
+  ##    Groups   Name        Variance Std.Dev.
+  ##    id_index (Intercept) 1.454    1.206   
+  ##   Number of obs: 10000, groups: id_index, 1000
+  ##   
+  ##   Fixed effects:
+  ##                        Estimate Std. Error z value Pr(>|z|)    
+  ##   as.factor(item)I0001  2.16365    0.10541  20.527  < 2e-16 ***
+  ##   as.factor(item)I0002  1.66437    0.09400  17.706  < 2e-16 ***
+  ##   as.factor(item)I0003  1.21816    0.08700  14.002  < 2e-16 ***
+  ##   as.factor(item)I0004  0.68611    0.08184   8.383  < 2e-16 ***
+  ##   [...]
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

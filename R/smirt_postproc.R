@@ -1,10 +1,10 @@
 
-###########################################
+#################################################################
 # person parameter estimates
 .smirt.person.parameters <- function( data , D , theta.k ,
 	p.xi.aj , p.aj.xi , weights ){
 	#**************************
-	person <- data.frame("case" = 1:(nrow(data)) , "M" = rowMeans( data , na.rm=T)  )
+	person <- data.frame("case" = 1:(nrow(data)) , "M" = rowMeans( data , na.rm=TRUE)  )
     EAP.rel <- rep(0,D)
     names(EAP.rel) <- colnames(theta.k)
     nstudl <- rep(1,nrow(data))
@@ -33,3 +33,4 @@
 	res <- list( "person" = person , "EAP.rel" = EAP.rel )
 	return(res)
 		}			
+#################################################################		

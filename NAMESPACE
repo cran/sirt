@@ -110,7 +110,13 @@ export(
     read.show.regression,
     read.pv,
     read.multidimpv,
-    read.pimap
+    read.pimap ,
+    mirt.wrapper.coef ,
+    mirt.wrapper.posterior ,
+    lavaan2mirt ,
+    tam2mirt ,
+    R2conquest ,
+    mirt.wrapper.fscores
 )    
     
     
@@ -137,6 +143,7 @@ S3method(summary,isop)
 S3method(summary,fuzcluster)
 S3method(summary,isop.test)
 S3method(summary,noharm.sirt)
+S3method(summary,R2conquest)
 
 S3method(plot,np.dich)
 S3method(plot,mcmc.sirt)
@@ -177,3 +184,5 @@ import(lavaan)
 import(semPlot)
 import(igraph)
 # importFrom(inline,getDynLib)
+import(mirt)
+import(Matrix)

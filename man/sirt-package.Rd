@@ -12,7 +12,7 @@ Supplementary item response theory models to complement existing functions in \R
 \tabular{ll}{
 Package: \tab \pkg{sirt} \cr
 Type: \tab Package\cr
-Version: \tab 0.46 \cr
+Version: \tab 0.47 \cr
 Publication Year: \tab 2014\cr
 License: \tab GPL (>= 2)\cr
 URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr
@@ -410,19 +410,19 @@ for reviews of psychometrics packages in \R.
 \emph{isop.poly__2.06.R}, \cr
 \emph{isop.scoring__1.03.R}, 
 \emph{isop.test__0.05.R}, 
-\emph{isop_alg__0.03.R}, \cr
-\emph{latent.regression.em.normal__2.02.R}, 
-\emph{latent.regression.em.raschtype__2.46.R}, \cr
-\emph{lc.2raters.aux__0.02.R}, 
+\emph{latent.regression.em.normal__2.02.R}, \cr
+\emph{latent.regression.em.raschtype__2.46.R}, 
+\emph{lavaan2mirt__0.19.R}, 
+\emph{lc.2raters.aux__0.02.R}, \cr
 \emph{lc.2raters__0.11.R}, 
-\emph{linking.haberman.aux__0.02.R}, \cr
-\emph{linking.haberman__2.11.R}, 
+\emph{linking.haberman.aux__0.02.R}, 
+\emph{linking.haberman__2.11.R}, \cr
 \emph{linking.robust__1.06.R}, 
 \emph{lllsa__0.01.R}, 
-\emph{lsdm__1.07.R}, \cr
-\emph{lsdm_aux__0.01.R}, 
+\emph{lsdm__1.07.R}, 
+\emph{lsdm_aux__0.01.R}, \cr
 \emph{marginal.truescore.reliability__0.01.R}, 
-\emph{matrix_functions__0.02.R}, \cr
+\emph{matrix_functions__0.03.R}, \cr
 \emph{matrixfunctions_sirt__0.06.R}, 
 \emph{mcmc.2pno.ml__3.08.R}, 
 \emph{mcmc.2pno.ml_alg__3.12.R}, \cr
@@ -438,34 +438,38 @@ for reviews of psychometrics packages in \R.
 \emph{mcmc.list.descriptives__0.04.R}, 
 \emph{mcmclist2coda__0.01.R}, 
 \emph{md.pattern.sirt__0.03.R}, \cr
-\emph{mle.pcm.group__0.04.R}, 
-\emph{modelfit.cor__2.20.R}, 
-\emph{monoreg.rowwise__0.03.R}, \cr
-\emph{noharm.sirt.est.aux__4.04.R}, 
+\emph{mirt.wrapper.calc.counts__0.01.R}, 
+\emph{mirt.wrapper.coef__0.07.R}, \cr
+\emph{mirt.wrapper.fscores__0.02.R}, 
+\emph{mirt.wrapper.posterior__0.09.R}, 
+\emph{mle.pcm.group__0.04.R}, \cr
+\emph{modelfit.cor__2.21.R}, 
+\emph{monoreg.rowwise__0.03.R}, 
+\emph{noharm.sirt.est.aux__4.04.R}, \cr
 \emph{noharm.sirt.preprocess__0.11.R}, 
-\emph{noharm.sirt__0.44.R}, \cr
-\emph{normal2.cw__0.04.R}, 
+\emph{noharm.sirt__0.45.R}, 
+\emph{normal2.cw__0.04.R}, \cr
 \emph{np.dich__0.09.R}, 
 \emph{nr.numdiff__0.01.R}, 
-\emph{pbivnorm2__1.06.R}, \cr
-\emph{personfit.stat__0.01.R}, 
+\emph{pbivnorm2__1.06.R}, 
+\emph{personfit.stat__0.01.R}, \cr
 \emph{personfit__0.04.R}, 
-\emph{pgenlogis__1.01.R}, \cr
-\emph{plausible.values.raschtype__2.08.R}, 
-\emph{plot.invariance.alignment__0.01.R}, \cr
+\emph{pgenlogis__1.01.R}, 
+\emph{plausible.values.raschtype__2.08.R}, \cr
+\emph{plot.invariance.alignment__0.01.R}, 
 \emph{plot.isop__1.05.R}, 
-\emph{plot.mcmc.sirt__0.07.R}, 
-\emph{plot.noharm.sirt__0.12.R}, \cr
+\emph{plot.mcmc.sirt__0.07.R}, \cr
+\emph{plot.noharm.sirt__0.13.R}, 
 \emph{plot.rasch.mml__0.06.R}, 
-\emph{polychoric2__0.04.R}, 
-\emph{prmse.subscores__0.02.R}, \cr
+\emph{polychoric2__0.04.R}, \cr
+\emph{prmse.subscores__0.02.R}, 
 \emph{prob.guttman__1.02.R}, 
-\emph{qmc.nodes__0.02.R}, 
-\emph{R2noharm-utility__1.04.R}, \cr
+\emph{qmc.nodes__0.02.R}, \cr
+\emph{R2noharm-utility__1.04.R}, 
 \emph{R2noharm.EAP__0.15.R}, 
-\emph{R2noharm.jackknife__1.03.R}, 
-\emph{R2noharm__2.14.R}, \cr
-\emph{rasch.conquest__1.09.R}, 
+\emph{R2noharm.jackknife__1.03.R}, \cr
+\emph{R2noharm__2.14.R}, 
+\emph{rasch.conquest__1.12.R}, 
 \emph{rasch.copula__0.993.R}, 
 \emph{rasch.copula2__6.12.R}, \cr
 \emph{rasch.copula2_aux__1.05.R}, 
@@ -506,7 +510,7 @@ for reviews of psychometrics packages in \R.
 \emph{smirt_alg_comp__1.05.R}, \cr
 \emph{smirt_alg_noncomp__2.27.R}, 
 \emph{smirt_alg_partcomp__0.05.R}, 
-\emph{smirt_postproc__0.01.R}, \cr
+\emph{smirt_postproc__0.02.R}, \cr
 \emph{smirt_preproc__1.04.R}, 
 \emph{stratified.cronbach.alpha__0.02.R}, 
 \emph{summary.fuzcluster__0.03.R}, \cr
@@ -526,11 +530,13 @@ for reviews of psychometrics packages in \R.
 \emph{summary.rm.facets__0.02.R}, \cr
 \emph{summary.rm.hrm__0.02.R}, 
 \emph{summary.smirt__0.06.R}, 
-\emph{testlet.marginalized__0.04.R}, \cr
+\emph{tam2mirt.aux__0.03.R}, 
+\emph{tam2mirt__0.07.R}, \cr
+\emph{testlet.marginalized__0.04.R}, 
 \emph{tetrachoric2__1.12.R}, 
-\emph{truescore.irt__0.08.R}, 
+\emph{truescore.irt__0.08.R}, \cr
 \emph{unidim.csn__0.05.R}, 
-\emph{wle.rasch__1.04.R}, \cr
+\emph{wle.rasch__1.04.R}, 
 \emph{yen.q3__1.01.R}, 
 \emph{zzz__1.05.R}, 
 }
@@ -552,19 +558,19 @@ for reviews of psychometrics packages in \R.
 \emph{rm_smirt_mml2_code__4.05.cpp}, 
 }
 \section{\emph{Rd} Documentation Versions }{
-\emph{automatic.recode__0.06.Rd}, 
+\emph{automatic.recode__0.07.Rd}, 
 \emph{ccov.np__0.09.Rd}, 
-\emph{class.accuracy.rasch__0.11.Rd}, \cr
-\emph{conf.detect__1.21.Rd}, 
+\emph{class.accuracy.rasch__0.12.Rd}, \cr
+\emph{conf.detect__1.22.Rd}, 
 \emph{data.activity.itempars__0.04.Rd}, 
-\emph{data.big5__0.23.Rd}, \cr
+\emph{data.big5__0.26.Rd}, \cr
 \emph{data.ess2005__0.03.Rd}, 
 \emph{data.inv4gr__0.03.Rd}, 
 \emph{data.liking.science__0.03.Rd}, \cr
-\emph{data.long__0.12.Rd}, 
+\emph{data.long__0.14.Rd}, 
 \emph{data.math__0.08.Rd}, 
-\emph{data.mcdonald__0.11.Rd}, 
-\emph{data.mixed1__0.05.Rd}, \cr
+\emph{data.mcdonald__0.12.Rd}, 
+\emph{data.mixed1__0.06.Rd}, \cr
 \emph{data.ml__1.06.Rd}, 
 \emph{data.noharm__2.06.Rd}, 
 \emph{data.pars1.rasch__0.07.Rd}, \cr
@@ -574,12 +580,12 @@ for reviews of psychometrics packages in \R.
 \emph{data.pisaRead__0.05.Rd}, 
 \emph{data.ratings1__0.09.Rd}, 
 \emph{data.raw1__0.03.Rd}, 
-\emph{data.read__1.37.Rd}, \cr
-\emph{data.reck__0.16.Rd}, 
+\emph{data.read__1.77.Rd}, \cr
+\emph{data.reck__0.17.Rd}, 
 \emph{data.si__0.15.Rd}, 
 \emph{data.timss__0.05.Rd}, \cr
 \emph{data.timss07.G8.RUS__0.02.Rd}, 
-\emph{data.wide2long__0.11.Rd}, 
+\emph{data.wide2long__0.12.Rd}, 
 \emph{detect.index__0.10.Rd}, \cr
 \emph{dif.logistic.regression__0.17.Rd}, 
 \emph{dif.strata.variance__0.06.Rd}, \cr
@@ -589,82 +595,85 @@ for reviews of psychometrics packages in \R.
 \emph{eigenvalues.manymatrices__0.08.Rd}, 
 \emph{eigenvalues.sirt__0.04.Rd}, \cr
 \emph{equating.rasch.jackknife__0.12.Rd}, 
-\emph{equating.rasch__1.20.Rd}, 
+\emph{equating.rasch__1.21.Rd}, 
 \emph{expl.detect__1.07.Rd}, \cr
 \emph{f1d.irt__1.14.Rd}, 
 \emph{fit.isop__1.10.Rd}, 
-\emph{fuzcluster__0.10.Rd}, 
+\emph{fuzcluster__0.11.Rd}, 
 \emph{fuzdiscr__0.10.Rd}, \cr
-\emph{gom.em__1.39.Rd}, 
+\emph{gom.em__1.42.Rd}, 
 \emph{gom.jml__0.12.Rd}, 
-\emph{greenyang.reliability__1.17.Rd}, \cr
-\emph{invariance.alignment__1.26.Rd}, 
+\emph{greenyang.reliability__1.19.Rd}, \cr
+\emph{invariance.alignment__1.29.Rd}, 
 \emph{isop.scoring__1.13.Rd}, 
-\emph{isop.test__0.10.Rd}, \cr
+\emph{isop.test__0.11.Rd}, \cr
 \emph{isop__3.15.Rd}, 
-\emph{latent.regression.em.raschtype__1.27.Rd}, 
-\emph{lc.2raters__0.10.Rd}, \cr
-\emph{linking.haberman__0.29.Rd}, 
-\emph{linking.robust__0.13.Rd}, 
-\emph{lsdm__2.04.Rd}, \cr
-\emph{marginal.truescore.reliability__0.14.Rd}, 
+\emph{latent.regression.em.raschtype__1.28.Rd}, 
+\emph{lavaan2mirt__0.14.Rd}, \cr
+\emph{lc.2raters__0.10.Rd}, 
+\emph{linking.haberman__0.32.Rd}, 
+\emph{linking.robust__0.14.Rd}, 
+\emph{lsdm__2.05.Rd}, \cr
+\emph{marginal.truescore.reliability__0.15.Rd}, 
 \emph{matrixfunctions.sirt__1.10.Rd}, \cr
 \emph{mcmc.2pno.ml__0.26.Rd}, 
 \emph{mcmc.2pno__1.20.Rd}, 
 \emph{mcmc.2pnoh__0.15.Rd}, \cr
 \emph{mcmc.3pno.testlet__1.13.Rd}, 
 \emph{mcmc.list.descriptives__0.08.Rd}, 
-\emph{mcmclist2coda__0.08.Rd}, \cr
+\emph{mcmclist2coda__0.09.Rd}, \cr
 \emph{md.pattern.sirt__0.10.Rd}, 
-\emph{mle.pcm.group__0.15.Rd}, 
-\emph{modelfit.sirt__0.39.Rd}, \cr
+\emph{mirt.wrapper__1.21.Rd}, 
+\emph{mle.pcm.group__0.15.Rd}, \cr
+\emph{modelfit.sirt__0.42.Rd}, 
 \emph{monoreg.rowwise__0.07.Rd}, 
-\emph{noharm.sirt__0.20.Rd}, 
+\emph{noharm.sirt__0.20.Rd}, \cr
 \emph{np.dich__0.12.Rd}, 
-\emph{pbivnorm2__0.10.Rd}, \cr
-\emph{person.parameter.rasch.copula__1.07.Rd}, 
-\emph{personfit.stat__0.09.Rd}, 
-\emph{pgenlogis__0.14.Rd}, \cr
-\emph{plausible.value.imputation.raschtype__1.17.Rd}, 
+\emph{pbivnorm2__0.11.Rd}, 
+\emph{person.parameter.rasch.copula__1.08.Rd}, \cr
+\emph{personfit.stat__0.10.Rd}, 
+\emph{pgenlogis__0.15.Rd}, \cr
+\emph{plausible.value.imputation.raschtype__1.19.Rd}, 
 \emph{plot.mcmc.sirt__0.05.Rd}, \cr
 \emph{plot.np.dich__0.11.Rd}, 
-\emph{polychoric2__0.05.Rd}, 
-\emph{prmse.subscores.scales__0.14.Rd}, \cr
-\emph{prob.guttman__1.10.Rd}, 
-\emph{qmc.nodes__0.06.Rd}, 
+\emph{polychoric2__0.06.Rd}, 
+\emph{prmse.subscores.scales__0.15.Rd}, \cr
+\emph{prob.guttman__1.14.Rd}, 
+\emph{qmc.nodes__0.07.Rd}, 
+\emph{R2conquest__3.01.Rd}, 
 \emph{R2noharm.EAP__0.09.Rd}, \cr
 \emph{R2noharm.jackknife__1.08.Rd}, 
 \emph{R2noharm__2.18.Rd}, 
-\emph{rasch.conquest__2.07.Rd}, \cr
-\emph{rasch.copula__1.37.Rd}, 
-\emph{rasch.evm.pcm__0.21.Rd}, 
-\emph{rasch.jml.biascorr__0.13.Rd}, \cr
-\emph{rasch.jml.jackknife1__2.09.Rd}, 
-\emph{rasch.jml__1.21.Rd}, 
-\emph{rasch.mirtlc__2.60.Rd}, \cr
-\emph{rasch.mml__3.63.Rd}, 
-\emph{rasch.pairwise.itemcluster__0.21.Rd}, 
-\emph{rasch.pairwise__0.15.Rd}, \cr
-\emph{rasch.pml__2.48.Rd}, 
+\emph{rasch.copula__1.40.Rd}, \cr
+\emph{rasch.evm.pcm__0.24.Rd}, 
+\emph{rasch.jml.biascorr__0.14.Rd}, 
+\emph{rasch.jml.jackknife1__2.10.Rd}, \cr
+\emph{rasch.jml__1.22.Rd}, 
+\emph{rasch.mirtlc__2.67.Rd}, 
+\emph{rasch.mml__3.64.Rd}, \cr
+\emph{rasch.pairwise.itemcluster__0.22.Rd}, 
+\emph{rasch.pairwise__0.15.Rd}, 
+\emph{rasch.pml__2.49.Rd}, \cr
 \emph{rasch.prox__1.09.Rd}, 
-\emph{rasch.va__0.06.Rd}, \cr
-\emph{reliability.nonlinearSEM__0.12.Rd}, 
+\emph{rasch.va__0.06.Rd}, 
+\emph{reliability.nonlinearSEM__0.12.Rd}, \cr
 \emph{rm.facets__0.21.Rd}, 
-\emph{rm.hrm__0.29.Rd}, \cr
+\emph{rm.hrm__0.30.Rd}, 
 \emph{sia.sirt__0.08.Rd}, 
-\emph{sim.qm.ramsay__0.17.Rd}, 
-\emph{sim.rasch.dep__0.18.Rd}, \cr
+\emph{sim.qm.ramsay__0.26.Rd}, \cr
+\emph{sim.rasch.dep__0.18.Rd}, 
 \emph{sim.raschtype__0.11.Rd}, 
-\emph{sirt-package__1.802.Rd}, 
-\emph{smirt__2.11.Rd}, \cr
-\emph{stratified.cronbach.alpha__0.16.Rd}, 
-\emph{summary.mcmc.sirt__0.06.Rd}, \cr
-\emph{testlet.marginalized__0.10.Rd}, 
+\emph{sirt-package__1.803.Rd}, 
+\emph{smirt__2.13.Rd}, \cr
+\emph{stratified.cronbach.alpha__0.17.Rd}, 
+\emph{summary.mcmc.sirt__0.06.Rd}, 
+\emph{tam2mirt__0.09.Rd}, \cr
+\emph{testlet.marginalized__0.11.Rd}, 
 \emph{testlet.yen.q3__1.03.Rd}, 
-\emph{tetrachoric2__1.24.Rd}, \cr
+\emph{tetrachoric2__1.25.Rd}, \cr
 \emph{truescore.irt__0.12.Rd}, 
-\emph{unidim.test.csn__1.10.Rd}, 
-\emph{wle.rasch.jackknife__1.13.Rd}, \cr
+\emph{unidim.test.csn__1.11.Rd}, 
+\emph{wle.rasch.jackknife__1.14.Rd}, \cr
 \emph{wle.rasch__1.08.Rd}, 
-\emph{yen.q3__1.05.Rd}, 
+\emph{yen.q3__1.06.Rd}, 
 }

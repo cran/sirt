@@ -88,7 +88,7 @@ b <- c( -2.554,-2.161,-1.551,-1.226,-0.127,-0.855,-0.568,-0.277,-0.017,
     0.294,0.532,0.773,1.004,1.250,1.562,1.385,2.312,2.650,2.712,3.000 )
 
 marginal.truescore.reliability( b=b , a =a )
-##   Reliability= 0.606 
+  ##   Reliability= 0.606 
 
 #############################################################################
 # EXAMPLE 2: Dimitrov (2003) Table 2
@@ -101,13 +101,13 @@ b <- c(0.468,-1.541,-0.042,0.698 )
 c <- c(0.159,0.211,0.197,0.177 )
 
 res <- marginal.truescore.reliability( b=b , a =a , c=c)
-##   Reliability= 0.403 
-##   > round( res$item , 3 )
-##     item    pi sig2.tau sig2.error rel.item
-##   1    1 0.463    0.063      0.186    0.252
-##   2    2 0.855    0.017      0.107    0.135
-##   3    3 0.605    0.026      0.213    0.107
-##   4    4 0.459    0.032      0.216    0.130
+  ##   Reliability= 0.403 
+  ##   > round( res$item , 3 )
+  ##     item    pi sig2.tau sig2.error rel.item
+  ##   1    1 0.463    0.063      0.186    0.252
+  ##   2    2 0.855    0.017      0.107    0.135
+  ##   3    3 0.605    0.026      0.213    0.107
+  ##   4    4 0.459    0.032      0.216    0.130
 
 #############################################################################
 # EXAMPLE 3: Reading Data
@@ -118,29 +118,30 @@ data( data.read)
 # Model 1: 1PL
 mod <- rasch.mml2( data.read )
 marginal.truescore.reliability( b=mod$item$b )
-##   Reliability= 0.653 
+  ##   Reliability= 0.653 
 
 #***
 # Model 2: 2PL
 mod <- rasch.mml2( data.read , est.a=1:12 )
 marginal.truescore.reliability( b=mod$item$b , a=mod$item$a)
-##   Reliability= 0.696 
+  ##   Reliability= 0.696 
 
 \dontrun{
 # compare results with Cronbach's alpha and McDonald's omega
 # posing a 'wrong model' for normally distributed data
 library(psych)
 psych::omega(dat , nfactors=1)     # 1 factor
-##  Omega_h for 1 factor is not meaningful, just omega_t
-##   Omega 
-##   Call: omega(m = dat, nfactors = 1)
-##   Alpha:                 0.69 
-##   G.6:                   0.7 
-##   Omega Hierarchical:    0.66 
-##   Omega H asymptotic:    0.95 
-##   Omega Total            0.69 
+  ##  Omega_h for 1 factor is not meaningful, just omega_t
+  ##   Omega 
+  ##   Call: omega(m = dat, nfactors = 1)
+  ##   Alpha:                 0.69 
+  ##   G.6:                   0.7 
+  ##   Omega Hierarchical:    0.66 
+  ##   Omega H asymptotic:    0.95 
+  ##   Omega Total            0.69 
 
-##! Note that alpha in psych is the standardized one. } 
+##! Note that alpha in psych is the standardized one. 
+} 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

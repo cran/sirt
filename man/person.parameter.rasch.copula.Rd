@@ -115,9 +115,9 @@ summary(mod1)
 
 # person parameter estimation under the Rasch copula model
 pmod1 <- person.parameter.rasch.copula(raschcopula.object = mod1 )
-## Mean percentage standard error inflation
-##   missing.pattern Mperc.seinflat
-## 1               1          10.48 
+  ## Mean percentage standard error inflation
+  ##   missing.pattern Mperc.seinflat
+  ## 1               1          10.48 
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

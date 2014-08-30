@@ -132,21 +132,21 @@ library(TAM)
 mod2 <- TAM::tam.mml( dat )
 r1 <- mod2$xsi$xsi
 r1 <- r1 - mean(r1)
-# item parameters are very similar
+# item parameters are similar
 dfr <- data.frame( "b_TAM"=r1 , mod1$item[,c( "est","est_jack") ] )
 round( dfr , 3 )
-##      b_TAM    est est_jack
-##  1  -2.496 -2.599   -2.511
-##  2   0.687  0.824    1.030
-##  3  -0.871 -0.975   -0.943
-##  4  -0.360 -0.320   -0.131
-##  5  -0.833 -0.970   -0.856
-##  6   1.298  1.617    1.444
-##  7   0.476  0.465    0.646
-##  8   2.808  3.194    3.439
-##  9   1.611  1.460    1.433
-##  10  2.396  1.230    1.095
-##  [...]
+  ##      b_TAM    est est_jack
+  ##  1  -2.496 -2.599   -2.511
+  ##  2   0.687  0.824    1.030
+  ##  3  -0.871 -0.975   -0.943
+  ##  4  -0.360 -0.320   -0.131
+  ##  5  -0.833 -0.970   -0.856
+  ##  6   1.298  1.617    1.444
+  ##  7   0.476  0.465    0.646
+  ##  8   2.808  3.194    3.439
+  ##  9   1.611  1.460    1.433
+  ##  10  2.396  1.230    1.095
+  ##  [...]
 
 # partial credit model in eRm package
 library(eRm)
@@ -172,11 +172,11 @@ mod1 <- rasch.evm.pcm( dat , jackunits=0 )
 
 # paired comparison matrix
 mod1$B
-##          I1_Cat1 I2_Cat1 I3_Cat1 I4_Cat1
-##  I1_Cat1       0       3       4       5
-##  I2_Cat1       1       0       3       3
-##  I3_Cat1       1       2       0       2
-##  I4_Cat1       1       1       1       0
+  ##          I1_Cat1 I2_Cat1 I3_Cat1 I4_Cat1
+  ##  I1_Cat1       0       3       4       5
+  ##  I2_Cat1       1       0       3       3
+  ##  I3_Cat1       1       2       0       2
+  ##  I4_Cat1       1       1       1       0
 
 #############################################################################
 # EXAMPLE 3: Garner and Engelhard (2002) toy example polytomous data
@@ -194,17 +194,17 @@ mod1 <- rasch.evm.pcm( dat , jackunits=0 , powB=3 )
 
 # paired comparison matrix
 mod1$B
-##          I1_Cat1 I1_Cat2 I2_Cat1 I2_Cat2 I3_Cat1 I3_Cat2 I4_Cat1 I4_Cat2 I5_Cat1 I5_Cat2
-##  I1_Cat1       0       0       2       0       1       1       2       1       2       1
-##  I1_Cat2       0       0       0       3       2       2       2       2       2       3
-##  I2_Cat1       1       0       0       0       1       1       2       0       2       1
-##  I2_Cat2       0       1       0       0       1       2       0       3       1       3
-##  I3_Cat1       1       1       1       1       0       0       1       2       3       1
-##  I3_Cat2       0       1       0       2       0       0       1       1       1       1
-##  I4_Cat1       0       1       0       0       0       2       0       0       1       2
-##  I4_Cat2       1       0       0       2       1       1       0       0       1       1
-##  I5_Cat1       0       1       0       1       2       1       1       2       0       0
-##  I5_Cat2       0       0       0       1       0       0       0       0       0       0
+  ##          I1_Cat1 I1_Cat2 I2_Cat1 I2_Cat2 I3_Cat1 I3_Cat2 I4_Cat1 I4_Cat2 I5_Cat1 I5_Cat2
+  ##  I1_Cat1       0       0       2       0       1       1       2       1       2       1
+  ##  I1_Cat2       0       0       0       3       2       2       2       2       2       3
+  ##  I2_Cat1       1       0       0       0       1       1       2       0       2       1
+  ##  I2_Cat2       0       1       0       0       1       2       0       3       1       3
+  ##  I3_Cat1       1       1       1       1       0       0       1       2       3       1
+  ##  I3_Cat2       0       1       0       2       0       0       1       1       1       1
+  ##  I4_Cat1       0       1       0       0       0       2       0       0       1       2
+  ##  I4_Cat2       1       0       0       2       1       1       0       0       1       1
+  ##  I5_Cat1       0       1       0       1       2       1       1       2       0       0
+  ##  I5_Cat2       0       0       0       1       0       0       0       0       0       0
 
 #############################################################################
 # EXAMPLE 4: Partial credit model for dataset data.mg from CDM package
@@ -218,18 +218,18 @@ dat <- data.mg[ , paste0("I",1:11) ]
 mod1 <- rasch.evm.pcm( dat )
 # item parameters
 round( mod1$b , 3 )
-##        Cat1   Cat2  Cat3
-##  I1  -1.537     NA    NA
-##  I2  -2.360     NA    NA
-##  I3  -0.574     NA    NA
-##  I4  -0.971 -2.086    NA
-##  I5  -0.104  0.201    NA
-##  I6   0.470  0.806    NA
-##  I7  -1.027  0.756 1.969
-##  I8   0.897     NA    NA
-##  I9   0.766     NA    NA
-##  I10  0.069     NA    NA
-##  I11 -1.122  1.159 2.689
+  ##        Cat1   Cat2  Cat3
+  ##  I1  -1.537     NA    NA
+  ##  I2  -2.360     NA    NA
+  ##  I3  -0.574     NA    NA
+  ##  I4  -0.971 -2.086    NA
+  ##  I5  -0.104  0.201    NA
+  ##  I6   0.470  0.806    NA
+  ##  I7  -1.027  0.756 1.969
+  ##  I8   0.897     NA    NA
+  ##  I9   0.766     NA    NA
+  ##  I10  0.069     NA    NA
+  ##  I11 -1.122  1.159 2.689
 
 #*** Model 2: estimate PCM with pairwise package
 library(pairwise)

@@ -128,7 +128,7 @@ rowCumsums.colbundles <- function( mat , ind , multmat = NULL ){
             mat1[ lower.tri( mat1 ) ] <- 0
             matlist[[ii]] <- mat1
                 }
-        multmat <- bdiag(lapply(matlist, as.matrix))
+        multmat <- Matrix::bdiag(lapply(matlist, as.matrix))
         }
     as.matrix( mat %*% multmat )
         }
@@ -144,7 +144,7 @@ rowSums.colbundles <- function( mat , ind , multmat = NULL ){
             mat1 <- matrix( 1 , nrow=ind[ii] , ncol=ind[ii] )
             matlist[[ii]] <- mat1
                 }
-        multmat <- bdiag(lapply(matlist, as.matrix))
+        multmat <- Matrix::bdiag(lapply(matlist, as.matrix))
         }
     as.matrix( mat %*% multmat )
         }

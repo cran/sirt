@@ -332,7 +332,6 @@ summary(mod6)
 
 #***
 # Model 7: Compensatory model with between item dimensionality
-# between-item dimensionality
 # Note that the data is simulated under the noncompensatory condition
 # Therefore Model 7 should have a worse model fit than Model 1
 Q1 <- Q
@@ -396,7 +395,7 @@ mod10 <- smirt(dat,Qmatrix=Qmatrix ,irtmodel="comp" , theta.k=theta.k ,
 summary(mod10)
 
 #****
-# Model 11: Quasi Monte Carlo integration
+# Model 11: Example Quasi Monte Carlo integration
 Qmatrix <- matrix( 1 , I , 1 )
 mod11 <- smirt( dat , irtmodel="comp" , Qmatrix=Qmatrix , qmcnodes=1000 )
 summary(mod11)

@@ -239,25 +239,25 @@ itempars <- rbind( dfr1 , dfr2 )
 
 # Haberman linking
 linkhab1 <- linking.haberman(itempars=itempars)
-## Transformation parameters (Haberman linking)
-##    study    At     Bt
-## 1 study1 1.000  0.000
-## 2 study2 1.465 -0.512
-## 
-## Linear transformation for item parameters a and b
-##    study   A_a   A_b    B_b
-## 1 study1 1.000 1.000  0.000
-## 2 study2 0.682 1.465 -0.512
-## 
-## Linear transformation for person parameters theta
-##    study A_theta B_theta
-## 1 study1   1.000   0.000
-## 2 study2   1.465   0.512
-## 
-## R-Squared Measures of Invariance
-##        slopes intercepts
-## R2          1     0.9979
-## sqrtU2      0     0.0456
+  ## Transformation parameters (Haberman linking)
+  ##    study    At     Bt
+  ## 1 study1 1.000  0.000
+  ## 2 study2 1.465 -0.512
+  ## 
+  ## Linear transformation for item parameters a and b
+  ##    study   A_a   A_b    B_b
+  ## 1 study1 1.000 1.000  0.000
+  ## 2 study2 0.682 1.465 -0.512
+  ## 
+  ## Linear transformation for person parameters theta
+  ##    study A_theta B_theta
+  ## 1 study1   1.000   0.000
+  ## 2 study2   1.465   0.512
+  ## 
+  ## R-Squared Measures of Invariance
+  ##        slopes intercepts
+  ## R2          1     0.9979
+  ## sqrtU2      0     0.0456
 
 #*** Model 2: 2PL
 # 2PL Study 1
@@ -275,31 +275,31 @@ itempars <- rbind( dfr1 , dfr2 )
 
 # Haberman linking
 linkhab2 <- linking.haberman(itempars=itempars)
-## Transformation parameters (Haberman linking)
-##    study    At     Bt
-## 1 study1 1.000  0.000
-## 2 study2 1.468 -0.515
-## 
-## Linear transformation for item parameters a and b
-##    study   A_a   A_b    B_b
-## 1 study1 1.000 1.000  0.000
-## 2 study2 0.681 1.468 -0.515
-## 
-## Linear transformation for person parameters theta
-##    study A_theta B_theta
-## 1 study1   1.000   0.000
-## 2 study2   1.468   0.515
-## 
-## R-Squared Measures of Invariance
-##        slopes intercepts
-## R2     0.9984     0.9980
-## sqrtU2 0.0397     0.0443
+  ## Transformation parameters (Haberman linking)
+  ##    study    At     Bt
+  ## 1 study1 1.000  0.000
+  ## 2 study2 1.468 -0.515
+  ## 
+  ## Linear transformation for item parameters a and b
+  ##    study   A_a   A_b    B_b
+  ## 1 study1 1.000 1.000  0.000
+  ## 2 study2 0.681 1.468 -0.515
+  ## 
+  ## Linear transformation for person parameters theta
+  ##    study A_theta B_theta
+  ## 1 study1   1.000   0.000
+  ## 2 study2   1.468   0.515
+  ## 
+  ## R-Squared Measures of Invariance
+  ##        slopes intercepts
+  ## R2     0.9984     0.9980
+  ## sqrtU2 0.0397     0.0443
 
 #############################################################################
 # SIMULATED EXAMPLE 4: 3 Studies - 1PL and 2PL linking 
 #############################################################################
 set.seed(789)
-I <- 20     # number of items
+I <- 20         # number of items
 N <- 1500       # number of persons
 # define item parameters
 b <- seq( -1.5 , 1.5 , length=I )
@@ -307,7 +307,7 @@ b <- seq( -1.5 , 1.5 , length=I )
 dat1 <- sim.raschtype( rnorm( N , mean=0,sd=1 ) , b=b )
 dat2 <- sim.raschtype( rnorm( N , mean=0.5,sd=1.50 ) , b=b )
 dat3 <- sim.raschtype( rnorm( N , mean=-.2,sd=.8 ) , b=b )
-# set some items to missing
+# set some items to non-administered
 dat3 <- dat3[ , -c(1,4) ]
 dat2 <- dat2[ , -c(1,2,3) ] 
 
@@ -337,21 +337,21 @@ personpars <- list( mod1$person[ , c("EAP","SE.EAP") ] , mod2$person[ , c("EAP",
 linkhab1 <- linking.haberman(itempars=itempars , personpars=personpars)
 # compare item parameters
 round( cbind( linkhab1$joint.itempars[,-1], linkhab1$b.trans )[1:5,] , 3 )
-##            aj     bj study1 study2 study3
-##   I0001 0.998 -1.427 -1.427     NA     NA
-##   I0002 0.998 -1.290 -1.324     NA -1.256
-##   I0003 0.998 -1.140 -1.068     NA -1.212
-##   I0004 0.998 -0.986 -1.003 -0.969     NA
-##   I0005 0.998 -0.869 -0.809 -0.872 -0.926
+  ##            aj     bj study1 study2 study3
+  ##   I0001 0.998 -1.427 -1.427     NA     NA
+  ##   I0002 0.998 -1.290 -1.324     NA -1.256
+  ##   I0003 0.998 -1.140 -1.068     NA -1.212
+  ##   I0004 0.998 -0.986 -1.003 -0.969     NA
+  ##   I0005 0.998 -0.869 -0.809 -0.872 -0.926
 
 # summary of person parameters of second study
 round( psych::describe( linkhab1$personpars[[2]] ) , 2 )
-##   var    n mean   sd median trimmed  mad   min  max range  skew kurtosis
-## EAP      1 1500 0.45 1.36   0.41    0.47 1.52 -2.61 3.25  5.86 -0.08    -0.62
-## SE.EAP   2 1500 0.57 0.09   0.53    0.56 0.04  0.49 0.84  0.35  1.47     1.56
-##          se
-## EAP    0.04
-## SE.EAP 0.00
+  ##   var    n mean   sd median trimmed  mad   min  max range  skew kurtosis
+  ## EAP      1 1500 0.45 1.36   0.41    0.47 1.52 -2.61 3.25  5.86 -0.08    -0.62
+  ## SE.EAP   2 1500 0.57 0.09   0.53    0.56 0.04  0.49 0.84  0.35  1.47     1.56
+  ##          se
+  ## EAP    0.04
+  ## SE.EAP 0.00
 
 #*** Model 2: 2PL in TAM
 library(TAM)
@@ -371,7 +371,7 @@ summary(mod3)
 # collect item parameters
 #!!  Note that in TAM the parametrization is a*theta - b while linking.haberman
 #!!  needs the parametrization a*(theta-b)
-dfr1 <- data.frame( "study1" , mod1$item$item , mod1$B[,2,1] , mod1$xsi$xsi / mod1$B[,2,1]  )
+dfr1 <- data.frame( "study1" , mod1$item$item , mod1$B[,2,1] , mod1$xsi$xsi / mod1$B[,2,1] )
 dfr2 <- data.frame( "study2" , mod2$item$item , mod2$B[,2,1] , mod2$xsi$xsi / mod2$B[,2,1] )
 dfr3 <- data.frame( "study3" , mod3$item$item , mod3$B[,2,1] , mod3$xsi$xsi / mod3$B[,2,1] )
 colnames(dfr3) <- colnames(dfr2) <- colnames(dfr1) <- c("study" , "item" , "a" , "b" )
@@ -382,11 +382,11 @@ personpars <- list(  pvmod1$pv[,-1] , pvmod2$pv[,-1] , pvmod3$pv[,-1] )
 
 # Haberman linking
 linkhab2 <- linking.haberman(itempars=itempars,personpars=personpars)
-##   Linear transformation for person parameters theta
-##      study A_theta B_theta
-##   1 study1   1.000   0.000
-##   2 study2   1.485   0.465
-##   3 study3   0.786  -0.192
+  ##   Linear transformation for person parameters theta
+  ##      study A_theta B_theta
+  ##   1 study1   1.000   0.000
+  ##   2 study2   1.485   0.465
+  ##   3 study3   0.786  -0.192
 
 # extract transformed person parameters
 personpars.trans <- linkhab2$personpars

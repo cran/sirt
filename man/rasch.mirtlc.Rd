@@ -411,19 +411,19 @@ mod1 <- rasch.mirtlc( dat , Nclasses=Nclasses , dimensions=dimensions ,  modelty
               ref.item= c(5,14,23) , glob.conv=.0005, conv1=.0005)
 
 round( cbind( mod1$theta.k , mod1$pi.k ) , 3 )
-##          [,1]   [,2]   [,3]  [,4]
-##   [1,] -2.776 -3.791 -2.667 0.250
-##   [2,] -0.989 -0.605  0.957 0.151
-##   [3,]  0.332  0.418 -0.046 0.246
-##   [4,]  2.601  0.171 -0.854 0.101
-##   [5,]  1.791  2.330  1.844 0.252
+  ##          [,1]   [,2]   [,3]  [,4]
+  ##   [1,] -2.776 -3.791 -2.667 0.250
+  ##   [2,] -0.989 -0.605  0.957 0.151
+  ##   [3,]  0.332  0.418 -0.046 0.246
+  ##   [4,]  2.601  0.171 -0.854 0.101
+  ##   [5,]  1.791  2.330  1.844 0.252
 cbind( theta.k , pi.k )
-##                       pi.k
-##   [1,] -3.0 -4.1 -2.8 0.20
-##   [2,]  1.7  2.3  1.8 0.25
-##   [3,]  0.2  0.4 -0.1 0.25
-##   [4,]  2.6  0.1 -0.9 0.10
-##   [5,] -1.1 -0.7  0.9 0.15
+  ##                       pi.k
+  ##   [1,] -3.0 -4.1 -2.8 0.20
+  ##   [2,]  1.7  2.3  1.8 0.25
+  ##   [3,]  0.2  0.4 -0.1 0.25
+  ##   [4,]  2.6  0.1 -0.9 0.10
+  ##   [5,] -1.1 -0.7  0.9 0.15
 
 # plot class locations
 plot( 1:3 , mod1$theta.k[1,] , xlim=c(1,3) , ylim=c(-5,3) , col=1 , pch=1 , type="n" , 
@@ -479,6 +479,119 @@ cbind( mod1$theta.k  , mod1$pi.k )
 # simulated data parameters
 cbind( theta.k , pi.k )
 
+
+#----
+# estimate model with cutomized input in mirt
+library(mirt)
+#-- define Theta design matrix for 5 classes
+Theta <- diag(5)
+Theta <- cbind( Theta , Theta , Theta )
+r1 <- rownames(Theta) <- paste0("C",1:5)
+colnames(Theta) <- c( paste0(r1 , "D1") , paste0(r1 , "D2") , paste0(r1 , "D3") )
+  ##      C1D1 C2D1 C3D1 C4D1 C5D1 C1D2 C2D2 C3D2 C4D2 C5D2 C1D3 C2D3 C3D3 C4D3 C5D3
+  ##   C1    1    0    0    0    0    1    0    0    0    0    1    0    0    0    0
+  ##   C2    0    1    0    0    0    0    1    0    0    0    0    1    0    0    0
+  ##   C3    0    0    1    0    0    0    0    1    0    0    0    0    1    0    0
+  ##   C4    0    0    0    1    0    0    0    0    1    0    0    0    0    1    0
+  ##   C5    0    0    0    0    1    0    0    0    0    1    0    0    0    0    1
+#-- define mirt model
+I <- ncol(dat)  # I = 27
+mirtmodel <- mirt::mirt.model("
+        C1D1 = 1-9 \n C2D1 = 1-9 \n  C3D1 = 1-9 \n  C4D1 = 1-9  \n  C5D1 = 1-9
+        C1D2 = 10-18 \n C2D2 = 10-18 \n  C3D2 = 10-18 \n  C4D2 = 10-18  \n  C5D2 = 10-18
+        C1D3 = 19-27 \n C2D3 = 19-27 \n  C3D3 = 19-27 \n  C4D3 = 19-27  \n  C5D3 = 19-27  
+        CONSTRAIN = (1-9,a1),(1-9,a2),(1-9,a3),(1-9,a4),(1-9,a5),
+                    (10-18,a6),(10-18,a7),(10-18,a8),(10-18,a9),(10-18,a10),
+                    (19-27,a11),(19-27,a12),(19-27,a13),(19-27,a14),(19-27,a15) 
+                ")           
+#-- get initial parameter values
+mod.pars <- mirt::mirt(dat, model=mirtmodel ,  pars = "values")
+#-- redefine initial parameter values
+# set all d parameters initially to zero
+ind <- which( ( mod.pars$name == "d" ) )
+mod.pars[ ind ,"value" ]  <- 0
+# fix item difficulties of reference items to zero
+mod.pars[ ind[ c(5,14,23) ] , "est"] <- FALSE
+mod.pars[ind,]
+# initial item parameters of cluster locations (a1,...,a15)
+ind <- which( ( mod.pars$name \%in\% paste0("a", c(1,6,11) ) ) & ( mod.pars$est ) )
+mod.pars[ind,"value"] <- -2
+ind <- which( ( mod.pars$name \%in\% paste0("a", c(1,6,11)+1 ) ) & ( mod.pars$est ) )
+mod.pars[ind,"value"] <- -1
+ind <- which( ( mod.pars$name \%in\% paste0("a", c(1,6,11)+2 ) ) & ( mod.pars$est ) )
+mod.pars[ind,"value"] <- 0
+ind <- which( ( mod.pars$name \%in\% paste0("a", c(1,6,11)+3 ) ) & ( mod.pars$est ) )
+mod.pars[ind,"value"] <- 1
+ind <- which( ( mod.pars$name \%in\% paste0("a", c(1,6,11)+4 ) ) & ( mod.pars$est ) )
+mod.pars[ind,"value"] <- 0
+#-- define prior for latent class analysis
+lca_prior <- function(Theta,Etable){
+  TP <- nrow(Theta)
+  if ( is.null(Etable) ){ prior <- rep( 1/TP , TP ) }    
+  if ( ! is.null(Etable) ){  
+    prior <- ( rowSums(Etable[ , seq(1,2*I,2)]) + rowSums(Etable[,seq(2,2*I,2)]) )/I
+                 }
+  prior <- prior / sum(prior)  
+  return(prior)
+}
+
+#-- estimate model in mirt
+mod4 <- mirt::mirt(dat, mirtmodel , pars = mod.pars , verbose=TRUE , 
+              technical = list( customTheta=Theta , customPriorFun = lca_prior ,
+                    MAXQUAD = 1E20) )                                   
+# correct number of estimated parameters
+mod4@nest <- as.integer(sum(mod.pars$est) + nrow(Theta)-1 ) 
+# extract coefficients
+# source.all(pfsirt)
+cmod4 <- mirt.wrapper.coef(mod4)
+
+# estimated item difficulties
+dfr <- data.frame( "sim"=b , "mirt"=-cmod4$coef$d , "sirt"=mod1$item$thresh )
+round( dfr , 4 )
+  ##         sim    mirt    sirt
+  ##   1  -1.500 -1.3782 -1.3382
+  ##   2  -1.125 -1.0059 -0.9774
+  ##   3  -0.750 -0.6157 -0.6016
+  ##   4  -0.375 -0.2099 -0.2060
+  ##   5   0.000  0.0000  0.0000
+  ##   6   0.375  0.5085  0.4984
+  ##   7   0.750  0.8661  0.8504
+  ##   8   1.125  1.3079  1.2847
+  ##   9   1.500  1.5891  1.5620
+  ##   [...]
+
+#-- reordering estimated latent clusters to make solutions comparable
+#* extract estimated cluster locations from sirt
+order.sirt <- c(1,5,3,4,2)  # sort(order.sirt)
+round(mod1$trait[,1:3],3)
+dfr <- data.frame( "sim"=theta.k , mod1$trait[order.sirt,1:3] )
+colnames(dfr)[4:6] <- paste0("sirt",1:3)
+#* extract estimated cluster locations from mirt
+c4 <- cmod4$coef[ , paste0("a",1:15) ]
+c4 <- apply( c4 ,2 , FUN = function(ll){ ll[ ll!= 0 ][1] } )
+trait.loc <- matrix(c4,5,3)
+order.mirt <- c(1,4,3,5,2)  # sort(order.mirt)
+dfr <- cbind( dfr , trait.loc[ order.mirt , ] )
+colnames(dfr)[7:9] <- paste0("mirt",1:3)
+# compare estimated cluster locations
+round(dfr,3)
+  ##     sim.1 sim.2 sim.3  sirt1  sirt2  sirt3  mirt1  mirt2  mirt3
+  ##   1  -3.0  -4.1  -2.8 -2.776 -3.791 -2.667 -2.856 -4.023 -2.741
+  ##   5   1.7   2.3   1.8  1.791  2.330  1.844  1.817  2.373  1.869
+  ##   3   0.2   0.4  -0.1  0.332  0.418 -0.046  0.349  0.421 -0.051
+  ##   4   2.6   0.1  -0.9  2.601  0.171 -0.854  2.695  0.166 -0.876
+  ##   2  -1.1  -0.7   0.9 -0.989 -0.605  0.957 -1.009 -0.618  0.962
+#* compare estimated cluster sizes
+dfr <- data.frame( "sim" = pi.k , "sirt"=mod1$pi.k[order.sirt,1]  , 
+            "mirt"=mod4@Prior[[1]][ order.mirt] )
+round(dfr,4)
+  ##      sim   sirt   mirt
+  ##   1 0.20 0.2502 0.2500
+  ##   2 0.25 0.2522 0.2511
+  ##   3 0.25 0.2458 0.2494
+  ##   4 0.10 0.1011 0.0986
+  ##   5 0.15 0.1507 0.1509
+
 #############################################################################
 # EXAMPLE 5: Dataset data.si04 from Bartolucci et al. (2012)
 #############################################################################
@@ -495,30 +608,29 @@ mod1 <- rasch.mirtlc( data.si04$data , Nclasses=9 , dimensions=dimensions ,  mod
 
 # compare estimated distribution with simulated distribution
 round( cbind( mod1$theta.k , mod1$pi.k ) , 4 ) # estimated
-##            [,1]    [,2]    [,3]    [,4]    [,5]   [,6]
-##    [1,] -3.6043 -5.1323 -5.3022 -6.8255 -4.3611 0.1341
-##    [2,]  0.2083 -2.7422 -2.8754 -5.3416 -2.5085 0.1573
-##    [3,] -2.8641 -4.0272 -5.0580 -0.0340 -0.9113 0.1163
-##    [4,] -0.3575 -2.0081 -1.7431  1.2992 -0.1616 0.0751
-##    [5,]  2.9329  0.3662 -1.6516 -3.0284  0.1844 0.1285
-##    [6,]  1.5092 -2.0461 -4.3093  1.0481  1.0806 0.1094
-##    [7,]  3.9899  3.1955 -4.0010  1.8879  2.2988 0.1460
-##    [8,]  4.3062  0.7080 -1.2324  1.4351  2.0893 0.1332
-##    [9,]  5.0855  4.1214 -0.9141  2.2744  1.5314 0.0000
+  ##            [,1]    [,2]    [,3]    [,4]    [,5]   [,6]
+  ##    [1,] -3.6043 -5.1323 -5.3022 -6.8255 -4.3611 0.1341
+  ##    [2,]  0.2083 -2.7422 -2.8754 -5.3416 -2.5085 0.1573
+  ##    [3,] -2.8641 -4.0272 -5.0580 -0.0340 -0.9113 0.1163
+  ##    [4,] -0.3575 -2.0081 -1.7431  1.2992 -0.1616 0.0751
+  ##    [5,]  2.9329  0.3662 -1.6516 -3.0284  0.1844 0.1285
+  ##    [6,]  1.5092 -2.0461 -4.3093  1.0481  1.0806 0.1094
+  ##    [7,]  3.9899  3.1955 -4.0010  1.8879  2.2988 0.1460
+  ##    [8,]  4.3062  0.7080 -1.2324  1.4351  2.0893 0.1332
+  ##    [9,]  5.0855  4.1214 -0.9141  2.2744  1.5314 0.0000
 
 round(d2,4) # simulated
-##         class      A      B      C      D      E     pi
-##    [1,]     1 -3.832 -5.399 -5.793 -7.042 -4.511 0.1323
-##    [2,]     2 -2.899 -4.217 -5.310 -0.055 -0.915 0.1162
-##    [3,]     3 -0.376 -2.137 -1.847  1.273 -0.078 0.0752
-##    [4,]     4  0.208 -2.934 -3.011 -5.526 -2.511 0.1583
-##    [5,]     5  1.536 -2.137 -4.606  1.045  1.143 0.1092
-##    [6,]     6  2.042 -0.573 -0.404 -4.331 -1.044 0.0471
-##    [7,]     7  3.853  0.841 -2.993 -2.746  0.803 0.0822
-##    [8,]     8  4.204  3.296 -4.328  1.892  2.419 0.1453
-##    [9,]     9  4.466  0.700 -1.334  1.439  2.161 0.1343
+  ##         class      A      B      C      D      E     pi
+  ##    [1,]     1 -3.832 -5.399 -5.793 -7.042 -4.511 0.1323
+  ##    [2,]     2 -2.899 -4.217 -5.310 -0.055 -0.915 0.1162
+  ##    [3,]     3 -0.376 -2.137 -1.847  1.273 -0.078 0.0752
+  ##    [4,]     4  0.208 -2.934 -3.011 -5.526 -2.511 0.1583
+  ##    [5,]     5  1.536 -2.137 -4.606  1.045  1.143 0.1092
+  ##    [6,]     6  2.042 -0.573 -0.404 -4.331 -1.044 0.0471
+  ##    [7,]     7  3.853  0.841 -2.993 -2.746  0.803 0.0822
+  ##    [8,]     8  4.204  3.296 -4.328  1.892  2.419 0.1453
+  ##    [9,]     9  4.466  0.700 -1.334  1.439  2.161 0.1343
 }            
-
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -109,19 +109,16 @@ t4 <- tetrachoric2( data.read , method="Bo" )$rho
 
 # maximum absolute deviation ML method
 max( abs( t0 - t1 ) )
-##   [1] 0.008224986
-
+  ##   [1] 0.008224986
 # mean absolute deviation Divgi method
 max( abs( t0 - t2 ) )
-##   [1] 0.1766688
-
+  ##   [1] 0.1766688
 # mean absolute deviation Tucker method
 max( abs( t0 - t3 ) )
-##   [1] 0.1766292
-
+  ##   [1] 0.1766292
 # mean absolute deviation Bonett method
 max( abs( t0 - t4 ) )
-##   [1] 0.05695522
+  ##   [1] 0.05695522
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

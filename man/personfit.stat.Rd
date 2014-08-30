@@ -92,29 +92,29 @@ pf1 <- personfit.stat( dat = dat , abil=wle1 , b=b)
 # dimensional analysis of person fit statistics
 x0 <- na.omit(pf1[ , -c(1:3) ] )
 factanal( x=x0 , factors=2 , rotation="promax" )
-## Loadings:
-##                Factor1 Factor2
-## caution         0.914         
-## depend          0.293   0.750 
-## ECI1            0.869   0.160 
-## ECI2            0.869   0.162 
-## ECI3            1.011         
-## ECI4            1.159  -0.269 
-## ECI5            1.012         
-## ECI6            0.879   0.130 
-## l0              0.409  -1.255 
-## lz             -0.504  -0.529 
-## outfit          0.297   0.702 
-## infit           0.362   0.695 
-## rpbis          -1.014         
-## rpbis.itemdiff  1.032         
-## U3              0.735   0.309 
-## 
-## Factor Correlations:
-##         Factor1 Factor2
-## Factor1   1.000  -0.727
-## Factor2  -0.727   1.000
-## 
+  ## Loadings:
+  ##                Factor1 Factor2
+  ## caution         0.914         
+  ## depend          0.293   0.750 
+  ## ECI1            0.869   0.160 
+  ## ECI2            0.869   0.162 
+  ## ECI3            1.011         
+  ## ECI4            1.159  -0.269 
+  ## ECI5            1.012         
+  ## ECI6            0.879   0.130 
+  ## l0              0.409  -1.255 
+  ## lz             -0.504  -0.529 
+  ## outfit          0.297   0.702 
+  ## infit           0.362   0.695 
+  ## rpbis          -1.014         
+  ## rpbis.itemdiff  1.032         
+  ## U3              0.735   0.309 
+  ## 
+  ## Factor Correlations:
+  ##         Factor1 Factor2
+  ## Factor1   1.000  -0.727
+  ## Factor2  -0.727   1.000
+  ## 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -160,26 +160,26 @@ round( apply( M1 , 2 , sd ) , 3 )
 #  It is surprising that the rasch.pairwise.itemcluster is pretty close
 #  to the estimate in the Rasch copula model.
 
-##   > M1 <- scale( M1  , scale=F )
-##   > round( M1 , 3 )
-##       true.b b.rasch b.rasch.copula b.rasch.pairwise b.rasch.pairwise.cluster
-##   I1   0.545   0.561          0.526            0.628                    0.524
-##   I2  -0.182  -0.168         -0.174           -0.121                   -0.156
-##   I3  -0.909  -0.957         -0.867           -0.971                   -0.899
-##   I4  -1.636  -1.726         -1.625           -1.765                   -1.611
-##   I5   1.636   1.751          1.648            1.694                    1.649
-##   I6   0.909   0.892          0.836            0.898                    0.827
-##   I7  -2.000  -2.134         -2.020           -2.051                   -2.000
-##   I8  -1.273  -1.355         -1.252           -1.303                   -1.271
-##   I9  -0.545  -0.637         -0.589           -0.581                   -0.598
-##   I10  1.273   1.378          1.252            1.308                    1.276
-##   I11  0.182   0.241          0.226            0.109                    0.232
-##   I12  2.000   2.155          2.039            2.154                    2.026
-##   > round( apply( M1 , 2 , sd ) , 3 )
-##                     true.b                  b.rasch           b.rasch.copula       
-##                      1.311                    1.398                    1.310   
-##      b.rasch.pairwise    b.rasch.pairwise.cluster 
-##                 1.373                       1.310   }
+  ##   > M1 <- scale( M1  , scale=F )
+  ##   > round( M1 , 3 )
+  ##       true.b b.rasch b.rasch.copula b.rasch.pairwise b.rasch.pairwise.cluster
+  ##   I1   0.545   0.561          0.526            0.628                    0.524
+  ##   I2  -0.182  -0.168         -0.174           -0.121                   -0.156
+  ##   I3  -0.909  -0.957         -0.867           -0.971                   -0.899
+  ##   I4  -1.636  -1.726         -1.625           -1.765                   -1.611
+  ##   I5   1.636   1.751          1.648            1.694                    1.649
+  ##   I6   0.909   0.892          0.836            0.898                    0.827
+  ##   I7  -2.000  -2.134         -2.020           -2.051                   -2.000
+  ##   I8  -1.273  -1.355         -1.252           -1.303                   -1.271
+  ##   I9  -0.545  -0.637         -0.589           -0.581                   -0.598
+  ##   I10  1.273   1.378          1.252            1.308                    1.276
+  ##   I11  0.182   0.241          0.226            0.109                    0.232
+  ##   I12  2.000   2.155          2.039            2.154                    2.026
+  ##   > round( apply( M1 , 2 , sd ) , 3 )
+  ##                     true.b                  b.rasch           b.rasch.copula       
+  ##                      1.311                    1.398                    1.310   
+  ##      b.rasch.pairwise    b.rasch.pairwise.cluster 
+  ##                 1.373                       1.310   }
 
 # set item parameters of first item to 0 and of second item to -0.7
 b.fixed <- cbind( c(1,2) , c(0,-.7) )

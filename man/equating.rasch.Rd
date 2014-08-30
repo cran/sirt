@@ -88,35 +88,42 @@ see the \pkg{plink} package.
 data(data.pisaPars)
 pars <- data.pisaPars
 
-# linking the tow studies with the Rasch model
+# linking the two studies with the Rasch model
 mod <- equating.rasch(x=pars[,c("item","study1")], y=pars[,c("item","study2")])
 ##   Mean.Mean    Haebara Stocking.Lord
 ## 1   0.08828 0.08896269    0.09292838
 
 \dontrun{
-# Linking with plink package
-library(plink)
-# define common items
+#*** linking using the plink package	
+library(plink)	
 I <- nrow(pars)
-pm <- plink::as.poly.mod(I)
-# define item parameters for plink
-plink.pars <- list( "study1" = cbind( 1 , pars$study1 , 0 ) ,
-        "study2" = cbind( 1 , pars$study2 , 0 ) )
-# set parameter structure for plink
-x <- plink::as.irt.pars( pars=plink.pars, cbind(1:I , 1:I), cat=list(rep(2,I),rep(2,I)) , 
-             poly.mod=list(pm,pm) )
-# linking with plink
-out <- plink::plink(x, rescale="MS", base.grp=2, D=1.7)
-summary(out)        # summary
-##   -------  group1/group2*  -------
-##   Linking Constants
-##                        A        B
-##   Mean/Mean     1.000000 0.088280
-##   Mean/Sigma    1.000000 0.088280
-##   Haebara       1.000000 0.088605
-##   Stocking-Lord 1.000000 0.096617
-constants <- plink::link.con(out) # Extract linking constants
-constants 
+pm <- as.poly.mod(I)
+# linking parameters
+plink.pars1 <- list( "study1" = data.frame( 1 , pars$study1 , 0 ) ,
+                     "study2" = data.frame( 1 , pars$study2 , 0 ) )
+      # the parameters are arranged in the columns:
+      # Discrimination, Difficulty, Guessing Parameter
+# common items
+common.items <- cbind("study1"=1:I,"study2"=1:I)
+# number of categories per item
+cats.item <- list( "study1"=rep(2,I), "study2"=rep(2,I))
+# convert into plink object
+x <- plink::as.irt.pars( plink.pars, common.items , cat= cats.item, 
+          poly.mod=list(pm,pm))
+# linking using plink: first group is reference group
+out <- plink::plink(x, rescale="MS", base.grp=1, D=1.7)
+# summary for linking
+summary(out)
+  ##   -------  group2/group1*  -------
+  ##   Linking Constants
+  ##   
+  ##                        A         B
+  ##   Mean/Mean     1.000000 -0.088280
+  ##   Mean/Sigma    1.000000 -0.088280
+  ##   Haebara       1.000000 -0.088515
+  ##   Stocking-Lord 1.000000 -0.096610
+# extract linked parameters
+pars.out <- plink::link.pars(out)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

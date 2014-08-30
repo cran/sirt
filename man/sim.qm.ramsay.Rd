@@ -62,10 +62,15 @@ See \code{\link{rasch.mml2}} for estimating Ramsay's quotient model.
 
 See \code{\link{sim.raschtype}} for simulating response data from
 the generalized logistic item response model.
-%% ~~objects to See Also as \code{\link{help}}, ~~~
 }
+
+%% ~~objects to See Also as \code{\link{help}}, ~~~
+
 \examples{
-#***
+#############################################################################
+# SIMULATED EXAMPLE 1: Estimate Ramsay Quotient Model with rasch.mml2
+#############################################################################
+		
 set.seed(657)
 # simulate data according to the Ramsay model
 N <- 1000       # persons
@@ -85,18 +90,18 @@ fixed.K <- rep( 3 , I )
 
 # Ramsay QM with fixed K parameter (K=3 in fixed.K specification)
 mod1 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm", 
-           numdiff.parm = .0001 ,  fixed.K = fixed.K )                  
+              fixed.K = fixed.K )                  
 summary(mod1)
 
 # Ramsay QM with joint estimated K parameters
 mod2 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" , 
-               numdiff.parm = .0001 ,  est.K = rep(1,I)  )                  
+             est.K = rep(1,I)  )                  
 summary(mod2)
 
 \dontrun{
 # Ramsay QM with itemwise estimated K parameters
-mod3 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" , 
-             numdiff.parm = .0001 ,   est.K = 1:I  )                  
+mod3 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" ,  
+              est.K = 1:I  )                  
 summary(mod3)
 
 # Rasch model
@@ -104,7 +109,7 @@ mod4 <- rasch.mml2( dat )
 summary(mod4)
 
 # generalized logistic model
-mod5 <- rasch.mml2( dat , est.alpha = TRUE )
+mod5 <- rasch.mml2( dat , est.alpha = TRUE , mmliter=mmliter)
 summary(mod5) 
 
 # 2PL model
@@ -117,7 +122,57 @@ summary(mod7)
 
 # estimate separate guessing (c) parameters
 mod8 <- rasch.mml2( dat , est.c = 1:I  )
-summary(mod8) 
+summary(mod8)
+
+#*** estimate Model 1 with user defined function in mirt package
+
+# create user defined function for Ramsay's quotient model
+name <- 'ramsayqm'
+par <- c("K" = 3 , "b" = 1 )
+est <- c(TRUE, TRUE)
+P.ramsay <- function(par,Theta){
+     eps <- .01
+     K <- par[1]
+     b <- par[2]
+     num <- exp( exp( Theta[,1] ) / b )
+     denom <- K + num
+     P1 <- num / denom
+     P1 <- eps + ( 1 - 2*eps ) * P1 
+     cbind(1-P1, P1)
+}
+
+# create item response function
+ramsayqm <- mirt::createItem(name, par=par, est=est, P=P.ramsay)
+# define parameters to be estimated
+mod1m.pars <- mirt::mirt(dat, 1, rep( "ramsayqm",I) , 
+                   customItems=list("ramsayqm"=ramsayqm), pars = "values")                
+mod1m.pars[ mod1m.pars$name == "K" , "est" ] <- FALSE
+# define Theta design matrix
+Theta <- matrix( seq(-3,3,len=10) , ncol=1)
+# estimate model
+mod1m <- mirt::mirt(dat, 1, rep( "ramsayqm",I) , customItems=list("ramsayqm"=x), 
+               pars = mod1m.pars , verbose=TRUE , 
+               technical = list( customTheta=Theta , NCYCLES=50) 
+                )
+print(mod1m)                
+summary(mod1m)
+cmod1m <- mirt.wrapper.coef( mod1m )$coef
+# compare simulated and estimated values
+dfr <- cbind( b , cmod1m$b , exp(mod1$item$b ) ) 
+colnames(dfr) <- c("simulated" , "mirt" , "sirt_rasch.mml2")
+round( dfr , 2 )
+  ##      simulated mirt sirt_rasch.mml2
+  ## [1,]      0.14 0.11            0.11
+  ## [2,]      0.20 0.17            0.18
+  ## [3,]      0.30 0.27            0.29
+  ## [4,]      0.45 0.42            0.43
+  ## [5,]      0.67 0.65            0.67
+  ## [6,]      1.00 1.00            1.01
+  ## [7,]      1.49 1.53            1.54
+  ## [8,]      2.23 2.21            2.21
+  ## [9,]      3.32 3.00            2.98
+  ##[10,]      4.95 5.22            5.09
+  ##[11,]      7.39 5.62            5.51  
 } 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

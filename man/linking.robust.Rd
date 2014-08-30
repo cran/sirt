@@ -83,11 +83,11 @@ See also the \pkg{plink} package.
 data(data.si03)
 res1 <- linking.robust( itempars=data.si03 )
 summary(res1)
-##   Number of items = 27
-##   Optimal trimming parameter k = 8 |  non-robust parameter k = 0 
-##   Linking constant = -0.0345 |  non-robust estimate = -0.056 
-##   Standard error = 0.0186 |  non-robust estimate = 0.027 
-##   DIF SD: MAD = 0.0771 (robust) | SD = 0.1405 (non-robust) 
+  ##   Number of items = 27
+  ##   Optimal trimming parameter k = 8 |  non-robust parameter k = 0 
+  ##   Linking constant = -0.0345 |  non-robust estimate = -0.056 
+  ##   Standard error = 0.0186 |  non-robust estimate = 0.027 
+  ##   DIF SD: MAD = 0.0771 (robust) | SD = 0.1405 (non-robust) 
 plot(res1)
 
 \dontrun{
@@ -100,10 +100,10 @@ data(data.pisaPars)
 # Linking with items
 res2 <- linking.robust( data.pisaPars[ , c(1,3,4)] )
 summary(res2)
-##   Optimal trimming parameter k = 0 |  non-robust parameter k = 0 
-##   Linking constant = -0.0883 |  non-robust estimate = -0.0883 
-##   Standard error = 0.0297 |  non-robust estimate = 0.0297   
-##   DIF SD: MAD = 0.1824 (robust) | SD = 0.1487 (non-robust) 
+  ##   Optimal trimming parameter k = 0 |  non-robust parameter k = 0 
+  ##   Linking constant = -0.0883 |  non-robust estimate = -0.0883 
+  ##   Standard error = 0.0297 |  non-robust estimate = 0.0297   
+  ##   DIF SD: MAD = 0.1824 (robust) | SD = 0.1487 (non-robust) 
 ##  -> no trimming is necessary for reducing the standard error
 plot(res2)
 
@@ -123,11 +123,11 @@ itempars$study2 <- itempars$study1 + bdif
 # robust linking
 res <- linking.robust( itempars )
 summary(res)
-##   Number of items = 38
-##   Optimal trimming parameter k = 12 |  non-robust parameter k = 0 
-##   Linking constant = -0.4285 |  non-robust estimate = -0.5727 
-##   Standard error = 0.0218 |  non-robust estimate = 0.0913 
-##   DIF SD: MAD = 0.1186 (robust) | SD = 0.5628 (non-robust)
+  ##   Number of items = 38
+  ##   Optimal trimming parameter k = 12 |  non-robust parameter k = 0 
+  ##   Linking constant = -0.4285 |  non-robust estimate = -0.5727 
+  ##   Standard error = 0.0218 |  non-robust estimate = 0.0913 
+  ##   DIF SD: MAD = 0.1186 (robust) | SD = 0.5628 (non-robust)
 ## -> substantial differences of estimated linking constants in this case of 
 ##    deviations from normality of item parameters
 plot(res)

@@ -232,7 +232,7 @@ summary(mod2)
 
 set.seed(5698)
 I <- 11                             # number of items
-n <- 1500                           # number of persons
+n <- 3000                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
 theta <- rnorm( n , sd = 1 )        # person abilities
 # define item clusters
@@ -356,6 +356,134 @@ dims <- rep( 1:2 , each=I)
 mod1 <- rasch.copula3( dat , itemcluster=itemcluster , dims=dims , est.a=dims ,
             theta.k = seq(-5,5,len=15) )
 summary(mod1)
+
+#############################################################################
+# SIMULATED EXAMPLE 5: Subset of data Simulated Example 2 
+#############################################################################
+
+set.seed(5698)
+I <- 11                             # number of items
+n <- 3000                           # number of persons
+b <- seq(-2,2, len=I)               # item difficulties
+theta <- rnorm( n , sd = 1.3 )        # person abilities
+# define item clusters
+itemcluster <- rep(0,I)
+itemcluster[ c(3,5)] <- 1
+itemcluster[c(2,4,9)] <- 2
+# residual correlations
+rho <- c( .7 , .5 )
+# simulate data
+dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
+
+# select subdataset with only one dependent item cluster
+item.sel <- scan( what="character" , nlines=1 )
+    I1 I6 I7 I8 I10 I11 I3 I5
+dat1 <- dat[,item.sel]
+
+#******************
+#*** Model 1a: estimate Copula model in sirt
+itemcluster <- rep(0,8)
+itemcluster[c(7,8)] <- 1
+mod1a <- rasch.copula2( dat3 , itemcluster=itemcluster )        
+summary(mod1a)
+
+#******************
+#*** Model 1b: estimate Copula model in mirt
+library(mirt)
+#*** redefine dataset for estimation in mirt
+dat2 <- dat1[ , itemcluster == 0 ]
+dat2 <- as.data.frame(dat2)
+# combine items 3 and 5
+dat2$C35 <- dat1[,"I3"] + 2*dat1[,"I5"]
+table( dat2$C35 , paste0( dat1[,"I3"],dat1[,"I5"]) )
+#* define mirt model
+mirtmodel <- mirt.model("
+      F = 1-7
+      CONSTRAIN = (1-7,a1)
+      " )
+#-- Copula function with two dependent items
+# define item category function for pseudo-items like C35
+P.copula2 <- function(par,Theta, ncat){
+     b1 <- par[1]
+     b2 <- par[2]
+     a1 <- par[3]
+     ldelta <- par[4]
+     P1 <- plogis( a1*(Theta - b1 ) )
+     P2 <- plogis( a1*(Theta - b2 ) )
+     Q1 <- 1-P1
+     Q2 <- 1-P2
+     # define vector-wise minimum function
+     minf2 <- function( x1 , x2 ){
+         ifelse( x1 < x2 , x1 , x2 )
+                                }     
+     # distribution under independence
+     F00 <- Q1*Q2
+     F10 <- Q1*Q2 + P1*Q2
+     F01 <- Q1*Q2 + Q1*P2
+     F11 <- 1+0*Q1
+     F_ind <- c(F00,F10,F01,F11)
+     # distribution under maximal dependence
+     F00 <- minf2(Q1,Q2)
+     F10 <- Q2              # = minf2(1,Q2)
+     F01 <- Q1              # = minf2(Q1,1)
+     F11 <- 1+0*Q1          # = minf2(1,1)
+     F_dep <- c(F00,F10,F01,F11)
+     # compute mixture distribution
+     delta <- plogis(ldelta)     
+     F_tot <- (1-delta)*F_ind + delta * F_dep
+     # recalculate probabilities of mixture distribution
+     L1 <- length(Q1)
+     v1 <- 1:L1
+     F00 <- F_tot[v1]
+     F10 <- F_tot[v1+L1]
+     F01 <- F_tot[v1+2*L1]     
+     F11 <- F_tot[v1+3*L1]          
+     P00 <- F00
+     P10 <- F10 - F00
+     P01 <- F01 - F00
+     P11 <- 1 - F10 - F01 + F00                  
+     prob_tot <- c( P00 , P10 , P01 , P11 )
+     return(prob_tot)
+        }
+# create item
+copula2 <- createItem(name="copula2", par=c(b1 = 0 , b2 = 0.2 , a1=1 , ldelta=0) , 
+            est=c(TRUE,TRUE,TRUE,TRUE) , P=P.copula2 ,
+            lbound=c(-Inf,-Inf,0,-Inf) , ubound=c(Inf,Inf,Inf,Inf) )
+# define item types
+itemtype <- c( rep("2PL",6), "copula2" )
+customItems <- list(copula2=copula2)
+# parameter table
+mod.pars <- mirt(dat2, 1, itemtype=itemtype, 
+                customItems=customItems, pars = 'values')
+# estimate model
+mod1b <- mirt(dat2, mirtmodel , itemtype=itemtype , customItems=customItems, 
+                verbose = TRUE , pars=mod.pars , 
+                technical=list(customTheta=as.matrix(seq(-4,4,len=21)) ) )                
+# estimated coefficients
+cmod <- mirt.wrapper.coef(mod)$coef
+
+# compare common item discrimination
+round( c("sirt"=mod1a$item$a[1] , "mirt"=cmod$a1[1] ) , 4 )
+  ##     sirt   mirt 
+  ##   1.2845 1.2862 
+# compare delta parameter
+round( c("sirt"=mod1a$item$delta[7] , "mirt"= plogis( cmod$ldelta[7] ) ) , 4 )
+  ##     sirt   mirt 
+  ##   0.6298 0.6297 
+# compare thresholds a*b
+dfr <- cbind( "sirt"=mod1a$item$thresh ,
+               "mirt"= c(- cmod$d[-7],cmod$b1[7]*cmod$a1[1]  , cmod$b2[7]*cmod$a1[1]))
+round(dfr,4)         
+  ##           sirt    mirt
+  ##   [1,] -1.9236 -1.9231
+  ##   [2,] -0.0565 -0.0562
+  ##   [3,]  0.3993  0.3996
+  ##   [4,]  0.8058  0.8061
+  ##   [5,]  1.5293  1.5295
+  ##   [6,]  1.9569  1.9572
+  ##   [7,] -1.1414 -1.1404
+  ##   [8,] -0.4005 -0.3996
 }
 }
 

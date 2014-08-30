@@ -789,8 +789,8 @@ dat2[ dat2 == 9 ] <- 0
 # estimate Rasch model
 mod2 <- rasch.mml2( dat2[,items] , weights= dat$studwgt , group=dat$country )
 summary(mod2)
-##   Mean= 0 0.413 -0.172 0.446 
-##   SD= 1.199 1.263 1.32 0.996 
+  ##   Mean= 0 0.413 -0.172 0.446 
+  ##   SD= 1.199 1.263 1.32 0.996 
 
 #****
 # Model 3: recode missing responses as rho * P_i( theta ) and 
@@ -813,8 +813,8 @@ for (ii in items){
 # estimate Rasch model
 mod3 <- rasch.mml2( dat3[,items] , weights= dat$studwgt , group=dat$country )
 summary(mod3)
-##   Mean= 0 0.392 -0.153 0.38 
-##   SD= 1.154 1.209 1.246 0.973 
+  ##   Mean= 0 0.392 -0.153 0.38 
+  ##   SD= 1.154 1.209 1.246 0.973 
 
 #****
 # Model 4: simulate missing responses as rho * P_i( theta )
@@ -836,8 +836,8 @@ for (ii in items){
 # estimate Rasch model
 mod4 <- rasch.mml2( dat4[,items] , weights= dat$studwgt , group=dat$country )
 summary(mod4)
-##   Mean= 0 0.396 -0.156 0.382 
-##   SD= 1.16 1.216 1.253 0.979 
+  ##   Mean= 0 0.396 -0.156 0.382 
+  ##   SD= 1.16 1.216 1.253 0.979 
 
 #****
 # Model 5: recode missing responses for multiple choice items with four alternatives
@@ -860,12 +860,11 @@ for (ii in items_cr){
 # estimate Rasch model
 mod5 <- rasch.mml2( dat5[,items] , weights= dat$studwgt , group=dat$country )
 summary(mod5)
-##   Mean= 0 0.411 -0.165 0.435 
-##   SD= 1.19 1.245 1.293 0.995 
+  ##   Mean= 0 0.411 -0.165 0.435 
+  ##   SD= 1.19 1.245 1.293 0.995 
 
-###*** For the following analyses, we ignore sample weights and the
-###    country grouping.
-
+#*** For the following analyses, we ignore sample weights and the
+#    country grouping.
 data(data.pirlsmissing)
 items <- grep( "R31" , colnames(data.pirlsmissing) , value=TRUE )
 dat <- data.pirlsmissing
