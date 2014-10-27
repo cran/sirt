@@ -18,8 +18,16 @@ mirt.wrapper.posterior <- function( mirt.obj , weights=NULL ){
 	for(ii in 1:I){
 		 items[[ii]] <- mirt::extract.item(mobj, ii)
 				}
+				
+	# check whether prodlist exists
+    prodlist <- attr(mobj@pars, "prodlist") 
+	# Theta <- mobj@Theta 
+    Theta1 <- Theta
+	if ( ! is.null(prodlist) ){
+				Theta1 <- mirt_prodterms(Theta, prodlist)	
+							}				
 	# item-wise probabilities for each Theta
-	traces <- Probtrace_sirt(items, Theta)
+	traces <- Probtrace_sirt(items, Theta1)	
 	# log-Likelihood
 	f.yi.qk <- exp( fulldata %*% t(log(traces))  )
 	# compute individual posterior
@@ -39,6 +47,7 @@ mirt.wrapper.posterior <- function( mirt.obj , weights=NULL ){
 			pweights <- rep(1,N) } else {
 			pweights <- weights 
 					}
+    # Theta is only used for calculating dimension size					
 	n.ik <- mirt.wrapper.calc.counts( resp, theta=Theta , resp.ind=resp.ind , 
 				group=group , maxK=max(maxK) , pweights=pweights , hwt=f.qk.yi )
     probs <- traces		
@@ -62,3 +71,16 @@ Probtrace_sirt <- function(items, Theta){
 		 ret
 	}
 ##########################################################################
+# prodterms function from mirt package
+# This function is not exported and hence redefined in sirt
+mirt_prodterms <- function (theta0, prodlist) 
+{
+    products <- matrix(1, ncol = length(prodlist), nrow = nrow(theta0))
+    for (i in 1L:length(prodlist)) {
+        tmp <- prodlist[[i]]
+        for (j in 1L:length(tmp)) products[, i] <- products[, 
+            i] * theta0[, tmp[j]]
+    }
+    ret <- cbind(theta0, products)
+    ret
+}

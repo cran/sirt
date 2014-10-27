@@ -2,8 +2,8 @@
 
 
 #------------------------------------------------------------------
-# Copula estimation in a raschtype model
-rasch.copula3 <- function( dat , itemcluster , dims ,
+# Copula estimation in a rasch type model
+rasch.copula3 <- function( dat , itemcluster , dims=NULL ,
 						copula.type = "bound.mixt" ,
 						progress = TRUE , mmliter = 1000 , delta = NULL ,
 						theta.k = seq(-4,4,len=21) , alpha1=0 , alpha2=0 , 
@@ -30,6 +30,10 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 	s1 <- Sys.time()
 	group <- NULL	
 	N <- nrow(dat)
+	if (is.null(dims) ){
+		dims <- rep( 1 , ncol(dat) )
+					}	
+	
 	# arrange item clusters item clusters
     t1 <- table(itemcluster)
 	itemcluster[ which( itemcluster %in% names(t1)[ t1 == 1	 ] ) ] <- 0
@@ -279,8 +283,9 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 	while ( ( ( absdev.change > dev.crit | dev.change > glob.conv | 
 					par.change > conv1 | maxalphachange > alpha.conv ) & iter < mmliter ) ){
 
+				
 # zz0 <- Sys.time()		
-
+	if (progress){ 
 		cat( paste(rep("-" , 70), collapse="") , "\n")
 		k1 <- floor( log10(iter+1) )
 		x1 <- "        |" 
@@ -290,6 +295,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 						s1c  , "  " ,
 						if ( iter > 0 ){ paste( round(difftime(s1c ,s1b , units='secs' ),4) , "secs" ) } , 
 						"\n" ,sep="") ) # 
+						}
 		s1b <- Sys.time()
 		h <- numdiff.parm 
 		dev0 <- dev
@@ -302,7 +308,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 		prbar <- seq( 1 , 10 , len = length(bG) )
 		prbar <- floor( prbar )
 		prbar <- c( prbar[1] , diff(prbar) )
-		cat(" Estimation of b:     |")		
+		if (progress){ cat(" Estimation of b:     |")		 }
 		for (bb in bG){
 #vv0 <- Sys.time()		
 			est.bb <- 1 * ( b.design$b.indexgroup == bb )
@@ -362,12 +368,16 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 			b.change <- ifelse( abs( b.change ) > hstep , hstep*sign(b.change) , b.change )            			
 			b.change <- b.change[ match( est.b , a1[,1] ) ]		
 			b <- b + b.change
-			cat( paste( rep( "-" , prbar[bb]), collapse="") )
-			flush.console()	
+			if (progress){ 
+				cat( paste( rep( "-" , prbar[bb]), collapse="") ) 
+				flush.console()	
+						}
 # cat("end b item") ; vv1 <- Sys.time(); print(vv1-zz0) ; vv0 <- vv1				
 					}
         a1b <- max( abs( b - b0 ) )
-		cat("|     max. parm. change" , round( a1b , 5),"\n")
+		if (progress){
+			cat("|     max. parm. change" , round( a1b , 5),"\n")
+					}
 		
 		wm1 <- sum( theta.k * rescop$pik )
 		wsd <- sqrt( sum( ( theta.k - wm1 )^2 * rescop$pik ) )	
@@ -380,7 +390,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 		prbar <- seq( 1 , 10 , len = length(aG) )
 		prbar <- floor( prbar )
 		prbar <- c( prbar[1] , diff(prbar) )
-		cat(" Estimation of a:     |")
+		if (progress){ cat(" Estimation of a:     |") }
 		for (aa in aG){
 			est.aa <- 1 * (est.a == aa )	
 			rescop <- .ll.rasch.copula320( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
@@ -407,12 +417,17 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 			a <- a + a.change
 			a[ a < 0 ] <- .01			
 #			cat( aa , " ") ; 
-			cat( paste( rep( "-" , prbar[aa]), collapse="") )
-			flush.console()				
-							}
+		if (progress){
+				cat( paste( rep( "-" , prbar[aa]), collapse="") )
+				flush.console()										
+							
 		if ( length(aG) < 2 ){ cat( paste( rep( "-" , 10 - length(aG) ), collapse="") ) }
+						}
+					}
 		a1a <- max( abs( a - a0 ) )
-		cat("|     max. parm. change" , round( a1a , 5),"\n")
+		if (progress){ 
+			cat("|     max. parm. change" , round( a1a , 5),"\n") 
+				}
 # cat("end a") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 
 		#******************************************************************************
@@ -422,7 +437,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 		prbar <- seq( 1 , 10 , len = length(dG) )
 		prbar <- floor( prbar )
 		prbar <- c( prbar[1] , diff(prbar) )
-		cat(" Estimation of delta: |")
+		if (progress){ cat(" Estimation of delta: |") }
 		if ( length(dG) == 0 ){ cat( paste(rep("-",10),collapse="") ) }
 		if ( length(dG) > 0 ){
 		# identify different a parameter groups
@@ -467,19 +482,20 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 			delta[ delta <= 0 ] <- 2*numdiff.parm		
 			delta <- ifelse( copula.type == "bound.mixt" & ( delta > 1 ) ,
 						1 - 2 * numdiff.parm , delta )
-			cat( paste( rep( "-" , 10 ), collapse="") )
-			flush.console()
+			if (progress){ 
+				cat( paste( rep( "-" , 10 ), collapse="") ) 
+				flush.console()
+						}
 							}
         a1d <- max( abs( delta - delta0 ) )
-		cat("|     max. parm. change" , round( a1d , 5),"\n")
+		if (progress){ cat("|     max. parm. change" , round( a1d , 5),"\n") }
 # cat("end delta") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
-
 		#******************************************************************************
 		# estimation of alpha parameters
 		alpha10 <- alpha1
 		alpha20 <- alpha2
 		prbar <- 5
-		cat(" Estimation of alpha: |")		
+		if (progress){ cat(" Estimation of alpha: |")		 }
 		# alpha1
 		if (est.alpha){
 			rescop <- .ll.rasch.copula320( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
@@ -503,8 +519,10 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 			a1k1 <- alpha.change <- ifelse( abs( alpha.change ) > .1 , .1*sign(alpha.change) , alpha.change )              
 			alpha1 <- alpha1 + alpha.change
 			}
-			cat( paste( rep( "-" , prbar), collapse="") )
-			flush.console()		
+			if (progress){ 
+				cat( paste( rep( "-" , prbar), collapse="") )
+				flush.console()		
+						}
 		# alpha2
 		if (est.alpha){
 			rescop <- .ll.rasch.copula320( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
@@ -528,12 +546,15 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 			a1k2 <- alpha.change <- ifelse( abs( alpha.change ) > .1 , .1*sign(alpha.change) , alpha.change )              
 			alpha2 <- alpha2 + alpha.change
 			}			
-			cat( paste( rep( "-" , prbar), collapse="") )
-			flush.console()		
+			if (progress){
+				cat( paste( rep( "-" , prbar), collapse="") )
+				flush.console()		
+						}
         a1k <- max( abs( c( alpha1 - alpha10, alpha2 - alpha20 )) )
-		cat("|     max. parm. change" , round( a1k , 5),"\n")			
+		if (progress){ cat("|     max. parm. change" , round( a1k , 5),"\n")	}
 		#******************************************************************************
 		# estimation of mu parameters
+		
 		a1m <- 0
 		if (G>1){
 		mu0 <- mu
@@ -542,7 +563,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 		prbar <- seq( 1 , 10 , len = length(muG) )
 		prbar <- floor( prbar )
 		prbar <- c( prbar[1] , diff(prbar) )
-		cat(" Estimation of mu:    |")
+		if (progress){ cat(" Estimation of mu:    |") }
 		for (gg in 2:G){
 #			est.aa <- est.a * (est.a == aa )		
 			rescop <- .ll.rasch.copula20( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
@@ -577,12 +598,14 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 			mu <- mu + mu.change
 			w2 <- dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] )
 			wgt.theta[,gg] <- w2 / sum(w2)
-			cat( paste( rep( "-" , prbar[gg-1]), collapse="") )
-			flush.console()
+			if (progress){
+				cat( paste( rep( "-" , prbar[gg-1]), collapse="") )
+				flush.console()
+						}
 							}
 		if ( length(muG) < 2 ){ cat( paste( rep( "-" , 10 - length(muG) ), collapse="") ) }
 		a1m <- max( abs( mu - mu0 ) )
-		cat("|     max. parm. change" , round( a1m , 5),"\n")
+		if (progress){ cat("|     max. parm. change" , round( a1m , 5),"\n") }
 				}			# end mu
 		######################################################################
 		#******************************************************************************
@@ -596,7 +619,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 		prbar <- seq( 1 , 10 , len = length(sigmaG) )
 		prbar <- floor( prbar )
 		prbar <- c( prbar[1] , diff(prbar) )
-		cat(" Estimation of sigma: |")
+		if (progress){ cat(" Estimation of sigma: |") }
 		for (gg in 2:G){
 #			est.aa <- est.a * (est.a == aa )		
 			rescop <- .ll.rasch.copula20( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
@@ -632,16 +655,18 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 			w2 <- dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] )
 			wgt.theta[,gg] <- w2 / sum(w2)
 #			cat( aa , " ") ; 
-			cat( paste( rep( "-" , prbar[gg-1]), collapse="") )
-			flush.console()
+		if (progress){
+				cat( paste( rep( "-" , prbar[gg-1]), collapse="") )
+				flush.console()
+						}
 							}
 		if ( length(sigmaG) < 2 ){ cat( paste( rep( "-" , 10 - length(sigmaG) ), collapse="") ) }
 		a1s <- max( abs( sigma - sigma0 ) )
-		cat("|     max. parm. change" , round( a1s , 5),"\n")
+		if (progress){ cat("|     max. parm. change" , round( a1s , 5),"\n") }
 				}			# end sigma
 		######################################################################		
 # cat("end rest") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1					
-		# estimate covariance matrix
+		# estimate covariance matrix		
 
 		res0 <- rasch.copula3.covariance( f.qk.yi=rescop$post , Sigma=sigma , theta.k , N ,
 					mu.fixed= mu.fixed , variance.fixed = NULL, D=D , est.corr=TRUE , irtmodel=NULL ,
@@ -652,23 +677,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 		wgt.theta <- res0$pi.k[,1]		
 # cat("end covariance") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 		
-#        for (dd in 1:D){
-#			fac <- sqrt( sigma0[dd,dd] / sigma[dd,dd] )
-#			a[ dims == dd ] <- fac * a[ dims == dd ]
-#						}
 
-
-		#**********************************************************************************
-		# convergence display 
-#		a1 <- aggregate( b , list( est.b) , mean )
-#		cat("   b parameters: " , paste( round( a1[,2] , 3 ) , collapse= " " ) , "\n" )
-#		a1 <- aggregate( a , list( est.a) , mean )
-#		cat("   a parameters: " , paste( round( a1[,2] , 3 ) , collapse= " " ) , "\n" )
-#		cat("   delta parameters: " , paste( round( delta , 3 ) , collapse= " " ) , "\n" )
-#		cat("   alpha parameters: " , paste( round( c(alpha1 , alpha2) , 3 ) , collapse= " " ) , "\n" )		
-#		cat("   mu parameters: " , paste( round( mu , 3 ) , collapse= " " ) , "\n" )		
-#		cat("   sigma parameters: " , paste( round( sigma , 3 ) , collapse= " " ) , "\n" )
-		#******************************************************************************
 #cat("other pars") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						       				
 		iter <- iter + 1 
 #		thetawidth <- diff( theta.k )[1]		
@@ -688,12 +697,14 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
         dev.change <- abs( ( dev - dev0)/ dev0 )
 		absdev.change <- abs( dev- dev0 )
         par.change <- max( a1a , a1b , a1d , a1k , a1m , a1s)
-		cat( "Deviance = "  ,   round( dev , 5 ) , 
-				" | Deviance change = " , - round( dev- dev0 , 4 ) ,
-				"| max. parm. change = " ,  round( par.change , 6 ) ,  " \n"   )  
-		if ( ( dev > dev0 ) & ( iter > 4 ) ){ cat("   Deviance has increased! Convergence Problems?\n") }
-#cat("rest") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						       						
-		flush.console()
+		if (progress){
+			cat( "Deviance = "  ,   round( dev , 5 ) , 
+					" | Deviance change = " , - round( dev- dev0 , 4 ) ,
+					"| max. parm. change = " ,  round( par.change , 6 ) ,  " \n"   )  
+			if ( ( dev > dev0 ) & ( iter > 4 ) ){ cat("   Deviance has increased! Convergence Problems?\n") }
+	#cat("rest") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						       						
+			flush.console()
+					}				
 			}
 	# end MML iterations
 	#**********************************************************************************
@@ -722,6 +733,7 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 	
 	#********	
 
+	
 	#********************************************************
 	# information criteria
         # calculations for information criteria
@@ -750,7 +762,9 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 	# add results dependency parameter for item clusters
 	item$itemcluster <- itemcluster
 	item$delta <- 0
-    cat("--------------------------------------------------------------------------------\n")
+	if (progress){ 
+		cat("--------------------------------------------------------------------------------\n")
+					}
 	for (cc in 1:CC){
 		# cc <- 1
 		dcc <- dp.ld[[cc]]
@@ -761,30 +775,32 @@ rasch.copula3 <- function( dat , itemcluster , dims ,
 	icl <- item$itemcluster[ i1 ]		
 	item$est.delta[ i1 ] <- est.delta[ icl ]	
 	# print item summary
-	cat("Parameter summary\n")
-	.pr( item , digits=3 )		# print item statistics
-	# dependency parameter
-	cat("\nDependency parameters\n")
+	if (progress){
+		cat("Parameter summary\n")
+		.pr( item , digits=3 )		# print item statistics
+		# dependency parameter
+		cat("\nDependency parameters\n")
+				}
 	summary.delta <- data.frame( "cluster" = 1:CC , "delta" = delta , 
 				"est.delta" = est.delta , "copula.type" = copula.type	 )
 	summary.delta$items <- sapply( 1:CC , FUN = function(cc){ 
 		paste( colnames(dat)[ itemcluster == cc ] , collapse="-" )
-				} )			
-	.pr(summary.delta , digits = 3)
-	cat(paste("\nEAP Reliability:\n "))
-	print( round( EAP.Rel,3))
-	cat("\n")
-	cat("Generalized logistic link function\n")
-	cat("alpha1=",round(alpha1,3)," alpha2=" , round(alpha2,3) , " \n\n")	
-        # computational time
-        s2 <- Sys.time()
-       cat("-----------------------------------------------------------------\n")
-       cat("Start:" , paste( s1) , "\n")
-       cat("End:" , paste(s2) , "\n")
-       cat("Difference:" , print(s2 -s1), "\n")
-       cat("-----------------------------------------------------------------\n")
-
-	
+				} )
+			s2 <- Sys.time()				
+	if (progress){ 				
+		.pr(summary.delta , digits = 3)
+		cat(paste("\nEAP Reliability:\n "))
+		print( round( EAP.Rel,3))
+		cat("\n")
+		cat("Generalized logistic link function\n")
+		cat("alpha1=",round(alpha1,3)," alpha2=" , round(alpha2,3) , " \n\n")	
+			# computational time
+		   cat("-----------------------------------------------------------------\n")
+		   cat("Start:" , paste( s1) , "\n")
+		   cat("End:" , paste(s2) , "\n")
+		   cat("Difference:" , print(s2 -s1), "\n")
+		   cat("-----------------------------------------------------------------\n")
+				}
 	datalist <- list( pattern.in.data = pattern.in.data , dat0 = dat0 ,
 					dat2 = dat2 , dat2.resp = dat2.resp , dat2.li = dat2.li , 
 					dat2.ld = dat2.ld , dat2.li.resp=dat2.li.resp , 

@@ -13,12 +13,17 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 	I <- ncol(lambda)   # number of items
 	if ( is.null(wgt) ){  wgt <- 1+0*nu }
 	
-	
-	wgt <- G * wgt / colSums(wgt) 
+	W1 <- dim(wgt)
+	wgtM <- matrix( colSums(wgt,na.rm=TRUE)  , nrow=W1[1] , ncol=W1[2] , byrow=TRUE )	
+	wgtM <- wgt / wgtM
+	wgt <- G * wgtM 
 
+	
 	# missing indicator matrix: 1 - no missings
-	missM <- (1-is.na(lambda))+ (1- is.na(nu))
+	missM <- 0.5 * ( (1-is.na(lambda))+ (1- is.na(nu)) )
 	wgt <- wgt * missM
+	wgt[ missM == 0 ] <- 0
+	
 	lambda[ missM == 0 ] <- mean( lambda , na.rm=TRUE )
 	nu[ missM == 0 ] <- mean( nu , na.rm=TRUE )
 	
@@ -83,7 +88,7 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 		flush.console()
 				}
 	psi0_init <- psi0	
-	for (gp in 1:GP){
+	for (gp in 1:GP){	
 		res0 <- inv.alignment2.lambda.alg( lambda , psi0_init , nu , align.scale ,
 		          align.pow , iter ,  conv , fopt_change , wgt , eps ,
 		          group_combis , fopt , h , max.increment , 

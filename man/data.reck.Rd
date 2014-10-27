@@ -293,38 +293,38 @@ score <- qnorm( ( rowMeans( dat )+.5 )  / ( ncol(dat) + 1 ) )
 itemcluster <- substring( colnames(dat) , 1 , 1 )
 #- confirmatory DETECT Item cluster
 detectA <- sirt::conf.detect( data = dat , score = score , itemcluster = itemcluster )
-##          unweighted weighted
-##   DETECT      0.571    0.571
-##   ASSI        0.523    0.523
-##   RATIO       0.757    0.757
+  ##          unweighted weighted
+  ##   DETECT      0.571    0.571
+  ##   ASSI        0.523    0.523
+  ##   RATIO       0.757    0.757
 
 #- exploratory DETECT analysis
 detect_explA <- sirt::expl.detect(data=dat, score, nclusters=10, N.est = nrow(dat)/2  )
-##  Optimal Cluster Size is  5  (Maximum of DETECT Index)
-##     N.Cluster N.items N.est N.val         size.cluster DETECT.est ASSI.est
-##   1         2      50  1250  1250                31-19      0.531    0.404
-##   2         3      50  1250  1250             10-19-21      0.554    0.407
-##   3         4      50  1250  1250           10-19-14-7      0.630    0.509
-##   4         5      50  1250  1250         10-19-3-7-11      0.653    0.546
-##   5         6      50  1250  1250       10-12-7-3-7-11      0.593    0.458
-##   6         7      50  1250  1250      10-12-7-3-7-9-2      0.604    0.474
-##   7         8      50  1250  1250    10-12-7-3-3-9-4-2      0.608    0.481
-##   8         9      50  1250  1250  10-12-7-3-3-5-4-2-4      0.617    0.494
-##   9        10      50  1250  1250 10-5-7-7-3-3-5-4-2-4      0.592    0.460
+  ##  Optimal Cluster Size is  5  (Maximum of DETECT Index)
+  ##     N.Cluster N.items N.est N.val         size.cluster DETECT.est ASSI.est
+  ##   1         2      50  1250  1250                31-19      0.531    0.404
+  ##   2         3      50  1250  1250             10-19-21      0.554    0.407
+  ##   3         4      50  1250  1250           10-19-14-7      0.630    0.509
+  ##   4         5      50  1250  1250         10-19-3-7-11      0.653    0.546
+  ##   5         6      50  1250  1250       10-12-7-3-7-11      0.593    0.458
+  ##   6         7      50  1250  1250      10-12-7-3-7-9-2      0.604    0.474
+  ##   7         8      50  1250  1250    10-12-7-3-3-9-4-2      0.608    0.481
+  ##   8         9      50  1250  1250  10-12-7-3-3-5-4-2-4      0.617    0.494
+  ##   9        10      50  1250  1250 10-5-7-7-3-3-5-4-2-4      0.592    0.460
 
 # cluster membership
 cluster_membership <- detect_explA$itemcluster$cluster3
 # Cluster 1:
 colnames(dat)[ cluster_membership == 1 ]
-##   [1] "A01" "A02" "A03" "A04" "A05" "A06" "A07" "A08" "A09" "A10"
+  ##   [1] "A01" "A02" "A03" "A04" "A05" "A06" "A07" "A08" "A09" "A10"
 # Cluster 2:
 colnames(dat)[ cluster_membership == 2 ]
-##    [1] "B11" "B12" "B13" "B14" "B15" "B16" "B17" "B18" "B19" "B20" "B21" "B22"
-##   [13] "B23" "B25" "B26" "B27" "B28" "B29" "B30"
+  ##    [1] "B11" "B12" "B13" "B14" "B15" "B16" "B17" "B18" "B19" "B20" "B21" "B22"
+  ##   [13] "B23" "B25" "B26" "B27" "B28" "B29" "B30"
 # Cluster 3:
 colnames(dat)[ cluster_membership == 3 ]
-##    [1] "B24" "C31" "C32" "C33" "C34" "C35" "C36" "C37" "C38" "C39" "C40" "C41"
-##   [13] "C42" "C43" "C44" "C45" "C46" "C47" "C48" "C49" "C50"
+  ##    [1] "B24" "C31" "C32" "C33" "C34" "C35" "C36" "C37" "C38" "C39" "C40" "C41"
+  ##   [13] "C42" "C43" "C44" "C45" "C46" "C47" "C48" "C49" "C50"
 
 #************************
 # Example B
@@ -335,25 +335,25 @@ score <- qnorm( ( rowMeans( dat )+.5 )  / ( ncol(dat) + 1 ) )
 itemcluster <- substring( colnames(dat) , 1 , 1 )
 #- confirmatory DETECT Item cluster
 detectB <- sirt::conf.detect( data = dat , score = score , itemcluster = itemcluster )
-##          unweighted weighted
-##   DETECT      0.715    0.715
-##   ASSI        0.624    0.624
-##   RATIO       0.855    0.855
+  ##          unweighted weighted
+  ##   DETECT      0.715    0.715
+  ##   ASSI        0.624    0.624
+  ##   RATIO       0.855    0.855
 
 #- exploratory DETECT analysis
 detect_explB <- sirt::expl.detect(data=dat, score, nclusters=10, N.est = nrow(dat)/2  )
-##   Optimal Cluster Size is  4  (Maximum of DETECT Index)
-##   
-##     N.Cluster N.items N.est N.val         size.cluster DETECT.est ASSI.est
-##   1         2      50  1250  1250                30-20      0.665    0.546
-##   2         3      50  1250  1250             10-20-20      0.686    0.585
-##   3         4      50  1250  1250           10-20-8-12      0.728    0.644
-##   4         5      50  1250  1250         10-6-14-8-12      0.654    0.553
-##   5         6      50  1250  1250       10-6-14-3-12-5      0.659    0.561
-##   6         7      50  1250  1250      10-6-14-3-7-5-5      0.664    0.576
-##   7         8      50  1250  1250     10-6-7-7-3-7-5-5      0.616    0.518
-##   8         9      50  1250  1250   10-6-7-7-3-5-5-5-2      0.612    0.512
-##   9        10      50  1250  1250 10-6-7-7-3-5-3-5-2-2      0.613    0.512
+  ##   Optimal Cluster Size is  4  (Maximum of DETECT Index)
+  ##   
+  ##     N.Cluster N.items N.est N.val         size.cluster DETECT.est ASSI.est
+  ##   1         2      50  1250  1250                30-20      0.665    0.546
+  ##   2         3      50  1250  1250             10-20-20      0.686    0.585
+  ##   3         4      50  1250  1250           10-20-8-12      0.728    0.644
+  ##   4         5      50  1250  1250         10-6-14-8-12      0.654    0.553
+  ##   5         6      50  1250  1250       10-6-14-3-12-5      0.659    0.561
+  ##   6         7      50  1250  1250      10-6-14-3-7-5-5      0.664    0.576
+  ##   7         8      50  1250  1250     10-6-7-7-3-7-5-5      0.616    0.518
+  ##   8         9      50  1250  1250   10-6-7-7-3-5-5-5-2      0.612    0.512
+  ##   9        10      50  1250  1250 10-6-7-7-3-5-3-5-2-2      0.613    0.512
 }
 }
 \keyword{datasets}

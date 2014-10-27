@@ -174,7 +174,7 @@ Multiple-group factor analysis alignment.
 \emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
 \url{http://www.statmodel.com/Alignment.shtml}
 
-Muthen, B. (2014). IRT studies of many groups: The alignment method. 
+Muthen, B., & Asparouhov, T. (2014). IRT studies of many groups: The alignment method. 
 \emph{Frontiers in Psychology | Quantitative Psychology and Measurement},
 \bold{5:978}. doi: 10.3389/fpsyg.2014.00978,
 \url{http://journal.frontiersin.org/Journal/10.3389/fpsyg.2014.00978/abstract}.

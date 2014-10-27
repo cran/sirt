@@ -2,12 +2,15 @@
 \alias{conf.detect}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Confirmatory DETECT Analysis
+Confirmatory DETECT and polyDETECT Analysis
 }
 \description{
-This function computes the DETECT under a confirmatory specification
-of item clusters (Stout, Habing, Douglas & Kim, 1996; Zhang & Stout,
-1999a, 1999b).
+This function computes the DETECT statistics for dichotomous item responses 
+and the polyDETECT statistic for polytomous item responses
+under a confirmatory specification of item clusters 
+(Stout, Habing, Douglas & Kim, 1996; Zhang & Stout,
+1999a, 1999b; Zhang, 2007). Item responses in a multi-matrix design
+are allowed (Zhang, 2013).
 }
 \usage{
 conf.detect(data, score, itemcluster, bwscale = 1.1, progress = TRUE, 
@@ -91,6 +94,9 @@ dimensionality and its application to approximate simple structure.
 
 Zhang, J. (2007). Conditional covariance theory and DETECT for
 polytomous items. \emph{Psychometrika}, \bold{72}, 69-91.
+
+Zhang, J. (2013). A procedure for dimensionality analyses of 
+response data from various test designs. \emph{Psychometrika}, \bold{78}, 37-58.
 }
 \author{
 Alexander Robitzsch

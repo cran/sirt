@@ -2,7 +2,8 @@
 #################################################################
 # Hierrachical rater model
 # MML estimation
-rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) , 	
+# 2014-10-06: renamed rm.hrm into rm.sdt
+rm.sdt <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) , 	
 	est.a.item=FALSE , est.c.rater= "n" , 
 	est.d.rater= "n" , d.min=.5 , d.max=100 ,  d.start = 3 , 
 	max.increment=1 , numdiff.parm=.00001 , maxdevchange=.10 ,
@@ -322,7 +323,7 @@ rm.hrm <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 		"procdata" =procdata , "iter"=iter , "theta.k" = theta.k , 
 		"Qmatrix" = Qmatrix , 
 		"s1"=s1 , "s2"=s2 , "tau.item.fixed"=tau.item.fixed)
-	class(res) <- "rm.hrm"
+	class(res) <- "rm.sdt"
 	return(res)
 
 		}

@@ -40,10 +40,17 @@
 		D <- dimensions
 		Pval <- diag(D)
 		Ppatt <- 0*diag(D)
-		Fpatt <- matrix(1,nrow=I,ncol=D)		
-		for (dd in 2:D){  Fpatt[dd,1:(dd-1)] <- 0 }
+		Fpatt <- matrix(1,nrow=I,ncol=D)
+		if (D>1){		
+			for (dd in 2:D){  Fpatt[dd,1:(dd-1)] <- 0 }
+					}
 		Fval <- .5*(Fpatt>0)		
-					}	
+		if ( D == 1 ){ 	# 1 dimension
+				model.type <- "CFA" 
+				modtype <- 3
+						}		
+					}
+					
 	res$model.type <- model.type
 	res$modtype  <- modtype
 	# initial values if they are not provided

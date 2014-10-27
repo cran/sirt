@@ -115,7 +115,7 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-See also \code{\link{rm.facets}} and \code{\link{rm.hrm}} for
+See also \code{\link{rm.facets}} and \code{\link{rm.sdt}} for
 specifying rater models.
 
 See also the \pkg{irr} package for measures of rater agreement.

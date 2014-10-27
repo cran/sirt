@@ -63,7 +63,6 @@ package.
 
 
 \examples{
-library(fdrtool)
 y <- c(22.5 , 23.33 , 20.83 , 24.25 )
 w <- c( 3,3,3,2)
 # define matrix input
@@ -76,8 +75,11 @@ wM[2,] <- c(1,3,4, 3 )
 # fit rowwise monotone regression
 monoreg.rowwise( yM , wM )
 # compare results with monoreg function from fdrtool package
+\dontrun{
+library(fdrtool)
 fdrtool::monoreg(x=yM[1,] , w=wM[1,])$yf
 fdrtool::monoreg(x=yM[2,] , w=wM[2,])$yf
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

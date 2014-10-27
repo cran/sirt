@@ -7,13 +7,14 @@ Discrete (Rasch) Grade of Membership Model
 }
 \description{
 This function estimates the grade of membership model (Erosheva, Fienberg
-& Joutard, 2007) by the EM algorithm assuming a discrete membership score
-distribution.
+& Joutard, 2007; also called mixed membership model) by the EM algorithm 
+assuming a discrete membership score distribution.
 }
 \usage{
 gom.em(dat, K=NULL, problevels=NULL, model="GOM", theta0.k=seq(-5, 5, len=15), 
     xsi0.k=exp(seq(-6, 3, len=15)), max.increment=0.3, numdiff.parm=0.001, 
-    maxdevchange=10^(-5), globconv=0.001, maxiter=1000, msteps=4, mstepconv=0.001)
+    maxdevchange=10^(-5), globconv=0.001, maxiter=1000, msteps=4, mstepconv=0.001,
+    progress=TRUE)
 
 \method{summary}{gom}(object,...)    
 }
@@ -62,6 +63,9 @@ Number of iterations within a M step
 }
   \item{mstepconv}{
 Convergence criterion within a M step
+}
+  \item{progress}{
+Display iteration progress? Default is \code{TRUE}.
 }
   \item{object}{
 Object of class \code{gom}
@@ -200,6 +204,11 @@ Alexander Robitzsch
 \seealso{
 For joint maximum likelihood estimation of the grade of membership model
 see \code{\link{gom.jml}}.
+
+The C code of Erosheva et al. (2007) can be downloaded from
+\url{http://projecteuclid.org/euclid.aoas/1196438029#supplemental}.
+Code from Manrique-Vallier can be downloaded from
+\url{http://pages.iu.edu/~dmanriqu/software.html}.
 }
 \examples{
 #############################################################################
@@ -239,14 +248,14 @@ problevels <- matrix( problevels, ncol=4 , byrow=TRUE)
 mod2a <- gom.em( dat , K=4 , problevels ,  model="GOM" )            
 # probability distribution for latent classes
 cbind( mod2a$theta.k , mod2a$pi.k )
-##        [,1] [,2] [,3] [,4]       [,5]
-##   [1,]  1.0  0.0  0.0  0.0 0.17214630
-##   [2,]  0.5  0.5  0.0  0.0 0.04965676
-##   [3,]  0.0  1.0  0.0  0.0 0.09336660
-##   [4,]  0.0  0.5  0.5  0.0 0.06555719
-##   [5,]  0.0  0.0  1.0  0.0 0.27523678
-##   [6,]  0.0  0.0  0.5  0.5 0.08458620
-##   [7,]  0.0  0.0  0.0  1.0 0.25945016
+  ##        [,1] [,2] [,3] [,4]       [,5]
+  ##   [1,]  1.0  0.0  0.0  0.0 0.17214630
+  ##   [2,]  0.5  0.5  0.0  0.0 0.04965676
+  ##   [3,]  0.0  1.0  0.0  0.0 0.09336660
+  ##   [4,]  0.0  0.5  0.5  0.0 0.06555719
+  ##   [5,]  0.0  0.0  1.0  0.0 0.27523678
+  ##   [6,]  0.0  0.0  0.5  0.5 0.08458620
+  ##   [7,]  0.0  0.0  0.0  1.0 0.25945016
 }
 
 #***
@@ -292,10 +301,10 @@ mod2 <- gom.em(dat, K=2, problevels= seq(0,1,0.5) , model="GOM" )
 summary(mod2)
 # estimated distribution
 cbind( mod2$theta.k , mod2$pi.k )
-##       [,1] [,2]        [,3]
-##  [1,]  1.0  0.0 0.243925644
-##  [2,]  0.5  0.5 0.006534278
-##  [3,]  0.0  1.0 0.749540078
+  ##       [,1] [,2]        [,3]
+  ##  [1,]  1.0  0.0 0.243925644
+  ##  [2,]  0.5  0.5 0.006534278
+  ##  [3,]  0.0  1.0 0.749540078
 
 #********* DATASET 2 *************
 # define a 2-class model with graded membership
@@ -325,10 +334,10 @@ mod2 <- gom.em(dat, K=2, problevels= seq(0,1,0.5) , model="GOM" )
 summary(mod2)
 # inspect distribution
 cbind( mod2$theta.k , mod2$pi.k )
-##       [,1] [,2]      [,3]
-##  [1,]  1.0  0.0 0.3335666
-##  [2,]  0.5  0.5 0.1810114
-##  [3,]  0.0  1.0 0.4854220
+  ##       [,1] [,2]      [,3]
+  ##  [1,]  1.0  0.0 0.3335666
+  ##  [2,]  0.5  0.5 0.1810114
+  ##  [3,]  0.0  1.0 0.4854220
 
 #***
 # Model2m: estimate discrete GOM in mirt
@@ -378,21 +387,21 @@ mod2m@logLik
 ( cmod2m <- mirt.wrapper.coef(mod2m) )
 # compare estimated distributions
 round( cbind( "sirt"  = mod2$pi.k , "mirt" = mod2m@Prior[[1]] ) , 5 )
-##           sirt    mirt
-##   [1,] 0.33357 0.33627
-##   [2,] 0.18101 0.17789
-##   [3,] 0.48542 0.48584
+  ##           sirt    mirt
+  ##   [1,] 0.33357 0.33627
+  ##   [2,] 0.18101 0.17789
+  ##   [3,] 0.48542 0.48584
 # compare estimated item parameters
 dfr <- data.frame( "sirt" = mod2$item[,4:5] )
 dfr$mirt <- apply(cmod2m$coef[ , c("a1" , "a2") ] , 2 , plogis )
 round(dfr,4)
-##      sirt.lam.Cl1 sirt.lam.Cl2 mirt.a1 mirt.a2
-##   1        0.1157       0.8935  0.1177  0.8934
-##   2        0.0790       0.8360  0.0804  0.8360
-##   3        0.0743       0.8165  0.0760  0.8164
-##   4        0.0398       0.8093  0.0414  0.8094
-##   5        0.1273       0.7244  0.1289  0.7243
-##   [...]
+  ##      sirt.lam.Cl1 sirt.lam.Cl2 mirt.a1 mirt.a2
+  ##   1        0.1157       0.8935  0.1177  0.8934
+  ##   2        0.0790       0.8360  0.0804  0.8360
+  ##   3        0.0743       0.8165  0.0760  0.8164
+  ##   4        0.0398       0.8093  0.0414  0.8094
+  ##   5        0.1273       0.7244  0.1289  0.7243
+  ##   [...]
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

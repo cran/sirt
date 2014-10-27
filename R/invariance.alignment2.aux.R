@@ -9,7 +9,7 @@ inv.alignment2.lambda.alg <- function( lambda , psi0 , nu , align.scale ,
 		
 	minval <- fopt <- 1E+100
 	fopt_change <- 10000
-	
+
 	#################################
 	# begin iterations (lambda)
 	while( ( iter <= maxiter ) & ( fopt_change > conv) ){ 
@@ -24,7 +24,7 @@ inv.alignment2.lambda.alg <- function( lambda , psi0 , nu , align.scale ,
 #					align.scale=align.scale[1] , align.pow=align.pow[1] ,wgt, eps=eps,group.combis)
 		flambda <- ll0a <- ia_optim_lambda_R( lambda , psi0 , psi0b , align.scale[1] , align.pow[1] ,
 					wgt , eps , group.combis )
-
+				
 		fopt <- ll0 <- ll0a		
 		# f(x+h)
 #		ll1 <- align.optim.lambda( lambda=lambda , psi0=psi0+h , psi0b=psi0b ,
@@ -53,6 +53,7 @@ inv.alignment2.lambda.alg <- function( lambda , psi0 , nu , align.scale ,
 #		alpha_change <- max( abs( alpha0 - alpha0_old ))
 		psi_change <- max( abs( psi0 - psi0_old ))
 		fopt <- opt
+	
 		if ( fopt < minval ){
 			minval <- fopt
 			miniter <- iter

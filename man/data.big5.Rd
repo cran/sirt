@@ -79,13 +79,6 @@ factor model. \emph{Structural Equation Modeling}, \bold{16}, 295-314.
 
 \examples{
 \dontrun{
-data(data.big5)	
-# extract first 10 openness items
-items <- which( substring( colnames(data.big5) , 1 , 1 ) == "O"  )[1:10]
-dat <- data.big5[ , items ]
-I <- ncol(dat)
-summary(dat)
-
 # list of needed packages for the following examples
 packages <- scan(what="character")
      sirt   TAM   eRm   CDM   mirt  ltm   mokken  psychotools  psychomix
@@ -100,11 +93,23 @@ for (pack in packages){
     library(pack, character.only=TRUE) 
         }
 
+#############################################################################
+# EXAMPLE 1: Unidimensional models openness scale
+#############################################################################
+
+data(data.big5)	
+# extract first 10 openness items
+items <- which( substring( colnames(data.big5) , 1 , 1 ) == "O"  )[1:10]
+dat <- data.big5[ , items ]
+I <- ncol(dat)
+summary(dat)
+  ##   > colnames(dat)
+  ##    [1] "O3"  "O8"  "O13" "O18" "O23" "O28" "O33" "O38" "O43" "O48"
 # descriptive statistics
 psych::describe(dat)
         
 #****************
-# Model 1: Partial Credit Model
+# Model 1: Partial credit model
 #****************
 
 #-- M1a: rm.facets (in sirt)
@@ -142,7 +147,7 @@ summary(mod1g)
 plot(mod1g)
 
 #****************
-# Model 2: Generalized Partial Credit Model
+# Model 2: Generalized partial credit model
 #****************
 
 #-- M2a: rm.facets (in sirt)
@@ -169,7 +174,7 @@ summary(m2e)
 coef(m2e)
 
 #****************
-# Model 3: Nonparametric Item Response Model
+# Model 3: Nonparametric item response model
 #****************
 
 #-- M3a: ISOP and ADISOP model - isop.poly (in sirt)
@@ -188,6 +193,93 @@ plot(monotonicity.list)
 restscore.list <- mokken::check.restscore(dat)
 summary(restscore.list)
 plot(restscore.list) 
+
+
+#****************
+# Model 4: Graded response model
+#****************
+
+#-- M4a: mirt (in mirt)
+m4a <- mirt::mirt( dat , model=1 ,  itemtype="graded" , verbose=TRUE)
+print(m4a)
+mirt.wrapper.coef(m4a)
+
+#----  M4b: WLSMV estimation with cfa (in lavaan)
+lavmodel <- "F =~ O3__O48
+             F ~~ 1*F  
+                "
+# transform lavaan syntax with lavaanify.sirt
+lavmodel <- sirt::lavaanify.sirt( lavmodel , items=colnames(dat) )$lavaan.syntax
+mod4b <- lavaan::cfa( data= as.data.frame(dat) , model=lavmodel, std.lv = TRUE, 
+                 ordered=colnames(dat) ,  parameterization="theta")
+summary(mod4b , standardized=TRUE , fit.measures=TRUE , rsquare=TRUE)
+coef(mod4b)
+
+#****************
+# Model 5: Normally distributed residuals
+#****************
+
+#----  M5a: cfa (in lavaan)
+lavmodel <- "F =~ O3__O48
+             F ~~ 1*F  
+             F ~ 0*1
+             O3__O48 ~ 1
+                "                               
+lavmodel <- lavaanify.sirt( lavmodel , items=colnames(dat) )$lavaan.syntax
+mod5a <- lavaan::cfa( data= as.data.frame(dat) , model=lavmodel, std.lv = TRUE ,
+                 estimator="MLR" )
+summary(mod5a , standardized=TRUE , fit.measures=TRUE , rsquare=TRUE)
+
+#----  M5b: mirt (in mirt)
+
+# create user defined function
+name <- 'normal'
+par <- c("d" = 1 , "a1" = 0.8 , "vy" = 1)
+est <- c(TRUE, TRUE,FALSE)
+P.normal <- function(par,Theta,ncat){
+     d <- par[1]
+     a1 <- par[2]
+     vy <- par[3]     
+     psi <- vy - a1^2     
+     # expected values given Theta
+     mui <- a1*Theta[,1] + d
+     TP <- nrow(Theta)
+     probs <- matrix( NA , nrow=TP, ncol= ncat )
+     eps <- .01
+     for (cc in 1:ncat){
+        probs[,cc] <- dnorm( cc , mean = mui   , sd = sqrt( abs( psi + eps) ) )
+                    }
+     psum <- matrix( rep(rowSums( probs ),each=ncat)  , nrow=TP , ncol=ncat , byrow=TRUE)    
+     probs <- probs / psum
+     return(probs)                    
+}
+
+# create item response function
+normal <- mirt::createItem(name, par=par, est=est, P=P.normal)
+customItems <- list("normal"=normal) 
+itemtype <- rep( "normal",I)
+# define parameters to be estimated
+mod5b.pars <- mirt::mirt(dat, 1, itemtype=itemtype , 
+                   customItems=customItems , pars = "values")                
+ind <- which( mod5b.pars$name == "vy")
+vy <- apply( dat , 2 , var , na.rm=TRUE ) 
+mod5b.pars[ ind , "value" ] <- vy
+ind <- which( mod5b.pars$name == "a1")
+mod5b.pars[ ind , "value" ] <- .5* sqrt(vy)
+ind <- which( mod5b.pars$name == "d")
+mod5b.pars[ ind , "value" ] <- colMeans( dat , na.rm=TRUE )
+                                                       
+# estimate model
+mod5b <- mirt::mirt(dat, 1, itemtype=itemtype , customItems=customItems ,  
+                 pars = mod5b.pars , verbose=TRUE    )
+sirt::mirt.wrapper.coef(mod5b)$coef
+
+# some item plots
+    par(ask=TRUE)
+plot(mod5b, type = 'trace', layout = c(1,1))
+    par(ask=FALSE)
+# Alternatively:
+sirt::mirt.wrapper.itemplot(mod5b) 
 }
 }
 

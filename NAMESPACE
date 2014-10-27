@@ -48,7 +48,7 @@ export(
     marginal.truescore.reliability ,
     eigenvalues.manymatrices ,
     rm.facets ,
-    rm.hrm ,
+    rm.sdt ,
     dirichlet.simul,
     dirichlet.mle ,
     gom.jml ,
@@ -116,7 +116,15 @@ export(
     lavaan2mirt ,
     tam2mirt ,
     R2conquest ,
-    mirt.wrapper.fscores
+    mirt.wrapper.fscores ,
+#    mirt.model.vars ,
+    lavaanify.sirt ,
+    pcm.conversion ,
+    mirt.wrapper.itemplot ,
+    mirt.specify.partable ,
+    nedelsky.sim ,
+    nedelsky.latresp ,
+    nedelsky.irf
 )    
     
     
@@ -134,7 +142,7 @@ S3method(summary,rasch.pairwise)
 S3method(summary,prob.guttman)
 S3method(summary,rasch.mirtlc)
 S3method(summary,rm.facets)
-S3method(summary,rm.hrm)
+S3method(summary,rm.sdt)
 S3method(summary,gom.jml)
 S3method(summary,smirt)
 S3method(summary,gom)
@@ -163,6 +171,15 @@ S3method(summary, linking.robust)
 S3method(summary, lc.2raters)
 S3method(summary, rasch.copula3)
 S3method(summary, rasch.conquest)
+
+
+S3method(coef, rasch.evm.pcm )
+
+
+
+S3method(vcov, rasch.evm.pcm )
+
+
 
 # imports Depends packages
 import(mvtnorm)

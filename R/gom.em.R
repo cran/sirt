@@ -4,7 +4,8 @@
 gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" , 
 	theta0.k= seq(-5,5,len=15) , xsi0.k= exp(seq(-6,3 ,len=15)) , 
 	max.increment=.3 , numdiff.parm=.001 , maxdevchange= 10^(-5) ,
-	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001){
+	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001 ,
+	progress=TRUE ){
 	#..........................................................
 	s1 <- Sys.time()
 	e1 <- environment() 
@@ -66,9 +67,10 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
     while( ( ( maxdevchange < devchange ) | (globconv < conv) ) &
 			( iter < maxiter )
 						){
-		cat(disp)	
-		cat("Iteration" , iter+1 , "   " , paste( Sys.time() ) , "\n" )	
-		
+		if (progress){				
+			cat(disp)	
+			cat("Iteration" , iter+1 , "   " , paste( Sys.time() ) , "\n" )	
+					}
 		# previous values
 		dev0 <- dev
 		pi.k0 <- pi.k
@@ -91,8 +93,8 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 		# maximize lambda
 		if (model=="GOM"){
 			res <- .gom.est.lambda( lambda , I , K , n.ik , 
-					numdiff.parm , max.increment=max.increment, theta.k , msteps ,
-					mstepconv , eps = .001  )
+					   numdiff.parm , max.increment=max.increment, theta.k , msteps ,
+					   mstepconv , eps = .001 , progress=progress )
 			lambda <- res$lambda
 			se.lambda <- res$se.lambda
 			max.increment <- max( abs(lambda-lambda0))/1.2	
@@ -100,7 +102,7 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 		if (model=="GOMRasch"){
 			res <- .gom.est.b( lambda , I , K , n.ik , b , theta0.k , 
 					numdiff.parm=.001 , max.increment=max.increment,theta.k , msteps ,
-					mstepconv , eps = .001 )
+					mstepconv , eps = .001 , progress=progress)
 			b <- res$b
 			se.b <- res$se.b
 			lambda <- t( plogis( outer( theta0.k , b , "-" )	) )
@@ -119,23 +121,19 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 		iter <- iter+1
 		devchange <- abs( ( dev - dev0 )/dev0 )	
 		#****
-		# print progress			
-		cat( paste( "   Deviance = "  , round( dev , 4 ) , 
-			if (iter > 1 ){ " | Deviance change = " } else {""} ,
-			if( iter>1){round( - dev + dev0 , 6 )} else { ""}	,"\n",sep="") )
-		cat( paste( "    Maximum lambda parameter change = " , 
-				paste( round(max(abs(lambda-lambda0)) ,6) , collapse=" " ) , "\n" , sep=""))
-		cat( paste( "    Maximum distribution parameter change = " , 
-				paste( round(max(abs(pi.k-pi.k0)) ,6) , collapse=" " ) , "\n" , sep=""))
-		if (model=="GOMRasch"){
-			cat( paste( "    Maximum b parameter change = " , 
-				paste( round(max(abs(b-b0)) ,6) , collapse=" " ) , "\n" , sep=""))
-#			cat( paste( "    Means = " , 
-#				paste( round( mu ,3) , collapse=" " ) , "\n" , sep=""))
-#			cat( paste( "    SDs = " , 
-#				paste( round( sqrt(diag(Sigma)) ,3) , collapse=" " ) , "\n" , sep=""))
-#			cat( paste( "    Correlation = " , 
-#				paste( round( Sigma[1,2] ,3) , collapse=" " ) , "\n" , sep=""))				
+		# print progress
+        if (progress){		
+			cat( paste( "   Deviance = "  , round( dev , 4 ) , 
+				if (iter > 1 ){ " | Deviance change = " } else {""} ,
+				if( iter>1){round( - dev + dev0 , 6 )} else { ""}	,"\n",sep="") )
+			cat( paste( "    Maximum lambda parameter change = " , 
+					paste( round(max(abs(lambda-lambda0)) ,6) , collapse=" " ) , "\n" , sep=""))
+			cat( paste( "    Maximum distribution parameter change = " , 
+					paste( round(max(abs(pi.k-pi.k0)) ,6) , collapse=" " ) , "\n" , sep=""))
+			if (model=="GOMRasch"){
+				cat( paste( "    Maximum b parameter change = " , 
+					paste( round(max(abs(b-b0)) ,6) , collapse=" " ) , "\n" , sep=""))
+						}				
 					}				
 				}
 	# *********
@@ -174,29 +172,35 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 	obji <- item
 	for (vv in seq(2,ncol(obji) )){
 		obji[,vv] <- round( obji[,vv],3 ) }
-	cat("*********************************\n")
-	cat("Item Parameters\n")
-    print( obji )		
+    if (progress){		
+		cat("*********************************\n")
+		cat("Item Parameters\n")
+		print( obji )		
+			}
 	EAP.rel <- NULL
 	person <- NULL
 	if ( model=="GOMRasch"){			
 		res <- .gom.est.covariance( f.qk.yi , Sigma , theta.kM , N  )
 		.sirt.attach.environment( res , envir=e1 )				
 		#--- distribution parameters
-		cat("*********************************\n")
-		cat("Trait Distribution (Location, Variability)\n")		
-		cat( " Means: " , round( mu , 3 ) , "\n")				
-		cat( " Standard deviations: " , round( sqrt(diag(Sigma)) , 3 ) , "\n")
 		c1 <- cov2cor(Sigma)
-		cat( " Correlation " , round( c1[lower.tri(c1)] , 3 ) , "\n")		
-		flush.console()			
+		if (progress){
+			cat("*********************************\n")
+			cat("Trait Distribution (Location, Variability)\n")		
+			cat( " Means: " , round( mu , 3 ) , "\n")				
+			cat( " Standard deviations: " , round( sqrt(diag(Sigma)) , 3 ) , "\n")
+			cat( " Correlation " , round( c1[lower.tri(c1)] , 3 ) , "\n")		
+			flush.console()			
+					}
 		# person parameters
 		pers <- .smirt.person.parameters( data=dat2 , D=2 , theta.k=theta.kM ,
 			p.xi.aj=f.yi.qk , p.aj.xi=f.qk.yi , weights=rep(1,N) )	
 		person <- pers$person
 		EAP.rel <- pers$EAP.rel 
-		cat("*********************************\n")
-		cat("EAP Reliability = " , round(EAP.rel,3) , "\n")				
+		if (progress){
+			cat("*********************************\n")
+			cat("EAP Reliability = " , round(EAP.rel,3) , "\n")				
+					}
 		}
 	#***
 	# MAP

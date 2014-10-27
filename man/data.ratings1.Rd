@@ -1,16 +1,21 @@
 \name{data.ratings}
 \alias{data.ratings}
 \alias{data.ratings1}
+\alias{data.ratings2}
+\alias{data.ratings3}
+
+
 \docType{data}
 \title{
-Rating Dataset 1
+Rating Datasets
 }
 \description{
-This data set contains ratings for 135 students from
-7 raters on 5 items.
+Some rating datasets.
 }
 \usage{
 data(data.ratings1)
+data(data.ratings2)
+data(data.ratings3)
 }
 
 
@@ -37,7 +42,32 @@ standards for 8th graders in German language writing.
 Variables \code{k1} to \code{k5} denote several rating
 criteria of writing compentency. \cr
 
+\item Dataset \code{data.ratings2}: \cr
 
+Data frame with 615 observations containing 5 criteria (\code{k1}, ..., \code{k5}),
+178 students and 16 raters.
+
+\code{'data.frame':   615 obs. of  7 variables:} \cr
+\code{ $ idstud: num  1001 1001 1002 1002 1003 ...} \cr
+\code{ $ rater : chr  "R03" "R15" "R05" "R10" ...} \cr
+\code{ $ k1    : int  1 1 0 1 2 0 1 3 3 0 ...} \cr
+\code{ $ k2    : int  1 1 1 1 1 0 0 3 3 0 ...} \cr
+\code{ $ k3    : int  1 1 1 1 2 0 0 3 3 1 ...} \cr
+\code{ $ k4    : int  1 1 1 2 1 0 0 2 2 0 ...} \cr
+\code{ $ k5    : int  2 2 1 2 0 1 0 3 2 1 ...} \cr
+
+\item Dataset \code{data.ratings3}: \cr
+
+Data frame with 3169 observations containing 3 criteria (\code{k1}, ..., \code{k5}),
+561 students and 52 raters.
+
+\code{'data.frame':   3169 obs. of  6 variables:} \cr
+\code{ $ idstud: num  10001 10001 10002 10002 10003 ...} \cr
+\code{ $ rater : num  840 838 842 808 830 845 813 849 809 802 ...} \cr
+\code{ $ crit2 : int  1 3 3 1 2 2 2 2 3 3 ...} \cr
+\code{ $ crit3 : int  2 2 2 2 2 2 2 2 3 3 ...} \cr
+\code{ $ crit4 : int  1 2 2 2 1 1 1 2 2 2 ...} \cr
+\code{ $ crit6 : num  4 4 4 3 4 4 4 4 4 4 ...} \cr
 
 
 }
@@ -57,12 +87,21 @@ criteria of writing compentency. \cr
 \emph{Dataset} \code{data.ratings1} 
 
 \code{\link{rm.facets}} (Example 1, Example 2),
-\code{\link{rm.hrm}} (Example 1),
+\code{\link{rm.sdt}} (Example 1),
 
-%%% data.si02
-%\emph{Dataset} \code{data.si02} 
+%%% data.ratings2
+\emph{Dataset} \code{data.ratings2} 
 
-%\code{\link{rasch.mirtlc}} (Example 3)
+--
+%\code{\link{rm.facets}} (Example 1, Example 2),
+%\code{\link{rm.sdt}} (Example 1),
+
+%%% data.ratings3
+\emph{Dataset} \code{data.ratings3} 
+
+--
+%\code{\link{rm.facets}} (Example 1, Example 2),
+%\code{\link{rm.sdt}} (Example 1),
 
 }
 

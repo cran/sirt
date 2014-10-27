@@ -150,7 +150,7 @@ mod1m.pars[ mod1m.pars$name == "K" , "est" ] <- FALSE
 # define Theta design matrix
 Theta <- matrix( seq(-3,3,len=10) , ncol=1)
 # estimate model
-mod1m <- mirt::mirt(dat, 1, rep( "ramsayqm",I) , customItems=list("ramsayqm"=x), 
+mod1m <- mirt::mirt(dat, 1, rep( "ramsayqm",I) , customItems=list("ramsayqm"=ramsayqm), 
                pars = mod1m.pars , verbose=TRUE , 
                technical = list( customTheta=Theta , NCYCLES=50) 
                 )

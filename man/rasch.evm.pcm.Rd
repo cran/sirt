@@ -1,6 +1,9 @@
 \name{rasch.evm.pcm}
 \alias{rasch.evm.pcm}
 \alias{summary.rasch.evm.pcm}
+\alias{coef.rasch.evm.pcm}
+\alias{vcov.rasch.evm.pcm}
+
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -23,7 +26,11 @@ functioning are performed.
 rasch.evm.pcm(dat, jackunits = 20, weights = NULL, pid = NULL ,
     group=NULL , powB = 2, adj_eps = 0.3, progress = TRUE )
 
-\method{summary}{rasch.evm.pcm}(object,...)	    
+\method{summary}{rasch.evm.pcm}(object,...)
+
+\method{coef}{rasch.evm.pcm}(object,...)
+
+\method{vcov}{rasch.evm.pcm}(object,...)	
 }
 
 
@@ -77,6 +84,7 @@ A list with following entries
 \item{person}{Data frame with person parameters obtained (MLE)}
 \item{B}{Paired comparison matrix}
 \item{D}{Transformed paired comparison matrix}
+\item{coef}{Vector of estimated coefficients}
 \item{vcov}{Covariance matrix of estimated item parameters}
 \item{JJ}{Number of jackknife units}
 \item{JJadj}{Reduced number of jackknife units}
@@ -280,3 +288,5 @@ summary(mod1)
 \keyword{Eigenvector method}
 \keyword{Pairwise estimation}
 \keyword{summary}
+\keyword{coef}
+\keyword{vcov}

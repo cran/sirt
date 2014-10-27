@@ -76,7 +76,7 @@ I <- ncol(dat)
 # list of needed packages for the following examples
 packages <- scan(what="character")
      eRm  ltm  TAM mRm  CDM  mirt psychotools  IsingFit  igraph  qgraph  pcalg 
-     poLCA  randomLCA psychomix MplusAutomation
+     poLCA  randomLCA psychomix MplusAutomation lavaan
      
 # install packages     
 if (FALSE){  # default is FALSE
@@ -175,7 +175,7 @@ filename <- "mod1u"   # specify file name
 res2 <- MplusAutomation::mplusModeler(object = mplusmod , dataout = paste0(filename,".dat") , 
                modelout= paste0(filename,".inp"), run = 0 )         
   # run Mplus model
-MplusAutomation::runModels( filefilter = inpfile ,  Mplus_command = mplus_path)
+MplusAutomation::runModels( filefilter = paste0(filename,".inp"), Mplus_command = mplus_path)
   # alternatively, the system() command can also be used
   # get results
 mod1l <- MplusAutomation::readModels(target = getwd() , filefilter = filename )
@@ -239,6 +239,12 @@ plot(mod2h)
 #----  M2i: rasch.pml2 (in sirt)
 mod2i <- sirt::rasch.pml2(dat, est.a=1:I)
 summary(mod2i)
+
+#----  M2j: WLSMV estimation with cfa (in lavaan)
+lavmodel <- "F =~ A1+A2+A3+A4+B1+B2+B3+B4+
+                        C1+C2+C3+C4"
+mod2j <- lavaan::cfa( data=dat , model=lavmodel, std.lv = TRUE, ordered=colnames(dat))
+summary(mod2j , standardized=TRUE , fit.measures=TRUE , rsquare=TRUE)
 
 #*****************************************************
 # Model 3: 3PL model (note that results can be quite unstable!)

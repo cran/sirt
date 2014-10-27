@@ -1,6 +1,6 @@
-\name{rm.hrm}
-\alias{rm.hrm}
-\alias{summary.rm.hrm}
+\name{rm.sdt}
+\alias{rm.sdt}
+\alias{summary.rm.sdt}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Hierachical Rater Model Based on Signal Detection Theory (HRM-SDT)
@@ -17,12 +17,12 @@ DeCarlo, Kim & Johnson, 2011).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usage{
-rm.hrm(dat, pid, rater, Qmatrix = NULL, theta.k = seq(-9, 9, len = 30), 
+rm.sdt(dat, pid, rater, Qmatrix = NULL, theta.k = seq(-9, 9, len = 30), 
     est.a.item = FALSE, est.c.rater = "n", est.d.rater = "n", 
     d.min = 0.5, d.max = 100, d.start = 3, max.increment = 1, numdiff.parm = 0.00001, 
     maxdevchange = 0.1, globconv = .001, maxiter = 1000, msteps = 4, mstepconv = 0.001)
 
-\method{summary}{rm.hrm}(object,...)    
+\method{summary}{rm.sdt}(object,...)    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -114,7 +114,11 @@ are modelled as a signal detection model
 \deqn{ P( X_{pir} \le k | \eta_{pi} ) =
 G( c_{irk} - d_{ir} \eta_{pi} )}
 where \eqn{G} is the logistic distribution function
-and the categories are \eqn{k=1,\ldots , K+1}. 
+and the categories are \eqn{k=1,\ldots , K+1}.
+Note that the item response model can be equivalently written
+as \deqn{ P( X_{pir} \ge k | \eta_{pi} ) =
+G(   d_{ir} \eta_{pi} - c_{irk})}
+
 The thresholds \eqn{c_{irk}} can be further restricted to
 \eqn{c_{irk} = c_{k}} (\code{est.c.rater='e'}),
 \eqn{c_{irk} = c_{ik}} (\code{est.c.rater='i'}) or
@@ -221,20 +225,19 @@ dat <- data.ratings1
 
 \dontrun{
 # Model 1: Partial Credit Model: no rater effects
-mod1 <- rm.hrm( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
-            pid=dat$idstud , est.c.rater="n" , est.d.rater="n" , 
-            d.start=100 , maxiter=15)
+mod1 <- rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+            pid=dat$idstud , est.c.rater="n" , est.d.rater="n" , maxiter=15)
 summary(mod1)
             
 # Model 2: Generalized Partial Credit Model: no rater effects
-mod2 <- rm.hrm( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod2 <- rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="n" , est.d.rater="n" , 
             est.a.item =TRUE , d.start=100 , maxiter=15)
 summary(mod2)
 }
             
 # Model 3: Equal effects in SDT
-mod3 <- rm.hrm( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod3 <- rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="e" , est.d.rater="e" , maxiter=15)
 summary(mod3)
   ##   Item Parameters 
@@ -256,7 +259,7 @@ summary(mod3)
 
 \dontrun{
 # Model 4: Rater effects in SDT
-mod4 <- rm.hrm( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod4 <- rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="r" , est.d.rater="r" , maxiter=15)
 summary(mod4)
 }            

@@ -214,7 +214,7 @@ noharm.sirt <- function(dat,weights=NULL,Fval=NULL,Fpatt=NULL,
 	#***********************
 	# rotated solution
 	
-	if (model.type=="EFA"){
+	if (model.type=="EFA"){	
 		m1 <- promax(res$loadings)		
 		p1 <- matrix( 0 , nrow=I,D)
 		for (dd in 1:D){ p1[,dd] <- m1$loadings[,dd] }

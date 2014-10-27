@@ -316,7 +316,7 @@ We also define a measurement model for response indicators \eqn{R_{pi}} which de
 on the item response \eqn{X_{pi}} itself:
 \deqn{P( R_{pi} = 1 | X_{pi} = k , \theta_p , \xi_p ) = 
 	P( R_{pi} = 1 | X_{pi} = k , \xi_p ) =
-L \left[  \xi_p -  \beta_i + k \delta ) \right] \quad \mbox{ for }
+L \left[  \xi_p -  \beta_i - k \delta  \right] \quad \mbox{ for }
 \quad k=0,1} 
 If \eqn{\delta=0}, then the probability of responding to an item is independent
 of the incompletely observed item \eqn{X_{pi}} which is an
@@ -406,7 +406,7 @@ Princeton, ETS.
 Pohl, S., Graefe, L., & Rose, N. (2014). Dealing with omitted and 
 not-reached items in competence tests evaluating approaches accounting for 
 missing responses in item response theory models. 
-\emph{Educational and Psychological Measurement}, \bold{xx}, xxx-xxx.
+\emph{Educational and Psychological Measurement}, \bold{74}, 423-452.
 
 Ramsay, J. O. (1989). A comparison of three simple test theory models. 
 \emph{Psychometrika}, \bold{54}, 487-499.

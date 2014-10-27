@@ -32,6 +32,53 @@ CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ---
+Versions 1.0  -- 2014-10-27  --  CRAN sirt 1.0-3
+---
+NOTE  * included argument 'progress' in 'gom.em' for optional
+        printing of iteration progress
+NOTE  * disabled warnings produced in 'rasch.mirtlc' by the glm
+        function 
+FIXED * fixed a bug in calculating the posterior in 'mirt.wrapper'
+        for nonlinear item response models 
+FIXED * fixed a bug in running exploratory factor analysis with
+        one dimension in noharm.sirt (thanks to Russell Zheng)
+FIXED * fixed a bug in datawide2long with Q-matrix input
+FIXED * fixed a bug in data handling in 'invariance.alignment'
+        with some missing intercepts and slopes
+ADDED * included an extension of lavaan syntax to accomodate
+        guessing and slipping parameters and "__" (item shortage 
+        declaration) -> function 'lavaanify.sirt'
+        The function lavaan2mirt also includes these options.
+NOTE  * included coef and vcov method for function 'rasch.evm.pcm'
+NOTE  * included argument weights in 'dirichlet.mle'
+NOTE  * included utility function for conversion of different
+        parameterizations in partial credit model
+NOTE  * included helper function 'mirt.wrapper.itemplot'        
+NOTE  * enabled progress argument in rasch.copula functions        
+NOTE  * renamed DeCarlo's hierarchical rater model based on
+        signal detection theory 'rm.hrm' into 'rm.sdt'
+NOTE  * fixed an error in description of missing IRT models in
+        'rasch.mml2.Rd' (thanks to Carmen Koehler)
+NOTE  * fixed a bug in tam2mirt for polytomous items (thanks to
+        Michal Modzelewski)
+ADDED * included function 'mirt.specify.partable' for modifying
+        a parameter table in mirt package 
+NOTE  * included argument item type for polytomous data in 'lavaan2mirt'
+NOTE  * updated lavaanify.sirt function because of changes in 
+        the lavaan::lavaanify function from lavaan 0.5-16 to the
+        lavaan 0.5-17 package
+NOTE  * changed mean constraint for rater parameters in 'rm.facets' 
+ADDED * included estimation and simulation functions for the Nedelsky model
+        ('nedelsky.sim', 'nedelsky.irf')
+
+DATA  * included/modified datasets: data.ratings2, data.si06, data.ratings3
+EXAMP * included/modified examples: dirichlet.simul (1,2),
+        data.read (2), mirt.model.vars (1), rasch.mirtlc (4), 
+        data.long (3,4), lavaanify.sirt (1), lavaan2mirt (1),
+        dirichlet.mle (1,2), pcm.conversion (1), data.big5 (1),
+        mirt.specify.partable (1), nedelsky-methods (1,2)
+
+---
 Versions 0.47 -- 2014-08-30  --  CRAN sirt 0.47-36
 ---
 ADDED * included wrapper function of mirt output of extracting

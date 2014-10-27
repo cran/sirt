@@ -458,10 +458,6 @@ summary(mod2)
 # estimate model with MultiLCIRT package
 library(MultiLCIRT)
 
-# aggregated dataset in order to input only unique response patterns
-out <- MultiLCIRT::aggr_data( as.matrix(dat) , fort=TRUE)
-S <- out$data_dis
-yv <- out$freq
 # define matrix to allocate each item to one dimension
 multi1 <- matrix( 1:(3*I) , nrow=3 , byrow=TRUE )
 # define reference items in item-dimension allocation matrix
@@ -470,8 +466,9 @@ multi1[ 2 , c(10,14) - 9  ] <- c(14,9)
 multi1[ 3 , c(19,23) - 18 ] <- c(23,19)
 
 # Rasch model with 5 latent classes (random start: start=1)
-mod3 <- MultiLCIRT::est_multi_poly(S,yv,k=5,start=1,link=1,multi=multi1,tol=10^-5 , 
-                 output=TRUE , disp=TRUE , fort=TRUE)
+mod3 <- MultiLCIRT::est_multi_poly(S=dat,k=5,       # k=5 ability levels
+                start=1,link=1,multi=multi1,tol=10^-5 , 
+                output=TRUE , disp=TRUE , fort=TRUE)
 # estimated location points and class probabilities in MultiLCIRT
 cbind( t( mod3$Th ) , mod3$piv )
 # compare results with rasch.mirtlc

@@ -221,7 +221,7 @@ For more flexible estimation of multilevel IRT models see the
 \examples{
 \dontrun{	
 #############################################################################
-# EXAMPLE 1: Dataset Multilevel data.ml1
+# EXAMPLE 1: Dataset Multilevel data.ml1 - dichotomous items
 #############################################################################
 data(data.ml1)
 dat <- data.ml1[,-1]
@@ -258,7 +258,8 @@ mod4 <- mcmc.2pno.ml( dat , group , est.b.Var="i" , est.a.M="h" ,
 summary(mod4)
 
 #############################################################################
-# EXAMPLE 2: Dataset Multilevel data.ml2
+# EXAMPLE 2: Dataset Multilevel data.ml2 - polytomous items
+#            assuming a normal distribution for polytomous items
 #############################################################################
 data(data.ml2)
 dat <- data.ml2[,-1]

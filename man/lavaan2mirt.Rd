@@ -12,16 +12,21 @@ Optionally, the model can be estimated with the
 \code{\link[mirt:mirt]{mirt}} (\pkg{mirt}) function
 (\code{est.mirt=TRUE}) or just \code{mirt} syntax 
 is generated (\code{est.mirt=FALSE}).
+
+Extensions of the \code{lavaan} syntax include guessing and slipping
+parameters (operators \code{?=g1} and \code{?=s1})
+and a shortage operator for item groups (see \code{__}).
+See \code{\link{lavaanify.sirt}} for more details.
 }
 
 \usage{
-lavaan2mirt(dat, lavmodel, est.mirt = TRUE, ...)
+lavaan2mirt(dat, lavmodel, est.mirt = TRUE, poly.itemtype="gpcm" , ...)
 }
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
-Dataset with item response
+Dataset with item responses
 }
   \item{lavmodel}{
 Model specified in \code{lavaan} syntax 
@@ -31,6 +36,9 @@ Model specified in \code{lavaan} syntax
 An optional logical indicating whether the model
 should be estimated with \code{\link[mirt:mirt]{mirt}}
 }
+\item{poly.itemtype}{Item type for polytomous data. This can
+	be \code{gpcm} for the generalized partial credit model
+      or \code{graded} for the graded response model.}
   \item{\dots}{
 Further arguments to be passed for estimation in
 \code{\link[mirt:mirt]{mirt}}
@@ -82,6 +90,8 @@ for discussion about the \pkg{lavaan} package. \cr
 See \code{\link{mirt.wrapper}} for convenience wrapper functions
 for \code{\link[mirt:mirt]{mirt}} objects.
 
+See \code{\link{lavaanify.sirt}} for extensions of \code{lavaanify}.
+
 See \code{\link{tam2mirt}} for converting fitted objects in the \pkg{TAM}
 package into fitted \code{\link[mirt:mirt]{mirt}} objects.
 }
@@ -92,10 +102,14 @@ package into fitted \code{\link[mirt:mirt]{mirt}} objects.
 # EXAMPLE 1: Convert some lavaan syntax to mirt syntax for data.read
 #############################################################################
 
+data(data.read)
+dat <- data.read
+
 #******************
 #*** Model 1: Single factor model
 lavmodel <- "
      F=~ A1+A2+A3+A4 + C1+C2+C4 + B1+B2+B3+B4 
+                         # omit item C3
             "
 # convert syntax and estimate model
 res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
@@ -181,6 +195,32 @@ lavmodel <- "
 res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
 mirt.wrapper.coef(res$mirt)
 
+#******************
+#*** Model 6: 1-dimensional model with guessing and slipping parameters
+#******************
+
+lavmodel <- "
+     F=~ c*A1+c*A2+1*A3+1.3*A4 + C1__C4 + a*B1+b*B2+b*B3+B4
+     # guessing parameters
+     A1+A2 ?= guess1*g1     
+     A3 ?= .25*g1
+     B1+C1 ?= g1
+     B2__B4 ?= 0.10*g1
+     # slipping parameters
+     A1+A2+C3 ?= slip1*s1
+     A3 ?= .02*s1
+     # item intercepts
+     A1 | 0*t1
+     A2 | -.4*t1
+     F ~ 1
+            "
+# convert syntax and estimate model
+res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+# coefficients
+mirt.wrapper.coef(res$mirt)
+# converted mirt model
+cat(res$mirt.syntax)
+
 #############################################################################
 # EXAMPLE 2: Convert some lavaan syntax to mirt syntax for
 #            longitudinal data data.long   
@@ -210,7 +250,7 @@ lavmodel <- "
      F1 ~~ F1
      F1 ~~ F2     
      F2 ~~ F2
-     # equal difficulties of same items
+     # equal item difficulties of same items
      I3T1 | i3*t1
      I3T2 | i3*t1
      I4T1 | i4*t1
@@ -280,6 +320,11 @@ mirt::itemplot( mres , 3 )   # third item
 plot(mres)   # item information
 plot(mres,type="trace")  # item category functions
 
+# graded response model with equal slopes
+res1 <- lavaan2mirt( dat, lavmodel, poly.itemtype="graded", technical=list(NCYCLES=20),
+              verbose=TRUE )
+mirt.wrapper.coef(res1$mirt) 
+
 #******************
 #*** Model 2: Generalized partial credit model with some constraints
 lavmodel <- "
@@ -310,12 +355,12 @@ mirtmodel <- mirt::mirt.model( "
              COV = O*O
                ")
 # initial table of parameters in mirt          
-mirt.pars <- mirt::mirt( dat[,1:6] , mirtmodel , pars="values")
-# fix slope of O28 to 1.2
+mirt.pars <- mirt::mirt( dat[,1:6] , mirtmodel , itemtype="gpcm" , pars="values")
+# fix slope of item O28 to 1.2
 ind <- which( ( mirt.pars$item == "O28" ) & ( mirt.pars$name == "a1") )
 mirt.pars[ ind , "est"] <- FALSE
 mirt.pars[ ind , "value"] <- 1.2
-# fix d1 of O28 to -0.5
+# fix d1 of item O28 to -0.5
 ind <- which( ( mirt.pars$item == "O28" ) & ( mirt.pars$name == "d1") )
 mirt.pars[ ind , "est"] <- FALSE
 mirt.pars[ ind , "value"] <- -0.5

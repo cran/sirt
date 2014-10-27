@@ -92,13 +92,15 @@
 # estimation of lambda parameters
 .gom.est.lambda <- function( lambda , I , K , n.ik , 
 		numdiff.parm=.001 , max.increment=1,theta.k , msteps ,
-		mstepconv , eps = .001 ){
+		mstepconv , eps = .001 , progress=TRUE){
     h <- numdiff.parm
 	diffindex <- 1:I
 	Q0 <- 0*lambda
 	se.lambda <- Q0
 	an.ik <- aperm( n.ik , c(2,3,1) )
-	cat("  M steps lambda parameter |")
+	if (progress){ 
+		cat("  M steps lambda parameter |")
+					}
 	it <- 0 ;	conv1 <- 1000
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
 		lambda0 <- lambda
@@ -120,9 +122,14 @@
 					}
 		conv1 <- max( abs( lambda - lambda0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()
+		if (progress){ 
+				cat("-") 
+				# ; flush.console() 
+					}
 			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()
+	if (progress){		
+		cat(" " , it , "Step(s) \n")	#; flush.console()
+				}
 	res <- list("lambda" = lambda , "se.lambda" = se.lambda , 
 			"ll" = sum(res$ll0) )
     return(res)
@@ -130,14 +137,15 @@
 ######################################################################
 # estimation of b parameters
 .gom.est.b <- function( lambda , I , K , n.ik , 
-		b , theta0.k , 
-		numdiff.parm=.001 , max.increment,theta.k , msteps ,
-		mstepconv , eps = .001 ){
+		b , theta0.k , numdiff.parm=.001 , max.increment,theta.k , msteps ,
+		mstepconv , eps = .001 , progress=progress ){
     h <- numdiff.parm
 	diffindex <- 1:I
 #	Q0 <- 0*lambda
 #	se.b <- Q0
-	cat("  M steps b parameter |")
+    if (progress){
+		cat("  M steps b parameter |")
+				  }
 	an.ik <- aperm( n.ik , c(2,3,1) )	
 	it <- 0 ;	conv1 <- 1000
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
@@ -153,9 +161,13 @@
 		#b <- b - mean(b)
 		conv1 <- max( abs( b - b0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()
+		if (progress){
+			cat("-") # ; flush.console()
+				}
 			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()
+	if (progress){ 
+		cat(" " , it , "Step(s) \n")	#; flush.console()
+					}
 	res <- list("b" = b , "se.b" = sqrt( - 1/res$d2 ) , 
 			"ll" = sum(res$ll0) )
     return(res)
@@ -172,9 +184,7 @@
 	h <- numdiff.parm
     ll0 <- rowSums( an.ik * log(pjk+eps) )
     ll1 <- rowSums( an.ik * log(pjk1+eps) )
-    ll2 <- rowSums( an.ik * log(pjk2+eps) )
-#print(ll0)
-#stop("here")		
+    ll2 <- rowSums( an.ik * log(pjk2+eps) )	
 #    ll0 <- aggregate( ll0 , list(diffindex) , sum )[,2]
 #    ll1 <- aggregate( ll1 , list(diffindex) , sum )[,2]
 #    ll2 <- aggregate( ll2 , list(diffindex) , sum )[,2]

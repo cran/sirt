@@ -105,6 +105,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 # zz0 <- Sys.time()
 		# calculate probabilities
 		probs <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
+#		probs <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
 				theta.k ,RR )				
 # cat("facets.calcprob   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						
@@ -238,6 +239,9 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 	for (kk in 1:K){ item[ , paste0("tau.Cat",kk) ] <- tau.item[,kk] }
     item$a <- a.item
 
+	delta.item <- pcm.conversion(tau.item)$delta
+	item$delta <- delta.item
+
 	obji <- item
 	for (vv in seq(2,ncol(obji) )){
 		obji[,vv] <- round( obji[,vv],3 ) }
@@ -273,6 +277,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 		"sigma"=sigma , 
 		"tau.item"=tau.item , "se.tau.item"=se.tau.item ,
 		"a.item"=a.item , "se.a.item"=se.a.item ,
+		"delta.item" = delta.item ,
 		"b.rater"=b.rater , "se.b.rater"=se.b.rater , 
 		"a.rater"=a.rater , "se.a.rater"=se.a.rater , 
 		"f.yi.qk"=f.yi.qk , "f.qk.yi"=f.qk.yi , "probs"=probs ,

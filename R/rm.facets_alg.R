@@ -47,8 +47,9 @@ sumtau <- function(tau.item){
 #	
 #		b <- b + b0				
 #				} else { 
+
 		b <- tau.item[ item.index , ]
-		b0 <- ( matrix( b.rater , nrow= RR , ncol=K) )[ rater.index , ] * 	Qmatrix[ item.index ,]	 
+		b0 <- ( matrix( b.rater , nrow= RR , ncol=K) )[ rater.index , ] * 	Qmatrix[ item.index ,]	 		
 		b <- b + b0
 #			}
 	# a parameter
@@ -219,10 +220,18 @@ sumtau <- function(tau.item){
 		# numerical differentiation			
 		res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
 				max.increment=max.b.increment , numdiff.parm )					
-		b.rater <- b.rater + res$increment	
+		increment <- res$increment
+#		increment <- increment - mean(increment )
+		b.rater <- b.rater + increment
+		
 		# centering
 		brc <- mean( b.rater )
-		b.rater <- b.rater - brc
+		# if (FALSE){
+		#  b.rater <- b.rater - brc
+		#		}
+			
+		 b.rater[RR] <- - sum( b.rater[-RR] )
+		
 #		max.b.increment <- abs( b.rater - b0 )
 		conv1 <- max( abs( b.rater - b0 ) )
 		it <- it+1

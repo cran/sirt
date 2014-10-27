@@ -14,6 +14,8 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 	dat <- as.matrix(dat)
 	theta.normal <- FALSE
 	a <- c(1)
+	# handle warnings
+	warn_temp <- options()$warn
 #	ref.item <- NULL
 	if ( is.null(theta.k) ){ 
 		  theta.fixed<-FALSE  } else { 
@@ -212,6 +214,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 		res2 <- .m.step.mirtlc.lc( pjk , n.k , r.jk , n.jk , G , Nclasses)
 					      }
 	if ( modeltype%in%c("MLC1","MLC2") ){
+	options(warn=-1) 
 		res2 <- .m.step.mirtlc.mlc1( pjk , n.k , r.jk , n.jk , G , Nclasses ,
 				theta.k , b , a , I , ref.item , mstep.maxit ,
 				des.theta , des.b , theta.fixed , theta.normal ,
@@ -219,6 +222,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 				 range.b , range.a , iter , fac.iter )
 		b <- res2$b ; theta.k <- res2$theta.k ; pi.k <- res2$pi.k
 		a <- res2$a
+	options(warn=warn_temp)	
 					        }					  
 							
 													

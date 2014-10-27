@@ -166,11 +166,32 @@ rasch.evm.pcm <- function( dat , jackunits=20 , weights=NULL ,
 			group.unique , dat , dat.resp )	
 				}
 	
-					
+	# collect coefficients in case one group and multiple groups
+	
+	# create results for multiple groups
+	if (G>1){
+		ni <- nrow(item)
+		Npars <- ni*G	
+		coeff <- rep( NA , Npars )
+		pcov <- matrix( 0 , nrow=Npars , ncol=Npars )
+		for (gg in 1:G){
+			# gg <- 1
+			ind.gg <- (gg-1)*ni + 1:ni 
+			coeff[ ind.gg  ] <- item[ , paste0("est.Gr" , group.unique[gg] ) ]
+			names(coeff)[ind.gg] <- paste0( item$parmlabel , "_Gr" , group.unique[gg] )
+			pcov[ind.gg,ind.gg ] <- PARS_vcov[[gg]]
+					  }			
+		rownames(pcov) <- colnames(pcov) <- names(coeff)
+		PARS_vcov <- pcov
+				} else {
+		coeff <- as.vector(item$est)
+		names(coeff) <- item$parmlabel
+		rownames(PARS_vcov) <- colnames(PARS_vcov) <- names(coeff)
+					}
 	#*************************
 	# output
 	res <- list( "item" = item , "b"=b ,  "person"=person , 
-		"B" = B , "D" = D ,  "vcov" = PARS_vcov , 
+		"B" = B , "D" = D , "coef"=coeff ,  "vcov" = PARS_vcov , 
 		"JJ"=JJ , "JJadj"= JJadj ,
 		"powB"=powB , "maxK"=maxK , "G" = G , "desc"=desc ,
 		"difstats" = difstats , 

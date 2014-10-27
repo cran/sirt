@@ -144,8 +144,8 @@
 				pjk.cc  <- matrix( 0 , nrow=ntheta , ncol= nrow(patt.cc) )
 				for (pp in 1:( nrow(patt.cc) ) ){
 					ppcc <- 1 - patt.cc[pp,]
-					pjk.cc[ , pp ] <- ( rowSums( ( F.Xr^(-delta.cc))^( outer( rep(1,ntheta) , ppcc )) ) 
-													- R + 1 )^(-1/delta.cc)
+					pjk.cc[ , pp ] <- ( rowSums( 
+						( F.Xr^(-delta.cc))^( outer( rep(1,ntheta) , ppcc )) ) 	- R + 1 )^(-1/delta.cc)
 		#			temp1 <- t( dp.ld.cc$calc %*% t( pjk.cc ) )		
 					temp1 <- tcrossprod( pjk.cc , dp.ld.cc$calc )
 					temp1[ temp1 < 0 ] <- eps1					

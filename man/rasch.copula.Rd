@@ -27,7 +27,7 @@ rasch.copula2(dat, itemcluster, copula.type ="bound.mixt" ,
     est.alpha = FALSE, glob.conv = 0.0001, alpha.conv = 1e-04, conv1 = 0.001,
     dev.crit=.2 , increment.factor=1.01) 
 
-rasch.copula3(dat, itemcluster, dims , copula.type ="bound.mixt" ,
+rasch.copula3(dat, itemcluster, dims=NULL , copula.type ="bound.mixt" ,
     progress = TRUE, mmliter = 1000, delta = NULL, 
     theta.k = seq(-4, 4, len = 21), alpha1 = 0, alpha2 = 0, 
     numdiff.parm = 1e-06,  est.b = seq(1, ncol(dat)), 
@@ -51,15 +51,17 @@ dependent items. Values of zero indicate that the corresponding item
 is not included in any item cluster of dependent responses.
 }
 \item{dims}{
-A vector indicating to which dimension an item is allocated
+A vector indicating to which dimension an item is allocated.
+The default is that all items load on the first dimension.
 }
 \item{copula.type}{
 A character or a vector containing one of the following copula
 types: \code{bound.mixt} (boundary mixture copula), 
-\code{cook.johnson} (Cook-Johnson copula) or \code{frank} (Frank copula).
+\code{cook.johnson} (Cook-Johnson copula) or \code{frank} (Frank copula)
+(see Braeken, 2011).
 The vector \code{copula.type} must match the number of different
 itemclusters. For every itemcluster, a different copula type
-may be specified (see examples).
+may be specified (see Examples).
 }  %% elaborate this further in the Details section
   \item{progress}{
 Print progress? Default is \code{TRUE}.
@@ -398,7 +400,7 @@ dat2 <- as.data.frame(dat2)
 dat2$C35 <- dat1[,"I3"] + 2*dat1[,"I5"]
 table( dat2$C35 , paste0( dat1[,"I3"],dat1[,"I5"]) )
 #* define mirt model
-mirtmodel <- mirt.model("
+mirtmodel <- mirt::mirt.model("
       F = 1-7
       CONSTRAIN = (1-7,a1)
       " )
@@ -447,21 +449,21 @@ P.copula2 <- function(par,Theta, ncat){
      return(prob_tot)
         }
 # create item
-copula2 <- createItem(name="copula2", par=c(b1 = 0 , b2 = 0.2 , a1=1 , ldelta=0) , 
-            est=c(TRUE,TRUE,TRUE,TRUE) , P=P.copula2 ,
-            lbound=c(-Inf,-Inf,0,-Inf) , ubound=c(Inf,Inf,Inf,Inf) )
+copula2 <- mirt::createItem(name="copula2", par=c(b1 = 0 , b2 = 0.2 , a1=1 , ldelta=0) , 
+                est=c(TRUE,TRUE,TRUE,TRUE) , P=P.copula2 ,
+                lbound=c(-Inf,-Inf,0,-Inf) , ubound=c(Inf,Inf,Inf,Inf) )
 # define item types
 itemtype <- c( rep("2PL",6), "copula2" )
-customItems <- list(copula2=copula2)
+customItems <- list("copula2"=copula2)
 # parameter table
-mod.pars <- mirt(dat2, 1, itemtype=itemtype, 
+mod.pars <- mirt::mirt(dat2, 1, itemtype=itemtype, 
                 customItems=customItems, pars = 'values')
 # estimate model
-mod1b <- mirt(dat2, mirtmodel , itemtype=itemtype , customItems=customItems, 
+mod1b <- mirt::mirt(dat2, mirtmodel , itemtype=itemtype , customItems=customItems, 
                 verbose = TRUE , pars=mod.pars , 
                 technical=list(customTheta=as.matrix(seq(-4,4,len=21)) ) )                
 # estimated coefficients
-cmod <- mirt.wrapper.coef(mod)$coef
+cmod <- sirt::mirt.wrapper.coef(mod)$coef
 
 # compare common item discrimination
 round( c("sirt"=mod1a$item$a[1] , "mirt"=cmod$a1[1] ) , 4 )

@@ -72,14 +72,14 @@ pars <- data.pisaPars
 # Linking error: Jackknife unit is the testlet
 res1 <- equating.rasch.jackknife(pars[ , c("testlet" , "study1"  , "study2" , "item" ) ] )
 res1$descriptives
-##   N.items N.units      shift        SD linkerror.jackknife SE.SD.jackknife
-## 1      25       8 0.09292838 0.1487387          0.04491197      0.03466309
+  ##   N.items N.units      shift        SD linkerror.jackknife SE.SD.jackknife
+  ## 1      25       8 0.09292838 0.1487387          0.04491197      0.03466309
 
 # Linking error: Jackknife unit is the item
 res2 <- equating.rasch.jackknife(pars[ , c("item" , "study1"  , "study2" , "item" ) ] )
 res2$descriptives
-##   N.items N.units      shift        SD linkerror.jackknife SE.SD.jackknife
-## 1      25      25 0.09292838 0.1487387          0.02682839      0.02533327
+  ##   N.items N.units      shift        SD linkerror.jackknife SE.SD.jackknife
+  ## 1      25      25 0.09292838 0.1487387          0.02682839      0.02533327
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

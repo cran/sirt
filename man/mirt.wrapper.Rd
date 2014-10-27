@@ -3,6 +3,7 @@
 \alias{mirt.wrapper.coef}
 \alias{mirt.wrapper.posterior}
 \alias{mirt.wrapper.fscores}
+\alias{mirt.wrapper.itemplot}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -19,7 +20,10 @@ mirt.wrapper.coef(mirt.obj)
 mirt.wrapper.posterior(mirt.obj,weights=NULL)
 
 # compute factor scores
-mirt.wrapper.posterior(mirt.obj,weights=NULL)
+mirt.wrapper.fscores(mirt.obj,weights=NULL)
+
+# convenience function for itemplot
+mirt.wrapper.itemplot( mirt.obj , ask=TRUE , ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -27,6 +31,9 @@ mirt.wrapper.posterior(mirt.obj,weights=NULL)
 A fitted model in \pkg{mirt} package
 }
 \item{weights}{Optional vector of student weights}
+\item{ask}{Optional logical indicating whether each new plot should be
+confirmed.}
+\item{\dots}{Further arguments to be passed.}
 }
 
 \details{
@@ -39,9 +46,12 @@ yet cover the case of multiple groups.
 
 The function \code{mirt.wrapper.fscores} computes factor scores
 EAP, MAP and MLE. The factor scores are computed on the
-discrete grid of latent traits (contrary to \code{mirt}!) as
+discrete grid of latent traits (contrary to the computation in \code{mirt}) as
 specified in \code{mirt.obj@Theta}. This function does also not work
 for multiple groups.
+
+The function \code{mirt.wrapper.itemplot} displays all item plots
+after each other.
 }
 
 \value{
@@ -84,18 +94,27 @@ Alexander Robitzsch
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
+
 \seealso{
-See the \pkg{mirt} package on CRAN:
+See the \pkg{mirt} package on CRAN
 \url{http://cran.r-project.org/web/packages/mirt/index.html}
+and on GitHub \url{https://github.com/philchalmers/mirt}.
+% \href{https://github.com/philchalmers/mirt}{GitHub}
 
 See the online vignette of \pkg{mirt}:
 \url{http://philchalmers.github.io/mirt/mirt-vignettes.html}
 	
 See \url{https://groups.google.com/forum/#!forum/mirt-package}
 for discussion about the \pkg{mirt} package. \cr		
-	
+
+
+See for the main estimation functions in mirt:
+\code{\link[mirt:mirt]{mirt}} (\pkg{mirt}),
+\code{\link[mirt:multipleGroup]{multipleGroup}} (\pkg{multipleGroup})
+and \code{\link[mirt:bfactor]{bfactor}} (\pkg{bfactor}).
+
 See \code{\link[mirt:coef-method]{coef-method}} (\pkg{mirt}) for extracting
-cofficients.
+coefficients.
 
 See \code{\link[mirt:mod2values]{mod2values}} (\pkg{mirt}) for collecting 
 parameter values in a mirt parameter table.
@@ -105,13 +124,79 @@ to \code{mirt} syntax.
 
 See \code{\link{tam2mirt}} for converting fitted \code{tam} models
 into \code{mirt} objects.
+
 }
+
+
+% See \code{\link{mirt.model.vars}} for specifying \pkg{mirt} models
+% using variable names.
 
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 
 
+%% https://stuff.mit.edu/afs/sipb/project/r-project/arch/i386_rhel3/lib/R/doc/manual/R-exts.html
+
+\section{Examples for the \pkg{mirt} Package}{
+
+%\itemize{
+\enumerate{
+
+%1
+\item Latent class analysis (\code{\link{data.read}}, Model 7)
+
+%2
+\item Mixed Rasch model  (\code{\link{data.read}}, Model 8)
+
+%3
+\item Located unidimensional and multidimensional
+latent class models / Multidimensional latent class IRT models
+(\code{\link{data.read}}, Model 12;  
+\code{\link{rasch.mirtlc}}, Example 4)
+
+%4
+\item Multimensional IRT model with discrete latent traits
+ (\code{\link{data.read}}, Model 13)
+ 
+%5 
+\item DINA model (\code{\link{data.read}}, Model 14;
+\code{\link[CDM:data.dcm]{data.dcm}}, \pkg{CDM}, Model 1m)
+
+%6
+\item Unidimensional IRT model with non-normal distribution
+ (\code{\link{data.read}}, Model 15)
+ 
+%7 
+\item Grade of membership model  (\code{\link{gom.em}}, Example 2)
+
+%8
+\item Rasch copula model (\code{\link{rasch.copula2}}, Example 5)
+
+%9
+\item Additive GDINA model 
+(\code{\link[CDM:data.dcm]{data.dcm}}, \pkg{CDM}, Model 6m)
+
+%10
+\item Longitudinal Rasch model (\code{\link{data.long}}, Model 3)
+
+%11
+\item Normally distributed residuals (\code{\link{data.big5}}, Example 1, Model 5)
+
+% 12
+\item Nedelsky model (\code{\link{nedelsky.irf}}, 
+Examples 1, 2)
+}
+
+}
+
+
 \examples{
 \dontrun{
+# A development version can be installed from GitHub
+if (FALSE){ # default is set to FALSE, use the installed version
+   library(devtools)
+   devtools::install_github("philchalmers/mirt")
+          }
+# now, load mirt
 library(mirt)
 
 #############################################################################
@@ -245,21 +330,21 @@ res@model
 
 data(data.read)
 dat <- data.read
-# define lavaan model convert syntax to mirt
+# define lavaan model and convert syntax to mirt
 lavmodel <- "
-    A=~ a*A1+a*A2+1.3*A3+A4 # set loading of A3 to 1.3
+    A=~ a*A1+a*A2+1.3*A3+A4       # set loading of A3 to 1.3
     B=~ B1+1*B2+b3*B3+B4
     C=~ c*C1+C2+c*C3+C4
     A1 | da*t1
     A3 | da*t1
     C4 | dg*t1
     B1 | 0*t1
-    B3 | -1.4*t1 # fix item threshold of B3 to -1.4
-    A ~~ B # estimate covariance between A and B
-    A ~~ .6 * C # fix covariance to .6
-    B ~~ B # estimate variance of B
-    A ~ .5*1 # set mean of A to .5
-    B ~ 1 # estimate mean of B
+    B3 | -1.4*t1                  # fix item threshold of B3 to -1.4
+    A ~~ B                        # estimate covariance between A and B
+    A ~~ .6 * C                   # fix covariance to .6
+    B ~~ B                        # estimate variance of B
+    A ~ .5*1                      # set mean of A to .5
+    B ~ 1                         # estimate mean of B
     "
 res <- lavaan2mirt( dat , lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
 # estimated coefficients

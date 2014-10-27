@@ -6,6 +6,7 @@
 \alias{data.si03}
 \alias{data.si04}
 \alias{data.si05}
+\alias{data.si06}
 
 \docType{data}
 
@@ -26,6 +27,7 @@ data(data.si02)
 data(data.si03)
 data(data.si04)
 data(data.si05)
+data(data.si06)
 }
 
 
@@ -91,6 +93,25 @@ and \code{Ex3}, respectively.
 \code{  ..$ rater1: num [1:2000] 5 1 6 2 3 3 0 0 0 0 ...} \cr
 \code{  ..$ rater2: num [1:2000] 7 2 6 3 2 1 0 1 0 3 ...} \cr
 
+\item The dataset \code{data.si06} contains multiple choice item
+responses. The correct alternative is denoted as 0, distractors
+are indicated by the codes 1, 2 or 3.
+
+\code{'data.frame':   4441 obs. of  14 variables:} \cr
+\code{ $ WV01: num  0 0 0 0 0 0 0 0 0 3 ...} \cr
+\code{ $ WV02: num  0 0 0 3 0 0 0 0 0 1 ...} \cr
+\code{ $ WV03: num  0 1 0 0 0 0 0 0 0 0 ...} \cr
+\code{ $ WV04: num  0 0 0 0 0 0 0 0 0 1 ...} \cr
+\code{ $ WV05: num  3 1 1 1 0 0 1 1 0 2 ...} \cr
+\code{ $ WV06: num  0 1 3 0 0 0 2 0 0 1 ...} \cr
+\code{ $ WV07: num  0 0 0 0 0 0 0 0 0 0 ...} \cr
+\code{ $ WV08: num  0 1 1 0 0 0 0 0 0 0 ...} \cr
+\code{ $ WV09: num  0 0 0 0 0 0 0 0 0 2 ...} \cr
+\code{ $ WV10: num  1 1 3 0 0 2 0 0 0 0 ...} \cr
+\code{ $ WV11: num  0 0 0 0 0 0 0 0 0 0 ...} \cr
+\code{ $ WV12: num  0 0 0 2 0 0 2 0 0 0 ...} \cr
+\code{ $ WV13: num  3 1 1 3 0 0 3 0 0 0 ...} \cr
+\code{ $ WV14: num  3 1 2 3 0 3 1 3 3 0 ...} \cr
 
 }
 }
@@ -126,6 +147,12 @@ and \code{Ex3}, respectively.
 
 \code{\link{lc.2raters}} (Example 1)
 
+%%% data.si06
+\emph{Dataset} \code{data.si06} 
+
+\code{\link{data.sirt}} (Example 1), 
+\code{\link{nedelsky.irf}} (Example 2)
+
 }
 
 
@@ -148,8 +175,36 @@ models, including a simple latent class model for item analysis.
 }
 
 
-%\examples{
-%data(data.si01)
-%## maybe str(data.si01) ; plot(data.si01) ...
-%}
+\examples{
+\dontrun{	
+#############################################################################
+# EXAMPLE 1: Nested logit model multiple choice dataset data.si06
+#############################################################################
+
+data(data.si06)
+dat <- data.si06
+
+#** estimate 2PL nested logit model
+library(mirt)
+mod1 <- mirt::mirt( dat , model=1 , itemtype="2PLNRM" , key=rep(0,ncol(dat) ) ,
+            verbose=TRUE  )
+summary(mod1)
+cmod1 <- mirt.wrapper.coef(mod1)$coef
+cmod1[,-1] <- round( cmod1[,-1] , 3)
+
+#** normalize item parameters according Suh and Bolt (2010)
+cmod2 <- cmod1
+
+# slope parameters
+ind <-  grep("ak",colnames(cmod2))
+h1 <- cmod2[ ,ind ]
+cmod2[,ind] <- t( apply( h1 , 1 , FUN = function(ll){ ll - mean(ll) } ) )
+# item intercepts
+ind <-  paste0( "d" , 0:9 )
+ind <- which( colnames(cmod2) \%in\% ind )
+h1 <- cmod2[ ,ind ]
+cmod2[,ind] <- t( apply( h1 , 1 , FUN = function(ll){ ll - mean(ll) } ) )
+cmod2[,-1] <- round( cmod2[,-1] , 3)	
+}	
+}
 \keyword{datasets}

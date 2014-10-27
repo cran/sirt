@@ -88,27 +88,27 @@ X_alpha <- function( alpha ){
 
 # define data for alpha = 0.5
 X <- X_alpha( alpha=.5 )
-##   > X
-##        [,1] [,2]
-##   [1,]  1.0  0.0
-##   [2,]  1.0  0.0
-##   [3,]  1.0  0.0
-##   [4,]  0.5  0.5
-##   [5,]  0.0  1.0
-##   [6,]  0.0  1.0
+  ##   > X
+  ##        [,1] [,2]
+  ##   [1,]  1.0  0.0
+  ##   [2,]  1.0  0.0
+  ##   [3,]  1.0  0.0
+  ##   [4,]  0.5  0.5
+  ##   [5,]  0.0  1.0
+  ##   [6,]  0.0  1.0
 
-## The fourth observation has equal plausibility for the first and the
-## second category.
+  ## The fourth observation has equal plausibility for the first and the
+  ## second category.
 
 # parameter estimate uncertain data
 fuzdiscr( X )
-##   > fuzdiscr( X )
-##   [1] 0.5999871 0.4000129
+  ##   > fuzdiscr( X )
+  ##   [1] 0.5999871 0.4000129
 
 # parameter estimate pseudo likelihood
 colMeans( X )
-##   > colMeans( X )
-##   [1] 0.5833333 0.4166667
+  ##   > colMeans( X )
+  ##   [1] 0.5833333 0.4166667
 ##-> Observations are weighted according to belief function values.
 
 #*****
@@ -154,26 +154,26 @@ legend( 0 , .67 , c("Belief Function" , "Pseudo-Likelihood" ) , col=c(1,2) , lty
 # define uncertain data
 X <- matrix( c( 1,0,0 , 1,0,0 ,   0,1,0 , 0,0,1 , .7 , .2 , .1 ,
          .4 , .6 , 0 ) , 6 , 3 , byrow=TRUE )
-##   > X
-##        [,1] [,2] [,3]
-##   [1,]  1.0  0.0  0.0
-##   [2,]  1.0  0.0  0.0
-##   [3,]  0.0  1.0  0.0
-##   [4,]  0.0  0.0  1.0
-##   [5,]  0.7  0.2  0.1
-##   [6,]  0.4  0.6  0.0
+  ##   > X
+  ##        [,1] [,2] [,3]
+  ##   [1,]  1.0  0.0  0.0
+  ##   [2,]  1.0  0.0  0.0
+  ##   [3,]  0.0  1.0  0.0
+  ##   [4,]  0.0  0.0  1.0
+  ##   [5,]  0.7  0.2  0.1
+  ##   [6,]  0.4  0.6  0.0
 
 ##->  Only the first four observations are crisp.
 
 #*** estimation for uncertain data
 fuzdiscr( X )
-##   > fuzdiscr( X )
-##   [1] 0.5772305 0.2499931 0.1727764
+  ##   > fuzdiscr( X )
+  ##   [1] 0.5772305 0.2499931 0.1727764
 
 #*** estimation pseudo-likelihood
 colMeans(X)
-##   > colMeans(X)
-##   [1] 0.5166667 0.3000000 0.1833333
+  ##   > colMeans(X)
+  ##   [1] 0.5166667 0.3000000 0.1833333
 
 ##-> Obviously, the treatment uncertainty is different in belief function
 ##   and in pseudo-likelihood framework.

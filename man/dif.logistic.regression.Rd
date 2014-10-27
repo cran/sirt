@@ -122,15 +122,15 @@ mod1 <- dif.logistic.regression( dat=dat[,items] , score=wle , group=dat$female)
 # calculate DIF variance
 dif1 <- dif.variance( dif=mod1$uniformDIF , se.dif = mod1$se.uniformDIF )
 dif1$unweighted.DIFSD
-## > dif1$unweighted.DIFSD
-## [1] 0.1963958
+  ## > dif1$unweighted.DIFSD
+  ## [1] 0.1963958
 
 # calculate stratified DIF variance
 # stratification based on domains
 dif2 <- dif.strata.variance( dif=mod1$uniformDIF , se.dif = mod1$se.uniformDIF ,
               itemcluster = data.math$item$domain )
-## $unweighted.DIFSD
-## [1] 0.1455916
+  ## $unweighted.DIFSD
+  ## [1] 0.1455916
 
 \dontrun{
 #****

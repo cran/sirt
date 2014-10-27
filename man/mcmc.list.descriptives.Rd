@@ -47,25 +47,29 @@ into a coda file (see also the \pkg{coda} package).
 
 \examples{
 \dontrun{
-#############################################################################
-# EXAMPLE 1: Logistic regression with rcppbugs
-#############################################################################
-
 library(rcppbugs)
 library(coda)
+library(R2WinBUGS)
 
-#*** simulate data
+#############################################################################
+# EXAMPLE 1: Logistic regression 
+#############################################################################
+
+#***************************************
+# (1) simulate data
 set.seed(8765)
 N <- 500
 x1 <- rnorm(N)
 x2 <- rnorm(N)
 y <- 1*( plogis( -.6 + .7*x1 + 1.1 *x2 ) > runif(N) )
 
-#*** estimate logistic regression with glm
+#***************************************
+# (2) estimate logistic regression with glm
 mod <- glm( y ~ x1 + x2 , family="binomial" )
 summary(mod)
 
-#*** define rcppbugs model
+#***************************************
+# (3) estimate model with rcppbugs package
 b <- rcppbugs::mcmc.normal(rnorm(3),mu=0,tau=0.0001)
 y.hat <- rcppbugs::deterministic(function(x1,x2,b) { plogis( b[1] + b[2]*x1 + b[3]*x2 ) }, 
              x1 , x2 , b)

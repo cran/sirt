@@ -12,6 +12,7 @@ data.wide2long <- function( dat , id=NULL , X=NULL , Q=NULL){
     dat2 <- data.frame( dat1 )
     colnames(dat2) <- "resp"
     dat1 <- data.frame( "id_index" = rep( 1:N , each=I ) )
+		
     if ( ! is.null(id) ){
         dat1 <- cbind( dat1 , rep( dat[, id] , each=I ) ) 
         colnames(dat1)[2] <- id    
@@ -24,6 +25,13 @@ data.wide2long <- function( dat , id=NULL , X=NULL , Q=NULL){
                 }
     rownames(dat1) <- NULL
 	if ( ! is.null(Q) ){
+	  if ( is.null(colnames(Q) ) ){
+	     colnames(Q) <- paste0("q",1:ncol(Q) )
+						}
+	   if ( sum( colnames(Q) %in% "item" ) == 0 ){
+					Q <- as.data.frame(Q)
+					Q$item <- colnames(dat)
+							}
 		dat1 <- merge( x = dat1 , y = Q , by ="item" , all.x=TRUE )
 					}
 	dat1 <- dat1[ order( 10000*dat1$id_index + dat1$item_index ) , ]		

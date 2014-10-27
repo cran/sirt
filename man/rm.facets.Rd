@@ -120,6 +120,9 @@ A list with following entries:
 \item{se.tau.item}{Standard error of item parameters \eqn{\tau_{ik}}}
 \item{a.item}{Item slopes \eqn{a_i}}
 \item{se.a.item}{Standard error of item slopes \eqn{a_i}}
+\item{delta.item}{Delta item parameter. See 
+	\code{\link{pcm.conversion}}.
+	   }
 \item{b.rater}{Rater severity parameter \eqn{b_r}}
 \item{se.b.rater}{Standard error of rater severity parameter \eqn{b_r}}
 \item{a.rater}{Rater slope parameter \eqn{a_r}}
@@ -160,7 +163,7 @@ of results using different theta integration points \code{theta.k}.
 See also the \pkg{TAM} package for the estimation
 of more complicated facet models.
 
-See \code{\link{rm.hrm}} for estimating a hierarchical rater model.
+See \code{\link{rm.sdt}} for estimating a hierarchical rater model.
 }
 
 

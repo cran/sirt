@@ -23,7 +23,7 @@ tam2mirt <- function( tamobj ){
 	lavsyn.freed <- tam2mirt_freed( D , factors , B , dat , AXsi ,
 		   mean.trait , cov.trait , tamobj )		
 	# pseudo-estimate model in mirt: just create mirt object structure
-	res <- lavaan2mirt( dat , lavsyn  )
+	res <- lavaan2mirt( dat , lavsyn , est.mirt=TRUE )	
 	res$mirt@nest <- as.integer(tamobj$ic$np ) # number of estimated parameters	
 	# recalculate AIC, BIC, AICc and SABIC
 	res$mirt@AIC <- tamobj$ic$AIC
