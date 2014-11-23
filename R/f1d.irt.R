@@ -2,7 +2,7 @@
 #########################################################
 # Functional Unidimensional Model (Ip et al., 2013)
 f1d.irt <- function( dat=NULL , nnormal=1000 , nfactors=3 ,
-			A=NULL , intercept=NULL , maxiter=100 ,
+			A=NULL , intercept=NULL , mu=NULL , Sigma = NULL , maxiter=100 ,
 			conv=10^(-5) , progress=TRUE ){
 	if ( ! is.null(dat) ){		
 		# estimate tetrachoric correlation matrix
@@ -29,11 +29,20 @@ f1d.irt <- function( dat=NULL , nnormal=1000 , nfactors=3 ,
 		names.dat <- names(intercept)
 		tetra <- NULL
 				}
+		
+				
 	#***************************************
 	# approximation of normal distribution using quasi Monte Carlo integration nodes
     theta <- qmc.nodes( nnormal , nfactors )
-	wgt_theta <- dmvnorm(x=theta, mean=rep(0,nfactors), 
-				sigma=diag(1,nfactors) )
+	if ( is.null(mu) ){
+		mu <- rep(0,nfactors)
+						}	
+	if ( is.null(Sigma) ){
+		Sigma <- diag(1,nfactors)
+						}
+	
+	wgt_theta <- dmvnorm(x=theta, mean= mu, 
+				sigma= Sigma )
 	wgt_theta <- wgt_theta / sum( wgt_theta )
 
 	I <- length(intercept)
@@ -97,15 +106,24 @@ f1d.irt <- function( dat=NULL , nnormal=1000 , nfactors=3 ,
 					}
 		}
 	#**************************************************
+	
+
 	if ( ! is.null(dat) ){
 		# unstandardized loadings 1 factor model
 		A0_stand <- fac0$loadings
 		a0 <- A0_stand[,1] / sqrt( 1 - A0_stand[,1]^2 )
 		d0 <- - res$tau / sqrt( 1 - A0_stand[,1]^2 )
 					}
-	item <- data.frame("item" = names.dat ,
-		"ai.ast" = aiast , "ai0" = a0 ,
-		"di.ast" = diast , "di0" = d0 )
+	if ( is.null(dat) ){
+		a0 <- NULL
+		d0 <- NULL
+				}
+
+	item <- data.frame(  "item" = names.dat )
+	item$ai.ast <- aiast 
+	item$ai0 <- a0 
+	item$di.ast <- diast  
+	item$di0 <- d0 
 
 	person <- data.frame( "theta.ast" = thetaast ,
 			"wgt" = wgt_theta )

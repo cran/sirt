@@ -45,6 +45,8 @@ variable names.
 \code{\link{noharm.sirt}} (Example 1),
 \code{\link{np.dich}} (Example 1),
 \code{\link{person.parameter.rasch.copula}} (Example 1),
+\code{\link[CDM:personfit.appropriateness]{personfit.appropriateness}} 
+(Example 2, \pkg{CDM}),
 \code{\link{personfit.stat}} (Example 1),
 \code{\link{prmse.subscores.scales}} (Example 1),
 \code{\link{prob.guttman}} (Example 1),

@@ -24,12 +24,32 @@ https://sites.google.com/site/alexanderrobitzsch/software
 Questions or suggestions about sirt can be sent to:
 a.robitzsch /-\ bifie.at
 
+For reporting a bug, please provide always a reproducible R script 
+and (if necessary) a corresponding dataset.
+
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+---
+Versions 1.1  -- 2014-mm-dd  --  CRAN sirt 1.x
+---
+NOTE  * included arguments for mean and covariance matrix for
+        confirmatory multidimensional models in 'f1d.irt'
+NOTE  * removed 'lavaanify.sirt' from sirt package and
+        included this function as 'lavaanify.IRT' in 
+        TAM package 
+FIXED * fixed a bug in 'lavaan2mirt' (thanks to Hong Giang Pham)        
+NOTE  * extended some person fit statistics to handle datasets
+        with missing responses (thanks to Hiroyuki Yamada)
+ADDED * included functions for estimating the Beta item 
+        response model for continuous item responses 
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: f1d.irt (2), brm.sim (1)
 
 ---
 Versions 1.0  -- 2014-10-27  --  CRAN sirt 1.0-3
@@ -381,16 +401,7 @@ DATA  * included example data.big5
 EXAMP * included an example for DETECT for polytomous data
 
 ---
-Version 0.33 -- 2013-07-09  --  CRAN sirt 0.33-16
----
-ADDED * included R2NOHARM functions into this package for running
-        NOHARM from within R
-NOTE  * modelfit.sirt now allows objects of class smirt
-NOTE  * speeded calculation of modelfit.sirt
-NOTE  * speeded rasch.mml2, prob.guttman, rasch.mirtlc, rm.facets, rm.hrm
-
----
-Version 0.32 -- 2013-06-28   -- no CRAN release
+Versions 0.32/0.33 -- 2013-07-09  --  CRAN sirt 0.33-16
 ---
 ADDED * included the estimation  of the 2PL model via MCMC (mcmc.2pno)
 NOTE  * included a function for estimating Rhat and MAP from MCMC output
@@ -402,6 +413,11 @@ ADDED * included mcmc.3pno.testlet for estimating IRT testlet and
         bifactor models for dichotomous data
 ADDED * included mcmc.2pno.ml function for estimating a multilevel
         IRT model for dichotomous and normally distributed data
+ADDED * included R2NOHARM functions into this package for running
+        NOHARM from within R
+NOTE  * modelfit.sirt now allows objects of class smirt
+NOTE  * speeded calculation of modelfit.sirt
+NOTE  * speeded rasch.mml2, prob.guttman, rasch.mirtlc, rm.facets, rm.hrm
 
 ---
 Version 0.31 -- 2013-05-27  --  CRAN sirt 0.31-20

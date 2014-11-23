@@ -60,6 +60,7 @@ Meijer, R. R., & Sijtsma, K. (2001). Methodology
 review: Evaluating person fit. \emph{Applied Psychological
 Measurement}, \bold{25}, 107-135.
 }
+
 \author{
 Alexander Robitzsch
 }
@@ -69,9 +70,16 @@ Alexander Robitzsch
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%}
+\seealso{
+See the \pkg{irtProb} and \pkg{PerFit} packages for person fit statistics
+and person response curves and functions included in other packages: 
+\code{\link[mirt:personfit]{personfit}} (\pkg{mirt}),
+\code{\link[eRm:personfit]{personfit}} (\pkg{eRm}) and
+\code{\link[ltm:person.fit]{person.fit}} (\pkg{ltm}).
+}
+
+% \code{\link[TAM:tam.fa]{tam.fa}} (\pkg{TAM})
+
 \examples{
 #############################################################################
 # EXAMPLE 1: Person fit Reading Data

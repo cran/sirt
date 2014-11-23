@@ -208,8 +208,8 @@ mirt.wrapper.coef(m4a)
 lavmodel <- "F =~ O3__O48
              F ~~ 1*F  
                 "
-# transform lavaan syntax with lavaanify.sirt
-lavmodel <- sirt::lavaanify.sirt( lavmodel , items=colnames(dat) )$lavaan.syntax
+# transform lavaan syntax with lavaanify.IRT
+lavmodel <- TAM::lavaanify.IRT( lavmodel , items=colnames(dat) )$lavaan.syntax
 mod4b <- lavaan::cfa( data= as.data.frame(dat) , model=lavmodel, std.lv = TRUE, 
                  ordered=colnames(dat) ,  parameterization="theta")
 summary(mod4b , standardized=TRUE , fit.measures=TRUE , rsquare=TRUE)
@@ -225,7 +225,7 @@ lavmodel <- "F =~ O3__O48
              F ~ 0*1
              O3__O48 ~ 1
                 "                               
-lavmodel <- lavaanify.sirt( lavmodel , items=colnames(dat) )$lavaan.syntax
+lavmodel <- TAM::lavaanify.IRT( lavmodel , items=colnames(dat) )$lavaan.syntax
 mod5a <- lavaan::cfa( data= as.data.frame(dat) , model=lavmodel, std.lv = TRUE ,
                  estimator="MLR" )
 summary(mod5a , standardized=TRUE , fit.measures=TRUE , rsquare=TRUE)

@@ -16,7 +16,7 @@ is generated (\code{est.mirt=FALSE}).
 Extensions of the \code{lavaan} syntax include guessing and slipping
 parameters (operators \code{?=g1} and \code{?=s1})
 and a shortage operator for item groups (see \code{__}).
-See \code{\link{lavaanify.sirt}} for more details.
+See \code{\link[TAM:lavaanify.IRT]{lavaanify.IRT}} (\pkg{TAM}) for more details.
 }
 
 \usage{
@@ -90,7 +90,8 @@ for discussion about the \pkg{lavaan} package. \cr
 See \code{\link{mirt.wrapper}} for convenience wrapper functions
 for \code{\link[mirt:mirt]{mirt}} objects.
 
-See \code{\link{lavaanify.sirt}} for extensions of \code{lavaanify}.
+See \code{\link[TAM:lavaanify.IRT]{lavaanify.IRT}} (\pkg{TAM}) 
+for extensions of \code{lavaanify}.
 
 See \code{\link{tam2mirt}} for converting fitted objects in the \pkg{TAM}
 package into fitted \code{\link[mirt:mirt]{mirt}} objects.
@@ -102,27 +103,32 @@ package into fitted \code{\link[mirt:mirt]{mirt}} objects.
 # EXAMPLE 1: Convert some lavaan syntax to mirt syntax for data.read
 #############################################################################
 
+library(mirt)
 data(data.read)
 dat <- data.read
 
 #******************
 #*** Model 1: Single factor model
 lavmodel <- "
+     # omit item C3
      F=~ A1+A2+A3+A4 + C1+C2+C4 + B1+B2+B3+B4 
-                         # omit item C3
+     F ~~ 1*F                         
             "
+            
 # convert syntax and estimate model
 res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
 # inspect coefficients
 coef(res$mirt)
 mirt.wrapper.coef(res$mirt)
-# converted mirt model
+# converted mirt model and parameter table
 cat(res$mirt.syntax)
+res$mirt.pars
 
 #******************
 #*** Model 2: Rasch Model with first six items
 lavmodel <- "
      F=~ a*A1+a*A2+a*A3+a*A4+a*B1+a*B2
+     F ~~ 1*F     
             "
 # convert syntax and estimate model
 res <- lavaan2mirt( dat ,  lavmodel , est.mirt=FALSE)
@@ -140,12 +146,17 @@ lavmodel <- "
      G=~ A1+A2+A3+A4 + B1+B2+B3+B4  + C1+C2+C3+C4 
      A=~ A1+A2+A3+A4
      B=~ B1+B2+B3+B4     
-     C=~ C1+C2+C3+C4          
+     C=~ C1+C2+C3+C4   
+     G ~~ 1*G
+     A ~~ 1*A
+     B ~~ 1*B
+     C ~~ 1*C      
             "           
 res <- lavaan2mirt( dat ,  lavmodel , est.mirt=FALSE )
 # mirt syntax and mirt model
 cat(res$mirt.syntax)
 res$mirt.model
+res$mirt.pars
 
 #******************
 #*** Model 4: 3-dimensional model with some parameter constraints
@@ -160,6 +171,10 @@ lavmodel <- "
      B3 | da*t1       
      C3 | dg*t1
      C4 | dg*t1
+     # standardized latent variables
+     A ~~ 1*A
+     B ~~ 1*B
+     C ~~ 1*C     
      # estimate Cov(A,B) and Cov(A,C)
      A ~~ B
      A ~~ C
@@ -186,12 +201,14 @@ lavmodel <- "
      C4 | dg*t1
      B1 | 0*t1
      B3 | -1.4*t1   # fix item threshold of B3 to -1.4
+     A ~~ 1*A	    
+     B ~~ B         # estimate variance of B freely 
+     C ~~ 1*C     
      A ~~ B         # estimate covariance between A and B
      A ~~ .6 * C    # fix covariance to .6
-     B ~~ B         # estimate variance of B
      A ~ .5*1       # set mean of A to .5
      B ~ 1          # estimate mean of B
-            "           
+            "   
 res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
 mirt.wrapper.coef(res$mirt)
 
@@ -209,10 +226,11 @@ lavmodel <- "
      # slipping parameters
      A1+A2+C3 ?= slip1*s1
      A3 ?= .02*s1
-     # item intercepts
+     # fix item intercepts
      A1 | 0*t1
      A2 | -.4*t1
-     F ~ 1
+     F ~ 1	# estimate mean of F
+     F ~~ 1*F   # fix variance of F
             "
 # convert syntax and estimate model
 res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )

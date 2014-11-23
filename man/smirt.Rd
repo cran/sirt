@@ -33,8 +33,10 @@ Data frame with dichotomous item responses
 The Q-matrix which specifies the loadings to be estimated
 }
   \item{irtmodel}{
-The item response model. Options are the noncompensatory model (\code{"noncomp"})
-and the compensatory model (\code{"comp"}). See Details for more explanations.
+The item response model. Options are the noncompensatory model (\code{"noncomp"}),
+the compensatory model (\code{"comp"}) and
+the partially compensatory model (\code{"partcomp"}). 
+See Details for more explanations.
 }
   \item{est.b}{
 An integer matrix (if \code{irtmodel="noncomp"}) or integer vector 

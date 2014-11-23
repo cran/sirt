@@ -33,7 +33,7 @@ A list with following entries:
    \code{MADcor}: mean of absolute deviations in observed and expected correlations 
         (DiBello et al., 2007) 
 
-   \code{SRSMR}: standardized mean square root of squared residuals 
+   \code{SRMSR}: standardized mean square root of squared residuals 
         (Maydeu-Olivares, 2013; Maydeu-Olivares & Joe, 2014)        
         
     \code{MX2}: Mean of \eqn{\chi^2} statistics of all item pairs 

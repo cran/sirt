@@ -135,6 +135,9 @@ In the extreme case of a very small \eqn{\xi_p = \varepsilon > 0} and
 See Erosheva et al. (2002), Erosheva (2005, 2006) or Galyart (in press)
 for a comparison of grade of membership models with latent trait models 
 and latent class models.
+
+The grade of membership model is also published under the name
+Bernoulli aspect model, see Bingham, Kaban and Fortelius (2009).
 }
 
 
@@ -170,6 +173,10 @@ A list with following entries:
 \item{\dots}{Further values}
 }
 \references{
+Bingham, E., Kaban, A., & Fortelius, M. (2009). 
+The aspect Bernoulli model: multiple causes of presences and absences. 
+\emph{Pattern Analysis and Applications}, \bold{12(1)}, 55-78.	
+	
 Erosheva, E. A. (2005). Comparing latent structures of the grade of membership, 
 Rasch, and latent class models. \emph{Psychometrika}, \bold{70}, 619-628.
 
@@ -207,8 +214,13 @@ see \code{\link{gom.jml}}.
 
 The C code of Erosheva et al. (2007) can be downloaded from
 \url{http://projecteuclid.org/euclid.aoas/1196438029#supplemental}.
+
 Code from Manrique-Vallier can be downloaded from
 \url{http://pages.iu.edu/~dmanriqu/software.html}.
+
+See \url{http://users.ics.aalto.fi/ella/publications/aspect_bernoulli.m}
+for a Matlab implementation of the algorithm in Bingham, Kaban and
+Fortelius (2009).
 }
 \examples{
 #############################################################################

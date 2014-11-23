@@ -4,14 +4,21 @@
 lavaan2mirt <- function( dat , lavmodel , est.mirt =TRUE , poly.itemtype="gpcm" , ... ){
 	# lavaanify model
 	# lavmodel2 <- lavaan::lavaanify( lavmodel )		
-    lavmodel2 <- lavaanify.sirt( lavmodel )$lavpartable	
-
+#    lavmodel2 <- lavaanify.sirt( lavmodel )$lavpartable
+	lavmodel2 <- lavaanify.IRT( lavmodel , data=dat )$lavpartable	
+		
 	# select used items
 	items <- intersect( unique( paste(lavmodel2$rhs )) , colnames(dat) )
 	dat <- dat[, items ]
 	# maximum category
 	maxK <- max( dat , na.rm=TRUE )
-	
+	ind1 <- which( lavmodel2$op == "~~")
+	ind2 <- which( ( lavmodel2$lhs == lavmodel2$rhs ) & ( lavmodel2$lhs %in% items ) )
+	ind <- intersect(ind1 , ind2 )
+	if ( length(ind) > 0 ){
+		lavmodel2 <- lavmodel2[ - ind , ]
+						}
+						
 	# variable names
 	items <- colnames(dat)
 	# extract factors
@@ -36,8 +43,6 @@ lavaan2mirt <- function( dat , lavmodel , est.mirt =TRUE , poly.itemtype="gpcm" 
 	lavlabels <- unique(paste(lavmodel21$label))	
 	lavlabels <- lavlabels[ paste(lavlabels ) != "" ]
 	
-
-
 	if ( length(lavlabels) > 0 ){
 		vv0 <- "CONSTRAIN = "
 		for (ll in lavlabels ){
@@ -85,7 +90,6 @@ lavaan2mirt <- function( dat , lavmodel , est.mirt =TRUE , poly.itemtype="gpcm" 
 					}
 		mirtmodel <- paste0( mirtmodel , vv1 , "\n")
 				}
-				
 	#------------
 	#**** estimate means
 	lavmodel21 <- lavmodel2
@@ -101,56 +105,66 @@ lavaan2mirt <- function( dat , lavmodel , est.mirt =TRUE , poly.itemtype="gpcm" 
 					}
 		mirtmodel <- paste0( mirtmodel , vv1 , "\n")
 				}				
-				
 	#------------						
 	#**** create object of class mirt.model
 	mirtmodel1 <- mirt::mirt.model(mirtmodel)
 	#------------	
 	#**** create parameter values
-	
+
 	# define item types: 4PL or gpcm
 	I <- ncol(dat)
-	maxK1 <- apply( dat , 2 , max , ma.rm=TRUE )
-	itemtype <- ifelse( maxK1==1 , "4pl" ,  poly.itemtype )
+	maxK1 <- apply( dat , 2 , max , na.rm=TRUE )
+
+	typeK1 <- "4PL"
+	ind1 <- which( lavmodel2$op == "=~" )
+	ind2 <- which( ( ! lavmodel2$free  ) & ( lavmodel2$ustart %in% c(0,1) ) )
+	ind2 <- intersect( ind1 , ind2 )
+    if ( length(ind1) == length(ind2) ){ typeK1 <- "Rasch" }	
+
+	itemtype <- ifelse( maxK1==1 , typeK1 ,  poly.itemtype )	
 	
 	mirtpars <- mirt::mirt( dat , mirtmodel1 , itemtype=itemtype , pars="values")
-
-	
-	
-#	ind <- which( mirtpars$class == "graded" )
-#	if ( length(ind) > 0 ){
-#	    mirtpars$class <- paste( mirtpars$class)
-#		mirtpars[ ind , "class" ] <- "gpcm"
-		# include scoring labels
-#		items <- paste0( mirtpars[ ind , "item" ] )
-#							}
 		
-	
-
 	#***** handle guessing parameters
 	lavmodel21 <- lavmodel2[ lavmodel2$op == "?=" , ]
 	lavmodel21 <- lavmodel21[ lavmodel21$rhs == "g1" , ]
 	lavmodel21 <- lavmodel21[ lavmodel21$free > 0 , ]
+
+	
 	if ( nrow(lavmodel21) > 0 ){	
 			ind <- which( ( mirtpars$item %in% lavmodel21$lhs ) &
 							( mirtpars$name == "g") )
 			ind <- match( paste0(lavmodel21$lhs,"-","g") , 
-						paste0(mirtpars$item,"-",mirtpars$name) )							
+						paste0(mirtpars$item,"-",mirtpars$name) )													
 			mirtpars[ind,"value"] <- .25
 			mirtpars[ind,"est"] <- TRUE			
-						}
-	
+						} else {	# no guessing parameters
+			ind <- which( ( mirtpars$item %in% items ) &
+							( mirtpars$name == "g") )
+			if ( length( ind ) > 0 ){			
+				mirtpars[ind,"value"] <- 0
+				mirtpars[ind,"est"] <- FALSE			
+									}
+							}
 	#***** handle slipping parameters
 	lavmodel21 <- lavmodel2[ lavmodel2$op == "?=" , ]
 	lavmodel21 <- lavmodel21[ lavmodel21$rhs == "s1" , ]
 	lavmodel21 <- lavmodel21[ lavmodel21$free > 0 , ]
+	
+	
 	if ( nrow(lavmodel21) > 0 ){	
 			ind <- match( paste0(lavmodel21$lhs,"-","u") , 
 						paste0(mirtpars$item,"-",mirtpars$name) )
 			mirtpars[ind,"value"] <- .95
 			mirtpars[ind,"est"] <- TRUE			
-						}
-	
+						}  else {	# no guessing parameters
+			ind <- which( ( mirtpars$item %in% items ) &
+							( mirtpars$name == "u") )
+			if ( length( ind ) > 0 ){							
+				mirtpars[ind,"value"] <- 1
+				mirtpars[ind,"est"] <- FALSE			
+								}
+							}
 	
 	#------------	
 	#**** constraints for parameter values
@@ -159,7 +173,6 @@ lavaan2mirt <- function( dat , lavmodel , est.mirt =TRUE , poly.itemtype="gpcm" 
 	if (LL>0){
 		for (ll in 1:LL){
 	#		ll <- 1
-	
 	        item.ll <- NULL
 			lavmodel21.ll <- lavmodel21[ll,]
 			# factor loadings
@@ -184,6 +197,9 @@ lavaan2mirt <- function( dat , lavmodel , est.mirt =TRUE , poly.itemtype="gpcm" 
 										}									
 																				
 			# covariances
+			if ( lavmodel21.ll$lhs %in% colnames(dat) ){
+					lavmodel21.ll$op <- "" 
+						}
 			if ( lavmodel21.ll$op == "~~" ){
 			    item.ll <- "GROUP"
 				par.ll <- c( match( lavmodel21.ll$lhs , factors ) ,
@@ -207,19 +223,21 @@ lavaan2mirt <- function( dat , lavmodel , est.mirt =TRUE , poly.itemtype="gpcm" 
 							}
 				}
 
-			
 	#------------
 	#****	
     # estimate mirt model
 	res <- NULL
+
 	if ( est.mirt ){
-		res$mirt <- mirt::mirt( dat , model=mirtmodel1 , pars=mirtpars , itemtype=itemtype ,  ... )
-					}
+		res$mirt <- mirt::mirt( dat , model=mirtmodel1 , pars=mirtpars , 
+						itemtype=itemtype ,  ... )
+					}   # else {
 		res$mirt.model <- mirtmodel1				
 		res$mirt.syntax <- mirtmodel
 		res$mirt.pars <- mirtpars
 		res$lavaan.model <- lavmodel2
-		res$dat <- dat
+		res$dat <- dat  
+#				}
     return(res)
 	}
 ###################################################################

@@ -115,6 +115,7 @@ round( res , 2 )
 # EXAMPLE 2: Dataset reading
 #############################################################################
 
+library(TAM)
 data(data.read)
 resp <- data.read
 maxiter <-  100

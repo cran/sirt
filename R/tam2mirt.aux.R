@@ -24,7 +24,14 @@ tam2mirt_fix <- function( D , factors , B , dat , AXsi ,
 		hh <- ""
 		if (kk != maxK){ hh <- "\n" }
 		lavsyn <- paste0( lavsyn , syn0 , hh)
-				}	
+				}
+	# guessing and slipping parameters
+	itemg <- colnames(dat)[ maxK == 1 ]
+    lavsyn <- paste0( lavsyn , "\n" ,
+			paste0( paste0( itemg , " ?= 0*g1" ) , collapse="\n") )
+    lavsyn <- paste0( lavsyn , "\n" ,
+			paste0( paste0( itemg , " ?= 0*s1" ) , collapse="\n") )
+				
 	# syntax for means
 	syn0 <- paste0( factors , " ~ " , round(as.vector(mean.trait),4) , "*1"  )
 	syn0 <- paste0( syn0 , collapse="\n")

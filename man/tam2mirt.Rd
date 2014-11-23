@@ -10,7 +10,7 @@ As a by-product, \code{lavaan} syntax is generated which can
 be used with \code{\link{lavaan2mirt}} for re-estimating
 the model in the \pkg{mirt} package.
 Up to now, only single group models are supported.
-There must not exist background covariate (no latent regression
+There must not exist background covariates (no latent regression
 models!).
 }
 
@@ -81,6 +81,9 @@ library(mirt)
 #############################################################################
 # EXAMPLE 1: Estimations in TAM for data.read dataset
 #############################################################################
+
+data(data.read)
+dat <- data.read
 
 #**************************************
 #*** Model 1: Rasch model

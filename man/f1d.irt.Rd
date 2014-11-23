@@ -13,7 +13,7 @@ model are provided as input.
 }
 \usage{
 f1d.irt(dat = NULL, nnormal = 1000, nfactors = 3, A = NULL, intercept = NULL, 
-    maxiter = 100, conv = 10^(-5), progress = TRUE)
+    mu = NULL , Sigma = NULL , maxiter = 100, conv = 10^(-5), progress = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,6 +33,10 @@ Matrix of item discrminations (if the IRT model is already estimated)
   \item{intercept}{
 Vector of item intercepts (if the IRT model is already estimated)
 }
+\item{mu}{Vector of estimated means. In the default it is assumed
+	 that all means are zero.}
+\item{Sigma}{Estimated covariance matrix. In the default it is
+the identity matrix.}
   \item{maxiter}{
 Maximum number of iterations
 }
@@ -123,7 +127,7 @@ For estimation of bifactor models based on marginal maximum likelihood
 
 \examples{
 #############################################################################
-# EXAMPLE 1: Dataset Mathematics data.math
+# EXAMPLE 1: Dataset Mathematics data.math | Exploratory multidimensional model
 #############################################################################
 data(data.math)
 dat <- ( data.math$data )[ , -c(1,2) ] # select Mathematics items
@@ -168,6 +172,35 @@ mod2a <- smirt( dat , Qmatrix=Q , irtmodel="comp" , est.a="2PL" ,
 #++ (2) input estimated discriminations and intercepts for
 #       functional unidimensional model
 mod2b <- f1d.irt( A = mod2a$a , intercept = mod2a$b )
+
+#############################################################################
+# EXAMPLE 2: Dataset Mathematics data.math | Confirmatory multidimensional model
+#############################################################################
+
+data(data.math)
+library(TAM)
+
+# dataset
+dat <- data.math$data
+dat <- dat[ , grep("M" , colnames(dat) ) ]
+# extract item informations
+iteminfo <- data.math$item
+I <- ncol(dat)
+# define Q-matrix
+Q <- matrix( 0 , nrow=I , ncol=3 )
+Q[ grep( "arith" , iteminfo$domain ) , 1 ] <- 1
+Q[ grep( "Meas" , iteminfo$domain ) , 2 ] <- 1
+Q[ grep( "geom" , iteminfo$domain ) , 3 ] <- 1
+
+# fit three-dimensional model in TAM
+mod1 <- TAM::tam.mml.2pl(  dat , Q=Q , control=list(maxiter=40 , snodes=1000) )
+summary(mod1)
+
+# specify functional unidimensional model
+intercept <- mod1$xsi[ , c("xsi") ]
+names(intercept) <- rownames(mod1$xsi)
+fumod1 <- f1d.irt( A = mod1$B[,2,] , intercept=intercept , Sigma= mod1$variance)
+fumod1$item
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

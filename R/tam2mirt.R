@@ -2,6 +2,7 @@
 ##########################################################
 # convert a fitted tam object into a mirt object
 tam2mirt <- function( tamobj ){
+    est.mirt <- FALSE
 	# extract intercept
 	AXsi <- tamobj$AXsi
 	# extract loadings

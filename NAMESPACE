@@ -118,13 +118,15 @@ export(
     R2conquest ,
     mirt.wrapper.fscores ,
 #    mirt.model.vars ,
-    lavaanify.sirt ,
+#    lavaanify.sirt ,
     pcm.conversion ,
     mirt.wrapper.itemplot ,
     mirt.specify.partable ,
     nedelsky.sim ,
     nedelsky.latresp ,
-    nedelsky.irf
+    nedelsky.irf ,
+    brm.sim ,
+    brm.irf
 )    
     
     

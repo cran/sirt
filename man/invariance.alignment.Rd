@@ -161,7 +161,7 @@ A list with following entries
 \item{nu.resid}{Residuals of \eqn{ \nu_{i g ,1}} parameters}
 \item{Niter}{Number of iterations for \eqn{f_\lambda} and
 \eqn{f_\nu} optimization functions}
-\item{miniter}{Iteration index with minimum optimizatiob value}
+\item{miniter}{Iteration index with minimum optimization value}
 \item{fopt}{Minimum optimization value}
 \item{align.scale}{Used alignment scale parameters}
 \item{align.pow}{Used alignment power parameters}

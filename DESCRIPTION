@@ -1,24 +1,24 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 1.0-3
-Date: 2014-10-27
-Author: Alexander Robitzsch
+Version: 1.1
+Date: 2014-11-23
+Author: Alexander Robitzsch [aut,cre]
 Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
 Description: 
     Supplementary item response theory models 
     to complement existing functions in R. 
 Depends: R (>= 2.15.0)
-Imports: sfsmisc, TAM (>= 1.0-3), CDM (>= 3.3), mirt (>= 1.5),
-        combinat, ic.infer, sm, psych, pbivnorm, gtools, Rcpp (>=
-        0.11.0), qgraph, lavaan, semPlot, igraph, coda, mvtnorm, MASS,
+Imports: TAM (>= 1.2), CDM (>= 4.0), mirt (>= 1.6), combinat, ic.infer,
+        sfsmisc, sm, psych, pbivnorm, gtools, Rcpp (>= 0.11.0), qgraph,
+        lavaan (>= 0.5-17), semPlot, igraph, coda, mvtnorm, MASS,
         Matrix
-Suggests: eRm, ltm, MCMCglmm, mRm, GPArotation, lme4, semTools,
-        MultiLCIRT, IsingFit, MplusAutomation (>= 0.6)
+Suggests: eRm, ltm, MultiLCIRT, mRm, MCMCglmm, lme4, GPArotation,
+        semTools, IsingFit, MplusAutomation (>= 0.6)
 LinkingTo: Rcpp, RcppArmadillo
 License: GPL (>= 2)
 URL: https://sites.google.com/site/alexanderrobitzsch/software
-Packaged: 2014-10-27 16:20:24 UTC; robitzsch
+Packaged: 2014-11-23 15:22:38 UTC; robitzsch
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2014-10-27 20:22:31
+Date/Publication: 2014-11-23 23:38:15

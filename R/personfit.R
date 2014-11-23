@@ -1,14 +1,6 @@
  
-# 0.01  2012-xx-yy
 
 
-# 0.01  2012-06-23  o initial release
-
-
-#-------------------------------------------------------
-
-
-##NS export(pf.logist.regression)
 #----------------------------------------------------------------------------------
 # person fit with logistic regression
 pf.logist.regression <- function( data , itemdiff , perc = seq(5,100,5) ){
@@ -54,14 +46,19 @@ pf.logist.regression <- function( data , itemdiff , perc = seq(5,100,5) ){
 ##NS export(pf.l0)
 pf.l0 <- function( data , wle , itemdiff ){ 
     dat1 <- data 
-    I <- ncol(dat1)
+	dat1.resp <- 1 - is.na(dat1)
+	dat1[ is.na(dat1) ] <- 0		
+    # I <- ncol(dat1)
+	Iresp <- rowSums( dat1.resp )
     pmatrix <- plogis( outer( wle , itemdiff , "-" ) )
     # l0
-    l0 <- rowSums( ( dat1 * log( pmatrix ) + ( 1 - dat1) * log( 1 - pmatrix ) ) / I )
+    l0 <- rowSums( ( dat1 * log( pmatrix ) + ( 1 - dat1) * log( 1 - pmatrix ) )*dat1.resp / 
+				Iresp )
     # standardized l0
-    E.l0 <- rowSums( ( pmatrix * log( pmatrix ) + ( 1 - pmatrix) * log( 1 - pmatrix ) )  )
-    Var.l0 <- rowSums( ( pmatrix * ( 1 - pmatrix ) * ( qlogis( pmatrix ) )^2 )  )
-    lz <- ( I*l0 - E.l0 ) / sqrt( Var.l0 )
+    E.l0 <- rowSums( dat1.resp*( pmatrix * log( pmatrix ) + ( 1 - pmatrix) * log( 1 - pmatrix ) )  )
+    Var.l0 <- rowSums( dat1.resp*( pmatrix * ( 1 - pmatrix ) * ( qlogis( pmatrix ) )^2 )  )
+    # lz <- ( I*l0 - E.l0 ) / sqrt( Var.l0 )
+	lz <- ( Iresp*l0 - E.l0 ) / sqrt( Var.l0 )
     list( "l0" = l0 , "lz" = lz )
     }
 #-----------------------------------------------------------------------------------
@@ -69,14 +66,24 @@ pf.l0 <- function( data , wle , itemdiff ){
 ##NS export(pf.outfit.infit)
 pf.outfit.infit <- function( data , wle , itemdiff ){ 
     dat1 <- data 
-    I <- ncol(dat1)
+    # I <- ncol(dat1)
     pmatrix <- plogis( outer( wle , itemdiff , "-" ) )
+	
+	dat1.resp <- 1 - is.na(dat1)
+	dat1[ is.na(dat1) ] <- 0
+	
+	Iresp <- rowSums(dat1.resp)
+	
     # Outfit (unweighted fit)
-    U <- rowSums(  ( dat1 - pmatrix )^2 / I / pmatrix / ( 1 - pmatrix ) )
+    U <- rowSums(  ( ( dat1 - pmatrix )^2 / Iresp / pmatrix / ( 1 - pmatrix ) ) * dat1.resp )
     # Infit (weighted fit)
-    W <- rowSums(  ( dat1 - pmatrix )^2  ) / rowSums(  pmatrix * ( 1 - pmatrix ) )
+    W <- rowSums(  dat1.resp * ( dat1 - pmatrix )^2  ) / 
+					rowSums(  dat1.resp * pmatrix * ( 1 - pmatrix ) )
     list( "Outfit" = U , "Infit" = W )
         }
+########################################################################		
+		
+		
 #.......................................
 # U3 statistic                      
 ##NS export(pf.U3) 
@@ -198,8 +205,11 @@ cor.rowwise <- function(m1,m2){
     # create Guttman pattern data matrix data.guttman
     score <- rowSums( data1 )
     data.guttman <- 0*data1
-    for (ii in 1:I){ data.guttman[,ii] <- 1*( score >= ii ) }
-    return( list( data = data1 , pval = pval1 , data.guttman = data.guttman , index = data.sort$index ) )
+    for (ii in 1:I){ 
+			data.guttman[,ii] <- 1*( score >= ii ) 
+					}
+	res <- list( data = data1 , pval = pval1 , data.guttman = data.guttman , index = data.sort$index )					
+    return( res )
         }
 #.........................................................................
 # create inverse Guttman data frame
@@ -216,7 +226,7 @@ cor.rowwise <- function(m1,m2){
         }
 #.........................................................................
 #........................................................................
-# auxialiary function for sorting items according to p values
+# auxiliary function for sorting items according to p values
 .sort.items <- function( data , pval ){
     l1 <- sort( pval , decreasing=TRUE , index.return=TRUE	)
     dat1 <- data[ , l1$ix ]

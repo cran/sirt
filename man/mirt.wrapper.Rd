@@ -108,10 +108,10 @@ See \url{https://groups.google.com/forum/#!forum/mirt-package}
 for discussion about the \pkg{mirt} package. \cr		
 
 
-See for the main estimation functions in mirt:
+See for the main estimation functions in \pkg{mirt}:
 \code{\link[mirt:mirt]{mirt}} (\pkg{mirt}),
-\code{\link[mirt:multipleGroup]{multipleGroup}} (\pkg{multipleGroup})
-and \code{\link[mirt:bfactor]{bfactor}} (\pkg{bfactor}).
+\code{\link[mirt:multipleGroup]{multipleGroup}} (\pkg{mirt})
+and \code{\link[mirt:bfactor]{bfactor}} (\pkg{mirt}).
 
 See \code{\link[mirt:coef-method]{coef-method}} (\pkg{mirt}) for extracting
 coefficients.
@@ -184,6 +184,9 @@ latent class models / Multidimensional latent class IRT models
 % 12
 \item Nedelsky model (\code{\link{nedelsky.irf}}, 
 Examples 1, 2)
+
+% 13
+\item Beta item response model (\code{\link{brm.irf}}, Example 1)
 }
 
 }
