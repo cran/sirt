@@ -14,7 +14,7 @@ Functions for simulating and estimating the Beta item response model
 simulating the model, \code{brm.irf} computes the item response
 function. The Beta item response model is estimated as a discrete
 version to enable estimation in \emph{standard} IRT software like
-the \pkg{mirt} package.
+\pkg{mirt} or \pkg{TAM} packages.
 }
 
 \usage{
@@ -47,7 +47,7 @@ are discretized such that values of 0, 1, ..., \eqn{K}-1 arise.
 \item{ncat}{Number of categories}
 \item{thdim}{Theta dimension in the matrix \code{Theta} on
 which the item loads.}
-\item{eps}{Nuissance parameter which stabilize probabilities.}
+\item{eps}{Nuisance parameter which stabilize probabilities.}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,18 +57,44 @@ The discrete version of the beta item response model is defined as follows.
 Assume that for item \eqn{i} there are \eqn{K} categories resulting in
 values \eqn{k=0,1,\dots,K-1}. Each value \eqn{k} is associated with a 
 corresponding the transformed value in \eqn{[0,1]}, namely
-\eqn{ q (k) = 1/(2 \cdot K) , 1/(2 \cdot K) + 1/K , \ldots ,  1 - 1/(2 \cdot K) + 1/K}.
+\eqn{ q (k) = 1/(2 \cdot K) , 1/(2 \cdot K) + 1/K , \ldots ,  1 - 1/(2 \cdot K) }.
 The item response model is defined as
-\deqn{ P( X_{pi}=1 | \theta_p) = \propto
+\deqn{ P( X_{pi}= x_{pi} | \theta_p)  \propto
 	  q( x_{pi} )^{ m_{pi} - 1 } [ 1- q( x_{pi} ) ]^{ n_{pi} - 1 } }
 This density is a discrete version of a Beta distribution with
 shape parameters \eqn{m_{pi}} and \eqn{n_{pi}}. These parameters are
 defined as
-\deqn{ m_{pi} = exp \left[ ( \theta_p - \delta_i + \tau_i ) / 2 \right]
+\deqn{ m_{pi} = \mathrm{exp} \left[ ( \theta_p - \delta_i + \tau_i ) / 2 \right]
 	\qquad \mbox{and} \qquad
-	m_{pi} = exp \left[ ( - \theta_p + \delta_i + \tau_i ) / 2 \right]
+	n_{pi} = \mathrm{exp} \left[ ( - \theta_p + \delta_i + \tau_i ) / 2 \right]
 				}
 
+The item response function can also be formulated as
+\deqn{ \mathrm{log} \left[ P( X_{pi}= x_{pi} | \theta_p) \right]  \propto
+	  ( m_{pi} - 1 ) \cdot \mathrm{log} [ q( x_{pi} ) ] +  
+	  ( n_{pi} - 1 )  \cdot \mathrm{log} [ 1- q( x_{pi} ) ]
+	  				}
+
+The item parameters can be reparametrized as 
+\eqn{ a_{i} = \mathrm{exp} \left[ ( - \delta_i + \tau_i ) / 2 \right]} and
+\eqn{ b_{i} = \mathrm{exp} \left[ ( \delta_i + \tau_i ) / 2 \right]}.
+
+Then, the original item parameters can be retreived by 
+\eqn{\tau_i = \mathrm{log} ( a_i b_i)} and
+\eqn{\delta_i = \mathrm{log} ( b_i / a_i)}. 
+Using \eqn{ \gamma _p = \mathrm{exp} ( \theta_p / 2) }, we obtain
+
+\deqn{ log \left[ P( X_{pi}= x_{pi} | \theta_p) \right]  \propto
+	   a_{i} \gamma_p  \cdot \mathrm{log} [ q( x_{pi} ) ] +  
+	   b_i / \gamma_p   \cdot \mathrm{log} [ 1- q( x_{pi} ) ] -
+	  \left[ \mathrm{log} q( x_{pi} ) + \mathrm{log} [ 1- q( x_{pi} ) ] \right]
+	  				}	  				
+
+This formulation enables the specification of the Beta item response
+model as a structured latent class model 
+(see \code{\link[TAM:tam.mml.3pl]{tam.mml.3pl}}, \pkg{TAM};
+Simulated Example 1).
+	  				
 See Smithson and Verkuilen (2006) for motivations for treating
 continuous indicators not as normally distributed variables.
 }
@@ -180,6 +206,58 @@ coef(mod1)
 # estimated coefficients and comparison with simulated data
 cbind( mirt.wrapper.coef( mod1 )$coef , delta , tau )
 mirt.wrapper.itemplot(mod1 ,ask=TRUE)	
+
+#---------------------------
+# estimate beta item response model in TAM
+library(TAM)
+
+# define the skill space: standard normal distribution
+TP <- 21                   # number of theta points
+theta.k <- diag(TP)
+theta.vec <-  seq( -6 ,6 , len=TP)
+d1 <- dnorm(theta.vec)
+d1 <- d1 / sum(d1)
+delta.designmatrix <- matrix( log(d1) , ncol=1 )
+delta.fixed <- cbind( 1 , 1 , 1 )
+
+# define design matrix E
+E <- array(0 , dim=c(I,K,TP,2*I + 1) )
+dimnames(E)[[1]] <- items <- colnames(dat)
+dimnames(E)[[4]] <- c( paste0( rep( items , each=2 ) , 
+        rep( c("_a","_b" ) , I) ) , "one" )
+for (ii in 1:I){
+    for (kk in 1:K){
+      for (tt in 1:TP){
+        qk <- (2*(kk-1)+1)/(2*K)
+        gammap <- exp( theta.vec[tt] / 2 )
+        E[ii , kk , tt , 2*(ii-1) + 1 ] <- gammap * log( qk )
+        E[ii , kk , tt , 2*(ii-1) + 2 ] <- 1 / gammap * log( 1 - qk )
+        E[ii , kk , tt , 2*I+1 ] <- - log(qk) - log( 1 - qk )
+                    }
+            }
+        }
+gammaslope.fixed <- cbind( 2*I+1 , 1 )
+gammaslope <- exp( rep(0,2*I+1) )
+
+# estimate model in TAM
+mod2 <- TAM::tam.mml.3pl(resp= dat , E=E ,control= list(maxiter=100) , 
+              skillspace="discrete" , delta.designmatrix=delta.designmatrix ,
+              delta.fixed=delta.fixed , theta.k=theta.k , gammaslope = gammaslope, 
+              gammaslope.fixed = gammaslope.fixed , notA=TRUE )
+summary(mod2)         
+
+# extract original tau and delta parameters
+m1 <- matrix( mod2$gammaslope[1:(2*I) ] , ncol=2 , byrow=TRUE ) 
+m1 <- as.data.frame(m1)
+colnames(m1) <- c("a" ,"b")
+m1$delta.TAM <- log( m1$b / m1$a) 
+m1$tau.TAM <- log( m1$a * m1$b ) 
+
+# compare estimated parameter
+m2 <- cbind( mirt.wrapper.coef( mod1 )$coef , delta , tau )[,-1]
+colnames(m2) <- c(  "delta.mirt", "tau.mirt", "thdim" ,"delta.true" ,"tau.true"   )
+m2 <- cbind(m1,m2)
+round( m2 , 3 )
 }
 }
 

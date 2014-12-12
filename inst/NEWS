@@ -34,8 +34,36 @@ and (if necessary) a corresponding dataset.
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 ---
-Versions 1.1  -- 2014-mm-dd  --  CRAN sirt 1.x
+Versions 1.2 -- 2014-12-12  --  CRAN sirt 1.2
+---
+NOTE  * included standard errors of WLE parameters in 'wle.rasch'
+NOTE  * corrected formulas help file for 'pcm.conversion'
+        (thanks to Thomas Kiefer)
+FIXED * fixed computational problems for calculating tetrachoric        
+        correlation with empty cells in 'tetrachoric2' resp.
+        'polychoric2' (method of Olsson; thanks to a dataset 
+        privided by Ulrike Kipman)
+NOTE  * included S3 methods IRT.likelihood, IRT.posterior and
+        IRT.irfprob for two classes (ConfirmatoryClass and
+        ExploratoryClass) of mirt objects
+ADDED * included item and person fit statistic in 'pcm.fit' 
+        for the partial credit model (suggested by Hiroyuki 
+        Yamada and Sven Liepertz) 
+NOTE  * included C-test dataset 'data.g308' from 
+        Schroeders et al. (2014)
+NOTE  * included several examples from the book of Eid
+        and Schmidt: "Testtheorie und Testkonstruktion",
+        see data.eid
+
+DATA  * included/modified datasets: data.g308, data.eid
+EXAMP * included/modified examples: pcm.conversion (1),
+        pcm.fit (1,2,3), brm.sim (1), data.g308 (1),
+        data.eid (1,2)
+
+---
+Versions 1.1  -- 2014-11-23  --  CRAN sirt 1.1
 ---
 NOTE  * included arguments for mean and covariance matrix for
         confirmatory multidimensional models in 'f1d.irt'

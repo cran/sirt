@@ -73,8 +73,14 @@ wle.rasch <- function( dat , dat.resp = NULL , b , # a = 1 + 0*b , c = 0*b ,
 						}
 		if ( progress){  cat("-") }
         }
-	   res <- list( "theta" = theta  , "dat.resp" = dat.resp ,
-			"p.ia" = p.ia )
+	   res <- list( "theta" = theta  , "se.theta" = 1 / sqrt( abs( f1.obj ) ) ,
+				"dat.resp" = dat.resp ,	"p.ia" = p.ia )
+	   #*** compute WLE reliability				
+	   v1 <- var(res$theta)
+	   v2 <- mean(res$se.theta^2 )
+	   wle.rel <- ( v1 - v2 ) / v1
+	   cat("WLE Reliability =" , round(wle.rel,3) , "\n")
+	   res$wle.rel <- wle.rel		
     return(res)
  }
 #--------------------------------------------------------------------------------------------------------#

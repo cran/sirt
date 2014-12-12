@@ -58,7 +58,7 @@ Data frame with 615 observations containing 5 criteria (\code{k1}, ..., \code{k5
 
 \item Dataset \code{data.ratings3}: \cr
 
-Data frame with 3169 observations containing 3 criteria (\code{k1}, ..., \code{k5}),
+Data frame with 3169 observations containing 4 criteria (\code{crit2}, ..., \code{crit6}),
 561 students and 52 raters.
 
 \code{'data.frame':   3169 obs. of  6 variables:} \cr

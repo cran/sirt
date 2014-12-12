@@ -155,19 +155,20 @@ Rcpp::NumericVector polychoric2_estequation( Rcpp::NumericMatrix frtab ,
 	for ( int ii=0 ; ii < maxK1+1 ; ii++){
 	for ( int jj=0 ; jj < maxK2+1 ; jj++){	
 		tmp1ii[0] = thresh1n[ii] ;
-		tmp1jj[0] = thresh2n[jj] ;
+		tmp1jj[0] = thresh2n[jj] ;	
 		phip_ij(ii,jj) = pbivnorm2_rcpp(  tmp1ii , tmp1jj , rho )[0] ; 
 		phid_ij(ii,jj) = dmvnorm_2dim_rcpp( tmp1ii , tmp1jj , rho )[0] ;
 					}
-				}		
+				}	
+
 	// compute pi_ij and estimating equation
 	Rcpp::NumericVector llest(1) ;
 	for (int ii=1 ; ii <maxK1+1;ii++){
 	for (int jj=1 ; jj < maxK2+1 ; jj++){
 	   pi_ij(ii,jj) = phip_ij(ii,jj) - phip_ij(ii-1,jj) - phip_ij(ii,jj-1) + phip_ij(ii-1,jj-1);
 	   li_ij(ii,jj) = phid_ij(ii,jj) - phid_ij(ii-1,jj) - phid_ij(ii,jj-1) + phid_ij(ii-1,jj-1);
-	   li_ij(ii,jj) =  frtab(ii-1,jj-1) * li_ij(ii,jj) / ( pi_ij(ii,jj) + eps2 ) ;
-	   llest[0] += li_ij(ii,jj) ;
+	   li_ij(ii,jj) =  frtab(ii-1,jj-1) * li_ij(ii,jj) / ( pi_ij(ii,jj) + eps2 ) ;	  
+	   llest[0] += li_ij(ii,jj) ;	   
 					}
 				}
      return wrap(llest) ;
@@ -189,7 +190,7 @@ Rcpp::List polychoric2_itempair( Rcpp::NumericVector v1 , Rcpp::NumericVector v2
 
 maxK = maxK + 1 ;
 int CC = v1.size() ;
-double eps=1e-3;
+double eps=1e-5;
 double numdiffparm =1e-6 ;
 double conv=1e-10;
 
@@ -204,6 +205,15 @@ for (int cc = 0 ; cc < CC ; cc++){
 		Ntotal ++ ;		
 		}
 	}
+// set values to .5 if they are zero
+for (int cc1=0;cc1 < maxK;cc1++){
+for (int cc2=0;cc2 < maxK;cc2++){
+if (frtab(cc1,cc2) < 1){
+	frtab(cc1,cc2) = .5 ;
+			}
+}
+}
+	
 // compute marginals from frequency table ;
 Rcpp::NumericVector thresh1(maxK+2) ;
 Rcpp::NumericVector thresh1n(maxK+2) ;
@@ -212,10 +222,15 @@ Rcpp::NumericVector thresh2n(maxK+2) ;
 int maxK1=0;
 int maxK2=0;
 double tmp1 = 0 ;
+
+
 thresh1n[0] = eps ;
 thresh2n[0] = eps ;
 thresh1n[maxK+1] = 1-eps ;
 thresh2n[maxK+1] = 1-eps ;
+
+
+
 for ( int zz = 0 ; zz < maxK ; zz++){
    tmp1=0;
 	for (int cc=0;cc<maxK;cc++){
@@ -224,7 +239,7 @@ for ( int zz = 0 ; zz < maxK ; zz++){
 	if (tmp1 > 0 ){ maxK1 = zz ; }
 	thresh1[zz+1]=thresh1[zz]+tmp1 ;
 	thresh1n[zz+1] = thresh1[zz+1] / ( Ntotal + eps ) ;
-	if ( thresh1n[zz+1] == 1 ){ thresh1n[zz+1] = 1 - eps ; }
+	if ( thresh1n[zz+1] > 1 - 1E-10 ){ thresh1n[zz+1] = 1 - eps ; }
 	if ( thresh1n[zz+1] == 0 ){ thresh1n[zz+1] = eps ; }	
 }
 
@@ -236,12 +251,13 @@ for ( int zz = 0 ; zz < maxK ; zz++){
 	if (tmp1 > 0 ){ maxK2 = zz ; }
 	thresh2[zz+1]=thresh2[zz]+tmp1 ;
 	thresh2n[zz+1] = thresh2[zz+1] / ( Ntotal+eps ) ;
-	if ( thresh2n[zz+1] == 1 ){ thresh2n[zz+1] = 1 - eps ; }
+	if ( thresh2n[zz+1] > 1 - 1E-10 ){ thresh2n[zz+1] = 1 - eps ; }
 	if ( thresh2n[zz+1] == 0 ){ thresh2n[zz+1] = eps ; }	
 }	
 
 thresh1n = Rcpp::qnorm( thresh1n , 0.0 , 1.0 ) ;
 thresh2n = Rcpp::qnorm( thresh2n , 0.0 , 1.0 ) ;
+
 maxK1 = maxK1+1 ;
 maxK2 = maxK2+1 ;
 
@@ -256,13 +272,16 @@ int iter =0 ;
 double aincr=1;
 
 while ( ( iter < maxiter ) & ( aincr > conv) & ( Ntotal > 0 )  ){
-//	Rcout << "iter " << iter << " rho " << rho[0] << 
-//		" incr " << incr << std::endl ;
-	rho1[0] = rho[0] + numdiffparm ;
+
+	if (rho[0] > 1 - numdiffparm ){
+		rho[0] = rho[0] - numdiffparm*1.5 ;	
+				}		
+	rho1[0] = rho[0] + numdiffparm ;	
 	ll0 = polychoric2_estequation( frtab ,maxK,rho,thresh1n,thresh2n,maxK1,maxK2)[0] ; 
 	ll1 = polychoric2_estequation( frtab ,maxK,rho1,thresh1n,thresh2n,maxK1,maxK2)[0] ;
 	der = (ll1-ll0)/numdiffparm ;
 	incr = ll0 / der ;
+//	Rcout << "within iter " << iter << " incr " << incr << std::endl ;	
 	rho[0] = rho[0] - incr ;
 	if (rho[0] > 1- eps ){ 
 		rho[0] = .90 + .01 * iter ;		
@@ -276,6 +295,7 @@ while ( ( iter < maxiter ) & ( aincr > conv) & ( Ntotal > 0 )  ){
 			}	
 	aincr = incr ;
 	if (incr < 0 ){ aincr = - incr ; }
+ // Rcout << "iter " << iter << "rho " << rho0[0]  << std::endl;	
 	iter ++ ;
 		}
 

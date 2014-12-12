@@ -14,12 +14,9 @@ Estimation of the Partial Credit Model using the Eigenvector Method
 This function performs the eigenvector approach to estimate item
 parameters which is based on a pairwise estimation approach
 (Gardner & Engelhard, 2002). No assumption about person parameters
-is required for item parameter estimation.
-
-Statistical inference is performed by Jackknifing.
-
-If a group identifier is provided, tests for differential item
-functioning are performed.
+is required for item parameter estimation. Statistical inference is performed by 
+Jackknifing. If a group identifier is provided, tests for differential item
+functioning are performed. 
 }
 
 \usage{
@@ -104,6 +101,9 @@ parameters. \emph{Evaluation in Education}, \bold{9}, 29-42.
 Garner, M., & Engelhard, G. J. (2002). An eigenvector method for 
 estimating item parameters of the dichotomous and polytomous Rasch models. 
 \emph{Journal of Applied Measurement}, \bold{3}, 107-128.
+
+Wang, J., & Engelhard, G. (2014). A pairwise algorithm in \R for rater-mediated
+assessments. \emph{Rasch Measurement Transactions}, \bold{28(1)}, 1457-1459.
 }
 
 \author{
@@ -118,7 +118,8 @@ Alexander Robitzsch
 
 \seealso{
 See the \pkg{pairwise} package for the alternative row averaging
-approach of Choppin (1985).
+approach of Choppin (1985) and Wang and Engelhard (2014) for an
+alternative \R implementation.
 }
 
 

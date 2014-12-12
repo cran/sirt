@@ -60,8 +60,10 @@ A list with following entries
    \item{p.ia}{Matrix with expected item response, i.e.
 	the probabilities \eqn{P(X_{pi}=1|\theta_p ) = invlogit( \theta_p - b_i )}.
 			}
-%%     res <- list( "theta" = theta  , "dat.resp" = dat.resp )
+   \item{wle}{WLE reliability (Adams, 2005)}			
 }
+
+
 \references{
 Adams, R. J. (2005). Reliability as a measurement design effect. 
 \emph{Studies in Educational Evaluation}, \bold{31}, 162-172.
@@ -69,9 +71,13 @@ Adams, R. J. (2005). Reliability as a measurement design effect.
 Warm, T. A. (1989). Weighted likelihood estimation of ability in item response theory.
 \emph{Psychometrika}, \bold{54}, 427-450.
 }
+
+
 \author{
 Alexander Robitzsch
 }
+
+
 %\note{
 %%  ~~further notes~~
 %}

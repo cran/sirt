@@ -14,16 +14,21 @@
 # on attach CDM
 .onAttach <- function(libname,pkgname){
   d <- packageDescription("sirt")
+  d1 <- d$Version
+# d1 <- "1.2"  
+  nk <- paste( rep( " " , 20 - nchar(d1) ) , collapse="")
   packageStartupMessage("|---------------------------------------------------------",
 		   "--------|\n"  ,
-		paste("| " ,d$Package," " , d$Version," (",d$Date,")",sep="") ,
-		"                                       |" , 
+		paste("| " ,d$Package," " , d1 ," (",d$Date,")",sep="") , nk , 
+		"                          |" , 
 		"\n| Supplementary Item Response Theory                              |" ,
-        "\n| Maintainer: Alexander Robitzsch <a.robitzsch at bifie.at >      |" ,
+        "\n| Maintainer: Alexander Robitzsch <a.robitzsch at bifie.at>       |" ,
 		"\n| https://sites.google.com/site/alexanderrobitzsch/software       |",
 		"\n|---------------------------------------------------" ,
 		"--------------|\n" )
 	}
+	
+	
 version <- function(pkg="sirt"){
   lib <- dirname(system.file(package = pkg))
   d <- packageDescription(pkg)

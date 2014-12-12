@@ -97,6 +97,7 @@ b <- mod$item$b # item difficulty
 # evaluate person fit
 pf1 <- personfit.stat( dat = dat , abil=wle1 , b=b)
 
+\dontrun{
 # dimensional analysis of person fit statistics
 x0 <- na.omit(pf1[ , -c(1:3) ] )
 factanal( x=x0 , factors=2 , rotation="promax" )
@@ -122,7 +123,8 @@ factanal( x=x0 , factors=2 , rotation="promax" )
   ##         Factor1 Factor2
   ## Factor1   1.000  -0.727
   ## Factor2  -0.727   1.000
-  ## 
+  ##
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

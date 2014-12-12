@@ -4,6 +4,13 @@
 \alias{mirt.wrapper.posterior}
 \alias{mirt.wrapper.fscores}
 \alias{mirt.wrapper.itemplot}
+\alias{IRT.irfprob.ExploratoryClass}
+\alias{IRT.irfprob.ConfirmatoryClass}
+\alias{IRT.likelihood.ExploratoryClass}
+\alias{IRT.likelihood.ConfirmatoryClass}
+\alias{IRT.posterior.ExploratoryClass}
+\alias{IRT.posterior.ConfirmatoryClass}
+
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -18,6 +25,14 @@ mirt.wrapper.coef(mirt.obj)
 
 # extract posterior, likelihood, ...
 mirt.wrapper.posterior(mirt.obj,weights=NULL)
+\method{IRT.likelihood}{ConfirmatoryClass}(object, \dots)
+\method{IRT.posterior}{ConfirmatoryClass}(object, \dots)
+\method{IRT.likelihood}{ExploratoryClass}(object, \dots)
+\method{IRT.posterior}{ExploratoryClass}(object, \dots)
+
+# S3 method for extracting item response functions 
+\method{IRT.irfprob}{ConfirmatoryClass}(object, \dots)
+\method{IRT.irfprob}{ExploratoryClass}(object, \dots)
 
 # compute factor scores
 mirt.wrapper.fscores(mirt.obj,weights=NULL)
@@ -29,6 +44,9 @@ mirt.wrapper.itemplot( mirt.obj , ask=TRUE , ...)
 \arguments{
 \item{mirt.obj}{
 A fitted model in \pkg{mirt} package
+}
+\item{object}{A fitted object in \pkg{mirt} package of class
+	\code{ConfirmatoryClass} or \code{ExploratoryClass}.
 }
 \item{weights}{Optional vector of student weights}
 \item{ask}{Optional logical indicating whether each new plot should be
@@ -125,6 +143,10 @@ to \code{mirt} syntax.
 See \code{\link{tam2mirt}} for converting fitted \code{tam} models
 into \code{mirt} objects.
 
+See also \code{\link[CDM:IRT.likelihood]{IRT.likelihood}} (\pkg{CDM}),
+\code{\link[CDM:IRT.posterior]{IRT.posterior}} (\pkg{CDM}) and
+\code{\link[CDM:IRT.irfprob]{IRT.irfprob}} (\pkg{CDM}) for general
+extractor functions.
 }
 
 
@@ -220,6 +242,15 @@ mirt.wrapper.coef(mod1)$coef
 mirt::mod2values(mod1)
 # extract posterior
 post1 <- mirt.wrapper.posterior(mod1)
+# extract item response functions
+probs1 <- IRT.irfprob( mod1 )
+str(probs1)
+# extract individual likelihood
+likemod1 <- IRT.likelihood( mod1 )
+str(likemod1)
+# extract individual posterior
+postmod1 <- IRT.posterior( mod1 )
+str(postmod1)
 
 #*** Model 2: Confirmatory model with two factors
 cmodel <- mirt::mirt.model("

@@ -159,9 +159,23 @@ are indicated by the codes 1, 2 or 3.
 %\details{
 %%  ~~ If necessary, more details than the __description__ above ~~
 %}
+
+
+\seealso{
+Some free datasets can be obtained from \cr
+Psychological questionnaires: \url{http://personality-testing.info/_rawdata/} \cr
+PISA 2012: \url{http://pisa2012.acer.edu.au/downloads.php} \cr
+PIAAC: \url{http://www.oecd.org/site/piaac/publicdataandanalysis.htm} \cr
+TIMSS 2011: \url{http://timssandpirls.bc.edu/timss2011/international-database.html} \cr
+ALLBUS: \url{http://www.gesis.org/allbus/datenzugang/}
+}
+
 %\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
+%  ~~ reference to a publication or URL from which the data were obtained ~~
 %}
+
+
+
 \references{
 Bartolucci, F., Montanari, G. E., & Pandolfi, S. (2012). 
 Dimensionality of the latent structure and item selection via latent 

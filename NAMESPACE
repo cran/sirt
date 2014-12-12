@@ -133,7 +133,7 @@ export(
 
 
 
-
+#**** summary
 S3method(summary,rasch.mml)
 S3method(summary,rasch.pml)
 S3method(summary,rasch.copula)
@@ -154,18 +154,9 @@ S3method(summary,fuzcluster)
 S3method(summary,isop.test)
 S3method(summary,noharm.sirt)
 S3method(summary,R2conquest)
-
-S3method(plot,np.dich)
-S3method(plot,mcmc.sirt)
-S3method(plot,isop)
-S3method(plot,rasch.mml)
-S3method(plot , linking.robust)
-S3method(plot , noharm.sirt)
-
 S3method(summary,R2noharm)
 S3method(summary,R2noharm.jackknife)
 S3method(summary,invariance.alignment)
-# S3method(plot,invariance.alignment)
 S3method(summary,latent.regression)
 S3method(summary,modelfit.sirt)
 S3method(summary, rasch.evm.pcm)
@@ -175,12 +166,38 @@ S3method(summary, rasch.copula3)
 S3method(summary, rasch.conquest)
 
 
+#*** plot
+S3method(plot,np.dich)
+S3method(plot,mcmc.sirt)
+S3method(plot,isop)
+S3method(plot,rasch.mml)
+S3method(plot,linking.robust)
+S3method(plot,noharm.sirt)
+# S3method(plot,invariance.alignment)
+
+
+#*** coef
 S3method(coef, rasch.evm.pcm )
 
 
-
+#*** vcov
 S3method(vcov, rasch.evm.pcm )
 
+
+#*** IRT.likelihood
+S3method(IRT.likelihood, ConfirmatoryClass)
+S3method(IRT.likelihood, ExploratoryClass)
+
+
+#*** IRT.posterior
+S3method(IRT.posterior, ConfirmatoryClass)
+S3method(IRT.posterior, ExploratoryClass)
+
+
+
+#*** IRT.irfprob
+S3method(IRT.irfprob, ConfirmatoryClass)
+S3method(IRT.irfprob, ExploratoryClass)
 
 
 # imports Depends packages

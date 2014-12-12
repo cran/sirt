@@ -239,7 +239,7 @@ See also the \pkg{ISOP} package at \emph{Rforge}: \url{http://www.rforge.net/ISO
 
 Install this package using 
 
-\code{install.packages('ISOP',,'http://www.rforge.net/')}
+\code{install.packages("ISOP",repos="http://www.rforge.net/")}
 }
 
 

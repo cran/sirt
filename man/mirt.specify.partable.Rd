@@ -3,11 +3,11 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 
 \title{
-Specify or modify a Parameter Table in \code{mirt}
+Specify or modify a Parameter Table in \pkg{mirt}
 }
 
 \description{
-Specify or modify a parameter table in \code{mirt}.
+Specify or modify a parameter table in \pkg{mirt}.
 }
 
 \usage{
@@ -17,7 +17,7 @@ mirt.specify.partable(mirt.partable, parlist, verbose=TRUE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{mirt.partable}{
-Parameter table in \code{mirt} package
+Parameter table in \pkg{mirt} package
 }
   \item{parlist}{
 List of parameters which are used for specification in the parameter

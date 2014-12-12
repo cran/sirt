@@ -26,10 +26,11 @@ model
 \deqn{ P( X_{pi} = k | \theta_p ) \propto exp ( k \theta_p - b_{ik} ) }
 if item \eqn{i} possesses \eqn{K_i} categories.
 The transformed parameterization is defined as
-\deqn{b_{ik} = k \delta + \sum_{k=1}^{K_i} \tau_k \quad
-\mbox{with} \quad \sum_{k=1}^{K_i} \tau_k = 0 }
-The function \code{pcm.conversions} has the \eqn{\delta} and \eqn{\tau}
-parameters as values.
+\deqn{b_{ik} = k \delta_i + \sum_{v=1}^{k} \tau_{iv} \quad
+\mbox{with} \quad \sum_{k=1}^{K_i} \tau_{ik} = 0 }
+The function \code{pcm.conversion} has the \eqn{\delta} and \eqn{\tau}
+parameters as values. The \eqn{\delta} parameter is simply
+\eqn{\delta_i = b_{iK_i} / K_i}.
 }
 
 
@@ -76,10 +77,10 @@ summary(mod1a)
 summary(mod1b)
 
 # convert parameterization of Model 1a into parameterization of Model 1b
-b <- mod2a$item[ , c("AXsi_.Cat1","AXsi_.Cat2","AXsi_.Cat3") ]
+b <- mod1a$item[ , c("AXsi_.Cat1","AXsi_.Cat2","AXsi_.Cat3") ]
 # compare results
 pcm.conversion(b)
-mod2b$xsi
+mod1b$xsi
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
