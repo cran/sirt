@@ -17,6 +17,7 @@ IRT.likelihood.mirt <- function( object , ... ){
         }
 IRT.likelihood.ConfirmatoryClass <- IRT.likelihood.mirt
 IRT.likelihood.ExploratoryClass <- IRT.likelihood.mirt
+IRT.likelihood.SingleGroupClass <- IRT.likelihood.mirt
 ##########################################################		
 
 
@@ -33,6 +34,7 @@ IRT.posterior.mirt <- function( object , ... ){
         }
 IRT.posterior.ConfirmatoryClass <- IRT.posterior.mirt
 IRT.posterior.ExploratoryClass <- IRT.posterior.mirt
+IRT.posterior.SingleGroupClass <- IRT.posterior.mirt
 ##########################################################			
 
 
@@ -49,4 +51,5 @@ IRT.irfprob.mirt <- function( object , ... ){
         }
 IRT.irfprob.ConfirmatoryClass <- IRT.irfprob.mirt
 IRT.irfprob.ExploratoryClass <- IRT.irfprob.mirt
+IRT.irfprob.SingleGroupClass <- IRT.irfprob.mirt
 ##########################################################		

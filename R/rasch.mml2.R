@@ -378,7 +378,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		G <- 1
 								}
 		
-#################################################	
+		#################################################	
         #--------------------------------#
         # MML Iteration Algorithm        #
         while ( ( dev.change > glob.conv | par.change > conv1 | maxalphachange > alpha.conv ) & iter < mmliter ){
@@ -1081,11 +1081,23 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 							"guess.K" = 1/(fixed.K+1) , 
 							"emp.discrim" = item$emp.discrim )
 							}
+		##################################################
+		# item response probabilities
+
+		d1 <- dim(pjk)
+		rprobs <- array( 0 , dim=c( d1[2] , 2 , d1[1] ) )
+		dimnames(rprobs)[[1]] <- colnames(dat)
+		rprobs[,2,] <- t( pjk )
+		rprobs[,1,] <- 1 - t(pjk)
+		
+							
+		##################################################					
         # result
         res <- list( "dat" = dat , "item" = item , "item2" = item2 , 
 					"trait.distr" = trait.distr , "mean.trait" = mean.trait , 
 					"sd.trait" = sd.trait , "skewness.trait" = skewness.trait , 
-                    "deviance" = dev ,  "pjk" = pjk ,   "person" = ability.est2 , "pid" = pid , 
+                    "deviance" = dev ,  "pjk" = pjk ,   "rprobs" = rprobs , 
+					"person" = ability.est2 , "pid" = pid , 
                     "ability.est.pattern" = ability.est , "f.qk.yi" =  f.qk.yi , "f.yi.qk" =  f.yi.qk,
                     "pure.rasch" = pure.rasch  , "fixed.a" = fixed.a , "fixed.c" = fixed.c , 
 					"G" = G ,"alpha1"=alpha1 , "alpha2" = alpha2 , 
@@ -1095,7 +1107,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					"reliability" = reliability , "ramsay.qm" = ramsay.qm ,
 					"irtmodel" = irtmodel , "D" = D , "mu" = mu , 
 					"Sigma.cov"=Sigma.cov , "theta.k" = theta.k , 
-					"trait.weights" = trait.weights  # , "pi.k" = pi.k 
+					"trait.weights" = trait.weights   , "pi.k" = pi.k 
 # collect results of npmodel
 							) 
         class(res) <- "rasch.mml"

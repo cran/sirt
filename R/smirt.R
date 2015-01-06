@@ -397,7 +397,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		"f.yi.qk"=f.yi.qk , "f.qk.yi"=f.qk.yi , "probs"=probs ,
 		"n.ik"=n.ik ,  "iter"=iter , "dat2"=dat2 , "dat2.resp"=dat2.resp , 
 		"dat" = dat0 , 
-		"I"=I , "D"=D , "K"=K ,  "theta.k" = theta.k , "pi.k"=pi.k , 
+		"I"=I , "D"=D , "K"=K ,  "G"= 1 , "theta.k" = theta.k , "pi.k"=pi.k , 
 		"irtmodel"=irtmodel , "Qmatrix" = Qmatrix , "s1"=s1 , "s2"=s2 
 				)
 	class(res) <- "smirt"

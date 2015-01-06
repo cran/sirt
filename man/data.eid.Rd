@@ -16,8 +16,7 @@ data(data.eid)
 }
 
 \format{
-The dataset \code{data.eid} contains the internet address
-for downloading the datasets.
+The dataset \code{data.eid} is just a placeholder.
 }
 
 %\details{
@@ -43,12 +42,12 @@ testtheorie-und-testkonstruktion/zusatzmaterial/}.
 
 \examples{
 \dontrun{	
-# The "dataset" data.eid just contains internet address for dataset download
+# The "dataset" data.eid is just a placeholder.
 site <- paste0( "http://www.hogrefe.de/fileadmin/redakteure/hogrefe_de/" ,
         "Psychlehrbuchplus/Testtheorie_und_Testkonstruktion/R-Analysen/" )
 
 library(foreign)
-#---- download some IRT packages in R
+#---- load some IRT packages in R
 library(TAM)        # package (a)
 library(mirt)       # package (b)
 library(sirt)       # package (c)
@@ -79,7 +78,7 @@ mod1a <- TAM::tam.mml(dat)
 summary(mod1a)
 
 # person parameters in TAM
-pp1a <- tam.wle(mod1a)
+pp1a <- TAM::tam.wle(mod1a)
 
 # plot item response functions
 plot(mod1a,export=FALSE,ask=TRUE)

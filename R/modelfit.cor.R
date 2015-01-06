@@ -67,6 +67,23 @@ modelfit.sirt <- function( object ){
 		dat <- mod$dat
 					}
 	#*******
+	# smirt	
+	if (class(object) == "gom"){
+		mod <- object
+		probs <- mod$probs
+		posterior <- mod$f.qk.yi
+		dat <- mod$dat
+					}					
+	#*******
+	# rm.facets
+#	if (class(object) %in% c("rm.facets") ){
+#		mod <- object
+#		probs <- mod$probs
+#		posterior <- mod$f.qk.yi
+#		dat <- mod$procdata$dat2.NA
+#					}						
+					
+	#*******
 	# mirt	
 	if (class(object) == "ConfirmatoryClass" | class(object)=="ExploratoryClass" ){
 		mod <- object

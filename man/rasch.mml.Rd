@@ -2,6 +2,14 @@
 \alias{rasch.mml2}
 \alias{summary.rasch.mml}
 \alias{plot.rasch.mml}
+\alias{logLik.rasch.mml}
+\alias{anova.rasch.mml}
+\alias{IRT.irfprob.rasch.mml}
+\alias{IRT.likelihood.rasch.mml}
+\alias{IRT.posterior.rasch.mml}
+\alias{IRT.modelfit.rasch.mml}
+\alias{summary.IRT.modelfit.rasch.mml}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Estimation of the Generalized Logistic Item Response Model, 
@@ -45,6 +53,20 @@ rasch.mml2( dat , theta.k=seq(-6,6,len=21) , group=NULL , weights=NULL ,
 \method{summary}{rasch.mml}(object,...)
 
 \method{plot}{rasch.mml}(x,items=NULL, xlim=NULL, main=NULL, ...) 
+
+\method{anova}{rasch.mml}(object,...)
+
+\method{logLik}{rasch.mml}(object,...)
+
+\method{IRT.irfprob}{rasch.mml}(object,...)
+
+\method{IRT.likelihood}{rasch.mml}(object,...)
+
+\method{IRT.posterior}{rasch.mml}(object,...)
+
+\method{IRT.modelfit}{rasch.mml}(object,...)
+
+\method{summary}{IRT.modelfit.rasch.mml}(object,...)
 }
 %- maybe also 'usage' for other objects documented here.
 
@@ -348,6 +370,8 @@ A list with following entries
 \item{skewness.trait}{Estimated skewnesses}
 \item{deviance}{Deviance}
 \item{pjk}{Estimated probabilities of item correct evaluated at \code{theta.k}}
+\item{rprobs}{Item response probabilities like in \code{pjk}, but slightly
+extended to accomodate all categories}
 \item{person}{Person parameter estimates: mode (\code{MAP}) and
 	mean (\code{EAP}) of the posterior distribution}
 \item{pid}{Person identifier}
@@ -377,6 +401,7 @@ A list with following entries
 \item{Sigma.cov}{Covariance matrix (for multdimensional models)}
 \item{theta.k}{Grid of discretized ability distributions}
 \item{trait.weights}{Fixed vector of probabilities for the ability distribution}
+\item{pi.k}{Trait distribution}
 \item{ic}{Information criteria}
 \item{esttype}{Estimation type: \code{ll} (Log-Likelihood),
 	\code{pseudoll} (Pseudo-Log-Likelihood)
@@ -497,7 +522,21 @@ mod2 <- rasch.mml2( dat , est.a = 1:I )
 summary(mod2)
 plot(mod2)	# plot 2PL item response curves
 
+# extract individual likelihood
+llmod2 <- IRT.likelihood(mod2)
+str(llmod2)
+
 \dontrun{
+library(CDM)	
+# model comparisons
+CDM::IRT.compareModels(mod1, mod1c, mod2 )
+anova(mod1,mod2)
+
+# assess model fit
+smod1 <- IRT.modelfit(mod1)
+smod2 <- IRT.modelfit(mod2)
+IRT.compareModels(smod1, smod2)	
+	
 # 3PL model
 mod3 <- rasch.mml2( dat , est.a = 1:I , est.c = 1:I , 
               mmliter = 400 # maximal 400 iterations

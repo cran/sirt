@@ -5,7 +5,8 @@
 Person Parameter Estimation of the Rasch Copula Model (Braeken, 2011)
 }
 \description{
-Ability estimates are provided by the Rasch copula model.
+Ability estimates as maximum likelihood estimates (MLE)
+are provided by the Rasch copula model.
 }
 \usage{
 person.parameter.rasch.copula(raschcopula.object, numdiff.parm = 0.001, 

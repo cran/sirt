@@ -32,8 +32,10 @@
 			"rater.index" = rep(1:RR , each=VV ) )
 	# arrange response data
     dat2.resp <- 1 - is.na(dat2)
+	dat20 <- dat2
 	dat2[ dat2.resp == 0 ] <- 0
     res <- list( "dat2" = dat2 , "dat2.resp" = dat2.resp , 
+				"dat2.NA" = dat20 , 
 				"dat" = dat , "person.index" = person.index , 
                 "rater.index" = rater.index , "VV"=VV , "N" = PP , "RR" = RR ,
 				"dataproc.vars" = dataproc.vars )

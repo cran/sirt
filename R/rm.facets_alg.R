@@ -1,4 +1,19 @@
 
+#######################################################
+# parameters expanded dataset
+rm.facets.itempar.expanded <- function( b.item , b.rater , Qmatrix , tau.item ,
+        VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
+		theta.k , RR ){
+	b <- tau.item[ item.index , ]
+	b0 <- ( matrix( b.rater , nrow= RR , ncol=K) )[ rater.index , ] * 	Qmatrix[ item.index ,]	 		
+	b <- b + b0
+	# a parameter
+	a <- a.item[ item.index ] * a.rater[ rater.index ]
+	res <- list("a" = a , "b" = b )
+ 	return(res)
+    }
+#########################################################
+
 ################################################
 # calculation of the likelihood
 rm_calclike <- function (dat2,dat2resp,probs,K){ 
@@ -121,7 +136,7 @@ sumtau <- function(tau.item){
 .rm.facets.est.a.item <- function( b.item , b.rater , Qmatrix , tau.item ,
         VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
         n.ik , numdiff.parm=.001 , max.b.increment=1,theta.k , msteps ,
-		mstepconv){
+		mstepconv , a.item.center , a.item.fixed  ){
     h <- numdiff.parm
 	diffindex <- item.index
 	RR <- length(b.rater)
@@ -137,12 +152,20 @@ sumtau <- function(tau.item){
 				VV , K , I , TP , a.item-h , a.rater , diffindex , rater.index , theta.k,RR)
 		# numerical differentiation			
 		res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
-				max.increment=max.b.increment , numdiff.parm )					
+				       max.increment=max.b.increment , numdiff.parm )					
 		a.item <- a.item + res$increment
 		a.item[ a.item < .05 ] <- .05
 #		a.item <- a.item - mean(a.item ) + 1
-		b1 <- mean( log( a.item ) )
-		a.item <- a.item / exp( b1 )
+		if ( ! is.null( a.item.fixed) ){		
+			ind <- which( ! is.na( a.item.fixed  ) )
+		    a.item[ind] <- a.item.fixed[ind]
+            res$d2[ ind ] <- -1E10			
+								}
+
+		if ( a.item.center ){
+			b1 <- mean( log( a.item ) )
+			a.item <- a.item / exp( b1 )
+						}
 		conv1 <- max( abs( a.item - a.item0 ) )
 		it <- it+1
 		cat("-") # ; flush.console()
@@ -157,7 +180,7 @@ sumtau <- function(tau.item){
 .rm.facets.est.tau.item <- function( b.item , b.rater , Qmatrix , tau.item ,
         VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
         n.ik , numdiff.parm=.001 , max.b.increment=1,theta.k , msteps ,
-		mstepconv , tau.item.fixed ){
+		mstepconv , tau.item.fixed , tau.item.fixed_val ){
     h <- numdiff.parm
 	diffindex <- item.index
 	RR <- length(b.rater)	
@@ -184,6 +207,18 @@ sumtau <- function(tau.item){
 			tau.item <- tau.item + increment
 			se.tau.item[,kk] <- sqrt(abs(-1/res$d2)	)
 					}
+					
+		if ( ! is.null( tau.item.fixed_val ) ){
+              MK <- ncol( tau.item.fixed_val )
+			  for ( kk in 1:MK){
+			  ind <- which( ! is.na( tau.item.fixed_val[,kk]) )
+			  if ( length(ind) > 0 ){
+				tau.item[ ind , kk] <- tau.item.fixed_val[ ind , kk]
+								}
+								}
+							}
+
+					
 		conv1 <- max( abs( tau.item - tau.item0 ) )
 		it <- it+1
 		cat("-") # ; flush.console()
@@ -203,7 +238,7 @@ sumtau <- function(tau.item){
 .rm.facets.est.b.rater <- function( b.item , b.rater , Qmatrix , tau.item ,
         VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
         n.ik , numdiff.parm=.001 , max.b.increment=1 , theta.k , msteps ,
-		mstepconv ){
+		mstepconv , b.rater.center , b.rater.fixed  ){
     h <- numdiff.parm
 	diffindex <- rater.index
 	RR <- length(b.rater)	
@@ -223,15 +258,16 @@ sumtau <- function(tau.item){
 		increment <- res$increment
 #		increment <- increment - mean(increment )
 		b.rater <- b.rater + increment
-		
+		if ( ! is.null( b.rater.fixed) ){		
+			ind <- which( ! is.na( b.rater.fixed  ) )
+		    b.rater[ind] <- b.rater.fixed[ind]
+            res$d2[ ind ] <- -1E10			
+								}
+		brc <- mean( b.rater )								
 		# centering
-		brc <- mean( b.rater )
-		# if (FALSE){
-		#  b.rater <- b.rater - brc
-		#		}
-			
-		 b.rater[RR] <- - sum( b.rater[-RR] )
-		
+		if ( b.rater.center){
+			b.rater[RR] <- - sum( b.rater[-RR] )
+						}
 #		max.b.increment <- abs( b.rater - b0 )
 		conv1 <- max( abs( b.rater - b0 ) )
 		it <- it+1
@@ -249,7 +285,7 @@ sumtau <- function(tau.item){
 .rm.facets.est.a.rater <- function( b.item , b.rater , Qmatrix , tau.item ,
         VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
         n.ik , numdiff.parm=.001 , max.b.increment=1,theta.k , msteps ,
-		mstepconv){
+		mstepconv , a.rater.center , a.rater.fixed ){
     h <- numdiff.parm
 	diffindex <- rater.index
 	RR <- length(b.rater)
@@ -269,8 +305,16 @@ sumtau <- function(tau.item){
 		a.rater <- a.rater + res$increment
 		a.rater[ a.rater < .05 ] <- .05
 #		a.rater <- a.rater - mean(a.rater ) + 1
-		b1 <- mean( log( a.rater ) )
-		a.rater <- a.rater / exp( b1 )
+		if ( ! is.null( a.rater.fixed) ){		
+			ind <- which( ! is.na( a.rater.fixed  ) )
+		    a.rater[ind] <- a.rater.fixed[ind]
+            res$d2[ ind ] <- -1E10			
+								}
+
+		if ( a.rater.center){
+			b1 <- mean( log( a.rater ) )
+			a.rater <- a.rater / exp( b1 )
+							}
 		conv1 <- max( abs( a.rater - a.rater0 ) )
 		it <- it+1
 		cat("-") # ; flush.console()

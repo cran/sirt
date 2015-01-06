@@ -54,9 +54,15 @@ write.fwf2 <- function( dat  , format.full , format.round , savename ){
             matr[,vv] <- .write.format2( vec1 = dat[,vv] , ff = fff , fr = fvv )
                 }
         matr <- apply( matr , 1 , FUN = function(ll){ paste( ll , 
-						collapse="" ) } )
+						collapse="" ) } )			
+#        write.table( matr , paste( savename , ".dat" , sep="") , 
+#						quote=F , row.names=F , col.names=F)
+		if ( is.vector(matr) ){
+        writeLines( matr , paste( savename , ".dat" , sep="") )
+					} else {
         write.table( matr , paste( savename , ".dat" , sep="") , 
-						quote=F , row.names=F , col.names=F)
+						row.names=F , col.names=F)
+						}
         dfr <- data.frame( "variable" = colnames(dat) , 
                     "begin" = c( 1 , cumsum( format.full )[ - ncol(dat) ] 
 								+ 1 ) , 
@@ -65,6 +71,7 @@ write.fwf2 <- function( dat  , format.full , format.round , savename ){
                             )
         write.table( dfr , paste( savename , "__LEGEND.txt",sep="") , 
 				quote=FALSE , row.names=FALSE , col.names=TRUE)
+				
         return(dfr)
         }
 ##############################################################################

@@ -413,10 +413,25 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 							} # end dd in 1:D
 						} # end D>1
 					}  # end MLC1
+	#####################################
+    # output LC
+	if ( modeltype == "LC"){	
+		theta.k <- diag( length( theta.k) )
+							}
+							
+	##################################################
+	# item response probabilities
+	d1 <- dim(pjk)
+	rprobs <- array( 0 , dim=c( d1[2] , 2 , d1[1] ) )
+	dimnames(rprobs)[[1]] <- colnames(dat)
+	rprobs[,2,] <- t( pjk )
+	rprobs[,1,] <- 1 - t(pjk)
+							
+					
 	###########################
 	# collect results
 	s2 <- Sys.time()
-	res <- list( "pjk" = pjk , "pi.k" = pi.k , "theta.k" = theta.k ,
+	res <- list( "pjk" = pjk , "rprobs" = rprobs , "pi.k" = pi.k , "theta.k" = theta.k ,
 			"item" = item , "trait" = trait , "mean.trait" = mean.trait ,
 			"sd.trait" = sd.trait , "skewness.trait" = skewness.trait , 
 			"cor.trait" = cor.trait , 

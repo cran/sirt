@@ -53,9 +53,27 @@ infit statistics. \emph{Rasch Measurement Transactions}, \bold{3:4}, 84-85.
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%}
+\seealso{
+See also \code{personfit.stat} for person fit statistics for dichotomous
+item responses. See also the \pkg{PerFit} package for further person
+fit statistics.
+
+Item fit in other \R packages: 
+\code{\link[eRm:itemfit]{itemfit}} (\pkg{eRm}),
+\code{\link[TAM:tam.fit]{tam.fit}} (\pkg{TAM}),
+\code{\link[mirt:itemfit]{itemfit}} (\pkg{mirt}),
+\code{\link[ltm:item.fit]{item.fit}} (\pkg{ltm}),
+
+Person fit in other \R packages: 
+\code{\link[eRm:itemfit]{itemfit}} (\pkg{eRm}),
+\code{\link[mirt:itemfit]{itemfit}} (\pkg{mirt}),
+\code{\link[ltm:person.fit]{person.fit}} (\pkg{ltm}),
+
+See \code{\link{pcm.conversion}} for conversions of different 
+parametrizations of the partial credit model.
+}
+
+
 
 \examples{
 \dontrun{	

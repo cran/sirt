@@ -5,7 +5,7 @@
 # 2014-10-06: renamed rm.hrm into rm.sdt
 rm.sdt <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) , 	
 	est.a.item=FALSE , est.c.rater= "n" , 
-	est.d.rater= "n" , d.min=.5 , d.max=100 ,  d.start = 3 , 
+	est.d.rater= "n" , est.mean = FALSE , d.min=.5 , d.max=100 ,  d.start = 3 , 
 	max.increment=1 , numdiff.parm=.00001 , maxdevchange=.10 ,
 	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001){
 	#..........................................................
@@ -178,10 +178,12 @@ rm.sdt <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 #stop("here")		
 		
 		# update distribution
-		w2 <- sum( theta.k^2 * pi.k )
-		sigma <- sqrt(w2)
-		pi.k <- dnorm( theta.k , mean=0 , sd=sigma )
-		pi.k <- pi.k / sum( pi.k )
+		res <- rm.smooth.distribution( theta.k , pi.k , est.mean = est.mean )
+		pi.k <- res$pi.k
+		mu <- res$mu
+		sigma <- res$sigma
+		
+		
 		dev <- -2*ll
 		# convergence criteria
 		conv <- max( abs(c.rater-c.rater0) , abs( c.rater-c.rater0) , 
@@ -201,6 +203,7 @@ rm.sdt <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 				paste( round(max(abs(tau.item0-tau.item)) ,6) , collapse=" " ) , "\n" , sep=""))
 		cat( paste( "    Maximum a.item parameter change = " , 
 				paste( round(max(abs(a.item0-a.item)) ,6) , collapse=" " ) , "\n" , sep=""))
+        cat( paste(" Trait M  = " , round( mu , 3 ) , sep="") , "\n")				
 		cat( paste(" Trait SD = " , round( sigma , 3 ) , sep="") , "\n")
 		# flush.console()			
 				}
@@ -298,6 +301,12 @@ rm.sdt <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 #		rater[ , paste0("c_",zz,".trans")] <- c.rater[,zz] / d.rater[zz] / K 
 		rater[ , paste0("c_",zz,".trans")] <- c.rater[,zz] / d.rater / K 
 			}
+			
+	#*****
+	# dimnames probs
+	dimnames(probs)[[1]] <- colnames(dat2)
+	#*****			
+						
 	obji <- rater
 	for (vv in seq(2,ncol(obji) )){
 		obji[,vv] <- round( obji[,vv],3 ) }
@@ -312,7 +321,8 @@ rm.sdt <- function( dat , pid , rater ,Qmatrix=NULL , theta.k=seq(-9,9,len=30) ,
 
     res <- list("deviance" = dev , "ic"=ic , "item"=item , "rater"=rater ,
 		"person" = person , "EAP.rel"=EAP.rel , 
-		"sigma"=sigma , 
+		"mu"=mu , "sigma"=sigma , 
+		"theta.k" = theta.k , "pi.k" = pi.k , "G"=1 , 		
 		"tau.item"=tau.item , "se.tau.item"=se.tau.item ,
 		"a.item"=a.item , "se.a.item"=se.a.item ,
 		"c.rater"=c.rater , "se.c.rater"=se.c.rater , 

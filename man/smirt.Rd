@@ -1,6 +1,14 @@
 \name{smirt}
 \alias{smirt}
 \alias{summary.smirt}
+\alias{logLik.smirt}
+\alias{anova.smirt}
+\alias{IRT.irfprob.smirt}
+\alias{IRT.likelihood.smirt}
+\alias{IRT.posterior.smirt}
+\alias{IRT.modelfit.smirt}
+\alias{summary.IRT.modelfit.smirt}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Multidimensional Noncompensatory, Compensatory and Partially
@@ -23,6 +31,20 @@ smirt(dat, Qmatrix, irtmodel="noncomp" , est.b = NULL, est.a = NULL,
      mstepconv = 0.001)
 
 \method{summary}{smirt}(object,...)
+
+\method{anova}{smirt}(object,...)
+
+\method{logLik}{smirt}(object,...)
+
+\method{IRT.irfprob}{smirt}(object,...)
+
+\method{IRT.likelihood}{smirt}(object,...)
+
+\method{IRT.posterior}{smirt}(object,...)
+
+\method{IRT.modelfit}{smirt}(object,...)
+
+\method{summary}{IRT.modelfit.smirt}(object,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

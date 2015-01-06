@@ -2,6 +2,9 @@
 
 useDynLib(sirt)
 
+####################################################
+################## EXPORTS #########################
+
 export(   
     eigenvalues.sirt,
     ccov.np,
@@ -117,8 +120,6 @@ export(
     tam2mirt ,
     R2conquest ,
     mirt.wrapper.fscores ,
-#    mirt.model.vars ,
-#    lavaanify.sirt ,
     pcm.conversion ,
     mirt.wrapper.itemplot ,
     mirt.specify.partable ,
@@ -126,11 +127,53 @@ export(
     nedelsky.latresp ,
     nedelsky.irf ,
     brm.sim ,
-    brm.irf
+    brm.irf ,
+    pcm.fit ,
+    modelfit.cor.poly ,
+    IRT.mle
 )    
     
     
 
+################################################
+############# more S3 methods ##################
+
+
+
+
+#*** anova
+S3method(anova, rasch.copula2)
+S3method(anova, rasch.copula3)
+S3method(anova, rasch.mml)
+S3method(anova, smirt)
+S3method(anova, rasch.mirtlc)
+S3method(anova, gom)
+S3method(anova, rm.facets)
+S3method(anova, rm.sdt)
+
+
+#*** coef
+S3method(coef, rasch.evm.pcm )
+
+
+#*** logLik
+S3method(logLik, rasch.copula2)
+S3method(logLik, rasch.copula3)
+S3method(logLik, rasch.mml)
+S3method(logLik, smirt)
+S3method(logLik, rasch.mirtlc)
+S3method(logLik, gom)
+S3method(logLik, rm.facets)
+S3method(logLik, rm.sdt)
+
+
+#*** plot
+S3method(plot,np.dich)
+S3method(plot,mcmc.sirt)
+S3method(plot,isop)
+S3method(plot,rasch.mml)
+S3method(plot,linking.robust)
+S3method(plot,noharm.sirt)
 
 
 #**** summary
@@ -159,53 +202,88 @@ S3method(summary,R2noharm.jackknife)
 S3method(summary,invariance.alignment)
 S3method(summary,latent.regression)
 S3method(summary,modelfit.sirt)
-S3method(summary, rasch.evm.pcm)
-S3method(summary, linking.robust)
-S3method(summary, lc.2raters)
-S3method(summary, rasch.copula3)
-S3method(summary, rasch.conquest)
-
-
-#*** plot
-S3method(plot,np.dich)
-S3method(plot,mcmc.sirt)
-S3method(plot,isop)
-S3method(plot,rasch.mml)
-S3method(plot,linking.robust)
-S3method(plot,noharm.sirt)
-# S3method(plot,invariance.alignment)
-
-
-#*** coef
-S3method(coef, rasch.evm.pcm )
+S3method(summary,rasch.evm.pcm)
+S3method(summary,linking.robust)
+S3method(summary,lc.2raters)
+S3method(summary,rasch.copula3)
+S3method(summary,rasch.conquest)
+S3method(summary,IRT.modelfit.rasch.mml)
+S3method(summary,IRT.modelfit.smirt)
+S3method(summary,IRT.modelfit.rasch.mirtlc)
+S3method(summary,IRT.modelfit.gom)
+S3method(summary,IRT.modelfit.rm.facets)
+S3method(summary,IRT.modelfit.rm.sdt)
 
 
 #*** vcov
 S3method(vcov, rasch.evm.pcm )
 
 
-#*** IRT.likelihood
-S3method(IRT.likelihood, ConfirmatoryClass)
-S3method(IRT.likelihood, ExploratoryClass)
 
 
-#*** IRT.posterior
-S3method(IRT.posterior, ConfirmatoryClass)
-S3method(IRT.posterior, ExploratoryClass)
+##########################################
+#### S3 methods IRT.xxx ##################
 
+
+#*** IRT.factor.scores
+S3method(IRT.factor.scores, rm.facets)
+S3method(IRT.factor.scores, rm.sdt)
 
 
 #*** IRT.irfprob
-S3method(IRT.irfprob, ConfirmatoryClass)
-S3method(IRT.irfprob, ExploratoryClass)
+S3method(IRT.irfprob, SingleGroupClass)
+S3method(IRT.irfprob, rasch.mml)
+S3method(IRT.irfprob, smirt)
+S3method(IRT.irfprob, rasch.mirtlc)
+S3method(IRT.irfprob, gom)
+S3method(IRT.irfprob, rm.facets)
+S3method(IRT.irfprob, rm.sdt)
 
 
-# imports Depends packages
+#*** IRT.likelihood
+S3method(IRT.likelihood, rasch.copula2)
+S3method(IRT.likelihood, rasch.copula3)
+S3method(IRT.likelihood, SingleGroupClass)
+S3method(IRT.likelihood, rasch.mml)
+S3method(IRT.likelihood, smirt)
+S3method(IRT.likelihood, rasch.mirtlc)
+S3method(IRT.likelihood, gom)
+S3method(IRT.likelihood, rm.facets)
+S3method(IRT.likelihood, rm.sdt)
+
+
+#*** IRT.modelfit
+S3method(IRT.modelfit, rasch.mml)
+S3method(IRT.modelfit, smirt)
+S3method(IRT.modelfit, rasch.mirtlc)
+S3method(IRT.modelfit, gom)
+S3method(IRT.modelfit, rm.facets)
+S3method(IRT.modelfit, rm.sdt)
+
+
+#*** IRT.posterior
+S3method(IRT.posterior, rasch.copula2)
+S3method(IRT.posterior, rasch.copula3)
+S3method(IRT.posterior, SingleGroupClass)
+S3method(IRT.posterior, rasch.mml)
+S3method(IRT.posterior, smirt)
+S3method(IRT.posterior, rasch.mirtlc)
+S3method(IRT.posterior, gom)
+S3method(IRT.posterior, rm.facets)
+S3method(IRT.posterior, rm.sdt)
+
+
+
+
+####################################################
+################## IMPORTS #########################
+
+#*** Imports/Depends packages
 import(mvtnorm)
 import(MASS)
 import(coda)
-importFrom(utils,packageDescription)
-importFrom( sfsmisc , QUnif  )
+importFrom(utils, packageDescription)
+importFrom(sfsmisc, QUnif)
 import(TAM)
 import(CDM)
 import(combinat)
@@ -213,12 +291,12 @@ import(ic.infer)
 import(sm)
 import(psych)
 import(qgraph)
-importFrom(pbivnorm,pbivnorm)
-importFrom( gtools , permutations )
+importFrom(pbivnorm, pbivnorm)
+importFrom(gtools, permutations)
 importFrom(Rcpp,evalCpp)
 import(lavaan)
 import(semPlot)
 import(igraph)
-# importFrom(inline,getDynLib)
+# importFrom(inline, getDynLib)
 import(mirt)
 import(Matrix)

@@ -71,6 +71,8 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+See \code{\link{pcm.fit}} for person fit in the partial credit model.	
+	
 See the \pkg{irtProb} and \pkg{PerFit} packages for person fit statistics
 and person response curves and functions included in other packages: 
 \code{\link[mirt:personfit]{personfit}} (\pkg{mirt}),

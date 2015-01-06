@@ -20,16 +20,17 @@ data(data.g308)
 \item The dataset \code{data.g308} is a C-test containing 20 items and is
 used in Schroeders, Robitzsch and Schipolowski (2014) and is of the
 following format
-\verb{
-'data.frame':   747 obs. of  20 variables:
- $ id    : int  1 2 3 4 5 6 7 8 9 10 ...
- $ G30801: int  1 1 1 1 1 0 0 1 1 1 ...
- $ G30802: int  1 1 1 1 1 1 1 1 1 1 ...
- $ G30803: int  1 1 1 1 1 1 1 1 1 1 ...
- [...]
- $ G30819: int  1 1 1 1 0 0 1 1 1 0 ...
- $ G30820: int  1 1 1 1 0 0 0 1 1 0 ...
-}
+\code{'data.frame':   747 obs. of  21 variables:} \cr
+\code{ $ id    : int  1 2 3 4 5 6 7 8 9 10 ...} \cr
+\code{ $ G30801: int  1 1 1 1 1 0 0 1 1 1 ...} \cr
+\code{ $ G30802: int  1 1 1 1 1 1 1 1 1 1 ...} \cr
+\code{ $ G30803: int  1 1 1 1 1 1 1 1 1 1 ...} \cr
+\code{ $ G30804: int  1 1 1 1 1 0 1 1 1 1 ...} \cr
+\code{[...]} \cr
+\code{ $ G30817: int  0 0 0 0 1 0 1 0 1 0 ...} \cr
+\code{ $ G30818: int  0 0 1 0 0 0 0 1 1 0 ...} \cr
+\code{ $ G30819: int  1 1 1 1 0 0 1 1 1 0 ...} \cr
+\code{ $ G30820: int  1 1 1 1 0 0 0 1 1 0 ...} \cr
 }
 }
 
@@ -107,7 +108,7 @@ summary(mod3)
 #****************************************
 #*** Model 4: Copula model
 
-mod4 <- rasch.copula2 (dat = dat[,-1], itemcluster = testlet)
+mod4 <- sirt::rasch.copula2 (dat = dat[,-1], itemcluster = testlet)
 summary(mod4)
 }
 }

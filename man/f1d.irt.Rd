@@ -140,18 +140,19 @@ mod1 <- f1d.irt( dat =dat , nfactors=3)
 
 #++ (2) plot results
      par(mfrow=c(1,2))
+library(MASS)     
 # Intercepts
 plot( mod1$item$di0 , mod1$item$di.ast , pch=16 , main="Item Intercepts" ,
         xlab= expression( paste( d[i] , " (Unidimensional Model)" )) ,
         ylab= expression( paste( d[i] , " (Functional Unidimensional Model)" )))
 abline( lm(mod1$item$di.ast ~ mod1$item$di0) , col=2 , lty=2 )
-abline( rlm(mod1$item$di.ast ~ mod1$item$di0) , col=3 , lty=3 )
+abline( MASS::rlm(mod1$item$di.ast ~ mod1$item$di0) , col=3 , lty=3 )
 # Discriminations
 plot( mod1$item$ai0 , mod1$item$ai.ast , pch=16 , main="Item Discriminations" ,
         xlab= expression( paste( a[i] , " (Unidimensional Model)" )) ,
         ylab= expression( paste( a[i] , " (Functional Unidimensional Model)" )))
 abline( lm(mod1$item$ai.ast ~ mod1$item$ai0) , col=2 , lty=2 )
-abline( rlm(mod1$item$ai.ast ~ mod1$item$ai0) , col=3 , lty=3 )
+abline( MASS::rlm(mod1$item$ai.ast ~ mod1$item$ai0) , col=3 , lty=3 )
      par(mfrow=c(1,1))
 
 #++ (3) estimate bifactor model and Green-Yang reliability
@@ -168,7 +169,7 @@ Q <- matrix( 1, I,2 )
 Q[1,2] <- 0
 variance.fixed <- cbind( 1,2,0 )
 mod2a <- smirt( dat , Qmatrix=Q , irtmodel="comp" , est.a="2PL" , 
-           variance.fixed=variance.fixed , maxiter=50)
+                variance.fixed=variance.fixed , maxiter=50)
 #++ (2) input estimated discriminations and intercepts for
 #       functional unidimensional model
 mod2b <- f1d.irt( A = mod2a$a , intercept = mod2a$b )

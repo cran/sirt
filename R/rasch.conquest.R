@@ -15,7 +15,7 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 							pv = TRUE , designmatrix = NULL ,
                             only.calibration = FALSE , init_parameters = NULL , n_plausible = 10 ,
 							persons.elim = TRUE , est.wle = TRUE  , save.bat = TRUE , use.bat = FALSE ,
-							read.output=TRUE
+							read.output=TRUE , ignore.pid = FALSE
                                 ){
         # INPUT:
         # pv ... estimation of plausible values?
@@ -75,13 +75,14 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
         writeLines( c( "===> item" , paste( 1:I , colnames(dat) ) ) , 
                         paste( name ,".nam" ,sep="") )
 
+										
         # which items are being constrained
         if ( ! is.null( constraints) ){
             constraints$itemnr <- match( constraints[,1] , colnames(dat) )
             constraints <- constraints[ order( constraints$itemnr) , ]                       
             c1 <- paste( constraints[,3] ,  constraints[,2] ,       paste(  " /* " , constraints[,1] , "*/" ) )
             write.table( c1  ,  paste(  name ,".constrpar" ,sep="") , quote=F , row.names=F , col.names=F )
-                    }
+                    }											
         # extract decimals for person ID
         PP <- round( max( floor( log(  pid , 10 ) + 1 ) ) )
         # extract decimals for weights
@@ -93,12 +94,13 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
             rdcols <- digits * ( 1 - colMeans( X == round(X) ) )
             XNcols <- XNcols + rdcols + 1
             # possible correction
-            XNcols <- ifelse( floor(XNcols ) != XNcols , floor(XNcols)+1 , XNcols )
+            XNcols <- ifelse( floor(XNcols ) != XNcols , floor(XNcols)+1 , XNcols )		
+			
             # write data
             dat2 <- data.frame( pid , wgt ,  X , dat )
             i1 <- write.fwf2( dat = dat2  , format.full = c( PP , WW , XNcols ,  rep(1,I)) , 
-                format.round  = c( 0 , digits , rdcols , rep(1,I) ) , savename = name )
-                        }
+                   format.round  = c( 0 , digits , rdcols , rep(1,I) ) , savename = name )
+                        }				
         if (is.null(X)){ 
             dat2 <- data.frame( pid , wgt ,   dat )
             i1 <- write.fwf2( dat = dat2  , 
@@ -107,15 +109,19 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 					savename = name )
                     }
         # statement data input
-        state1 <-   paste( "format pid " , 1 , "-" , PP , 
-                            " wgt " , PP+1 , "-" , PP+WW ,  
-                            " responses " , PP+1+WW , "-" , PP + I + WW ,";" ,  sep="" )
-    
+        state1 <-   paste0( "format " )
+		if ( ! ignore.pid ){
+			state1 <- paste0( state1 , 	"pid " , 1 , "-" , PP )
+							}
+            state1 <- paste0( state1 , " wgt " , PP+1 , "-" , PP+WW ,  
+                            " responses " , PP+1+WW , "-" , PP + I + WW ,";" )
+
         if ( ! is.null(X) ){
             i1a <- i1[ seq( 1 , 2 + ncol(X) ) , ]
             state2 <- paste( paste( i1a$variable  , " " , i1a$begin , "-" , i1a$end , sep="" ) , collapse = " " )
             state1 <- paste( "format " , state2 , paste( "responses " , i1[ 3 + ncol(X) , "begin" ] , "-" , i1[ nrow(i1) , "end" ] , ";" , sep="") , sep=" " )
                 }
+										
         # input designmatrix
         if ( ! is.null(designmatrix) ){        
             write.table( designmatrix , paste( name , ".des" , sep="") , col.names=F , row.names=F , quote=F )
@@ -155,6 +161,8 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
                                 DD <- 1
                                 scorestate <- NULL 
                                 }
+						
+						
         # change number of nodes in monte carlo integration
         if (DD > 2 & nodes < 100 ){ nodes <- 2500 }
         # generate ConQuest Syntax for Rasch model
@@ -201,7 +209,10 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 			writeLines( paste( path.conquest , "\\" , conquest.name , " " ,  
 					paste( name , ".cqc" , sep="") , sep = "") , "analysis.bat" )
 						}
-        if ( onlysyntax == TRUE ){ cat( paste( "Conquest Input Syntaxes are in " , getwd() ,  "\n", sep="") ) ; res <- NULL } 
+        if ( onlysyntax ){ 
+				cat( paste( "Conquest Input Syntaxes are in " , getwd() ,  "\n", sep="") )
+				res <- NULL 
+						} 
                 else {
         # link to conquest console
 		if ( use.bat ){
@@ -211,45 +222,64 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
         system(paste(path.conquest,"\\" , conquest.name , ".exe ", name,".cqc",sep=""),
 					show.output.on.console = show.conquestoutput , invisible = FALSE)
 							}
+							
+						
+
+
 		#######################################################
 		# READING CONQUEST OUTPUT
 		if (read.output){ 					
 			if ( ( ! only.calibration ) & est.wle  ){
 				# read WLEs and add pid
-				wle <- read.table( paste( name , ".wle" , sep="")  )
+				wle <- read.table( paste( name , ".wle" , sep="")  )		
 				v1 <- c("score" , "max" , "wle" , "se.wle" )
 				if (DD > 1 ){ 
 					v1 <- rep( v1 , each = DD )
 					v1 <- paste( rep( paste( "dim" , 1:DD , sep="")  , 4 ) , v1 , sep="")
 							}
-				colnames(wle) <- c("case" , "pid" , v1 )
-				wle <- data.frame(  wle ) 
-
-	
+				if ( ignore.pid ){			
+					colnames(wle) <- c("case" ,  v1 )
+					wle <- data.frame( "case" = wle[,"case"] , "pid" = wle[,"case"] , 
+								wle[,-1] )						
+								} else {
+					colnames(wle) <- c("case" , "pid" , v1 )								
+								}
+				wle <- data.frame(  wle )
 			
 						} else { wle <- NA }
+												
 			# read shw file
 			shw <- readLines( paste( name , ".shw" , sep="") )
 			deviance <- as.numeric( substring( shw[ grep( "Final Deviance:" , shw ) ]  , 17 ) )
 			numbiter <- as.numeric( substring( shw[ grep( "The number of iterations:" , shw ) ]  , 26 ) )
 			ind1 <- grep("TERM 1: item" , shw ) + 6
 			ind2 <- grep("An asterisk next to a" , shw )[1] - 2
+						
 			# extract trait mean and trait variance
-			mean.trait <- read.table( paste( name , ".regr" , sep="") , header=F)[ 1, 3]
+#			m3 <- read.table( paste( name , ".regr" , sep="") , header=F)
+			m3 <- read.table( paste( name , ".regr" , sep="") )			
+			mean.trait <- m3[ 1, 3]
 			trait.variance <- as.numeric( substring( shw[ grep( "Variance " , shw ) ] , 25 ) )
 			wle.rel <-  as.numeric( substring( shw[ grep( " WLE Person separation RELIABILITY:" , shw ) ] , 37 ) )
 			itemdiff <- as.numeric( substring( shw[ ind1:ind2 ] , 20 , 27 ) )
+
 			# read pv file
 			if ( pv  ) {                
 					if (DD == 1){ 
-						pv1 <- .read.pv( pvfile = paste( name , ".pv" , sep="") , npv=n_plausible ) 
+						pv1 <- .read.pv( pvfile = paste( name , ".pv" , sep="") , npv=n_plausible ) 						
 								} else {
 									pv1 <- .read.multidimpv( pvfile = paste( name , ".pv" , sep="") , ndim = DD , 
 												npv = n_plausible  )
 										}
+				if ( mean( is.na( pv1$pid ) ) == 1 ){
+							pv1$pid <- pv1$case 
+									}										
 					pv1 <- pv1[ , - grep( "case" , colnames(pv1) ) ]			
 					wle <- merge( x = wle , y = pv1 , by = "pid" , all=T  )
 								 }
+								 
+								 
+								 
 				 
 			#*****
 			# reliability estimation
@@ -274,13 +304,18 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 		if ( DD == 1 & pv  ) { 
 	#		emp.discrim <- round( item.discrim( dat , wle$wle ),3) } 
 			emp.discrim <- cor( dat , wle$wle , use="pairwise.complete.obs") }
-					else { emp.discrim <- NA  }
+					else { emp.discrim <- NA  }			
+
+					
+			diffs <- as.numeric( substring( shw[ ind1:ind2 ] , 20 , 27 ) ) 
+			diffs <- diffs - mean(diffs)	
+					
 		item <- data.frame( "item" = colnames(dat) ,  
 						"N" = colSums( 1 -is.na(dat) , na.rm=T) ,
 						"p" = round(colMeans( dat , na.rm=T ),3) , 
 						"p.exp" = p.exp , 
 						"itemdiff" = itemdiff ,
-						"itemdiff.cent" = scale( as.numeric( substring( shw[ ind1:ind2 ] , 20 , 27 ) ) , scale=F) , 
+						"itemdiff.cent" = diffs , 
 						"se.itemdiff" = as.numeric( substring( shw[ ind1:ind2 ] , 29 , 35 ) ) ,
 						"emp.discrim" = round(emp.discrim,3) ,
 						"outfit" = as.numeric( substring( shw[ ind1:ind2 ] , 38 , 43 ) ) ,
@@ -293,6 +328,8 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 						"reliability" = reliability )  
 			s2 <- Sys.time()
 			res$sys.time <- list( "start" = s1  , "end" = s2 , "timediff" = s2-s1 )
+	
+			
 			if ( DD == 1){
 					res$shw.itemparameter <- read.show( showfile = paste( name , ".shw" , sep="") )
 					res$shw.regrparameter <- read.show.regression( showfile = paste( name , ".shw" , sep="") )        

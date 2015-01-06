@@ -3,6 +3,15 @@
 \alias{rasch.copula3}
 \alias{summary.rasch.copula2}
 \alias{summary.rasch.copula3}
+\alias{anova.rasch.copula2}
+\alias{anova.rasch.copula3}
+\alias{logLik.rasch.copula2}
+\alias{logLik.rasch.copula3}
+\alias{IRT.likelihood.rasch.copula2}
+\alias{IRT.likelihood.rasch.copula3}
+\alias{IRT.posterior.rasch.copula2}
+\alias{IRT.posterior.rasch.copula3}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Multidimensional IRT Copula Model
@@ -36,7 +45,19 @@ rasch.copula3(dat, itemcluster, dims=NULL , copula.type ="bound.mixt" ,
     dev.crit=.2 , rho.init=.5 , increment.factor=1.01) 
     
 \method{summary}{rasch.copula2}(object,...)
-\method{summary}{rasch.copula3}(object,...)	
+\method{summary}{rasch.copula3}(object,...)
+
+\method{anova}{rasch.copula2}(object,...)
+\method{anova}{rasch.copula3}(object,...)
+
+\method{logLik}{rasch.copula2}(object,...)
+\method{logLik}{rasch.copula3}(object,...)
+
+\method{IRT.likelihood}{rasch.copula2}(object,...)
+\method{IRT.likelihood}{rasch.copula3}(object,...)
+
+\method{IRT.posterior}{rasch.copula2}(object,...)
+\method{IRT.posterior}{rasch.copula3}(object,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -121,9 +142,9 @@ Maximal change in the deviance. Default is \code{.2}.
 \item{rho.init}{Initial value for off-diagonal elements in correlation matrix}
 \item{increment.factor}{A numeric value larger than one which controls the
 	size of increments in iterations. To stabilize convergence,
-	choose values 1.1 or 1.2 in some situations.}
+	choose values 1.05 or 1.1 in some situations.}
   \item{object}{
-Object of class \code{rasch.copula2}
+Object of class \code{rasch.copula2} or \code{rasch.copula3}
 }
   \item{\dots}{
 Further arguments to be passed
@@ -147,6 +168,7 @@ A list with following entries
 \item{alpha2}{Parameter \eqn{\alpha_2} in the generalized item response model}
 \item{ic}{Information criteria}
 \item{theta.k}{Discretized ability distribution}
+\item{pi.k}{Assumed \eqn{\theta} distribution}
 \item{deviance}{Deviance}
 \item{pattern}{Item response patterns with frequencies and posterior
 distribution}
@@ -495,4 +517,6 @@ round(dfr,4)
 \keyword{IRT copula models}
 \keyword{Local dependence}
 \keyword{summary}
+\keyword{logLik}
+\keyword{anova}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

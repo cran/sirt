@@ -1,6 +1,15 @@
 \name{rm.sdt}
 \alias{rm.sdt}
 \alias{summary.rm.sdt}
+\alias{logLik.rm.sdt}
+\alias{anova.rm.sdt}
+\alias{IRT.irfprob.rm.sdt}
+\alias{IRT.likelihood.rm.sdt}
+\alias{IRT.posterior.rm.sdt}
+\alias{IRT.modelfit.rm.sdt}
+\alias{summary.IRT.modelfit.rm.sdt}
+\alias{IRT.factor.scores.rm.sdt}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Hierachical Rater Model Based on Signal Detection Theory (HRM-SDT)
@@ -18,11 +27,27 @@ DeCarlo, Kim & Johnson, 2011).
 
 \usage{
 rm.sdt(dat, pid, rater, Qmatrix = NULL, theta.k = seq(-9, 9, len = 30), 
-    est.a.item = FALSE, est.c.rater = "n", est.d.rater = "n", 
+    est.a.item = FALSE, est.c.rater = "n", est.d.rater = "n", est.mean=FALSE , 
     d.min = 0.5, d.max = 100, d.start = 3, max.increment = 1, numdiff.parm = 0.00001, 
     maxdevchange = 0.1, globconv = .001, maxiter = 1000, msteps = 4, mstepconv = 0.001)
 
 \method{summary}{rm.sdt}(object,...)    
+
+\method{anova}{rm.sdt}(object,...)
+
+\method{logLik}{rm.sdt}(object,...)
+
+\method{IRT.factor.scores}{rm.sdt}(object, type="EAP", ...)
+
+\method{IRT.irfprob}{rm.sdt}(object,...)
+
+\method{IRT.likelihood}{rm.sdt}(object,...)
+
+\method{IRT.posterior}{rm.sdt}(object,...)
+
+\method{IRT.modelfit}{rm.sdt}(object,...)
+
+\method{summary}{IRT.modelfit.rm.sdt}(object,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -59,6 +84,8 @@ from each other).
 Type of estimation of \eqn{d} parameters. Options are
 the same as in \code{est.c.rater}.
 }
+\item{est.mean}{Optional logical indicating whether the mean of the 
+trait distribution should be estimated.}
   \item{d.min}{
 Minimal \eqn{d} parameter to be estimated
 }
@@ -92,6 +119,8 @@ Convergence criterion in an M step
   \item{object}{
 Object of class \code{rm.hrm}
 }
+\item{type}{Factor score estimation method. Up to now, 
+    only \code{type="EAP"} is supported.}
   \item{\dots}{
 Further arguments to be passed
 }
@@ -150,7 +179,9 @@ Transformed \eqn{c} parameters
 \item{person}{Data frame with person parameters: EAP and corresponding standard 
 errors}
 \item{EAP.rel}{EAP reliability}
-\item{sigma}{Standard deviation of the trait}
+\item{EAP.rel}{EAP reliability}
+\item{mu}{Mean of the trait distribution}
+\item{sigma}{Standard deviation of the trait distribution}
 \item{tau.item}{Item parameters \eqn{\tau_{ik}}}
 \item{se.tau.item}{Standard error of item parameters \eqn{\tau_{ik}}}
 \item{a.item}{Item slopes \eqn{a_i}}

@@ -29,7 +29,7 @@ R2conquest(dat, path.conquest, conquest.name="console", converge=0.001,
     digits=5, onlysyntax=FALSE, qmatrix=NULL, import.regression=NULL, 
     anchor.regression=NULL, anchor.covariance=NULL, pv=TRUE, designmatrix=NULL, 
     only.calibration=FALSE, init_parameters=NULL, n_plausible=10,  persons.elim=TRUE, 
-    est.wle=TRUE, save.bat=TRUE , use.bat=FALSE , read.output=TRUE)
+    est.wle=TRUE, save.bat=TRUE , use.bat=FALSE , read.output=TRUE , ignore.pid=FALSE)
     
 rasch.conquest(dat, path.conquest, conquest.name="console", converge=0.001, 
     deviancechange=1e-04, iter=800, nodes=20, show.conquestoutput=FALSE, 
@@ -38,7 +38,7 @@ rasch.conquest(dat, path.conquest, conquest.name="console", converge=0.001,
     digits=5, onlysyntax=FALSE, qmatrix=NULL, import.regression=NULL, 
     anchor.regression=NULL, anchor.covariance=NULL, pv=TRUE, designmatrix=NULL, 
     only.calibration=FALSE, init_parameters=NULL, n_plausible=10,  persons.elim=TRUE, 
-    est.wle=TRUE, save.bat=TRUE , use.bat=FALSE , read.output=TRUE)
+    est.wle=TRUE, save.bat=TRUE , use.bat=FALSE , read.output=TRUE, ignore.pid=FALSE)
 
 \method{summary}{R2conquest}(object, \dots)    
 \method{summary}{rasch.conquest}(object, \dots)    
@@ -171,6 +171,8 @@ of a bat file in the working directory (\code{use.bat=TRUE})
   \item{read.output}{
 Should ConQuest output files be processed? Default is \code{TRUE}.
 }
+\item{ignore.pid}{Logical indicating whether person identifiers (\code{pid})
+should be processed in ConQuest input syntax.}
 \item{object}{
 Object of class \code{R2conquest}
 }

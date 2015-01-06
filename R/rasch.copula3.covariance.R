@@ -1,7 +1,5 @@
 
 
-# try speed with and without frequency weights
-
 ######################################
 # estimation of covariance
 rasch.copula3.covariance <- function( f.qk.yi , Sigma , theta.k , N ,

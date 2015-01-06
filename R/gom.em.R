@@ -16,6 +16,7 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 					}
 #	res <- .gom.proc( dat , K =K ) 
 #	.sirt.attach.environment( res , envir=e1 )
+    dat0 <- dat 
     dat.resp <- 1-is.na(dat)
     dat[ is.na(dat) ] <- 0
     N <- nrow(dat)
@@ -278,8 +279,8 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 		"mu"=mu , "Sigma"=Sigma , 
 		"b"= b , "se.b" = se.b , 
 		"f.yi.qk"=f.yi.qk , "f.qk.yi"=f.qk.yi , "probs"=probs ,
-		"n.ik"=n.ik ,  "iter"=iter , "dat2"=dat2 , "dat2.resp"=dat2.resp , 
-		"I"=I ,  "K"=K ,  "TP"=TP , "theta.k" = theta.k , "pi.k"=pi.k ,
+		"n.ik"=n.ik ,  "iter"=iter , "dat"=dat0 , "dat2"=dat2 , "dat2.resp"=dat2.resp , 
+		"I"=I ,  "K"=K ,  "TP"=TP , "G"= 1 ,  "theta.k" = theta.k , "pi.k"=pi.k ,
 		"problevels"=problevels , 	
 		"model"=model , "s1"=s1 , "s2"=s2  , "plmat"= plmat
 				)

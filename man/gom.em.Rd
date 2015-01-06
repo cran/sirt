@@ -1,6 +1,15 @@
 \name{gom.em}
 \alias{gom.em}
 \alias{summary.gom}
+\alias{logLik.gom}
+\alias{anova.gom}
+\alias{IRT.irfprob.gom}
+\alias{IRT.likelihood.gom}
+\alias{IRT.posterior.gom}
+\alias{IRT.modelfit.gom}
+\alias{summary.IRT.modelfit.gom}
+
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Discrete (Rasch) Grade of Membership Model
@@ -16,7 +25,21 @@ gom.em(dat, K=NULL, problevels=NULL, model="GOM", theta0.k=seq(-5, 5, len=15),
     maxdevchange=10^(-5), globconv=0.001, maxiter=1000, msteps=4, mstepconv=0.001,
     progress=TRUE)
 
-\method{summary}{gom}(object,...)    
+\method{summary}{gom}(object,...)
+
+\method{anova}{gom}(object,...)
+
+\method{logLik}{gom}(object,...)
+
+\method{IRT.irfprob}{gom}(object,...)
+
+\method{IRT.likelihood}{gom}(object,...)
+
+\method{IRT.posterior}{gom}(object,...)
+
+\method{IRT.modelfit}{gom}(object,...)
+
+\method{summary}{IRT.modelfit.gom}(object,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -243,6 +266,11 @@ summary(mod1)
 problevels <- seq( 0 , 1 , len=5 )
 mod2 <- gom.em( dat , K=4 , problevels ,  model="GOM"  )            
 summary(mod2)
+
+# model comparison
+smod1 <- IRT.modelfit(mod1)
+smod2 <- IRT.modelfit(mod2)
+IRT.compareModels(smod1,smod2)
 
 #***
 # Model 2a: Estimate discrete GOM with 4 classes and restricted space of probability levels

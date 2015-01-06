@@ -1,6 +1,14 @@
 \name{rasch.mirtlc}
 \alias{rasch.mirtlc}
 \alias{summary.rasch.mirtlc}
+\alias{logLik.rasch.mirtlc}
+\alias{anova.rasch.mirtlc}
+\alias{IRT.irfprob.rasch.mirtlc}
+\alias{IRT.likelihood.rasch.mirtlc}
+\alias{IRT.posterior.rasch.mirtlc}
+\alias{IRT.modelfit.rasch.mirtlc}
+\alias{summary.IRT.modelfit.rasch.mirtlc}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Multidimensional Latent Class 1PL and 2PL Model
@@ -18,7 +26,21 @@ rasch.mirtlc(dat, Nclasses=NULL, modeltype="LC", dimensions=NULL ,
     progress=TRUE, glob.conv=10^(-5), conv1=10^(-5), mmliter=1000, 
     mstep.maxit=3, seed=0, nstarts=1 , fac.iter=.35)
 
-\method{summary}{rasch.mirtlc}(object,...)	    
+\method{summary}{rasch.mirtlc}(object,...)
+
+\method{anova}{rasch.mirtlc}(object,...)
+
+\method{logLik}{rasch.mirtlc}(object,...)
+
+\method{IRT.irfprob}{rasch.mirtlc}(object,...)
+
+\method{IRT.likelihood}{rasch.mirtlc}(object,...)
+
+\method{IRT.posterior}{rasch.mirtlc}(object,...)
+
+\method{IRT.modelfit}{rasch.mirtlc}(object,...)
+
+\method{summary}{IRT.modelfit.rasch.mirtlc}(object,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -132,6 +154,8 @@ Lindsay et al., 1991; for a review see Formann, 2007).
 \value{
 A list with following entries
 \item{pjk}{Item probabilities evaluated at discretized ability distribution}
+\item{rprobs}{Item response probabilities like in \code{pjk},
+	but for each item category}
 \item{pi.k}{Estimated trait distribution}
 \item{theta.k}{Discretized ability distribution}
 \item{item}{Estimated item parameters}
@@ -194,15 +218,15 @@ Princeton, ETS.
 \author{
 Alexander Robitzsch
 }
+
 \note{
 For the estimation of latent class models, 
 rerunning the model with different starting values 
 (different random seeds) is recommended. 
 
 For fixed theta estimation in the multidimensional
-case, there is a danger that too long vectors are
-generated during estimation leading to memory overflow
-in \R.
+case, large vectors are generated during estimation 
+leading to memory overflow in \R.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -240,8 +264,24 @@ summary(mod2)
 mod3 <- rasch.mirtlc( dat , Nclasses = 3 , seed = - 30)  
 summary(mod3)
 
-# latent class model with 4 classes and
-# 3 starts with different seeds
+# extract individual likelihood
+lmod3 <- IRT.likelihood(mod3)
+str(lmod3)
+# extract likelihood value
+logLik(mod3)
+# extract item response functions
+IRT.irfprob(mod3)
+
+# compare models 1, 2 and 3
+anova(mod2,mod3)
+IRT.compareModels(mod1,mod2,mod3)
+# avsolute and relative model fit
+smod2 <- IRT.modelfit(mod2)
+smod3 <- IRT.modelfit(mod3)
+summary(smod2)
+IRT.compareModels(smod2,smod3)
+
+# latent class model with 4 classes and 3 starts with different seeds
 mod4 <- rasch.mirtlc( dat , Nclasses = 4 ,seed= -30 ,  nstarts=3 )   
 # display different solutions
 sort(mod4$devL)
@@ -321,8 +361,7 @@ mod32 <- rasch.mirtlc( dat ,  dimensions=dimensions ,
 summary(mod32)
 
 # 3-dimensional 2PL model
-mod33 <- rasch.mirtlc( dat ,  dimensions=dimensions , 
-              theta.k= theta.k , modeltype="MLC2"  )
+mod33 <- rasch.mirtlc( dat, dimensions=dimensions, theta.k= theta.k, modeltype="MLC2")
 summary(mod33)
 
 #############################################################################
@@ -475,7 +514,6 @@ cbind( t( mod3$Th ) , mod3$piv )
 cbind( mod1$theta.k  , mod1$pi.k )
 # simulated data parameters
 cbind( theta.k , pi.k )
-
 
 #----
 # estimate model with cutomized input in mirt

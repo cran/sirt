@@ -5,10 +5,14 @@
 rm.facets <- function( dat , pid=NULL , rater=NULL ,
 	Qmatrix=NULL , theta.k=seq(-9,9,len=30) , 
 	est.b.rater=TRUE , est.a.item=FALSE , est.a.rater=FALSE ,
+	est.mean = FALSE , 
+	tau.item.fixed=NULL , a.item.fixed=NULL , b.rater.fixed=NULL , a.rater.fixed=NULL , 
 	max.b.increment=1 , numdiff.parm=.00001 , maxdevchange=.10 ,
 	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001){
 	s1 <- Sys.time()
 	dat <- as.matrix(dat)
+    a.item.center = TRUE ; b.rater.center=TRUE ; a.rater.center=TRUE 	
+	
 	if ( is.null(rater)){	
 		rater <- rep(1,nrow(dat)) 
 		est.b.rater <- FALSE
@@ -39,8 +43,19 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 	TP <- length(theta.k)
 	I <- VV*RR
 
+	# center parameters
+	if ( ! is.null( b.rater.fixed) ){
+	    b.rater.center <- FALSE		
+				}
+	if ( ! is.null( a.rater.fixed) ){
+	    a.rater.center <- FALSE		
+				}
+	if ( ! is.null( a.item.fixed) ){
+	    a.item.center <- FALSE		
+				}				
 	# define constraints on tau.item parameters
 	# if not all categories are observed
+	tau.item.fixed_val <- tau.item.fixed
 	tau.item.fixed <- NULL
 	if ( min(maxK) < K ){
 		for (vv in 1:VV){
@@ -56,8 +71,11 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 					}
 		tau.item.fixed <- as.matrix(tau.item.fixed )
 				}
+				
+	
+				
 	# starting values for item difficulties
-	b.item <- - qlogis( colMeans( dat , na.rm=T ) / maxK  )
+	b.item <- - qlogis( colMeans( dat , na.rm=TRUE ) / maxK  )
 	if ( ! pcm.param ){ b.item <- 0*b.item	}
 	
 	tau.item <- matrix( 0 , nrow=VV , ncol=K )
@@ -105,7 +123,6 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 # zz0 <- Sys.time()
 		# calculate probabilities
 		probs <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
-#		probs <- .rm.facets.calcprobs( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
 				theta.k ,RR )				
 # cat("facets.calcprob   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						
@@ -124,18 +141,19 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 			res <- .rm.facets.est.b.rater( b.item , b.rater , Qmatrix , tau.item ,
 					VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
 					n.ik , numdiff.parm, max.b.increment=b.rater.incr,theta.k ,
-					msteps , mstepconv  )
+					msteps , mstepconv , b.rater.center , b.rater.fixed )
 			b.rater <- res$b.rater
 			se.b.rater <- res$se.b.rater
 			b.rater.incr <- abs( b.rater0 - b.rater )
 						}
-# cat("est b rater   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1														
+# cat("est b rater   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
+												
 		# estimate tau.item parameters
 		if (iter ==0){	max.b.increment -> tau.item.incr }
 		res <- .rm.facets.est.tau.item( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
 				n.ik , numdiff.parm , max.b.increment=tau.item.incr  , theta.k ,
-				msteps, mstepconv , tau.item.fixed )
+				msteps, mstepconv , tau.item.fixed , tau.item.fixed_val )
 		tau.item <- res$tau.item
 		se.tau.item <- res$se.tau.item
 		tau.item.incr  <- abs( tau.item0 - tau.item )
@@ -146,27 +164,31 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 			res <- .rm.facets.est.a.item( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
 				n.ik , numdiff.parm , max.b.increment=1,theta.k ,
-				msteps, mstepconv )		
+				msteps, mstepconv , a.item.center , a.item.fixed )		
 			a.item <- res$a.item
 			se.a.item <- res$se.a.item
 				}
-# cat("est a item   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1																
+# cat("est a item   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
+														
 		# estimate a.rater parameter
 		if (est.a.rater){
 			res <- .rm.facets.est.a.rater( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
 				n.ik , numdiff.parm , max.b.increment=1,theta.k ,
-				msteps, mstepconv )		
+				msteps, mstepconv , a.rater.center , a.rater.fixed )		
 			a.rater <- res$a.rater
 			se.a.rater <- res$se.a.rater
 				}
 # cat("est a rater   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1																			
-		flush.console()		
+
+		flush.console()	
+
 		# update distribution
-		w2 <- sum( theta.k^2 * pi.k )
-		sigma <- sqrt(w2)
-		pi.k <- dnorm( theta.k , mean=0 , sd=sigma )
-		pi.k <- pi.k / sum( pi.k )
+		res <- rm.smooth.distribution( theta.k , pi.k , est.mean = est.mean )
+		pi.k <- res$pi.k
+		mu <- res$mu
+		sigma <- res$sigma
+				
 		dev <- -2*ll
 		# convergence criteria
 		conv <- max( abs(b.rater-b.rater0) , abs( a.rater-a.rater0) , 
@@ -189,28 +211,19 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 				paste( round(max(abs(tau.item0-tau.item)) ,6) , collapse=" " ) , "\n" , sep=""))
 		cat( paste( "    Maximum a.item parameter change = " , 
 				paste( round(max(abs(a.item0-a.item)) ,6) , collapse=" " ) , "\n" , sep=""))
+        cat( paste(" Trait M  = " , round( mu , 3 ) , sep="") , "\n")				
 		cat( paste(" Trait SD = " , round( sigma , 3 ) , sep="") , "\n")
 		# flush.console()			
 				}
 				
-	# *********
+	#*********
 	# arrange OUTPUT
 	#---
-	# Information criteria
-	ic <- list( "deviance" = dev , "n" = nrow(dat2) )
-	ic$VV <- VV
-	ic$RR <- RR
-	ic$np.item <- sum( maxK) + est.a.item*(VV-1)
-	ic$np.rater <- est.b.rater*(RR-1) + est.a.rater*(RR-1)
-	ic$np <- 1 + ic$np.item + ic$np.rater
-    # AIC
-    ic$AIC <- dev + 2*ic$np
-    # BIC
-    ic$BIC <- dev + ( log(ic$n) )*ic$np
-    # CAIC (conistent AIC)
-    ic$CAIC <- dev + ( log(ic$n) + 1 )*ic$np
-	# corrected AIC
-    ic$AICc <- ic$AIC + 2*ic$np * ( ic$np + 1 ) / ( ic$n - ic$np - 1 )		
+	ic <- rm.facets.IC( dev , dat2 , VV , RR , maxK , a.item.center,
+		est.a.item , est.b.rater , est.a.rater , est.mean ,
+		b.rater.center , a.rater.center , b.rater.fixed ,
+		a.rater.fixed , tau.item.fixed_val , a.item.fixed
+				)	
 	
 	#---
 	# person
@@ -261,6 +274,16 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 			"b" = b.rater ,
 			"a" = a.rater )
 	rater$thresh <- rater$a * rater$b
+	#*****
+	# dimnames probs
+	dimnames(probs)[[1]] <- colnames(dat2)
+	#*****
+	# expanded item parameters
+	ipars.dat2 <- rm.facets.itempar.expanded( b.item , b.rater , Qmatrix , tau.item ,
+        VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
+		theta.k , RR )	
+
+	
 	obji <- rater
 	for (vv in seq(2,ncol(obji) )){
 		obji[,vv] <- round( obji[,vv],3 ) }
@@ -274,15 +297,20 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 	
     res <- list("deviance" = dev , "ic"=ic , "item"=item , "rater"=rater ,
 		"person" = person , "EAP.rel"=EAP.rel , 
-		"sigma"=sigma , 
+		"mu"=mu , "sigma"=sigma , 
+		"theta.k" = theta.k , "pi.k" = pi.k , "G"=1 , 
 		"tau.item"=tau.item , "se.tau.item"=se.tau.item ,
 		"a.item"=a.item , "se.a.item"=se.a.item ,
 		"delta.item" = delta.item ,
 		"b.rater"=b.rater , "se.b.rater"=se.b.rater , 
 		"a.rater"=a.rater , "se.a.rater"=se.a.rater , 
 		"f.yi.qk"=f.yi.qk , "f.qk.yi"=f.qk.yi , "probs"=probs ,
-		"n.ik"=n.ik , "maxK"=maxK , "procdata" =procdata , "iter"=iter , 
-		"s1"=s1 , "s2"=s2 , "tau.item.fixed"=tau.item.fixed)
+		"n.ik"=n.ik , "maxK"=maxK ,  "procdata" =procdata , "iter"=iter , 
+		"s1"=s1 , "s2"=s2 , "tau.item.fixed"=tau.item.fixed ,
+		"item.index" = item.index , "rater.index" = rater.index ,
+		"ipars.dat2" = ipars.dat2 )
+		
+		
 	class(res) <- "rm.facets"
 	return(res)
 
