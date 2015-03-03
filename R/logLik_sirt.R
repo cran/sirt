@@ -34,3 +34,6 @@ logLik.rm.facets <- logLik.rasch.copula2
 # rm.sdt
 logLik.rm.sdt <- logLik.rasch.copula2
 #####################################################
+# prob.guttman
+logLik.prob.guttman <- logLik.rasch.copula2
+#####################################################

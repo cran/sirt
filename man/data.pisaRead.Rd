@@ -52,11 +52,6 @@ The format is:
 }
 
 
-\section{Example Index}{
-\code{\link{data.wide2long}} (Example 1),
-\code{\link{latent.regression.em.raschtype}} (Example 1),
-\code{\link{lsdm}} (Example 3),
-\code{\link{rasch.pml2}} (Example 2),
-}
+
 
 \keyword{datasets}

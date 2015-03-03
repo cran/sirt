@@ -24,10 +24,10 @@ pcm.fit <- function( b , theta , dat ){
 								  
 	# expected response
 	Eni <- array( 0 , dim= c(N,I) )
+
 	for (ii in 1:I){
 		   Eni[,ii] <- rowSums( outer( rep(1,N) , 0:(K) )*rprobs[,,ii]  )
 			  }                
-
 	# calculate residuals
 	Yni <- dat - Eni
 	# calculate variances
@@ -61,8 +61,7 @@ pcm.fit <- function( b , theta , dat ){
 	N.item <- rowSums( dat.ind )	
 	#--- Outfit
 	outfit <- rowSums( zni^2 * dat.ind ) / N.item
-	personfit <- data.frame( "person" = 1:N , 
-					"outfit" = outfit )
+	personfit <- data.frame( "person" = 1:N , "outfit" = outfit )
 	qi <- sqrt( rowSums( dat.ind * Cni / Wni^2  ) / N.item^2 - 1 / N.item )
 	personfit$outfit.t <- ( personfit$outfit^(1/3) - 1 ) * ( 3 / qi ) + qi / 3				
     #--- Infit

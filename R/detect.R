@@ -9,7 +9,7 @@ ccov.np <- function( data , score , bwscale = 1.1 , thetagrid = seq( -3,3,len=20
             # z-standardization of score
             score <- scale( score )[,1]
             # matrix of item response functions
-            if (progress == T ){
+            if (progress ){
                 cat("Pairwise Estimation of Conditional Covariances\n" )            
                 cat("...........................................................\n" )
                 cat("Nonparametric ICC estimation \n " ) }
@@ -70,7 +70,7 @@ ccov.np <- function( data , score , bwscale = 1.1 , thetagrid = seq( -3,3,len=20
             # calculate (weighted) conditional covariance
             ccov.table$ccov <- apply( ccov.matrix , 2 , FUN = function(sp){ weighted.mean( sp  , wgt.thetagrid ) } )
             res <- list( "ccov.table" = ccov.table , "ccov.matrix" = ccov.matrix ,
-                            "data" = data , "score" = score )
+                            "data" = data , "score" = score , "icc.items" = icc.items )
             return( res ) 
             }
 #------------------------------------------------------------------------------------------------------------------------------

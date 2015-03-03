@@ -171,7 +171,7 @@ A list with following entries
 \item{deviance}{Deviance}
 \item{ll}{Log-likelihood}
 \item{Nclasses}{Number of classes}
-\item{modeltype}{Modeltype used}
+\item{modeltype}{Used model type}
 \item{estep.res}{Result from E step: \code{f.qk.yi} is the individual posterior, 
 	\code{f.yi.qk} is the individual likelihood}
 \item{dat}{Original data frame}
@@ -249,8 +249,9 @@ package. Latent class analysis can be carried out with
 data( data.read )
 dat <- data.read
 
-#******
+#***************
 # latent class models
+
 # latent class model with 1 class
 mod1 <- rasch.mirtlc( dat , Nclasses = 1 )
 summary(mod1)

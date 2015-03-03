@@ -24,8 +24,7 @@ dif.logistic.regression <- function( dat , group , score ,
         # calculate correlation matrix
 #        dat.ii$score.group <- dat.ii$score * dat.ii$group
 #        c.ii <- cor( dat.ii )
-# print( c.ii )
-        # calculate R² according to Jodoin and Gierl (2001)
+        # calculate R2 according to Jodoin and Gierl (2001)
 #        r2.mod1 <- mod1$coef[-1] * c.ii[2,1]    
 #        r2.mod2 <- sum( mod2$coef[-1] * c.ii[2:3,1]  )
 #        r2.mod3 <- sum( mod3$coef[-1] * c.ii[2:4,1]  )    

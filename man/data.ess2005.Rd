@@ -37,14 +37,14 @@ The format of the dataset is:
 %%  ~~ reference to a publication or URL from which the data were obtained ~~
 %}
 
-\section{Example Index}{
-\code{\link{invariance.alignment}} (Example 3)
-}
+% \section{Example Index}{
+% \code{\link{invariance.alignment}} (Example 3)
+% }
 
 \references{
 Asparouhov, T., & Muthen, B. (2014).
 Multiple-group factor analysis alignment.
-\emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
+\emph{Structural Equation Modeling}, \bold{21}, 1-14.
 }
 %\examples{
 %data(data.ess2005)

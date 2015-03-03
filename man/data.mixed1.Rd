@@ -33,9 +33,7 @@ Dataset with mixed dichotomous and polytomous item responses.
 %%  ~~ possibly secondary sources and usages ~~
 %%}
 
-\section{Example Index}{
-\code{\link{truescore.irt}} (Example 1),
-}
+
 
 \examples{
 data(data.mixed1)

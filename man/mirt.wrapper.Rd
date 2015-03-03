@@ -114,9 +114,6 @@ See the \pkg{mirt} package on CRAN
 and on GitHub \url{https://github.com/philchalmers/mirt}.
 % \href{https://github.com/philchalmers/mirt}{GitHub}
 
-See the online vignette of \pkg{mirt}:
-\url{http://philchalmers.github.io/mirt/mirt-vignettes.html}
-	
 See \url{https://groups.google.com/forum/#!forum/mirt-package}
 for discussion about the \pkg{mirt} package. \cr		
 

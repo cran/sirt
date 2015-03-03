@@ -43,9 +43,6 @@ Simulated dataset
 %}
 
 
-\section{Example Index}{
-\code{\link{invariance.alignment}} (Example 2)
-}
 
 %\examples{
 %data(data.inv4gr)

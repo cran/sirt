@@ -37,7 +37,9 @@ IRT.posterior.rm.facets <- IRT.posterior.rasch.mml
 # rm.sdt
 IRT.posterior.rm.sdt <- IRT.posterior.rasch.mml
 ##########################################################	
-
+# prob.guttman
+IRT.posterior.prob.guttman <- IRT.posterior.rasch.mml
+##########################################################	
 
 ##########################################################
 # posterior rasch.mirtlc

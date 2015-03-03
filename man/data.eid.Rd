@@ -35,8 +35,7 @@ Goettingen, Hogrefe.
 
 Hosoya, G. (2014). \emph{Einfuehrung in die Analyse testtheoretischer
 Modelle mit \R}. Available at 
-\url{http://www.hogrefe.de/buecher/lehrbuecher/psychlehrbuchplus/lehrbuecher/
-testtheorie-und-testkonstruktion/zusatzmaterial/}.
+\url{http://www.hogrefe.de/buecher/lehrbuecher/psychlehrbuchplus/lehrbuecher/testtheorie-und-testkonstruktion/zusatzmaterial/}.
 }
 
 
@@ -243,7 +242,30 @@ plot(mod2e)
 #-----------
 #-- 3a: estimation with TAM package
 
-## --- TO BE INCLUDED ---
+# avoid "_" in column names if the "__" operator is used in 
+# the tamaan syntax
+dat1 <- dat
+colnames(dat1) <- gsub("_" , "" , colnames(dat1) )
+# define tamaan model
+tammodel <- "
+ANALYSIS:
+  TYPE=MIXTURE ;
+  NCLASSES(2);
+  NSTARTS(20,25);   # 20 random starts with 25 initial iterations each
+LAVAAN MODEL:
+  F =~ Freude1__Freude2
+  F ~~ F
+ITEM TYPE:
+  ALL(Rasch);
+    "    
+mod3a <- TAM::tamaan( tammodel , resp=dat1 )
+summary(mod3a)
+# extract item parameters
+ipars <- mod2$itempartable_MIXTURE[ 1:10 , ]
+plot( 1:10 , ipars[,3] , type="o" , ylim= range( ipars[,3:4] ) , pch=16 ,
+        xlab="Item" , ylab="Item difficulty")
+lines( 1:10 , ipars[,4] , type="l", col=2 , lty=2)
+points( 1:10 , ipars[,4] ,  col=2 , pch=2)
 
 #-----------
 #-- 3f: estimation with psychomix package

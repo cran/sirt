@@ -28,7 +28,9 @@ anova.rm.facets <- anova.rasch.mml
 # anova rm.sdt
 anova.rm.sdt <- anova.rasch.mml
 ##############################################################
-
+# anova prob.guttman
+anova.prob.guttman <- anova.rasch.mml
+##############################################################
 
 
 

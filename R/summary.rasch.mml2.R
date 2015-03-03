@@ -18,6 +18,10 @@ summary.rasch.mml <- function( object , ... ){
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 		cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
 		cat("Computation time:" , print(object$s2 - object$s1), "\n\n")
+
+	cat("Call:\n", paste(deparse(object$CALL), sep = "\n", collapse = "\n"), 
+				"\n\n", sep = "")			
+		
     cat("Semiparametric Marginal Maximum Likelihood Estimation \n")
 	if ( object$Rfcttype == "rasch.mml" ){ cat("Function 'rasch.mml' \n\n") }
 	if ( object$Rfcttype == "rasch.mml2" ){ cat("Function 'rasch.mml2' \n\n") }	

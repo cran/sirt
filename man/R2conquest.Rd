@@ -25,8 +25,8 @@ values or person-item maps.
 R2conquest(dat, path.conquest, conquest.name="console", converge=0.001, 
     deviancechange=1e-04, iter=800, nodes=20, show.conquestoutput=FALSE, 
     name="rasch", pid=1:(nrow(dat)), wgt=NULL, X=NULL, set.constraints=NULL, 
-    model="item", regression=NULL, itemcodes=c(0,1), constraints=NULL, 
-    digits=5, onlysyntax=FALSE, qmatrix=NULL, import.regression=NULL, 
+    model="item", regression=NULL, itemcodes=seq(0,max(dat,na.rm=TRUE)), 
+    constraints=NULL, digits=5, onlysyntax=FALSE, qmatrix=NULL, import.regression=NULL, 
     anchor.regression=NULL, anchor.covariance=NULL, pv=TRUE, designmatrix=NULL, 
     only.calibration=FALSE, init_parameters=NULL, n_plausible=10,  persons.elim=TRUE, 
     est.wle=TRUE, save.bat=TRUE , use.bat=FALSE , read.output=TRUE , ignore.pid=FALSE)
@@ -34,8 +34,8 @@ R2conquest(dat, path.conquest, conquest.name="console", converge=0.001,
 rasch.conquest(dat, path.conquest, conquest.name="console", converge=0.001, 
     deviancechange=1e-04, iter=800, nodes=20, show.conquestoutput=FALSE, 
     name="rasch", pid=1:(nrow(dat)), wgt=NULL, X=NULL, set.constraints=NULL, 
-    model="item", regression=NULL, itemcodes=c(0,1), constraints=NULL, 
-    digits=5, onlysyntax=FALSE, qmatrix=NULL, import.regression=NULL, 
+    model="item", regression=NULL, itemcodes=seq(0,max(dat,na.rm=TRUE)), 
+    constraints=NULL, digits=5, onlysyntax=FALSE, qmatrix=NULL, import.regression=NULL, 
     anchor.regression=NULL, anchor.covariance=NULL, pv=TRUE, designmatrix=NULL, 
     only.calibration=FALSE, init_parameters=NULL, n_plausible=10,  persons.elim=TRUE, 
     est.wle=TRUE, save.bat=TRUE , use.bat=FALSE , read.output=TRUE, ignore.pid=FALSE)
@@ -46,12 +46,15 @@ rasch.conquest(dat, path.conquest, conquest.name="console", converge=0.001,
 # read all terms in a show file or only some terms 
 read.show(showfile)
 read.show.term(showfile, term)
+
 # read regression parameters in a show file
 read.show.regression(showfile)
+
 # read unidimensional plausible values form a pv file
 read.pv(pvfile, npv = 5)
 # read multidimensional plausible values
 read.multidimpv(pvfile, ndim, npv = 5)
+
 # read person-item map
 read.pimap(showfile)
 }
@@ -194,19 +197,23 @@ Consult the ConQuest manual (Wu et al., 2007) for specification
 details.
 }
 
-%% \section{Recommendation}{
-%% You can use the \R package \pkg{TAM} instead of ConQuest.
-%% }
+
 
 \value{
 A list with several entries
+
+\item{item}{Data frame with item parameters and item statistics}
+\item{person}{Data frame with person parameters}
+\item{shw.itemparameter}{ConQuest output table for item parameters}
+\item{shw.regrparameter}{ConQuest output table for regression parameters}
+\item{\dots}{More values}
 }
 
 
 \references{
 Wu, M. L., Adams, R. J., Wilson, M. R. & Haldane, S. (2007).
 \emph{ACER ConQuest Version 2.0}. Mulgrave.
-\url{https://shop.acer.edu.au/acer-shop/group/CON3}
+{https://shop.acer.edu.au/acer-shop/group/CON3}.
 }
 \author{
 Alexander Robitzsch
@@ -288,12 +295,12 @@ items <- grep.vec( "act" , colnames(dat) )$x
 #***
 # Model 21: Partial credit model
 mod21 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
-            itemcodes= 0:2 , model="item+item*step" ,  name="mod21")
+              model="item+item*step" ,  name="mod21")
 
 #***
 # Model 22: Rating scale model
 mod22 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
-            itemcodes=0:2 ,  model="item+step" , name="mod22")
+              model="item+step" , name="mod22")
 
 #***
 # Model 23: Multidimensional model
@@ -302,8 +309,7 @@ qmatrix <- matrix( 0 , nrow=length(items) , 2 )
 qmatrix[1:5,1] <- 1
 qmatrix[6:9,2] <- 1
 mod23 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
-            itemcodes=0:2 , model="item+item*step" , 
-            qmatrix=qmatrix , name="mod23")
+            model="item+item*step" , qmatrix=qmatrix , name="mod23")
 
 #############################################################################
 # EXAMPLE 3: Multi facet models (data.ratings1)
@@ -327,7 +333,7 @@ mod31 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest ,
 #***
 # Model 32: Rater model 'item+item*step+rater+item*rater'
 mod32 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
-              itemcodes= 0:3 , model="item+item*step+rater+item*rater" , 
+              model="item+item*step+rater+item*rater" , 
               pid=dat$idstud , X=data.frame("rater"=raters)  , 
               regression="" , name="mod32")      
 }

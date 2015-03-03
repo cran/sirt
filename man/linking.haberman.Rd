@@ -110,7 +110,7 @@ A list with following entries
 \references{
 Asparouhov, T., & Muthen, B. (2014).
 Multiple-group factor analysis alignment.
-\emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
+\emph{Structural Equation Modeling}, \bold{21}, 1-14.
 	
 Haberman, S. J. (2009). \emph{Linking parameter estimates derived
 from an item response model through separate calibrations}. 

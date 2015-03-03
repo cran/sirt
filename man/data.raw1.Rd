@@ -29,9 +29,6 @@ A data frame with raw item responses of 1200 persons on the following 77 items:
 %%  ~~ possibly secondary sources and usages ~~
 %}
 
-\section{Example Index}{
-\code{\link{automatic.recode}} (Example 1),
-}
 
 
 

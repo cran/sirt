@@ -1,8 +1,6 @@
 
 
 
-# 0.01  2012-12-20  o initial release
-
 ####################################################
 # probabilistic Guttman analysis
 prob.guttman <- function( dat , pid = NULL , guess.equal=FALSE ,
@@ -16,7 +14,7 @@ prob.guttman <- function( dat , pid = NULL , guess.equal=FALSE ,
 	dat2[ is.na(dat2) ] <- 0
 	if ( is.null( pid) ){ pid <- seq(1,nrow(dat)) }
 	# p values
-	p <- colMeans( dat , na.rm=T )
+	p <- colMeans( dat , na.rm=TRUE )
 	# items and p value levels
 	itemtable <- data.frame( "index" = seq(1,ncol(dat)) , 
 					"item" = colnames(dat) , "p" = p )
@@ -120,8 +118,9 @@ prob.guttman <- function( dat , pid = NULL , guess.equal=FALSE ,
 	rownames(trait) <- rownames(itemdes)
 	# collect results
 	res <- list( "person" = person , "item" =item , "theta.k" = theta.k ,
-		"trait" = trait , 
-			"ic" = ic , "deviance" = dev , "iter" = iter ,
+		    "trait" = trait , "pi.k"= pi.k , "f.yi.qk"=res$f.yi.qk ,
+			"f.qk.yi" = res$f.qk.yi , "probs" = res$probs , 
+			"ic" = ic , "G"= 1 , "deviance" = dev , "iter" = iter ,
 			"itemdesign" =itemdes )
 	class(res) <- "prob.guttman"
 	return(res)
@@ -225,19 +224,10 @@ summary.prob.guttman <- function( object , ... ){
 		n.jk[,,gg] <- res$njk
         r.jk[,,gg] <- res$rjk
 		ll[gg] <- res$ll
-#        n.k[,gg] <- colSums( dat1[group==gg,2] * f.qk.yi[group==gg,]  )
-        # expected counts at theta.k and item j
-#        n.jk[,,gg] <- ( t(dat2.resp[group==gg,]) * outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[group==gg, ]
-        # compute r.jk (expected counts for correct item responses at theta.k for item j
-#        r.jk[,,gg] <- ( t(dat2[group==gg,]) * t( dat2.resp[group==gg,]) 
-#			* outer( rep(1,I) , dat1[group==gg,2] ) ) %*% f.qk.yi[ group==gg,]
-        # compute log-Likelihood
-#        ll[gg] <- sum( dat1[group==gg,2] * log( rowSums( f.yi.qk[group==gg,] 
-#    * outer( rep(1,nrow(f.yi.qk[group==gg,])) , pi.k[,gg] ) ) ) )
         }       
     res <- list( "n.k" = n.k , "n.jk" = n.jk , "r.jk" = r.jk , 
             "f.qk.yi" = f.qk.yi , "pjk" = pjk  ,
-            "f.yi.qk" = f.yi.qk , "ll" = sum(ll) )
+            "f.yi.qk" = f.yi.qk , "ll" = sum(ll) , "probs" = pjkL )
     return(res)
     }
 #*************************************************************************************

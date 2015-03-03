@@ -52,19 +52,6 @@ are denoted by \code{b}. \cr
 %data.pars1.rasch
 %data.pars1.2pl
 
-\section{Example Index}{
-
-%%%%%%% data.pars1.rasch
-\emph{Dataset} \code{data.pars1.rasch} 	
-	
-\code{\link{linking.haberman}} (Example 1)
-
-%%%%%%% data.pars1.2pl
-\emph{Dataset} \code{data.pars1.2pl} 	
-	
-\code{\link{linking.haberman}} (Example 1)
-}
-
 %\examples{
 %data(data.pars1.rasch)
 %## maybe str(data.pars1.rasch) ; plot(data.pars1.rasch) ...

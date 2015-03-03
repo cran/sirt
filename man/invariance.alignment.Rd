@@ -171,7 +171,7 @@ A list with following entries
 \references{
 Asparouhov, T., & Muthen, B. (2014).
 Multiple-group factor analysis alignment.
-\emph{Structural Equation Modeling}, \bold{xx}, xxx-xxx.
+\emph{Structural Equation Modeling}, \bold{21}, 1-14.
 \url{http://www.statmodel.com/Alignment.shtml}
 
 Muthen, B., & Asparouhov, T. (2014). IRT studies of many groups: The alignment method. 

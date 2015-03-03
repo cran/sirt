@@ -50,11 +50,7 @@ The format is:
 }
 
 
-\section{Example Index}{
-\code{\link{dif.logistic.regression}} (Example 1),
-\code{\link{f1d.irt}} (Example 1),
-\code{\link{invariance.alignment}} (Example 5),
-}
+
 
 
 \keyword{datasets}

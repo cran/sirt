@@ -25,7 +25,7 @@ The format is:
 \code{'data.frame':   3480 obs. of  38 variables:} \cr
 \code{ $ idstud  : int  1000001 1000002 1000003 1000004 1000005 ...} \cr
 \code{ $ country : Factor w/ 4 levels "AUT","DEU","FRA",..: 1 1 1 1 1 1 1 1 1 1 ...} \cr
-\code{ $ studwgt : num  1064 1064 1064 1064 1064 ...} \cr
+\code{ $ studwgt : num  1.06 1.06 1.06 1.06 1.06 ...} \cr
 \code{ $ R31G01M : int  1 1 1 1 1 1 0 1 1 0 ...} \cr
 \code{ $ R31G02C : int  0 9 0 1 0 0 0 0 1 0 ...} \cr
 \code{ $ R31G03M : int  1 1 1 1 0 1 0 0 1 1 ...} \cr
@@ -45,9 +45,6 @@ The format is:
 %}
 
 
-\section{Example Index}{
-\code{\link{rasch.mml2}} (Example 7)
-}
 
 \examples{
 data(data.pirlsmissing)

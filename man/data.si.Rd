@@ -118,42 +118,6 @@ are indicated by the codes 1, 2 or 3.
 
 
 
-\section{Example Index}{
-
-%%% data.si01
-\emph{Dataset} \code{data.si01} 
-
-\code{\link{mle.pcm.group}} (Example 1)
-
-
-%%% data.si02
-\emph{Dataset} \code{data.si02} 
-
-\code{\link{rasch.mirtlc}} (Example 3)
-
-%%% data.si03
-\emph{Dataset} \code{data.si03} 
-
-\code{\link{linking.robust}} (Example 1)
-
-
-%%% data.si04
-\emph{Dataset} \code{data.si04} 
-
-\code{\link{rasch.mirtlc}} (Example 5)
-
-%%% data.si05
-\emph{Dataset} \code{data.si05} 
-
-\code{\link{lc.2raters}} (Example 1)
-
-%%% data.si06
-\emph{Dataset} \code{data.si06} 
-
-\code{\link{data.sirt}} (Example 1), 
-\code{\link{nedelsky.irf}} (Example 2)
-
-}
 
 
 %\details{

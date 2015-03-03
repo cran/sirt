@@ -172,7 +172,7 @@ Fraser, C., & McDonald, R. P. (1988). NOHARM: Least squares item factor analysis
 \emph{Multivariate Behavioral Research}, \bold{23}, 267-269.
 
 Fraser, C., & McDonald, R. P. (2012). \emph{NOHARM 4 Manual}. 
-\url{http://noharm.niagararesearch.ca/nh4man/nhman.html}
+{http://noharm.niagararesearch.ca/nh4man/nhman.html}.
 
 Green, S. B., & Yang, Y. (2009). Reliability of summed item 
 scores using structural equation modeling: An alternative to 

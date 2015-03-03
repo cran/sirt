@@ -19,7 +19,8 @@ data(data.g308)
 \itemize{
 \item The dataset \code{data.g308} is a C-test containing 20 items and is
 used in Schroeders, Robitzsch and Schipolowski (2014) and is of the
-following format
+following format \cr
+
 \code{'data.frame':   747 obs. of  21 variables:} \cr
 \code{ $ id    : int  1 2 3 4 5 6 7 8 9 10 ...} \cr
 \code{ $ G30801: int  1 1 1 1 1 0 0 1 1 1 ...} \cr

@@ -52,19 +52,6 @@ data(data.ml2)
 }
 
 
-\section{Example Index}{
-
-%%%%%%% data.ml1
-\emph{Dataset} \code{data.ml1} 	
-	
-\code{\link{mcmc.2pno.ml}} (Example 1) \cr
-
-%%%%%%% data.ml2
-\emph{Dataset} \code{data.ml2} 	
-	
-\code{\link{mcmc.2pno.ml}} (Example 2)
-}
-
 
 
 \keyword{datasets}

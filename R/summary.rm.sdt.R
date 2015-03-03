@@ -17,8 +17,9 @@ summary.rm.sdt <- function( object , ...){
     cat( "Number of items   = " , object$ic$VV , "\n" )    		
     cat( "Number of raters  = " , object$ic$RR , "\n" )    	
     cat( "Number of estimated parameters = " , object$ic$np , "\n" )    
-    cat( "    Estimated item parameters  = " , object$ic$np.item , "\n" )    	
-    cat( "    Estimated rater parameters = " , object$ic$np.rater , "\n" )    		
+    cat( "  Distribution parameters  = " , object$ic$np.skill , "\n" )    		
+    cat( "  Item parameters  = " , object$ic$np.item , "\n" )    	
+    cat( "  Rater parameters = " , object$ic$np.rater , "\n" )    		
     cat( "AIC  = " , round( object$ic$AIC , 2 ) , " | penalty =" , round( object$ic$AIC - object$ic$deviance ,2 ) , 
 			"   | AIC = -2*LL + 2*p  \n" )    
     cat( "AICc = " , round( object$ic$AICc , 2 ) ," | penalty =" , round( object$ic$AICc - object$ic$deviance ,2 ) )
@@ -27,9 +28,19 @@ summary.rm.sdt <- function( object , ...){
 			"   | BIC = -2*LL + log(n)*p  \n" )  
     cat( "CAIC = " , round( object$ic$CAIC , 2 ) ," | penalty =" , round( object$ic$CAIC - object$ic$deviance ,2 ) )
 		cat("   | CAIC = -2*LL + [log(n)+1]*p  (consistent AIC)\n\n" )   
-
+	
+	cat("-----------------------------------------------------------------\n")
 	cat( "Trait Distribution\n" , 
-			  "Mean=" , 0 , " SD=" , round( object$sigma , 3) ) 
+			  "Mean=" , round(object$mu,3)  , " SD=" , round( object$sigma , 3) )
+
+	if ( object$skillspace == "discrete" ){
+	    cat("\n\nDiscrete Skill Distribution\n")
+		obji <- object$skill.distribution
+		obji <- round( obji , 4 )
+		print( obji)
+					}
+		
+			  
 	cat( "\nEAP Reliability = ") 
 	cat(round( object$EAP.rel,3 ) )
 	cat( "\n")

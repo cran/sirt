@@ -9,11 +9,13 @@
 \alias{IRT.modelfit.rm.sdt}
 \alias{summary.IRT.modelfit.rm.sdt}
 \alias{IRT.factor.scores.rm.sdt}
+\alias{plot.rm.sdt}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Hierachical Rater Model Based on Signal Detection Theory (HRM-SDT)
 }
+
 \description{
 This function estimates a version of the hierarchical rater
 model (HRM) based on signal detection theory (HRM-SDT; DeCarlo, 2005; 
@@ -28,10 +30,13 @@ DeCarlo, Kim & Johnson, 2011).
 \usage{
 rm.sdt(dat, pid, rater, Qmatrix = NULL, theta.k = seq(-9, 9, len = 30), 
     est.a.item = FALSE, est.c.rater = "n", est.d.rater = "n", est.mean=FALSE , 
+    skillspace="normal" , tau.item.fixed = NULL , a.item.fixed = NULL , 
     d.min = 0.5, d.max = 100, d.start = 3, max.increment = 1, numdiff.parm = 0.00001, 
     maxdevchange = 0.1, globconv = .001, maxiter = 1000, msteps = 4, mstepconv = 0.001)
 
 \method{summary}{rm.sdt}(object,...)    
+
+\method{plot}{rm.sdt}(x, ask=TRUE, ...)
 
 \method{anova}{rm.sdt}(object,...)
 
@@ -86,6 +91,16 @@ the same as in \code{est.c.rater}.
 }
 \item{est.mean}{Optional logical indicating whether the mean of the 
 trait distribution should be estimated.}
+\item{skillspace}{Specified \eqn{\theta} distribution type. It can be
+	\code{"normal"} or \code{"discrete"}. In the latter case,
+	all probabilities of the distribution are separately
+       estimated.}	
+\item{tau.item.fixed}{Optional matrix with three columns specifying
+fixed \eqn{\tau} parameters. The first two columns denote item and
+category indices, the third the fixed value. See Example 3.}
+\item{a.item.fixed}{Optional matrix with two columns specifying fixed
+	\eqn{a} parameters. First column: Item index. Second column:
+Fixed \eqn{a} parameter.}
   \item{d.min}{
 Minimal \eqn{d} parameter to be estimated
 }
@@ -117,11 +132,13 @@ Maximum number of iterations during an M step
 Convergence criterion in an M step
 }
   \item{object}{
-Object of class \code{rm.hrm}
+Object of class \code{rm.sdt}
 }
+\item{x}{Object of class \code{rm.sdt}}
+\item{ask}{Optional logical indicating whether a new plot should be asked for.}
 \item{type}{Factor score estimation method. Up to now, 
     only \code{type="EAP"} is supported.}
-  \item{\dots}{
+\item{\dots}{
 Further arguments to be passed
 }
 }
@@ -174,7 +191,7 @@ deviation (\code{latSD}) is computed in the same manner.
 }
 \item{rater}{Data frame with rater parameters.
 Transformed \eqn{c} parameters
-(\code{c_x.trans}) are computed as \eqn{c_{irk} / ( d_{ir} \cdot K )}.
+(\code{c_x.trans}) are computed as \eqn{c_{irk} / ( d_{ir}  )}.
 }
 \item{person}{Data frame with person parameters: EAP and corresponding standard 
 errors}
@@ -271,28 +288,62 @@ summary(mod2)
 mod3 <- rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="e" , est.d.rater="e" , maxiter=15)
 summary(mod3)
-  ##   Item Parameters 
-  ##      item   N     M tau.Cat1 tau.Cat2 tau.Cat3 a  latM latSD
-  ##   k1   k1 274 1.573   -2.164   -2.275    0.304 1 1.476 1.085
-  ##   k2   k2 274 1.336   -1.883   -0.865    2.638 1 1.249 1.022
-  ##   k3   k3 274 1.529   -4.414   -3.754   -0.274 1 1.481 0.872
-  ##   k4   k4 274 1.372   -1.519   -1.366    3.544 1 1.234 0.974
-  ##   k5   k5 274 1.412   -2.506   -2.213    2.986 1 1.300 0.894
-  ##   -----------------------------------------------------------------
-  ##   Rater Parameters 
-  ##           item.rater  N     M     d   c_1   c_2   c_3 c_1.trans c_2.trans c_3.trans
-  ##   k1-db01    k1-db01 41 0.854 3.593 0.645 5.475 9.723      0.06     0.508     0.902
-  ##   k2-db01    k2-db01 41 0.951 3.593 0.645 5.475 9.723      0.06     0.508     0.902
-  ##   k3-db01    k3-db01 41 1.122 3.593 0.645 5.475 9.723      0.06     0.508     0.902
-  ##   k4-db01    k4-db01 41 1.024 3.593 0.645 5.475 9.723      0.06     0.508     0.902
-  ##   k5-db01    k5-db01 41 1.146 3.593 0.645 5.475 9.723      0.06     0.508     0.902
-  ##   k1-db02    k1-db02 37 1.351 3.593 0.645 5.475 9.723      0.06     0.508     0.902
 
 \dontrun{
 # Model 4: Rater effects in SDT
 mod4 <- rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="r" , est.d.rater="r" , maxiter=15)
 summary(mod4)
+
+#############################################################################
+# EXAMPLE 2: HRM-SDT data.ratings3
+#############################################################################
+
+data(data.ratings3)
+dat <- data.ratings3
+dat <- dat[ dat$rater < 814 , ]
+psych::describe(dat)
+            
+# Model 1: item- and rater-specific effects
+mod1 <- rm.sdt( dat[ , paste0( "crit",c(2:4)) ] , rater=dat$rater , 
+            pid=dat$idstud , est.c.rater="a" , est.d.rater="a" , maxiter=10)
+summary(mod1)
+plot(mod1)
+
+# Model 2: Differing number of categories per variable
+mod2 <- rm.sdt( dat[ , paste0( "crit",c(2:4,6)) ] , rater=dat$rater , 
+            pid=dat$idstud , est.c.rater="a" , est.d.rater="a" , maxiter=10)
+summary(mod2)
+plot(mod2)
+
+#############################################################################
+# EXAMPLE 3: Hierarchical rater model with discrete skill spaces
+#############################################################################
+
+data(data.ratings3)
+dat <- data.ratings3
+dat <- dat[ dat$rater < 814 , ]
+psych::describe(dat)
+
+# Model 1: Discrete theta skill space with values of 0,1,2 and 3
+mod1 <- rm.sdt( dat[ , paste0( "crit",c(2:4)) ] , theta.k = 0:3 , rater=dat$rater , 
+            pid=dat$idstud , est.c.rater="a" , est.d.rater="a" , skillspace="discrete" ,
+            maxiter=20)
+summary(mod1)
+plot(mod1)
+
+# Model 2: Modelling of one item by using a discrete skill space and
+#          fixed item parameters
+
+# fixed tau and a parameters
+tau.item.fixed <- cbind( 1, 1:3,  100*cumsum( c( 0.5, 1.5, 2.5)) )
+a.item.fixed <- cbind( 1, 100 )
+# fit HRM-SDT 
+mod2 <- rm.sdt( dat[ , "crit2" , drop=FALSE] , theta.k = 0:3 , rater=dat$rater , 
+            tau.item.fixed=tau.item.fixed ,a.item.fixed=a.item.fixed, pid=dat$idstud, 
+            est.c.rater="a", est.d.rater="a", skillspace="discrete", maxiter=20)
+summary(mod2)            
+plot(mod2)
 }            
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
@@ -300,3 +351,4 @@ summary(mod4)
 \keyword{Rater model}
 \keyword{Signal detection model}
 \keyword{summary}
+\keyword{plot}

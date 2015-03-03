@@ -150,6 +150,7 @@ S3method(anova, rasch.mirtlc)
 S3method(anova, gom)
 S3method(anova, rm.facets)
 S3method(anova, rm.sdt)
+S3method(anova, prob.guttman)
 
 
 #*** coef
@@ -165,6 +166,7 @@ S3method(logLik, rasch.mirtlc)
 S3method(logLik, gom)
 S3method(logLik, rm.facets)
 S3method(logLik, rm.sdt)
+S3method(logLik, prob.guttman)
 
 
 #*** plot
@@ -174,6 +176,7 @@ S3method(plot,isop)
 S3method(plot,rasch.mml)
 S3method(plot,linking.robust)
 S3method(plot,noharm.sirt)
+S3method(plot, rm.sdt)
 
 
 #**** summary
@@ -238,6 +241,7 @@ S3method(IRT.irfprob, rasch.mirtlc)
 S3method(IRT.irfprob, gom)
 S3method(IRT.irfprob, rm.facets)
 S3method(IRT.irfprob, rm.sdt)
+S3method(IRT.irfprob, prob.guttman)
 
 
 #*** IRT.likelihood
@@ -250,6 +254,7 @@ S3method(IRT.likelihood, rasch.mirtlc)
 S3method(IRT.likelihood, gom)
 S3method(IRT.likelihood, rm.facets)
 S3method(IRT.likelihood, rm.sdt)
+S3method(IRT.likelihood, prob.guttman)
 
 
 #*** IRT.modelfit
@@ -271,6 +276,7 @@ S3method(IRT.posterior, rasch.mirtlc)
 S3method(IRT.posterior, gom)
 S3method(IRT.posterior, rm.facets)
 S3method(IRT.posterior, rm.sdt)
+S3method(IRT.posterior, prob.guttman)
 
 
 

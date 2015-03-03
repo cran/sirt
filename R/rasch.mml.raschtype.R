@@ -174,7 +174,7 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 .m.step.raschtype <- function( theta.k , b , n.k , n , n.jk , r.jk , pi.k , I , conv1 , constraints , mitermax ,
                              pure.rasch , trait.weights , fixed.a , fixed.c , fixed.d ,  alpha1 , alpha2 , h = .0025 ,
 							 designmatrix , group , numdiff.parm  , Qmatrix=NULL ,
-							 old_increment , est.b , center.b ){
+							 old_increment , est.b , center.b , min.b , max.b  ){
     abs.change <- 1
     miter <- 0
     # group estimation
@@ -266,7 +266,11 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
         abs.change <- max( abs( b0 - b ) )			
         miter <- miter+1
         }   #*** end loop
-	   #-----
+
+		#*** squeeze parameter estimates
+		b <- squeeze.mml2( b , c( min.b , max.b ) )
+
+		#-----
 	   # center b
        if ( center.b ){
 		   D <- ncol(Qmatrix)
@@ -345,38 +349,12 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
 #########################################################################
 
 
-##     #*******************************************************
-##     # plot rasch.mml object                           
-##     ##NS S3method(plot,rasch.mml)      
-##     plot.rasch.mml <- function( object , plottitle = "Person-Item-Map" , itemcex = 1 ){
-##         plot( object$trait.distr[,1] , object$trait.distr[,2] , xlab= "Trait Distribution & Item Difficulties" ,
-##                         ylab = "Empirical Trait Distribution" , type="n" , ylim= c( -.03 , max(object$trait.distr[,2])*1.3 ) ,
-##                         main= plottitle , axes= F )
-##         abline( h = 0 , col="gray" )
-##         K <- nrow(object$trait.distr)
-##         for (k in 1:K){  lines( rep( object$trait.distr[k,1] , 2) , c( 0 , object$trait.distr[k,2] ) , col="blue" , lwd=3 ) }
-##         I <- nrow(object$item)
-##         if (!is.null(object$fixed.a)){ object$fixed.a <- 1 + 0 * ( 1:( nrow(object$item)) ) }
-##         points( object$mean.trait , -.015 , pch=17 , col=3 , cex= 1.5 )
-##         lines( object$mean.trait + object$sd.trait *c(-1,1) , rep( -.015 , 2 ) , col=3 , lwd=2 )
-##         points( object$item$itemdiff * object$fixed.a , rep( -.015 , I ) + runif( I , -.005 , .005 ) , cex= itemcex , col="red")
-##         abline( h = -0.015 , col="gray" )
-##         lines( rep(0,2) , c( -.02 , -.01) , col="gray" , lwd=2)
-##         axis( side = 1 )
-##         axis( side = 2 )
-##         axis( side = 4 )
-##         # density function
-##     #    xgrid <- seq( min(object$trait.distr[,1]) , max(object$trait.distr[,1]) , 0.1 )
-##     #    lines( xgrid , dnorm( xgrid , mean = object$mean.trait , sd = object$sd.trait ) , col=2 , lwd = 2 )
-##         }
-##     #******************************************************
-
-
 
 #*********************************************************************		
 # Estimation of a parameter (discrimination parameter)		
 .mml.raschtype.est.a <- function( theta.k , b , fixed.a , fixed.c , fixed.d ,
-					pjk , alpha1 , alpha2 , h , G , I , r.jk , n.jk , est.a , Qmatrix ){
+					pjk , alpha1 , alpha2 , h , G , I , r.jk , n.jk , est.a , Qmatrix ,
+					min.a , max.a ){
 				# cc <- cG[1]	
 #					est.aa <- 1 * (est.a == aa )
 					fixed.c.M <- matrix( fixed.c , nrow(pjk) , length(fixed.c) , byrow=T )
@@ -434,13 +412,24 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
 									}									
 					fixed.a <- fixed.a + a.change
 					fixed.a[ fixed.a < 0 ] <- 0
+
+				#*** squeeze parameter estimates
+				fixed.a <- squeeze.mml2( fixed.a , c( min.a , max.a ) )
+									
 				res <- list("fixed.a" = fixed.a , "se.a" = sqrt( 1 /abs(d2) ) )
 				return(res)
 					}
 #*********************************************************************
 
-
-
+#*******************************************************
+# utility function squeeze
+squeeze.mml2 <- function( v1 , rgvec ){
+	v1 <- ifelse( v1 < rgvec[1] , rgvec[1] , v1 )
+	v1 <- ifelse( v1 > rgvec[2] , rgvec[2] , v1 )	
+	return(v1)
+		}
+#*******************************************************
+		
 ######################################################
 # estimation of c parameter
 .mml.raschtype.est.c <- function( theta.k , b , fixed.a , fixed.c , fixed.d ,

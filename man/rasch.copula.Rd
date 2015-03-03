@@ -168,7 +168,7 @@ A list with following entries
 \item{alpha2}{Parameter \eqn{\alpha_2} in the generalized item response model}
 \item{ic}{Information criteria}
 \item{theta.k}{Discretized ability distribution}
-\item{pi.k}{Assumed \eqn{\theta} distribution}
+\item{pi.k}{Fixed \eqn{\theta} distribution}
 \item{deviance}{Deviance}
 \item{pattern}{Item response patterns with frequencies and posterior
 distribution}

@@ -17,9 +17,13 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 						est.a = NULL , 
 						est.b = NULL , 
 						est.c = NULL , est.d = NULL , 
+						min.b = -99 , max.b = 99 , 						
+						min.a = -99 , max.a = 99 , 						
 						min.c = 0 , max.c = 1 , 
 						min.d = 0 , max.d = 1 ,
 						est.K = NULL , min.K = 1 , max.K = 20 , 
+						beta.init = NULL , 
+						min.beta = -8 , 
                         pid = 1:( nrow(dat) ) , trait.weights = NULL ,
                         center.trait = TRUE , center.b = FALSE , 
 						alpha1 = 0 , alpha2 = 0 ,
@@ -29,11 +33,12 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 						distribution.trait = "normal" ,  
 						Qmatrix = NULL , 
 						variance.fixed = NULL , 
+						variance.init = NULL , 
 						mu.fixed = cbind( seq(1,ncol(Qmatrix)) , rep(0,ncol(Qmatrix)) ) ,
 						irtmodel = "raschtype" , 
 						npformula = NULL , 
 						npirt.monotone=TRUE ,						
-						use.freqpatt = is.null(group) , delta.miss =0 , 
+						use.freqpatt = is.null(group) , delta.miss =0 , est.delta=FALSE , 
 						... ){
     #******************************************************************************************##
     # INPUT:                                                                                ***##
@@ -71,10 +76,30 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
     conv1 <- parm.conv ; nplausible = 5 
 	dat <- as.matrix(dat)
 	adaptive.quadrature <- FALSE
+	CALL <- match.call()
+	
+	#**** check for non-integer item responses
+	eps <- 1E-5
+	S1 <- sum( ( dat > eps ) * (dat < 1 - eps ) , na.rm=TRUE )
+	if (S1 > 0 ){
+	    if ( is.null(group) ){
+			group <- rep( 1 , nrow(dat) )
+							}
+					}
+	
+	#****
+	
+	
 # a0 <- Sys.time()	
 	# models
 	npirt <- ramsay.qm <- FALSE
 	I <- ncol(dat)
+	
+#	if ( esttype == "pseudoll" ){
+#		if ( is.null( group) ){
+#				group <- rep(1,nrow(dat) )
+#							}
+#					}
 	
 #	m1r <- FALSE
 #	if (irtmodel == "missing1r"){
@@ -107,10 +132,15 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		theta.k <- expand.grid( theta.k , theta.k ) 
 	    dat[ dat == 9 ] <- 2	
 		dat.resp <- 1 - is.na( dat )
+		
 		# init b parameters		
 		b.init <- - qlogis( colMeans( dat == 1 , na.rm=TRUE ) )
 		# init beta parameters
-		beta <-  qlogis( colMeans( dat == 2 , na.rm=TRUE ) )		
+		if ( is.null(beta.init) ){
+			beta <-  qlogis( colMeans( dat == 2 , na.rm=TRUE ) +  1E-3 )		
+							} else {
+			beta <- beta.init
+						}
 			}
 	# multidimensional model	
 	if ( ! is.null( Qmatrix ) ){
@@ -131,7 +161,10 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 			variance.fixed <- as.matrix( cbind( 1:D , 1:D , 1 ) )
 				}
 			}				
-	Sigma.cov <- diag(D)			
+	Sigma.cov <- diag(D)	
+	if ( ! is.null(variance.init) ){
+		Sigma.cov <- variance.init
+					}
 	mu <- rep(0,D)
 # cat("114") ; a1 <- Sys.time(); print(a1-a0) ; a0 <- a1		
 #	ramsay.qm <- FALSE
@@ -261,9 +294,10 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 			n <- dp$n
 			I <- dp$I
 				}
+		se.delta <- NULL
 		if ( irtmodel == "missing1" ){
 #			dat1 <- dp$dat  # frequency patterns
-            dat1 <- as.data.frame( cbind( "P" , weights ) )
+            dat1 <- as.data.frame( cbind( "P" , weights ) )		
 			for (ii in 1:I){
 				l1 <- dat[,ii]
 				l1 <- ifelse ( dat.resp[,ii] == 0 , 9 , l1 )
@@ -282,10 +316,14 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		#*** pseudolikelihood estimation?
 		fracresp <- "pseudoll"
 		pseudoll <- 0
-		i1 <- sum( ( dat2 > 0 ) * ( dat2 < 1) )
+		i1 <- sum( ( dat2 > 0 ) * ( dat2 < 1) , na.rm=TRUE )
 		if (i1 > 10E-10 ){
 			if ( fracresp == "pseudoll") { pseudoll <- 1 }
 			if ( fracresp == "fuzzyll") { pseudoll <- 2 }			
+			if ( is.null(group) ){
+				group <- rep( 1 , nrow(dat2) )
+								}			
+			
 					}	
         # probability weights at theta.k
         if (D==1){
@@ -373,11 +411,20 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 	    TP <- nrow( theta.k)
 		CC <- 3		
 		pjk <- array( 0 , dim=c(I,CC,TP ) )
-		group_ <- rep(0,nrow(dat2) )
-		raschtype <- FALSE
-		G <- 1
-								}
 		
+#		if ( is.null(group) ){
+			group_ <- rep(0,nrow(dat2) )
+#					} else {
+#			group_ <- group
+#					}
+		
+		
+		raschtype <- FALSE
+		G <- length(unique(group))
+								}
+
+
+								
 		#################################################	
         #--------------------------------#
         # MML Iteration Algorithm        #
@@ -399,7 +446,8 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					e1 <- .e.step.missing1( dat2 , dat2.resp , theta.k , b , beta , delta.miss , I , CC ,
 						TP , group_ , pi.k , pjk , weights )
 					n.ik <- e1$n.ik
-					e1$ll <- e1$LL					
+					e1$ll <- e1$LL						
+						
 							}		
                if ( ramsay.qm ){ 
 					e1 <- .e.step.ramsay( dat1 , dat2 , dat2.resp , theta.k , pi.k , I , n , b ,
@@ -443,14 +491,14 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					se.b <- m1$se.b
 											} 
 				 # generalized Rasch type model
-				 if (raschtype ){					 
+				 if (raschtype ){				
                     m1 <- .m.step.raschtype( theta.k , b , n.k , n , n.jk , r.jk , pi.k , 
 							I , conv1 , constraints , mitermax , pure.rasch ,        
 							trait.weights , fixed.a , fixed.c , fixed.d ,  alpha1 , 
 							alpha2 , designmatrix = designmatrix ,
 							group = group , numdiff.parm=numdiff.parm ,
 							Qmatrix = Qmatrix , old_increment=old_increment_b , 
-							est.b=est.b , center.b=center.b )
+							est.b=est.b , center.b=center.b , min.b=min.b , max.b=max.b )
 					se.b <- m1$se.b
                                 }
  							
@@ -466,19 +514,23 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					m1 <- list( "b"=b , "G" = G , 
 						"pi.k" = pi.k , "center" = FALSE )
 						}
-				# missing data IRT model
+				# missing data IRT model			
 				if ( irtmodel == "missing1" ){
 					m1 <- .mstep.mml.missing1( theta.k , n.ik , mitermax , conv1 , 
 						b , beta , delta.miss , pjk , numdiff.parm ,
-						constraints )
+						constraints , est.delta , min.beta=min.beta )
 					b <- m1$b
 					se.b <- m1$se.b
-					beta <- m1$beta
+					beta <- m1$beta			
 					se.beta <- m1$se.beta
+					delta.miss <- m1$delta.miss
+					se.delta <- m1$se.delta						
 					m1$dev <- dev
 					a1beta <- max( abs( beta - beta0 ) )		
 						}
-# cat("m step") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1							
+# cat("m step") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+
+						
 		#***************************************
 		# update mean and covariance in multidimensional models
 		if ( D > 1){
@@ -623,9 +675,10 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 				fixed.a0 <- fixed.a
 				# identify different a parameter groups
 				aG <- setdiff(unique( est.a ) , 0 )
-				# a estimation
+				# a estimation	
 				res <- .mml.raschtype.est.a( theta.k , b , fixed.a , fixed.c , fixed.d ,
-					pjk , alpha1 , alpha2 , h , G , I , r.jk , n.jk , est.a , Qmatrix)		
+					pjk , alpha1 , alpha2 , h , G , I , r.jk , n.jk , est.a , Qmatrix ,
+					min.a , max.a )		
 				fixed.a <- res$fixed.a
 				se.a <- res$se.a					
 				a1a <- max( abs( fixed.a - fixed.a0 ) )
@@ -827,7 +880,14 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 								  cat("\n    Covariance Matrix | " )
 								  cat( round(Sigma.cov[!upper.tri(Sigma.cov)],3))
 								  cat("\n")
-															}							
+															}
+								if ( irtmodel == "missing1" ){
+								  cat("    Delta = " )
+								  cat( round(as.vector(delta.miss),3))
+								  cat("\n")
+															}
+														
+															
 									flush.console() 
                                     }
                 iter <- iter + 1
@@ -836,7 +896,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		####################################### end iterations #####################
 		############################################################################
 		##**************************************************************************
-				
+		
 			if ( irtmodel == "missing1"){
 				m1$center <- FALSE
 				G <- 1
@@ -905,6 +965,9 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 							}
 		if ( irtmodel == "missing1"){
 			ic$np <- ic$np + I
+			if ( est.delta ){
+				ic$np <- ic$np + 1
+							}
 					}
 		# parameters for multiple dimensions
 		if (D>1){ 
@@ -1041,11 +1104,13 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
         # include person ID
         ability.est2$pid <- pid
 		# match ability patterns
-
-		ind1 <- match( ability.est2$freq.patt , ability.est$pattern  )
-		ability.est <- ability.est[ ind1  , ]
-		f.qk.yi <- f.qk.yi[ind1,]
-		f.yi.qk <- f.yi.qk[ind1,]		
+		if (irtmodel != "missing1" ){
+			ind1 <- match( ability.est2$freq.patt , ability.est$pattern  )
+			ability.est <- ability.est[ ind1  , ]
+			f.qk.yi <- f.qk.yi[ind1,]
+			f.yi.qk <- f.yi.qk[ind1,]	
+						}
+		
 		#*****
 		# item table for missing data IRT model
 		if ( irtmodel == "missing1"){
@@ -1085,11 +1150,14 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		# item response probabilities
 
 		d1 <- dim(pjk)
-		rprobs <- array( 0 , dim=c( d1[2] , 2 , d1[1] ) )
+		if ( length(d1) == 2 ){			
+			rprobs <- array( 0 , dim=c( d1[2] , 2 , d1[1] ) )		
+			rprobs[,2,] <- t( pjk )
+			rprobs[,1,] <- 1 - t(pjk)
+						} else {
+			rprobs <- pjk 
+					}				
 		dimnames(rprobs)[[1]] <- colnames(dat)
-		rprobs[,2,] <- t( pjk )
-		rprobs[,1,] <- 1 - t(pjk)
-		
 							
 		##################################################					
         # result
@@ -1103,11 +1171,13 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					"G" = G ,"alpha1"=alpha1 , "alpha2" = alpha2 , 
 					"se.b" = se.b , "se.a" = se.a , "se.c" = se.c , "se.d" = se.d ,
 					"se.alpha" = se.alpha , "se.K" = se.K , 
+					"se.delta" = se.delta , 
 					"iter" = iter ,
 					"reliability" = reliability , "ramsay.qm" = ramsay.qm ,
 					"irtmodel" = irtmodel , "D" = D , "mu" = mu , 
 					"Sigma.cov"=Sigma.cov , "theta.k" = theta.k , 
-					"trait.weights" = trait.weights   , "pi.k" = pi.k 
+					"trait.weights" = trait.weights   , "pi.k" = pi.k ,
+					"CALL" = CALL
 # collect results of npmodel
 							) 
         class(res) <- "rasch.mml"

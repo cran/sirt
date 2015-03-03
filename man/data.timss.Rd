@@ -36,10 +36,7 @@ The format is:
 \code{  ..$ Cognitive.Domain: Factor w/ 3 levels "Applying","Knowing",..: 2 3 3 ..} \cr
 }
 
-\section{Example Index}{
-\code{\link{conf.detect}} (Example 1),
-\code{\link{gom.jml}} (Example 1),
-}
+
 
 
 \keyword{datasets}

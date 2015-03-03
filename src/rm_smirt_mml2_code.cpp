@@ -30,12 +30,12 @@ using namespace Rcpp;
 
 // declarations
 extern "C" {
-SEXP file211c19faab( SEXP A, SEXP dimA, SEXP B, SEXP dimB) ;
+SEXP rm_arraymult1( SEXP A, SEXP dimA, SEXP B, SEXP dimB) ;
 }
 
 // definition
 
-SEXP file211c19faab( SEXP A, SEXP dimA, SEXP B, SEXP dimB ){
+SEXP rm_arraymult1( SEXP A, SEXP dimA, SEXP B, SEXP dimB ){
 BEGIN_RCPP
 // define input and arrays
       // array A
@@ -138,12 +138,12 @@ END_RCPP
 
 // declarations
 extern "C" {
-SEXP file21a045a71b7( SEXP crater, SEXP drater, SEXP dimA, SEXP B, SEXP dimB) ;
+SEXP rm_probraterfct1( SEXP crater, SEXP drater, SEXP dimA, SEXP B, SEXP dimB) ;
 }
 
 // definition
 
-SEXP file21a045a71b7( SEXP crater, SEXP drater, SEXP dimA, SEXP B, SEXP dimB ){
+SEXP rm_probraterfct1( SEXP crater, SEXP drater, SEXP dimA, SEXP B, SEXP dimB ){
 BEGIN_RCPP
 
       //////////////////////////////////////////

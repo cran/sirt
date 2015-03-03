@@ -59,3 +59,6 @@ IRT.irfprob.rm.facets <- IRT.irfprob.gom
 # irfprob rm.sdt
 IRT.irfprob.rm.sdt <- IRT.irfprob.gom
 ########################################################
+# irfprob prob.guttman
+IRT.irfprob.prob.guttman <- IRT.irfprob.gom
+########################################################

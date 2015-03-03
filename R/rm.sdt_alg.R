@@ -3,75 +3,21 @@
 # C code
 # calculation of probabilities
 probraterfct1 <- function (crater,drater,dimA,B,dimB){ 
-.Call("file21a045a71b7", crater,drater,dimA,B,dimB, PACKAGE = "sirt")
+.Call("rm_probraterfct1", crater,drater,dimA,B,dimB, PACKAGE = "sirt")
 					}
 # array multiplication					
 arraymult1 <- function (A,dimA,B,dimB){ 
-.Call("file211c19faab", A, dimA, B, dimB, PACKAGE = "sirt")
+.Call("rm_arraymult1", A, dimA, B, dimB, PACKAGE = "sirt")
 					}					
 
-################################################################
-# calculate probabilities
-.rm.hrm.calcprobs  <- function(  c.rater , Qmatrix , tau.item ,
-				VV , K , I , TP , a.item , d.rater , item.index , rater.index ,
-				theta.k ,RR , prob.item=NULL , prob.rater = NULL ){
-	# calculate probabilities for true ratings
-	a <- a.item
-	b <- tau.item
-	if ( is.null( prob.item ) ){ 
-		res <- .rm.pcm.calcprobs( a , b , Qmatrix=Qmatrix , theta.k , I=VV , K , TP )
-				} else { res <- prob.item }
-	# calculate probabilities for raters
-	calc.rater <- FALSE
-	if (is.null(prob.rater)){
-		calc.rater <- TRUE
-						}
-# calc.rater <- TRUE						
-#	prob.categ <- array( 0 , dim=c(I , K+1 , TP ) )	
-#	if (calc.rater){
-#		for (ii in 1:I){
-	#		ii <- 1	
-#			h1[ii,,] <- matrix( c.rater[ii,] , nrow=K+1 , ncol=K,byrow=T) - 
-#				         matrix( (0:K) * d.rater[ii] , nrow=K+1 , ncol=K,byrow=F )
-#		h1[ii,,] <- - outer( (0:K)*d.rater[ii] , as.vector(c.rater[ii,]) , "-" )
-#						}
-#		h1 <- plogis( h1 )
-#		prob.rater[,1,] <- h1[,,1]
-#		for (kk in 1:(K-1)){ prob.rater[,kk+1,] <- h1[,,kk+1] - h1[,,kk] }
-#		prob.rater[,K+1,] <- 1-h1[,,K]
-#				}
-				
-	dimA <- c(I , K+1, K+1 )
-	res2 <- res[ item.index ,,]	
-	dimB <- dim(res2)					
-	BM <- matrix( res2 , dimA[1]*dimB[2] , dimB[3] )
-	#****	
-	# if prob.rater is calculated	
-	if (calc.rater){
-		res2 <- probraterfct1( crater=c.rater , drater=d.rater , 
-				dimA=dimA,B=BM,dimB=dimB)
-		prob.categ <- array( res2$probtotal , dim= c(dimA[c(1,2)],dimB[3]) )
-		prob.rater <- array( res2$PRA , dim=dimA )		
-					}
-	#***
-	# if prob.rater is not calculated
-	AM <- matrix( prob.rater , dimA[1]*dimA[2] , dimA[3] )
-    if ( ! calc.rater ){
-		y <- arraymult1( AM , dimA , BM , dimB )
-		prob.categ <- array( y , dim= c(dimA[c(1,2)],dimB[3]) )    
-					}
-	
-	res <- list("prob.total"=prob.categ , "prob.rater"=prob.rater , 
-		"prob.item"	= res )
-	return(res)	
-			}
-#############################################################
+
 ###################################################			
 # c.rater
 .rm.hrm.est.c.rater <- function(  c.rater , Qmatrix , tau.item ,
 					VV , K , I , TP , a.item , d.rater , item.index , rater.index ,
 					n.ik , numdiff.parm, max.b.increment=1,theta.k ,
-					msteps , mstepconv , est.c.rater , prob.item  ){
+					msteps , mstepconv , est.c.rater , prob.item ,
+					c.rater.fixed ){
     h <- numdiff.parm
 	if (est.c.rater=="r"){ diffindex <- rater.index }
 	if (est.c.rater=="i"){ diffindex <- item.index }
@@ -115,7 +61,9 @@ arraymult1 <- function (A,dimA,B,dimB){
 							}
 						}
 					}
-	#		max.b.increment <- abs( b.rater - b0 )
+		if ( ! is.null( c.rater.fixed ) ){
+		    c.rater[ c.rater.fixed[,1:2] ] <- c.rater.fixed[,3]
+											}
 		conv1 <- max( abs( c.rater - b0 ) )
 		it <- it+1
 		cat("-")  #; flush.console()
@@ -176,59 +124,13 @@ arraymult1 <- function (A,dimA,B,dimB){
 
 			
 			
+
 			
-#####################################################################
-.rm.hrm.est.tau.item <- function( c.rater , Qmatrix , tau.item ,
-				VV , K , I , TP , a.item , d.rater , item.index , rater.index ,
-				n.ik , numdiff.parm , max.b.increment=1  , theta.k ,
-				msteps, mstepconv , tau.item.fixed , prob.rater ){
-    h <- numdiff.parm
-	diffindex <- item.index
-	RR <- length(c.rater)	
-	Q0 <- matrix(0,nrow=VV, ncol=K)
-	se.tau.item <- Q0
-	cat("  M steps tau.item parameter   |")
-	it <- 0 ;	conv1 <- 1000
-	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
-		tau.item0 <- tau.item
-		for (kk in 1:K){
-	#		kk <- 1
-			Q1 <- Q0
-			Q1[,kk] <- 1
-			r1 <- .rm.hrm.calcprobs( c.rater , Qmatrix , tau.item ,
-					VV , K , I , TP , a.item , d.rater , item.index , rater.index , theta.k,RR, 
-					prob.item=NULL , prob.rater=prob.rater )
-			pjk <- r1$prob.total				
-			pjk1 <- .rm.hrm.calcprobs( c.rater , Qmatrix , tau.item+h*Q1 ,
-					VV , K , I , TP , a.item , d.rater , item.index , rater.index , theta.k,RR,
-					prob.item=NULL , prob.rater=prob.rater)$prob.total				
-			pjk2 <- .rm.hrm.calcprobs( c.rater , Qmatrix , tau.item-h*Q1 ,
-					VV , K , I , TP , a.item , d.rater , item.index , rater.index , theta.k,RR,
-					prob.item=NULL , prob.rater=prob.rater)$prob.total		
-			# numerical differentiation			
-			res <- .rm.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
-					max.increment=max.b.increment , numdiff.parm )					
-			increment <- Q1*matrix( res$increment , nrow=VV , ncol=K)	
-			tau.item <- tau.item + increment
-			se.tau.item[,kk] <- sqrt(abs(-1/res$d2)	)
-					}
-		conv1 <- max( abs( tau.item - tau.item0 ) )
-		it <- it+1
-		cat("-") # ; flush.console()
-		if (!is.null(tau.item.fixed)){
-			tau.item[ tau.item.fixed[,1:2,drop=FALSE] ] <- tau.item.fixed[,3]
-								}
-			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()
-	res <- list("tau.item" = tau.item , "se.tau.item" = se.tau.item , 
-			"ll" = sum(res$ll0) , "prob.item"=r1$prob.item )
-    return(res)
-					}
 #########################################################################
 .rm.hrm.est.a.item <- function( c.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , d.rater , item.index , rater.index ,
 				n.ik , numdiff.parm , max.b.increment=1,theta.k ,
-				msteps, mstepconv , prob.rater ){
+				msteps, mstepconv , prob.rater , a.item.fixed ){
     h <- numdiff.parm
 	diffindex <- item.index
 	RR <- length(c.rater)
@@ -251,9 +153,15 @@ arraymult1 <- function (A,dimA,B,dimB){
 				max.increment=max.b.increment , numdiff.parm )					
 		a.item <- a.item + res$increment
 		a.item[ a.item < .05 ] <- .05
-#		a.item <- a.item - mean(a.item ) + 1
-		b1 <- mean( log( a.item ) )
-		a.item <- a.item / exp( b1 )
+		
+		if ( is.null( a.item.fixed )){
+			#		a.item <- a.item - mean(a.item ) + 1
+			b1 <- mean( log( a.item ) )
+			a.item <- a.item / exp( b1 )
+									}
+		if ( ! is.null( a.item.fixed ) ){
+				a.item[ a.item.fixed[,1] ] <- a.item.fixed[,2]
+										}				
 		conv1 <- max( abs( a.item - a.item0 ) )
 		it <- it+1
 		cat("-") # ; flush.console()	

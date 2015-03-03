@@ -36,10 +36,7 @@ The format of the dataset is
 }
 
 
-\section{Example Index}{
-\code{\link{linking.haberman}} (Example 2),
-\code{\link{rasch.mml2}} (Example 2)
-}
+
 
 
 \examples{

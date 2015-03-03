@@ -108,8 +108,7 @@ For the definition of \eqn{F} and \eqn{P} matrices, please
 consult the NOHARM manual.
 
 This function needs the 64-bit command line version which can be downloaded
-at 
-\url{http://noharm.niagararesearch.ca/nh4cldl.html}.
+at \emph{http://noharm.niagararesearch.ca/nh4cldl.html}.
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -161,7 +160,7 @@ Fraser, C., & McDonald, R. P. (1988). NOHARM: Least squares item factor analysis
 \emph{Multivariate Behavioral Research}, \bold{23}, 267-269.
 
 Fraser, C., & McDonald, R. P. (2012). \emph{NOHARM 4 Manual}. 
-\url{http://noharm.niagararesearch.ca/nh4man/nhman.html}
+http://noharm.niagararesearch.ca/nh4man/nhman.html.
 
 McDonald, R. P. (1982a). Linear versus models in item response theory. 
 \emph{Applied Psychological Measurement}, \bold{6}, 379-396.

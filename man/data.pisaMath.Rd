@@ -51,10 +51,6 @@ The format is:
 \code{  ..$ testlet: chr [1:11] NA "M406" "M406" NA ...} \cr
 }
 
-\section{Example Index}{
-\code{\link{gom.em}} (Example 1),
-\code{\link{isop.dich}} (Example 2),
 
-}
 
 \keyword{datasets}

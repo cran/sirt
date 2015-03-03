@@ -52,6 +52,9 @@ IRT.likelihood.rm.facets <- IRT.likelihood.rasch.mml
 # rm.sdt
 IRT.likelihood.rm.sdt <- IRT.likelihood.rasch.mml
 ##########################################################
+# prob.guttman
+IRT.likelihood.prob.guttman <- IRT.likelihood.rasch.mml
+##########################################################
 
 ##########################################################
 # likelihood rasch.mirtlc

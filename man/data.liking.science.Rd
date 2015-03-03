@@ -31,9 +31,6 @@ The format is:
 %%  ~~ reference to a publication or URL from which the data were obtained ~~
 %}
 
-\section{Example Index}{
-\code{\link{rasch.evm.pcm}} (Example 1)
-}
 
 
 \references{

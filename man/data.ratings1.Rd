@@ -81,29 +81,6 @@ Data frame with 3169 observations containing 4 criteria (\code{crit2}, ..., \cod
 
 
 
-\section{Example Index}{
-
-%%% data.ratings1
-\emph{Dataset} \code{data.ratings1} 
-
-\code{\link{rm.facets}} (Example 1, Example 2),
-\code{\link{rm.sdt}} (Example 1),
-
-%%% data.ratings2
-\emph{Dataset} \code{data.ratings2} 
-
---
-%\code{\link{rm.facets}} (Example 1, Example 2),
-%\code{\link{rm.sdt}} (Example 1),
-
-%%% data.ratings3
-\emph{Dataset} \code{data.ratings3} 
-
---
-%\code{\link{rm.facets}} (Example 1, Example 2),
-%\code{\link{rm.sdt}} (Example 1),
-
-}
 
 %\examples{
 %# include an example of rating data here	

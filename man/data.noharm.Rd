@@ -74,19 +74,6 @@ A data frame with 200 observations on the following 18 variables \code{I01},
 %}
 
 
-\section{Example Index}{
-
-%%%%%%% data.noharmExC
-\emph{Dataset} \code{data.noharmExC} 	
-	
-\code{\link{R2noharm}} (Example 4)
-
-%%%%%%% data.noharm18
-\emph{Dataset} \code{data.noharm18} 	
-	
-\code{\link{R2noharm}} (Example 1)
-}
-
 
 %\examples{
 %data(data.noharm)

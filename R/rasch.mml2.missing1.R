@@ -94,13 +94,16 @@
 # M-step for missing data model			
 .mstep.mml.missing1 <- function( theta.k , n.ik , mitermax , conv1 , 
 		b , beta , delta.miss , pjk , numdiff.parm ,
-		constraints ){
+		constraints , est.delta , min.beta ){
     h <- numdiff.parm
+	se.delta <- 0
 	miter <- 0 
 	diffindex <- seq( 1 , length(b) )
+	diffindex1 <- rep( 1 , length(b) )
 #	Q0 <- 0 * c.rater
 	max_incr_b <- 1
 	max_incr_beta <- 1
+	max_incr_delta <- 1
 	miterchange <- 1000
 	while( ( miterchange > conv1 ) & ( miter < mitermax ) ){
 	    #--- update b
@@ -125,12 +128,29 @@
 		pjk2 <- .calcprob.missing1( theta.k , b , beta-h, delta.miss , pjk )				
 		# numerical differentiation			
 		res <- .mml2.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
-				max.increment= max_incr_beta , numdiff.parm )			
-		beta <- beta0 + res$increment
+				max.increment= max_incr_beta , numdiff.parm )									
+		beta <- beta0 + res$increment		
 		max_incr_beta <- max( abs( res$increment ) )
 		se.beta <- sqrt( abs( 1 / res$d2 ) )
+		beta <- ifelse( beta < min.beta , min.beta , beta )
+		
+	    #--- update delta
+		if (est.delta){
+			delta0 <- delta.miss
+			pjk <- .calcprob.missing1( theta.k , b , beta , delta.miss , pjk )				
+			pjk1 <- .calcprob.missing1( theta.k , b , beta, delta.miss+h , pjk )				
+			pjk2 <- .calcprob.missing1( theta.k , b , beta, delta.miss-h , pjk )				
+			# numerical differentiation			
+			res <- .mml2.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex1 , 
+					max.increment= max_incr_delta , numdiff.parm )			
+			delta.miss <- delta0 + res$increment
+			max_incr_delta <- max( abs( res$increment ) )
+			se.delta <- sqrt( abs( 1 / res$d2 ) )		
+				}
+		
 		miter <- miter + 1
 				}
-      res <- list("b"=b , "se.b"=b , "beta" = beta , "se.beta"=se.beta )
+      res <- list("b"=b , "se.b"=b , "beta" = beta , "se.beta"=se.beta ,
+			"delta.miss" = delta.miss , "se.delta" = se.delta )
 	  return(res)
 		}

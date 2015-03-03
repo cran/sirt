@@ -27,48 +27,6 @@ variable names.
 
 
 
-\section{Example Index}{
-	
-\code{\link{class.accuracy.rasch}} (Example 1),
-\code{\link{fit.isop}} (Example 1),
-\code{\link{greenyang.reliability}} (Example 1),
-\code{\link{isop.dich}} (Example 1),
-\code{\link{isop.scoring}} (Example 1),
-\code{\link{lavaan2mirt}} (Example 1),
-\code{\link{marginal.truescore.reliability}} (Example 3),
-\code{\link{mcmc.2pno}} (Example 1),
-\code{\link{mcmc.3pno.testlet}} (Example 1),
-\code{\link{mcmclist2coda}} (Example 1),
-\code{\link{mirt.wrapper}} (Example 2),
-\code{\link{mle.pcm.group}} (Example 2),
-\code{\link{modelfit.sirt}} (Example 1),
-\code{\link{noharm.sirt}} (Example 1),
-\code{\link{np.dich}} (Example 1),
-\code{\link{person.parameter.rasch.copula}} (Example 1),
-\code{\link[CDM:personfit.appropriateness]{personfit.appropriateness}} 
-(Example 2, \pkg{CDM}),
-\code{\link{personfit.stat}} (Example 1),
-\code{\link{prmse.subscores.scales}} (Example 1),
-\code{\link{prob.guttman}} (Example 1),
-\code{\link{rasch.copula2}} (Example 1),
-\code{\link{rasch.jml.biascorr}} (Example 1),
-\code{\link{rasch.mirtlc}} (Example 1),
-\code{\link{rasch.mml2}} (Example 1),
-\code{\link{rasch.pairwise}} (Example 1),
-\code{\link{rasch.pml2}} (Example 1),
-\code{\link{rasch.prox}} (Example 1),
-\code{\link{smirt}} (Example 2),
-\code{\link{stratified.cronbach.alpha}} (Example 1),
-\code{\link{tam2mirt}} (Example 1),
-\code{\link{testlet.yen.q3}} (Example 1),
-\code{\link{tetrachoric2}} (Example 1),
-\code{\link{truescore.irt}} (Example 2),
-\code{\link{unidim.test.csn}} (Example 1),
-\code{\link{wle.rasch}} (Example 1),
-\code{\link{wle.rasch.jackknife}} (Example 1),
-\code{\link{yen.q3}} (Example 1),
-}
-
 \examples{
 \dontrun{
 data(data.read)
@@ -614,11 +572,48 @@ mirt.wrapper.coef(mod8c)
 mod8c@Theta
 mod8c@Prior
 
+#----  M8d: tamaan (in TAM)
+
+tammodel <- "
+ANALYSIS:
+  TYPE=MIXTURE ;
+  NCLASSES(2);
+  NSTARTS(7,20);
+LAVAAN MODEL:
+  F =~ A1__C4
+  F ~~ F
+ITEM TYPE:
+  ALL(Rasch);
+    "    
+mod8d <- TAM::tamaan( tammodel , resp=dat )
+summary(mod8d)
+# plot item parameters
+I <- 12
+ipars <- mod8d$itempartable_MIXTURE[ 1:I , ]
+plot( 1:I , ipars[,3] , type="o" , ylim= range( ipars[,3:4] ) , pch=16 ,
+        xlab="Item" , ylab="Item difficulty")
+lines( 1:I , ipars[,4] , type="l", col=2 , lty=2)
+points( 1:I , ipars[,4] ,  col=2 , pch=2)
+
 #*****************************************************
 # Model 9: Mixed 2PL model with two classes
 #*****************************************************
 
-#---- - TO BE INCLUDED.
+#----  M9a: tamaan (in TAM)
+
+tammodel <- "
+ANALYSIS:
+  TYPE=MIXTURE ;
+  NCLASSES(2);
+  NSTARTS(10,30);
+LAVAAN MODEL:
+  F =~ A1__C4
+  F ~~ F
+ITEM TYPE:
+  ALL(2PL);
+    "       
+mod9a <- TAM::tamaan( tammodel , resp=dat )
+summary(mod9a)
 
 #*****************************************************
 # Model 10: Rasch testlet model
@@ -862,7 +857,7 @@ round(dfr[, c(1,3,5,2,4,6)],3)
 
 # estimated class sizes
 dfr <- data.frame( "Theta" = Theta , "din"=mod13a$attribute.patt$class.prob ,
-                 "gdm"=mod13b$pi.k , "mirt" = mod13c@Prior[[1]])
+                   "gdm"=mod13b$pi.k , "mirt" = mod13c@Prior[[1]])
 # comparison
 round(dfr,3)
   ##     Theta.1 Theta.2 Theta.3   din   gdm  mirt
@@ -973,7 +968,7 @@ round(dfr,3)
 theta.k <- matrix( seq(-4,4,len=15) , ncol=1 )
 # define design matrix for smoothing (up to cubic moments)
 delta.designmatrix <- cbind( 1 , theta.k , theta.k^2 , theta.k^3 )
-# constrain item fifficulty of fifth item (item B1) to zero
+# constrain item difficulty of fifth item (item B1) to zero
 b.constraint <- matrix( c(5,1,0) , ncol=3 )
 
 #----  Model 15a: gdm (in CDM)

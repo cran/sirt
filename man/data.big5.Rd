@@ -61,21 +61,6 @@ factor model. \emph{Structural Equation Modeling}, \bold{16}, 295-314.
 
 
 
-\section{Example Index}{
-
-%%%%%%% data.big5
-\emph{Dataset} \code{data.big5} 	
-	
-\code{\link{conf.detect}} (Example 2),
-\code{\link{lavaan2mirt}} (Example 3),
-\code{\link{tam2mirt}} (Example 4)
-
-%%%%%%% data.big5.qgraph
-\emph{Dataset} \code{data.big5.qgraph} 	
-
---
-%%\code{\link{mcmc.2pno.ml}} (Example 2)
-}
 
 \examples{
 \dontrun{

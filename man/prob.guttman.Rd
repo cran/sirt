@@ -1,21 +1,40 @@
 \name{prob.guttman}
 \alias{prob.guttman}
 \alias{summary.prob.guttman}
+\alias{logLik.prob.guttman}
+\alias{anova.prob.guttman}
+\alias{IRT.likelihood.prob.guttman}
+\alias{IRT.posterior.prob.guttman}
+\alias{IRT.irfprob.prob.guttman}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Probabilistic Guttman Model
 }
 \description{
 This function estimates the probabilistic Guttman model which
-is a special case of an ordered latent trait model (Hanson 2000,
+is a special case of an ordered latent trait model (Hanson, 2000;
 Proctor, 1970).
 }
 \usage{
 prob.guttman(dat, pid = NULL, guess.equal = FALSE,  slip.equal = FALSE, 
     itemlevel = NULL, conv1 = 0.001, glob.conv = 0.001, mmliter = 500)
     
-\method{summary}{prob.guttman}(object,...)    
+\method{summary}{prob.guttman}(object,...)
+
+\method{anova}{prob.guttman}(object,...)
+
+\method{logLik}{prob.guttman}(object,...)
+
+\method{IRT.irfprob}{prob.guttman}(object,...)
+
+\method{IRT.likelihood}{prob.guttman}(object,...)
+
+\method{IRT.posterior}{prob.guttman}(object,...)
 }
+
+
+
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
@@ -217,7 +236,6 @@ mod4 <- mirt::mirt(dat, mirtmodel , pars = mod.pars , verbose=TRUE ,
 # correct number of estimated parameters
 mod4@nest <- as.integer(sum(mod.pars$est) + nrow(Theta)-1 ) 
 # extract coefficients
-source.all(pfsirt)
 cmod4 <- mirt.wrapper.coef(mod4)
 cmod4
 # compute item response functions

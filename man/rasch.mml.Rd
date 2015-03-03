@@ -41,14 +41,16 @@ rasch.mml2( dat , theta.k=seq(-6,6,len=21) , group=NULL , weights=NULL ,
    mmliter=1000 , progress=TRUE ,  fixed.a=rep(1,ncol(dat)) , 
    fixed.c=rep(0,ncol(dat)) , fixed.d=rep(1,ncol(dat)) , 
    fixed.K=rep(3,ncol(dat)) , b.init=NULL , est.a=NULL , est.b=NULL , 
-   est.c=NULL , est.d=NULL , min.c=0 , max.c=1 , min.d=0 , max.d=1 ,
-   est.K=NULL , min.K=1 , max.K=20 , pid=1:(nrow(dat)) , trait.weights=NULL ,
+   est.c=NULL , est.d=NULL , min.b=-99 , max.b=99 , min.a=-99 , max.a = 99 , 
+   min.c=0 , max.c=1 , min.d=0 , max.d=1 , est.K=NULL , min.K=1 , max.K=20 ,
+   beta.init = NULL , min.beta = -8 ,  pid=1:(nrow(dat)) , trait.weights=NULL ,
    center.trait=TRUE , center.b=FALSE ,alpha1=0 , alpha2=0 ,est.alpha=FALSE , 
    equal.alpha=FALSE , designmatrix=NULL , alpha.conv=parm.conv , numdiff.parm=0.00001 ,
    numdiff.alpha.parm= numdiff.parm , distribution.trait="normal" , Qmatrix=NULL , 
-   variance.fixed=NULL , mu.fixed=cbind(seq(1,ncol(Qmatrix)),rep(0,ncol(Qmatrix))) ,
+   variance.fixed=NULL , variance.init=NULL , 
+   mu.fixed=cbind(seq(1,ncol(Qmatrix)),rep(0,ncol(Qmatrix))) ,
    irtmodel="raschtype" , npformula=NULL , npirt.monotone=TRUE ,
-   use.freqpatt = is.null(group)  , delta.miss=0 , ... )
+   use.freqpatt = is.null(group)  , delta.miss=0 , est.delta=FALSE , ... )
    
 \method{summary}{rasch.mml}(object,...)
 
@@ -91,6 +93,7 @@ IRT models with \eqn{D} dimensions, it is a matrix with \eqn{D} columns.
 }
   \item{group}{
 Vector of integers with group identifiers in multiple group estimation.
+The multiple group does not work for \code{irtmodel="missing1"}.
 }
   \item{weights}{
 Optional vector of person weights (sample weights).
@@ -152,6 +155,18 @@ Vector of integers which indicate which \eqn{d}
 parameters should be estimated. Equal integers correspond
 to the same estimated parameters.
 }
+  \item{min.b}{
+Minimal \eqn{b} parameter to be estimated
+}
+  \item{max.b}{
+Maximal \eqn{b} parameter to be estimated
+}
+  \item{min.a}{
+Minimal \eqn{a} parameter to be estimated
+}
+  \item{max.a}{
+Maximal \eqn{a} parameter to be estimated
+}
   \item{min.c}{
 Minimal \eqn{c} parameter to be estimated
 }
@@ -175,6 +190,8 @@ Minimal \eqn{K} parameter to be estimated
   \item{max.K}{
 Maximal \eqn{K} parameter to be estimated
 }
+\item{beta.init}{Optional vector of initial \eqn{\beta} parameters}
+\item{min.beta}{Minimum \eqn{\beta} parameter to be estimated.}
   \item{pid}{
 Optional vector of person identifiers
 }
@@ -227,6 +244,7 @@ The Q-matrix
   \item{variance.fixed}{
 Matrix for fixing covariance matrix (See Examples)
 }
+\item{variance.init}{Optional initial covariance matrix}
   \item{mu.fixed}{
 Matrix for fixing mean vector (See Examples)
 }
@@ -261,6 +279,8 @@ grid of \eqn{\theta} values is estimated.
 \item{delta.miss}{Missingness parameter \eqn{\delta} quantifying the meaning
 	of responding to an item between the two extremes of ignoring
      missing responses and setting all missing responses to incorrect}
+\item{est.delta}{Optional logical indicating whether the \eqn{\delta}
+parameter should be estimated if \code{irtmodel="missing1"}.}     
   \item{object}{  	  
 Object of class \code{rasch.mml}
 }
@@ -347,10 +367,11 @@ see also Pohl, Graefe & Rose, 2014).
 If \eqn{\delta} is a large negative number (e.g. \eqn{\delta=-100}), then
 it follows \eqn{P( R_{pi} = 1 | X_{pi} = 1 , \theta_p , \xi_p ) =1} and as a consequence it holds 
 that \eqn{P(X_{pi}=1 | R_{pi} = 0 , \theta_p , \xi_p) = 0}, which is equivalent to treating
-all missing item responses as incorrect. However, the missingness parameter
-\eqn{\delta} cannot be identified from empirical data and can be specified
+all missing item responses as incorrect. The missingness parameter
+\eqn{\delta} can be specified
 by the user and studied as a sensitivity analysis under different
-missing not at random assumptions.
+missing not at random assumptions or can be estimated by choosing
+\code{est.delta=TRUE}.
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -536,7 +557,11 @@ anova(mod1,mod2)
 smod1 <- IRT.modelfit(mod1)
 smod2 <- IRT.modelfit(mod2)
 IRT.compareModels(smod1, smod2)	
-	
+
+# set some bounds for a and b parameters 
+mod2a <- rasch.mml2( dat , est.a=1:I , min.a = .7 , max.a=2 , min.b = -2 )
+summary(mod2a)
+
 # 3PL model
 mod3 <- rasch.mml2( dat , est.a = 1:I , est.c = 1:I , 
               mmliter = 400 # maximal 400 iterations
@@ -946,6 +971,12 @@ mod11 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" ,
              theta.k=seq(-5 , 5 , len=10) , delta.miss= -1 , mitermax= 4 , 
              mmliter=200 , mu.fixed=NULL )        
 summary(mod11)
+
+#*** Model 12: estimate delta parameter
+mod12 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
+             theta.k=seq(-5 , 5 , len=10) , delta.miss= 0 , mitermax= 4 , 
+             mmliter=200 , est.delta=TRUE , mu.fixed=NULL )        
+summary(mod12)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

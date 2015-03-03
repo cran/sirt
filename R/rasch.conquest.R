@@ -9,7 +9,7 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
                             iter = 800 , nodes = 20 , show.conquestoutput = FALSE , 
                             name = "rasch" ,   pid = 1:(nrow(dat) )  , 
                             wgt = NULL , X = NULL , set.constraints = NULL , 
-                            model = "item" , regression = NULL , itemcodes = c(0,1) , 
+                            model = "item" , regression = NULL , itemcodes = seq( 0 , max(dat,na.rm=TRUE) ) , 
                             constraints = NULL  , digits = 5 , onlysyntax = FALSE , qmatrix = NULL ,
                             import.regression = NULL , anchor.regression = NULL , anchor.covariance = NULL , 
 							pv = TRUE , designmatrix = NULL ,
@@ -50,6 +50,8 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
                     dat <- dat[ , - items.elim ]
                     }
         # data preparation (eliminate persons)
+		if ( ! is.null(X) ){ persons.elim <- FALSE }
+		
 		if ( persons.elim ){ 
 			persons.elim <- which( rowSums( 1 - is.na(dat) ) == 0 )        
 			if ( length(persons.elim) > 0 ){ 
