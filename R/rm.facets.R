@@ -9,7 +9,8 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 	tau.item.fixed=NULL , a.item.fixed=NULL , b.rater.fixed=NULL , a.rater.fixed=NULL , 
 	max.b.increment=1 , numdiff.parm=.00001 , maxdevchange=.10 ,
 	globconv=.001 , maxiter=1000 , msteps=4 , mstepconv=.001){
-	s1 <- Sys.time()
+
+s1 <- Sys.time()
 	dat <- as.matrix(dat)
     a.item.center = TRUE ; b.rater.center=TRUE ; a.rater.center=TRUE 	
 	
@@ -103,6 +104,9 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 	conv <- devchange <- 1000
 	sigma <- 1
 	disp <- "...........................................................\n"	
+
+active <- TRUE
+active <- FALSE
 	
 	#****************************************************
 	# start EM algorithm
@@ -120,15 +124,15 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 		sigma0 <- sigma
 		a.item0 <- a.item
 		a.rater0 <- a.rater
-# zz0 <- Sys.time()
+zz0 <- Sys.time()
 		# calculate probabilities
 		probs <- .rm.facets.calcprobs2( b.item , b.rater , Qmatrix , tau.item ,
 				VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
 				theta.k ,RR )				
-# cat("facets.calcprob   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1						
+zz0 <- sirtcat( "  *** facets.calcprob   " , zz0 , active )
 		# calculate posterior
 		res <- .rm.posterior( dat2 , dat2.resp , TP , pi.k , K, I , probs )
-# cat("posterior   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1								
+zz0 <- sirtcat( "  *** posterior   " , zz0 , active )
 		f.yi.qk <- res$f.yi.qk
 		f.qk.yi <- res$f.qk.yi
 		n.ik <- res$n.ik
@@ -146,7 +150,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 			se.b.rater <- res$se.b.rater
 			b.rater.incr <- abs( b.rater0 - b.rater )
 						}
-# cat("est b rater   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
+zz0 <- sirtcat( "  *** est b.rater   " , zz0 , active )
 												
 		# estimate tau.item parameters
 		if (iter ==0){	max.b.increment -> tau.item.incr }
@@ -157,7 +161,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 		tau.item <- res$tau.item
 		se.tau.item <- res$se.tau.item
 		tau.item.incr  <- abs( tau.item0 - tau.item )
-# cat("est tau item   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1															
+zz0 <- sirtcat( "  *** est tau.item   " , zz0 , active )									
 		
 		# estimate a.item parameter
 		if (est.a.item){
@@ -168,7 +172,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 			a.item <- res$a.item
 			se.a.item <- res$se.a.item
 				}
-# cat("est a item   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
+zz0 <- sirtcat( "  *** est a.item   " , zz0 , active )									
 														
 		# estimate a.rater parameter
 		if (est.a.rater){
@@ -179,7 +183,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 			a.rater <- res$a.rater
 			se.a.rater <- res$se.a.rater
 				}
-# cat("est a rater   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1																			
+zz0 <- sirtcat( "  *** est a.rater   " , zz0 , active )
 
 		flush.console()	
 
@@ -195,9 +199,9 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 					abs( tau.item0-tau.item) , abs( a.item - a.item0 ) )
 		iter <- iter+1
 		devchange <- abs( ( dev - dev0 ) / dev0  )
-# cat("calc ll   ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1																			
 
-		
+zz0 <- sirtcat( "  *** calc ll   " , zz0 , active )
+	
 		#****
 		# print progress			
 		cat( paste( "   Deviance = "  , round( dev , 4 ) , 
@@ -254,6 +258,7 @@ rm.facets <- function( dat , pid=NULL , rater=NULL ,
 
 	delta.item <- pcm.conversion(tau.item)$delta
 	item$delta <- delta.item
+	item$delta_cent <- item$delta - mean( item$delta)
 
 	obji <- item
 	for (vv in seq(2,ncol(obji) )){

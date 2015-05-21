@@ -235,6 +235,9 @@ Alexander Robitzsch
 For joint maximum likelihood estimation of the grade of membership model
 see \code{\link{gom.jml}}.
 
+See also the \pkg{mixedMem} package for estimating mixed membership
+models by a variational EM algorithm.
+
 The C code of Erosheva et al. (2007) can be downloaded from
 \url{http://projecteuclid.org/euclid.aoas/1196438029#supplemental}.
 

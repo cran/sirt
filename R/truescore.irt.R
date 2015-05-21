@@ -14,17 +14,17 @@ truescore.irt <- function( A , B , c=NULL , d =NULL ,
 	if ( is.null(pid) ){ pid <- 1:(length(theta)) }
 	# true score
 	truescore <- .ts.irf( A , B , c , d , theta )
-
 	# calculate standard error of true score
 	if ( is.null( error ) ){
 		truescore.error <- NULL } else {
 		truescore1 <- .ts.irf( A , B , c , d , theta + h )
 		truescore.error <- sqrt( ( ( truescore1 - truescore ) /  h )^2 ) * error
 				}
-
 	percscore <- truescore / sum( maxK )
-	percscore.error <- truescore.error / sum( maxK )
-	
+	percscore.error <- NULL
+	if ( ! is.null( error ) ){
+		percscore.error <- truescore.error / sum( maxK )
+							}
 	# optimization function values
 	ind <- intersect( which( !is.na( theta ) ) , which( !is.na(percscore) ) )
 	x0 <- theta[ind]
@@ -45,9 +45,12 @@ truescore.irt <- function( A , B , c=NULL , d =NULL ,
 #	names(fitval) <- c("a" , "b" )		
 	#*****
 	# OUTPUT
-	res <- data.frame( "pid"=pid ,"truescore" = truescore , "truescore.error" = truescore.error , 
-			   "percscore" = percscore , "percscore.error" = percscore.error ,
-			   "lower"=minf , "upper"=maxf , "a" = h1$par[1] , "b" = h1$par[2] )
+	res <- data.frame( "pid"=pid ,"truescore" = truescore )		
+	res$truescore.error <- truescore.error 
+	res2 <- data.frame( "percscore" = percscore )
+	res2$percscore.error <- percscore.error 
+    res3 <- data.frame( "lower"=minf , "upper"=maxf , "a" = h1$par[1] , "b" = h1$par[2] )
+	res <- cbind( res , res2, res3 )
 	return(res)
 		}
 ####################################################

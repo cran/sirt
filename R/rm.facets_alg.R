@@ -181,6 +181,10 @@ sumtau <- function(tau.item){
         VV , K , I , TP , a.item , a.rater , item.index , rater.index ,
         n.ik , numdiff.parm=.001 , max.b.increment=1,theta.k , msteps ,
 		mstepconv , tau.item.fixed , tau.item.fixed_val ){
+zz0 <- Sys.time()		
+active <- TRUE
+active <- FALSE
+		
     h <- numdiff.parm
 	diffindex <- item.index
 	RR <- length(b.rater)	
@@ -206,6 +210,7 @@ sumtau <- function(tau.item){
 			increment <- Q1*matrix( res$increment , nrow=VV , ncol=K)	
 			tau.item <- tau.item + increment
 			se.tau.item[,kk] <- sqrt(abs(-1/res$d2)	)
+zz0 <- sirtcat( "  *** tau.item for one k and one iteration   " , zz0 , active )			
 					}
 					
 		if ( ! is.null( tau.item.fixed_val ) ){

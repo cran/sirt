@@ -32,7 +32,8 @@ Magengegend, \code{GF3}: Schwaechegefuehl, \code{GF4}: Uebelkeitsgefuehl,
 \code{GF7}: in die Hose urinieren/einkoten, \code{GF9}: Gefuehl der 
 Gelaehmtheit 
 
-The format is \cr
+The format is 
+
 \code{'data.frame':   100 obs. of  9 variables:} \cr
 \code{ $ idpatt: int  44 29 1 3 28 50 50 36 37 25 ...} \cr
 \code{ $ GF1   : int  1 1 1 1 1 0 0 1 1 1 ...} \cr

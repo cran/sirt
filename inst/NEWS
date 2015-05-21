@@ -1,3 +1,5 @@
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 ----------------------- sirt NEWS -----------------------------
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -34,6 +36,24 @@ and (if necessary) a corresponding dataset.
 CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+
+------------------------------------------------------------------------
+Versions 1.6 -- 2015-05-20  --  CRAN sirt 1.6-0
+------------------------------------------------------------------------
+
+NOTE  * added arguments 'minnode' and 'maxnode' in 'R2conquest' which 
+        now allows full specification for the theta grid used in
+        numerical approximation
+FIXED * fixed a bug in 'truescore.irt' when no standard errors were provided
+ADDED * added utility functions 'categorize' and 'decategorize' for
+        categorizing variables in a data frame
+ADDED * added function 'lsem.estimate' for fitting local structural
+        equation models (LSEM). In addition, the permutation test
+        is implemented in 'lsem.permutationTest'.         
+
+DATA  * included/modified datasets: data.lsem01
+EXAMP * included/modified examples: categorize (1,2), lsem.estimate (1)
 
 ------------------------------------------------------------------------
 Versions 1.4/1.5 -- 2015-03-03  --  CRAN sirt 1.5-0

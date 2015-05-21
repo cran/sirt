@@ -23,22 +23,24 @@ values or person-item maps.
 }
 \usage{
 R2conquest(dat, path.conquest, conquest.name="console", converge=0.001, 
-    deviancechange=1e-04, iter=800, nodes=20, show.conquestoutput=FALSE, 
-    name="rasch", pid=1:(nrow(dat)), wgt=NULL, X=NULL, set.constraints=NULL, 
-    model="item", regression=NULL, itemcodes=seq(0,max(dat,na.rm=TRUE)), 
-    constraints=NULL, digits=5, onlysyntax=FALSE, qmatrix=NULL, import.regression=NULL, 
-    anchor.regression=NULL, anchor.covariance=NULL, pv=TRUE, designmatrix=NULL, 
-    only.calibration=FALSE, init_parameters=NULL, n_plausible=10,  persons.elim=TRUE, 
-    est.wle=TRUE, save.bat=TRUE , use.bat=FALSE , read.output=TRUE , ignore.pid=FALSE)
+    deviancechange=1e-04, iter=800, nodes=20, minnode=-6 , maxnode=6,
+    show.conquestoutput=FALSE, name="rasch", pid=1:(nrow(dat)), wgt=NULL, X=NULL, 
+    set.constraints=NULL, model="item", regression=NULL, 
+    itemcodes=seq(0,max(dat,na.rm=TRUE)), constraints=NULL, digits=5, onlysyntax=FALSE, 
+    qmatrix=NULL, import.regression=NULL, anchor.regression=NULL, 
+    anchor.covariance=NULL, pv=TRUE, designmatrix=NULL, only.calibration=FALSE, 
+    init_parameters=NULL, n_plausible=10,  persons.elim=TRUE, est.wle=TRUE, 
+    save.bat=TRUE , use.bat=FALSE , read.output=TRUE , ignore.pid=FALSE)
     
 rasch.conquest(dat, path.conquest, conquest.name="console", converge=0.001, 
-    deviancechange=1e-04, iter=800, nodes=20, show.conquestoutput=FALSE, 
-    name="rasch", pid=1:(nrow(dat)), wgt=NULL, X=NULL, set.constraints=NULL, 
-    model="item", regression=NULL, itemcodes=seq(0,max(dat,na.rm=TRUE)), 
-    constraints=NULL, digits=5, onlysyntax=FALSE, qmatrix=NULL, import.regression=NULL, 
-    anchor.regression=NULL, anchor.covariance=NULL, pv=TRUE, designmatrix=NULL, 
-    only.calibration=FALSE, init_parameters=NULL, n_plausible=10,  persons.elim=TRUE, 
-    est.wle=TRUE, save.bat=TRUE , use.bat=FALSE , read.output=TRUE, ignore.pid=FALSE)
+    deviancechange=1e-04, iter=800, nodes=20, minnode=-6 , maxnode=6,
+    show.conquestoutput=FALSE, name="rasch", pid=1:(nrow(dat)), wgt=NULL, X=NULL, 
+    set.constraints=NULL, model="item", regression=NULL, 
+    itemcodes=seq(0,max(dat,na.rm=TRUE)), constraints=NULL, digits=5, onlysyntax=FALSE, 
+    qmatrix=NULL, import.regression=NULL, anchor.regression=NULL, 
+    anchor.covariance=NULL, pv=TRUE, designmatrix=NULL, only.calibration=FALSE, 
+    init_parameters=NULL, n_plausible=10,  persons.elim=TRUE, est.wle=TRUE, 
+    save.bat=TRUE , use.bat=FALSE , read.output=TRUE , ignore.pid=FALSE)
 
 \method{summary}{R2conquest}(object, \dots)    
 \method{summary}{rasch.conquest}(object, \dots)    
@@ -81,6 +83,8 @@ Maximum number of iterations
   \item{nodes}{
 Number of nodes for integration
 }
+\item{minnode}{Minimum value of discrete grid of \eqn{\theta} nodes}
+\item{maxnode}{Maximum value of discrete grid of \eqn{\theta} nodes}
   \item{show.conquestoutput}{
 Show ConQuest run log file on console?
 }

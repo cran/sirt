@@ -84,7 +84,7 @@ Then, the original item parameters can be retreived by
 \eqn{\delta_i = \mathrm{log} ( b_i / a_i)}. 
 Using \eqn{ \gamma _p = \mathrm{exp} ( \theta_p / 2) }, we obtain
 
-\deqn{ log \left[ P( X_{pi}= x_{pi} | \theta_p) \right]  \propto
+\deqn{ \mathrm{log} \left[ P( X_{pi}= x_{pi} | \theta_p) \right]  \propto
 	   a_{i} \gamma_p  \cdot \mathrm{log} [ q( x_{pi} ) ] +  
 	   b_i / \gamma_p   \cdot \mathrm{log} [ 1- q( x_{pi} ) ] -
 	  \left[ \mathrm{log} q( x_{pi} ) + \mathrm{log} [ 1- q( x_{pi} ) ] \right]

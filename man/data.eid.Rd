@@ -30,7 +30,7 @@ testtheorie-und-testkonstruktion/zusatzmaterial/}.
 }
 
 \references{
-Eid, M., Schmidt, K. (2014). \emph{Testtheorie und Testkonstruktion}.
+Eid, M., & Schmidt, K. (2014). \emph{Testtheorie und Testkonstruktion}.
 Goettingen, Hogrefe.
 
 Hosoya, G. (2014). \emph{Einfuehrung in die Analyse testtheoretischer

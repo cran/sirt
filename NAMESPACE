@@ -130,7 +130,12 @@ export(
     brm.irf ,
     pcm.fit ,
     modelfit.cor.poly ,
-    IRT.mle
+    IRT.mle ,
+    categorize ,
+    decategorize ,
+    lsem.estimate ,
+    lsem.permutationTest ,
+    lsem.MGM.stepfunctions
 )    
     
     
@@ -176,8 +181,9 @@ S3method(plot,isop)
 S3method(plot,rasch.mml)
 S3method(plot,linking.robust)
 S3method(plot,noharm.sirt)
-S3method(plot, rm.sdt)
-
+S3method(plot,rm.sdt)
+S3method(plot,lsem)
+S3method(plot,lsem.permutationTest)
 
 #**** summary
 S3method(summary,rasch.mml)
@@ -216,7 +222,8 @@ S3method(summary,IRT.modelfit.rasch.mirtlc)
 S3method(summary,IRT.modelfit.gom)
 S3method(summary,IRT.modelfit.rm.facets)
 S3method(summary,IRT.modelfit.rm.sdt)
-
+S3method(summary,lsem)
+S3method(summary,lsem.permutationTest)
 
 #*** vcov
 S3method(vcov, rasch.evm.pcm )
@@ -306,3 +313,5 @@ import(igraph)
 # importFrom(inline, getDynLib)
 import(mirt)
 import(Matrix)
+import(lavaan.survey)
+import(survey)

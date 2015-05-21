@@ -179,7 +179,6 @@ restscore.list <- mokken::check.restscore(dat)
 summary(restscore.list)
 plot(restscore.list) 
 
-
 #****************
 # Model 4: Graded response model
 #****************
