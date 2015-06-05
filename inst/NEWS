@@ -37,6 +37,24 @@ CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+------------------------------------------------------------------------
+Versions 1.7 -- 2015-06-05  --  CRAN sirt 1.7-0
+------------------------------------------------------------------------
+
+ADDED * included function 'btm' for estimating an extended Bradley-Terry
+        model (suggested and fixed by Chris Weadon)
+NOTE  * added minimum and maximum values in summary of 'lsem.estimate'
+NOTE  * included JML estimation of Bradley-Terry model ('btm') with 
+        elimination of persons with extreme scores
+NOTE  * included infit and outfit statistics in 'btm'
+NOTE  * changed layout of summary of 'lsem.estimate' and
+        'plot.lsemPermutationTest'
+NOTE  * added separation index for Bradley-Terry model
+        (suggested by Sven De Maeyer)
+FIXED * fixed a bug in 'categorize' function
+
+DATA  * included/modified datasets: data.pw01
+EXAMP * included/modified examples: btm (1,2)
 
 ------------------------------------------------------------------------
 Versions 1.6 -- 2015-05-20  --  CRAN sirt 1.6-0

@@ -25,8 +25,8 @@ moderator, specified in \code{moderator.grid}.
 }
 \usage{
 lsem.estimate(data, moderator, moderator.grid, lavmodel, type="LSEM", h = 1.1, 
-    residualize=TRUE, fit_measures = c("rmsea", "tli", "gfi", "srmr"), eps = 1e-08,
-    verbose = TRUE, ...)
+    residualize=TRUE, fit_measures = c("rmsea", "cfi", "tli", "gfi", "srmr"), 
+    eps = 1e-08, verbose = TRUE, ...)
     
 \method{summary}{lsem}(object, file=NULL, digits=3, ...)
 
@@ -87,7 +87,7 @@ Optional logical printing information about computation progress.
 \item{ylab}{Plot parameter \code{ylab}. Can be a vector.}
 \item{main}{Plot parameter \code{main}. Can be a vector.}
   \item{\dots}{
-Further arguments to be passed to \code{\link[lavaan:sem]{sem}} (\pkg{lavaan}).
+Further arguments to be passed to \code{\link[lavaan:sem]{lavaan::sem}}.
 }
 }
 

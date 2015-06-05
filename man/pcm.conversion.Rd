@@ -21,7 +21,7 @@ Matrix of item-category-wise intercepts \eqn{b_{ik}} (see Details).
 }
 \details{
 Assume that the input matrix \code{b} containing parameters \eqn{b_{ik}}
-is defined according to the following paramerization of the partial credit
+is defined according to the following parametrization of the partial credit
 model
 \deqn{ P( X_{pi} = k | \theta_p ) \propto exp ( k \theta_p - b_{ik} ) }
 if item \eqn{i} possesses \eqn{K_i} categories.

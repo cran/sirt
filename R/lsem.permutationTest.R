@@ -5,7 +5,8 @@ lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 			verbose = TRUE ){
 
 		s1 <- Sys.time()	
-			
+		CALL <- match.call()		
+		
 		lavaan.args <- lsem.object$lavaan.args
 		entr <- c( "lavmodel" , "data" , "h" , "moderator.grid" , "moderator" , "eps" ,
               "fit_measures")
@@ -109,7 +110,7 @@ lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 					 "moderator.grid" = object$moderator.grid ,
 					 "h" = object$h , "bw" = object$bw , "N" = object$N , 
 					 "B"= B , "s1"=s1 , "s2"=s2 ,
-					 "lavmodel" = object$lavmodel
+					 "lavmodel" = object$lavmodel , CALL = CALL
 							)
 		class(res) <- "lsem.permutationTest"							
 		return(res)

@@ -33,7 +33,7 @@ Vector with variable names which should be converted into categories,
 beginning with integer \code{lowest}
 }
 \item{quant}{Vector with number of classes for each variables.
-	Variables are categorized among quantiles. The vector mus
+	Variables are categorized among quantiles. The vector must
 have names containing variable names.}
   \item{lowest}{
 Lowest category index. Default is 0.

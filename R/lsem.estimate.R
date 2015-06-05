@@ -4,10 +4,12 @@
 
 lsem.estimate <- function( data , moderator , moderator.grid ,
 		lavmodel , type="LSEM" , h = 1.1 , 
-		residualize=TRUE, fit_measures = c("rmsea","tli","gfi","srmr"),
+		residualize=TRUE, fit_measures = c("rmsea","cfi","tli","gfi","srmr"),
 		eps=1E-8 , verbose=TRUE , ... ){
 	
-	s1 <- Sys.time()
+	CALL <- match.call()
+	s1 <- Sys.time()	
+	
 	lavaan.args <- list(...)	
 	
 	# group moderator if type="MGM"
@@ -54,7 +56,6 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 		     moderator.density=out$moderator.density , verbose )
 	out$moderator.density$Neff <- colSums(weights)
 	
-	
 	obji0 <- obji <- out$moderator.density	
 	obji$moderator <- obji$moderator 
 	obji$wgt <- obji$wgt
@@ -73,8 +74,7 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 	rownames(obji) <- NULL
 	moderator.stat <- data.frame("variable"=c("moderator" ,
 				"wgt" , "Neff") , obji )
-	
-	
+		
 	# output
 	s2 <- Sys.time()	
 	res <- list( "parameters"=parameters , "weights"=weights , 				 
@@ -90,7 +90,7 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 				 "data"=data , "residualized.intercepts" = residualized_interceps , 
 				 "lavaan.args"=lavaan.args ,
 				 "fit_measures"=fit_measures , "s1"=s1 , "s2"=s2 ,
-				 "type"=type)	
+				 "type"=type , "CALL" = CALL )	
 	class(res) <- "lsem"	
 	return(res)	
 		

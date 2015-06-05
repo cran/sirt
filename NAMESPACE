@@ -135,7 +135,8 @@ export(
     decategorize ,
     lsem.estimate ,
     lsem.permutationTest ,
-    lsem.MGM.stepfunctions
+    lsem.MGM.stepfunctions ,
+    btm
 )    
     
     
@@ -224,6 +225,8 @@ S3method(summary,IRT.modelfit.rm.facets)
 S3method(summary,IRT.modelfit.rm.sdt)
 S3method(summary,lsem)
 S3method(summary,lsem.permutationTest)
+S3method(summary, btm)
+
 
 #*** vcov
 S3method(vcov, rasch.evm.pcm )

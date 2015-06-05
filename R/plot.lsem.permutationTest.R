@@ -2,9 +2,12 @@
 #############################################################
 # plot p values permutation test for LSEM
 plot.lsem.permutationTest <- function( x , type="global" , 
-		stattype = "MAD" , parindex = NULL , 
-		sig_add = TRUE , sig_level=.05 , sig_pch=17 , 
-		sig_lab = "p value" , moderator_lab = NULL , digits=3 , 
+		stattype = "SD" , parindex = NULL , 
+		sig_add = TRUE , sig_level=.05 , sig_pch=17 ,
+		nonsig_pch = 2 , 	sig_cex = 1 , 
+		sig_lab = "p value" , 
+		stat_lab = "Test statistic" , 
+		moderator_lab = NULL , digits=3 , 
 		title=NULL , parlabels = NULL , 
 		ask=TRUE , ... ){
 
@@ -57,7 +60,7 @@ plot.lsem.permutationTest <- function( x , type="global" ,
 		   ppt <- x$parameters_pointwise_test
 
 	for (pp in parindex ){	
-		par(mfrow=c(1,1))		   
+		par(mfrow=c(2,1))		   
 			# pp <- parindex[2]
 			ind.pp <- which( parindex == pp)
 			
@@ -71,10 +74,16 @@ plot.lsem.permutationTest <- function( x , type="global" ,
 						} else {
 				t1 <- parlabels[ind.pp]
 							}
+
+			plot( x.pp$moderator , x.pp$est , xlab= moderator_lab , 
+					ylab= stat_lab , main = t1 , type="o" , pch=16)							
+			abline( h=0 , lty=3 , col="gray")
 			
+			# p value
+			pch1 <- ifelse( x.pp$p < sig_level , sig_pch , nonsig_pch )			
 			plot( x.pp$moderator , x.pp$p , xlab= moderator_lab , 
-					ylab= ylab1 , main = t1 , type="o" , pch=sig_pch , 
-					ylim=c(0,1))
+					ylab= ylab1 , main = t1 , type="o" , pch=pch1 , 
+					ylim=c(0,1) , cex=sig_cex)
 					
 		    # lines( spline( modgrid[,1] , y = x.pp$p , n=100 )  )					
 			abline(h= sig_level , col=2 , lty=4 , lwd=2)

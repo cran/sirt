@@ -101,7 +101,7 @@ or standardized estimates (\code{stand}) should be displayed.}
 	plot for exploratory factor analysis.
 }
 \item{\dots}{Further arguments to be passed. For \code{plot.noharm.sirt},
-additional arguments for \code{\link[semPlot:semPaths]{semPaths}} (from 
+additional arguments for \code{\link[semPlot:semPaths]{semPlot::semPaths}} (from 
 \pkg{semPlot} package) can be specified. 
 }
 }

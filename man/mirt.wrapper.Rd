@@ -110,7 +110,7 @@ Alexander Robitzsch
 
 \seealso{
 See the \pkg{mirt} package on CRAN
-\url{http://cran.r-project.org/web/packages/mirt/index.html}
+\url{http://cran.r-project.org/package=mirt}
 and on GitHub \url{https://github.com/philchalmers/mirt}.
 % \href{https://github.com/philchalmers/mirt}{GitHub}
 
@@ -119,14 +119,14 @@ for discussion about the \pkg{mirt} package. \cr
 
 
 See for the main estimation functions in \pkg{mirt}:
-\code{\link[mirt:mirt]{mirt}} (\pkg{mirt}),
-\code{\link[mirt:multipleGroup]{multipleGroup}} (\pkg{mirt})
-and \code{\link[mirt:bfactor]{bfactor}} (\pkg{mirt}).
+\code{\link[mirt:mirt]{mirt::mirt}},
+\code{\link[mirt:multipleGroup]{mirt::multipleGroup}}
+and \code{\link[mirt:bfactor]{mirt::bfactor}}.
 
-See \code{\link[mirt:coef-method]{coef-method}} (\pkg{mirt}) for extracting
+See \code{\link[mirt:coef-method]{mirt::coef-method}}for extracting
 coefficients.
 
-See \code{\link[mirt:mod2values]{mod2values}} (\pkg{mirt}) for collecting 
+See \code{\link[mirt:mod2values]{mirt::mod2values}} for collecting 
 parameter values in a mirt parameter table.
 
 See \code{\link{lavaan2mirt}} for converting \code{lavaan} syntax
@@ -135,9 +135,9 @@ to \code{mirt} syntax.
 See \code{\link{tam2mirt}} for converting fitted \code{tam} models
 into \code{mirt} objects.
 
-See also \code{\link[CDM:IRT.likelihood]{IRT.likelihood}} (\pkg{CDM}),
-\code{\link[CDM:IRT.posterior]{IRT.posterior}} (\pkg{CDM}) and
-\code{\link[CDM:IRT.irfprob]{IRT.irfprob}} (\pkg{CDM}) for general
+See also \code{\link[CDM:IRT.likelihood]{CDM::IRT.likelihood}},
+\code{\link[CDM:IRT.posterior]{CDM::IRT.posterior}} and
+\code{\link[CDM:IRT.irfprob]{CDM::IRT.irfprob}} for general
 extractor functions.
 }
 

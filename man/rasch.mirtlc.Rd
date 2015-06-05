@@ -233,7 +233,8 @@ leading to memory overflow in \R.
 
 %% \link[CDM]{\code{gdm}}
 \seealso{
-See also the \link[CDM]{gdm} function in the \pkg{CDM} package.	
+See also the \code{\link[CDM:gdm]{CDM::gdm}} 
+function in the \pkg{CDM} package.	
 	
 For an assessment of global model fit see \code{\link{modelfit.sirt}}.
 

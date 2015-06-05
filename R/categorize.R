@@ -19,10 +19,10 @@ categorize <- function( dat , categorical=NULL , quant=NULL ,
 			dfr.vv <- data.frame( "index" = vv , "variable" = var.vv ,
 					"column" = which( colnames(dat) == var.vv ) ,
 					"orig" = vals.vv , 
-					"recode" = seq( 0 , length(vals.vv) -1 + lowest)
-								)                        
+					"recode" = seq( lowest , length(vals.vv) -1 + lowest)
+								)      
 			dfr <- rbind( dfr, dfr.vv )
-			dat2[ , var.vv] <- match( dat[,var.vv] , vals.vv ) - 1 
+			dat2[ , var.vv] <- match( dat[,var.vv] , vals.vv ) - 1 + lowest
 					}
 					}
 	#**************************

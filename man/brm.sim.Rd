@@ -92,7 +92,7 @@ Using \eqn{ \gamma _p = \mathrm{exp} ( \theta_p / 2) }, we obtain
 
 This formulation enables the specification of the Beta item response
 model as a structured latent class model 
-(see \code{\link[TAM:tam.mml.3pl]{tam.mml.3pl}}, \pkg{TAM};
+(see \code{\link[TAM:tam.mml.3pl]{TAM::tam.mml.3pl}};
 Simulated Example 1).
 	  				
 See Smithson and Verkuilen (2006) for motivations for treating

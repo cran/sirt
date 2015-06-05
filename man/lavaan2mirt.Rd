@@ -9,14 +9,14 @@ Converting a \code{lavaan} Model into a \code{mirt} Model
 \description{
 Converts a \code{lavaan} model into a \code{mirt} model.
 Optionally, the model can be estimated with the 
-\code{\link[mirt:mirt]{mirt}} (\pkg{mirt}) function
+\code{\link[mirt:mirt]{mirt::mirt}} function
 (\code{est.mirt=TRUE}) or just \code{mirt} syntax 
 is generated (\code{est.mirt=FALSE}).
 
 Extensions of the \code{lavaan} syntax include guessing and slipping
 parameters (operators \code{?=g1} and \code{?=s1})
 and a shortage operator for item groups (see \code{__}).
-See \code{\link[TAM:lavaanify.IRT]{lavaanify.IRT}} (\pkg{TAM}) for more details.
+See \code{\link[TAM:lavaanify.IRT]{TAM::lavaanify.IRT}} for more details.
 }
 
 \usage{
@@ -30,11 +30,11 @@ Dataset with item responses
 }
   \item{lavmodel}{
 Model specified in \code{lavaan} syntax 
-(see \code{\link[lavaan:lavaanify]{lavaanify}}, \pkg{lavaan})
+(see \code{\link[lavaan:lavaanify]{lavaan::lavaanify}})
 }
   \item{est.mirt}{
 An optional logical indicating whether the model
-should be estimated with \code{\link[mirt:mirt]{mirt}}
+should be estimated with \code{\link[mirt:mirt]{mirt::mirt}}
 }
 \item{poly.itemtype}{Item type for polytomous data. This can
 	be \code{gpcm} for the generalized partial credit model
@@ -46,7 +46,7 @@ Further arguments to be passed for estimation in
 }
 
 \details{
-This function uses the \code{\link[lavaan:lavaanify]{lavaanify}}
+This function uses the \code{\link[lavaan:lavaanify]{lavaan::lavaanify}}
 (\pkg{lavaan}) function.
 
 Only single group models are supported (for now).
@@ -88,13 +88,13 @@ See \url{https://groups.google.com/forum/#!forum/lavaan}
 for discussion about the \pkg{lavaan} package. \cr	
 		
 See \code{\link{mirt.wrapper}} for convenience wrapper functions
-for \code{\link[mirt:mirt]{mirt}} objects.
+for \code{\link[mirt:mirt]{mirt::mirt}} objects.
 
-See \code{\link[TAM:lavaanify.IRT]{lavaanify.IRT}} (\pkg{TAM}) 
+See \code{\link[TAM:lavaanify.IRT]{TAM::lavaanify.IRT}} 
 for extensions of \code{lavaanify}.
 
 See \code{\link{tam2mirt}} for converting fitted objects in the \pkg{TAM}
-package into fitted \code{\link[mirt:mirt]{mirt}} objects.
+package into fitted \code{\link[mirt:mirt]{mirt::mirt}} objects.
 }
 
 \examples{

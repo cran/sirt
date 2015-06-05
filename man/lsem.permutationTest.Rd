@@ -20,10 +20,11 @@ lsem.permutationTest(lsem.object, B = 1000, residualize = TRUE, verbose = TRUE)
 
 \method{summary}{lsem.permutationTest}(object, file=NULL, digits=3, ...)
 
-\method{plot}{lsem.permutationTest}(x, type = "global", stattype = "MAD", 
-    parindex = NULL, sig_add = TRUE, sig_level = 0.05, sig_pch = 17,  
-    sig_lab = "p value", moderator_lab = NULL, digits = 3, title = NULL, 
-    parlabels = NULL, ask = TRUE, ...)
+\method{plot}{lsem.permutationTest}(x, type = "global", stattype = "SD", 
+    parindex = NULL, sig_add = TRUE, sig_level = 0.05, sig_pch=17, nonsig_pch=2, 
+    sig_cex = 1, sig_lab = "p value",  stat_lab = "Test statistic", 
+    moderator_lab = NULL, digits = 3, title = NULL, parlabels = NULL, 
+    ask = TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -67,11 +68,16 @@ be displayed.
 Significance level.
 }
   \item{sig_pch}{
-Point symbol for significance value.
+Point symbol for significant values.
 }
+  \item{nonsig_pch}{
+Point symbol for non-significant values.
+}
+\item{sig_cex}{Point size for graphic displaying p values}
   \item{sig_lab}{
 Label for significance value (p value).
 }
+\item{stat_lab}{Label of y axis for graphic with pointwise test statistic}
   \item{moderator_lab}{
 Label of the moderator.
 }

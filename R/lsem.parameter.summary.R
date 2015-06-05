@@ -18,6 +18,8 @@ lsem.parameter.summary <- function( parameters , moderator.density , verbose ){
 		pars1$M <- weighted.mean( x , mod.density[,2] )
 		pars1$SD <- sirt.wtdSD( x ,mod.density[,2] ) 
 		pars1$MAD <- sum( mod.density[,2] * abs( x - pars1$M ) )
+		pars1$Min <- min(x)
+		pars1$Max <- max(x)		
 		mod1 <- lm( x ~ mod.density[,1]  , weights = mod.density[,2] )
 		pars1$lin_int <- coef(mod1)[1]
 		pars1$lin_slo <- coef(mod1)[2]

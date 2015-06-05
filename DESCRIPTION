@@ -1,8 +1,8 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 1.6-0
-Date: 2015-05-20
+Version: 1.7-0
+Date: 2015-06-05
 Author: Alexander Robitzsch [aut,cre]
 Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
 Description: 
@@ -22,7 +22,7 @@ Suggests: eRm, ltm, MultiLCIRT, psychomix, psychotools, mRm, MCMCglmm,
 LinkingTo: Rcpp, RcppArmadillo
 License: GPL (>= 2)
 URL: https://sites.google.com/site/alexanderrobitzsch/software
-Packaged: 2015-05-20 18:14:03 UTC; robitzsch
+Packaged: 2015-06-05 15:52:41 UTC; robitzsch
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2015-05-21 00:43:42
+Date/Publication: 2015-06-05 18:46:45

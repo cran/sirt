@@ -21,7 +21,7 @@ tam2mirt(tamobj)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{tamobj}{
-Object of class  \code{\link[TAM:tam.mml]{tam.mml}} (\pkg{TAM})
+Object of class  \code{\link[TAM:tam.mml]{TAM::tam.mml}}
 }
 }
 

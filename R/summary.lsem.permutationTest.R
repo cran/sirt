@@ -1,16 +1,23 @@
 ######################################################
 summary.lsem.permutationTest <- function( object , file=NULL , digits=3 , ... ){
 
-	if ( ! is.null( file ) ){
-		sink( paste0( file , "__SUMMARY.Rout") , split=TRUE )
-						}
+	# open sink for a file
+	osink( file=file , prefix="__SUMMARY.Rout" )
 
 	cat("-----------------------------------------------------------------\n")
 	cat("Permutation Test for Local Structural Equation Model \n\n")
 		
     d1 <- packageDescription("sirt")
+	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , " | " )	
+    d1 <- packageDescription("lavaan")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
+		
+	
 	cat("Function 'lsem.permutationTest' \n\n")
+	
+	cat("Call:\n", paste(deparse(object$CALL), sep = "\n", collapse = "\n"), 
+				"\n\n", sep = "")	
+	
 	cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
 	cat("Computation Time:" , print(object$s2 - object$s1), "\n\n")
     
@@ -45,7 +52,7 @@ summary.lsem.permutationTest <- function( object , file=NULL , digits=3 , ... ){
 	print(obji)	
 
 	# close file
-	if ( ! is.null( file ) ){  sink()	}	
+	csink(file)
 	
 			}
 ######################################################			
