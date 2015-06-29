@@ -52,7 +52,7 @@ Alexander Robitzsch
 #############################################################################
 # EXAMPLE 1: data.pisaRead
 #############################################################################
-library(lme4)
+miceadds::library_install("lme4")
 
 data(data.pisaRead) 
 dat <- data.pisaRead$data 

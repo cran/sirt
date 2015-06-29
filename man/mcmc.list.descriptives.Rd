@@ -47,9 +47,8 @@ into a coda file (see also the \pkg{coda} package).
 
 \examples{
 \dontrun{
-library(rcppbugs)
-library(coda)
-library(R2WinBUGS)
+miceadds::library_install("coda")
+miceadds::library_install("R2WinBUGS")
 
 #############################################################################
 # EXAMPLE 1: Logistic regression 

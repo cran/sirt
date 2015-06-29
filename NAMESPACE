@@ -2,6 +2,43 @@
 
 useDynLib(sirt)
 
+
+
+####################################################
+################## IMPORTS #########################
+
+#*** Imports/Depends packages
+import(stats)
+import(graphics)
+importFrom(utils, packageDescription)
+importFrom(utils, write.table)
+importFrom(utils, read.table)
+importFrom(utils, flush.console)
+import(mvtnorm)
+import(MASS)
+import(coda)
+importFrom(sfsmisc, QUnif)
+import(TAM)
+import(CDM)
+import(combinat)
+import(ic.infer)
+import(sm)
+import(psych)
+import(qgraph)
+importFrom(pbivnorm, pbivnorm)
+importFrom(gtools, permutations)
+importFrom(Rcpp, evalCpp)
+import(lavaan)
+import(semPlot)
+importFrom(igraph, graph.edgelist)
+import(mirt)
+import(Matrix)
+importFrom(lavaan.survey, lavaan.survey)
+importFrom(survey, svydesign)
+
+
+# importFrom(inline, getDynLib)
+
 ####################################################
 ################## EXPORTS #########################
 
@@ -136,10 +173,14 @@ export(
     lsem.estimate ,
     lsem.permutationTest ,
     lsem.MGM.stepfunctions ,
-    btm
+    btm ,
+    likelihood.adjustment
 )    
     
-    
+
+
+
+
 
 ################################################
 ############# more S3 methods ##################
@@ -181,10 +222,10 @@ S3method(plot,mcmc.sirt)
 S3method(plot,isop)
 S3method(plot,rasch.mml)
 S3method(plot,linking.robust)
-S3method(plot,noharm.sirt)
 S3method(plot,rm.sdt)
 S3method(plot,lsem)
 S3method(plot,lsem.permutationTest)
+# S3method(plot,noharm.sirt)
 
 #**** summary
 S3method(summary,rasch.mml)
@@ -291,30 +332,3 @@ S3method(IRT.posterior, prob.guttman)
 
 
 
-####################################################
-################## IMPORTS #########################
-
-#*** Imports/Depends packages
-import(mvtnorm)
-import(MASS)
-import(coda)
-importFrom(utils, packageDescription)
-importFrom(sfsmisc, QUnif)
-import(TAM)
-import(CDM)
-import(combinat)
-import(ic.infer)
-import(sm)
-import(psych)
-import(qgraph)
-importFrom(pbivnorm, pbivnorm)
-importFrom(gtools, permutations)
-importFrom(Rcpp,evalCpp)
-import(lavaan)
-import(semPlot)
-import(igraph)
-# importFrom(inline, getDynLib)
-import(mirt)
-import(Matrix)
-import(lavaan.survey)
-import(survey)

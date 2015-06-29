@@ -68,15 +68,9 @@ factor model. \emph{Structural Equation Modeling}, \bold{16}, 295-314.
 packages <- scan(what="character")
      sirt   TAM   eRm   CDM   mirt  ltm   mokken  psychotools  psychomix
      psych
-     
-# install packages     
-if (FALSE){  # default is FALSE
-   install.packages(packages)
-   	  }
-# load packages
-for (pack in packages){ 
-    library(pack, character.only=TRUE) 
-        }
+   
+# load packages. make an installation if necessary     
+miceadds::library_install(packages)
 
 #############################################################################
 # EXAMPLE 1: Unidimensional models openness scale

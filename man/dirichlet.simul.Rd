@@ -79,7 +79,7 @@ alpha <- alpha0*probs
 alpha <- matrix( alpha , nrow=N , ncol=length(alpha) , byrow=TRUE  )
 x <- dirichlet.simul( alpha )
 htitle <- expression(paste( alpha[0], "=.2, ", p[1] , "=.7"   ) )
-library(ade4)
+miceadds::library_install("ade4")
 ade4::triangle.plot(x, label=NULL , clabel = 1)
 
 #*** alpha0 = 3

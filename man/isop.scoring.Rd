@@ -136,7 +136,7 @@ boxplot( msc$person$mpsc ~ msc$person$score )
 # EXAMPLE 2: Dataset students from CDM package | polytomous items
 #############################################################################
 
-library(CDM)
+library("CDM")
 data( data.Students , package="CDM")
 dat <- na.omit(data.Students[ , -c(1:2) ])
 

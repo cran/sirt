@@ -2,10 +2,13 @@
 ######################################################
 # plot results of objects of class mcmc.sirt
 plot.mcmc.sirt <- function( x , layout=1 , conflevel=.90 , 
-	round.summ=3 , lag.max=100 , col.smooth="red" , lwd.smooth=1 , 
+	round.summ=3 , lag.max= .1 , col.smooth="red" , lwd.smooth=2 , 
 	col.ci="orange" , cex.summ=1 , ask=FALSE , ... ){
 	
 	object <- x	# rename x into object
+	mcmcobj <- (object$mcmcobj)[[1]]
+	lag.max <- round( nrow(mcmcobj) * lag.max )
+	
 	
 	# layout type
 	# layout=1 : standard output from coda package	
@@ -35,8 +38,10 @@ plot.mcmc.sirt <- function( x , layout=1 , conflevel=.90 ,
 			x1 <- as.numeric( x.vv )
 			xmin <- min(x1)
 			xmax <- max(x1)
-			l1 <- loess( x1 ~ iterindex ) 
-			lines( iterindex ,l1$fitted  , col= col.smooth , lwd= lwd.smooth )
+			# l1 <- loess( x1 ~ iterindex )$fitted 
+			# include moving average here!!
+			l1 <- .movingAverage(x1 , B = round( lag.max / 2 ) , fill=FALSE)
+			lines( iterindex ,l1  , col= col.smooth , lwd= lwd.smooth )
 			#***
 			# density estimate
 			plot( density( x.vv ) , main= paste0( "Density of " , parm.vv ) )
@@ -55,38 +60,46 @@ plot.mcmc.sirt <- function( x , layout=1 , conflevel=.90 ,
 			plot( c(0,1) , c(0,1) , axes=FALSE , xlab="" , ylab="", 
 					main= paste0( "Summary of " , parm.vv ) , type="n" , ...)
 			x0 <- 0 ; y0 <- 0
-			heights.summ = c( .05 ,  .20 , .35 ,  .5 , .65 , .8 , .95)
-			text( x0 + .0015 , y0 + heights.summ[7] , "Posterior Mean =" , cex= cex.summ  , pos=4)
-			text( x0 + .5 , y0 + heights.summ[7] , 
+			# heights.summ = c( .05 ,  .20 , .35 ,  .5 , .65 , .8 , .95)
+			heights.summ = c( .05 ,  .15 , .25 ,  .35 , .45 , .55 , .65 , .75)
+			text( x0 + .0015 , y0 + heights.summ[8] , "Posterior Mean =" , cex= cex.summ  , pos=4)
+			text( x0 + .5 , y0 + heights.summ[8] , 
 				paste0( format.numb( x = mean( x1 ) , digits = round.summ)  )  , pos=4 )
-			hvv <- heights.summ[6]	
+			hvv <- heights.summ[7]	
 			text( x0 + .0015 , y0 + hvv , "Posterior Mode =" , cex= cex.summ  , pos=4)				
 			text( x0 + .5 , y0 + hvv , 
 				paste0( format.numb( x = sparm.vv$MAP , digits = round.summ)  )  , pos=4 )			
 				
-			text( x0 + .0015 , y0 + heights.summ[5] , "Posterior SD   =" , cex= cex.summ  , pos=4)
-			text( x0 + .5 , y0 + heights.summ[5] , 
+			text( x0 + .0015 , y0 + heights.summ[6] , "Posterior SD   =" , cex= cex.summ  , pos=4)
+			text( x0 + .5 , y0 + heights.summ[6] , 
 				paste0( format.numb( x = sd( x1 ) , digits = round.summ)  )  , pos=4 )
 
-			hvv <- heights.summ[4]
+			hvv <- heights.summ[5]
 			text( x0 + .0015 , y0 + hvv , 
 							paste( round(100*conflevel ) , "% Credibility Interval = " ,sep="") ,
 							cex= cex.summ , pos=4 )
 
-			hvv <- heights.summ[3]
+			hvv <- heights.summ[4]
 				ci.lower <- format.numb( quantile( x1 , ( 1 - conflevel  ) / 2 ) , digits = round.summ )
 				ci.upper <- format.numb( quantile( x1 , 1- ( 1 - conflevel  ) / 2 ) , digits = round.summ )            
 			text( x0 + .25 , y0 + hvv , 
 							paste( "[" , ci.lower ,    "," , ci.upper , "]" ,  sep="") ,
 							cex= cex.summ  , pos=4)
-			hvv <- heights.summ[2]
+			hvv <- heights.summ[3]
 			text( x0 + .0015 , y0 + hvv , "Rhat =" , cex= cex.summ  , pos=4)
 			text( x0 + .5 , y0 + hvv , 
 				paste0( format.numb( x = sparm.vv$Rhat , digits = 2)  )  , pos=4 )
-			hvv <- heights.summ[1]
-			text( x0 + .0015 , y0 + hvv , "PercSEratio =" , cex= cex.summ  , pos=4)
+			hvv <- heights.summ[2]
+			text( x0 + .0015 , y0 + hvv , "PercSERatio =" , cex= cex.summ  , pos=4)
 			text( x0 + .5 , y0 + hvv , 
-				paste0( format.numb( x = sparm.vv$PercSEratio , digits = 1)  )  , pos=4 )
+				paste0( format.numb( x = sparm.vv$PercSERatio , digits = 1)  )  , pos=4 )
+
+			hvv <- heights.summ[1]
+			text( x0 + .0015 , y0 + hvv , "Effective Sample Size =" , cex= cex.summ  , pos=4)
+			text( x0 + .705 , y0 + hvv , 
+				paste0( format.numb( x = sparm.vv$effSize , digits = 1)  )  , pos=4 )
+				
+				
 			par(ask=ask)				
 					}				
 			par(mfrow=c(1,1))
@@ -101,3 +114,29 @@ format.numb <- function( x , digits ){
     return(a1)
     }
 #######################################################
+
+
+
+# moving window average for time series
+.movingAverage <- function(x, B, fill=TRUE){
+
+    x1 <- cumsum(x)
+    N <- length(x)
+    y <- rep(NA,N)
+    i <- seq(B+1 , N-B)
+    xdiff <- x1[ -seq(1,B) ] - x1[ -seq(N-B+1,N) ] 
+    xdiff <- xdiff[ - seq(1,B) ] 
+
+    y[i]  <- ( x1[i] + xdiff - c(0,x1[ -seq(N-2*B,N) ]) ) / (2*B+1)
+
+  # fill NAs at beginning and end of time series
+  if(fill){
+    j <- seq(0,B-1)
+    ybeg <- sapply(j, function(z) sum( x[ seq(1,(2*z+1)) ]) / (2*z+1) )
+    yend <- sapply(rev(j), function(z) sum( x[ seq(N-2*z,N) ] ) / (2*z+1) )
+    y[j+1] <- ybeg
+    y[rev(N-j)] <- yend
+  }
+
+  y
+}	

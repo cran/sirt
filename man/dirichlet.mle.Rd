@@ -104,7 +104,7 @@ eps <- .01
 x <- ( x + eps ) / ( 1 + 2 * eps )
 
 # compare results with likelihood fitting package maxLik
-library(maxLik)
+miceadds::library_install("maxLik")
 # define likelihood function
 dirichlet.ll <- function(param) {
     ll <- sum( weights * log( ddirichlet( x , param ) ) )

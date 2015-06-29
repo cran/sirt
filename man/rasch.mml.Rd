@@ -50,7 +50,8 @@ rasch.mml2( dat , theta.k=seq(-6,6,len=21) , group=NULL , weights=NULL ,
    variance.fixed=NULL , variance.init=NULL , 
    mu.fixed=cbind(seq(1,ncol(Qmatrix)),rep(0,ncol(Qmatrix))) ,
    irtmodel="raschtype" , npformula=NULL , npirt.monotone=TRUE ,
-   use.freqpatt = is.null(group)  , delta.miss=0 , est.delta=FALSE , ... )
+   use.freqpatt = is.null(group)  , delta.miss=0 , est.delta=rep(NA,ncol(dat)) , 
+   ... )
    
 \method{summary}{rasch.mml}(object,...)
 
@@ -279,8 +280,8 @@ grid of \eqn{\theta} values is estimated.
 \item{delta.miss}{Missingness parameter \eqn{\delta} quantifying the meaning
 	of responding to an item between the two extremes of ignoring
      missing responses and setting all missing responses to incorrect}
-\item{est.delta}{Optional logical indicating whether the \eqn{\delta}
-parameter should be estimated if \code{irtmodel="missing1"}.}     
+\item{est.delta}{Vectow ith indices indicating the \eqn{\delta} parameters
+	to be estimated if \code{irtmodel="missing1"}.}     
   \item{object}{  	  
 Object of class \code{rasch.mml}
 }
@@ -358,13 +359,13 @@ We also define a measurement model for response indicators \eqn{R_{pi}} which de
 on the item response \eqn{X_{pi}} itself:
 \deqn{P( R_{pi} = 1 | X_{pi} = k , \theta_p , \xi_p ) = 
 	P( R_{pi} = 1 | X_{pi} = k , \xi_p ) =
-L \left[  \xi_p -  \beta_i - k \delta  \right] \quad \mbox{ for }
+L \left[  \xi_p -  \beta_i - k \delta _i  \right] \quad \mbox{ for }
 \quad k=0,1} 
-If \eqn{\delta=0}, then the probability of responding to an item is independent
+If \eqn{\delta _i=0}, then the probability of responding to an item is independent
 of the incompletely observed item \eqn{X_{pi}} which is an
 item response model with nonignorable missings (Holman & Glas, 2005;
 see also Pohl, Graefe & Rose, 2014).
-If \eqn{\delta} is a large negative number (e.g. \eqn{\delta=-100}), then
+If \eqn{\delta _i} is a large negative number (e.g. \eqn{\delta=-100}), then
 it follows \eqn{P( R_{pi} = 1 | X_{pi} = 1 , \theta_p , \xi_p ) =1} and as a consequence it holds 
 that \eqn{P(X_{pi}=1 | R_{pi} = 0 , \theta_p , \xi_p) = 0}, which is equivalent to treating
 all missing item responses as incorrect. The missingness parameter
@@ -830,6 +831,7 @@ summary(mod2)
 
 data(data.pirlsmissing)
 items <- grep( "R31" , colnames(data.pirlsmissing) , value=TRUE )
+I <- length(items)
 dat <- data.pirlsmissing
 
 #****
@@ -972,11 +974,87 @@ mod11 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" ,
              mmliter=200 , mu.fixed=NULL )        
 summary(mod11)
 
-#*** Model 12: estimate delta parameter
-mod12 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
-             theta.k=seq(-5 , 5 , len=10) , delta.miss= 0 , mitermax= 4 , 
-             mmliter=200 , est.delta=TRUE , mu.fixed=NULL )        
+#*** Model 12: estimate joint delta parameter
+mod12 <- rasch.mml2( dat2 , irtmodel="missing1" , mu.fixed = cbind( c(1,2) , 0 ), 
+             theta.k=seq(-8 , 8 , len=10) , delta.miss= 0 , mitermax= 4 , 
+             mmliter=30 , est.delta=rep(1,I)  )        
 summary(mod12)
+
+#*** Model 13: estimate delta parameter in item groups defined by item format
+est.delta <- 1 + 1 * ( substring( colnames(dat2),7,7 ) == "M" )
+mod13 <- rasch.mml2( dat2 , irtmodel="missing1" , mu.fixed = cbind( c(1,2) , 0 ),
+             theta.k=seq(-8 , 8 , len=10) , delta.miss= 0 , mitermax= 4 , 
+             mmliter=30 , est.delta=est.delta  )        
+summary(mod13)
+
+#*** Model 14: estimate item specific delta parameter
+mod14 <- rasch.mml2( dat2 , irtmodel="missing1" , mu.fixed = cbind( c(1,2) , 0 ) ,
+             theta.k=seq(-8 , 8 , len=10) , delta.miss= 0 , mitermax= 4 ,               
+             mmliter=30 , est.delta= 1:I  )        
+summary(mod14)
+
+#############################################################################
+# EXAMPLE 8: Comparison of different models for polytomous data
+#############################################################################
+
+data(data.Students, package="CDM") 
+head(data.Students)
+dat <- data.Students[ , paste0("act",1:5) ]
+I <- ncol(dat)
+
+#**************************************************
+#*** Model 1: Partial Credit Model (PCM)
+
+#*** Model 1a: PCM in TAM
+mod1a <- TAM::tam.mml( dat )
+summary(mod1a)
+
+#*** Model 1b: PCM in sirt
+mod1b <- rm.facets( dat )
+summary(mod1b)
+
+#*** Model 1c: PCM in mirt
+mod1c <- mirt::mirt( dat , 1 , itemtype = rep("Rasch",I) , verbose=TRUE )
+print(mod1c)
+
+#**************************************************
+#*** Model 2: Sequential Model (SM): Equal Loadings
+
+#*** Model 2a: SM in sirt
+dat1 <- CDM::sequential.items(dat)
+resp <- dat1$dat.expand
+iteminfo <- dat1$iteminfo
+# fit model
+mod2a <- rasch.mml2( resp )
+summary(mod2a)
+
+#**************************************************
+#*** Model 3: Sequential Model (SM): Different Loadings
+
+#*** Model 3a: SM in sirt
+mod3a <- rasch.mml2( resp , est.a= iteminfo$itemindex )
+summary(mod3a)
+
+#**************************************************
+#*** Model 4: Generalized partial credit model (GPCM)
+
+#*** Model 4a: GPCM in TAM
+mod4a <- TAM::tam.mml.2pl( dat , irtmodel="GPCM")
+summary(mod4a)
+
+#**************************************************
+#*** Model 5: Graded response model (GRM)
+
+#*** Model 5a: GRM in mirt
+mod5a <- mirt::mirt( dat , 1 , itemtype= rep("graded",I) , verbose=TRUE)
+print(mod5a)
+
+# model comparison
+logLik(mod1a);logLik(mod1b);mod1c@logLik  # PCM
+logLik(mod2a)   # SM (Rasch)
+logLik(mod3a)   # SM (GPCM)
+logLik(mod4a)   # GPCM
+mod5a@logLik    # GRM
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

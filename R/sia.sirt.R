@@ -154,8 +154,6 @@ sia.sirt <- function(dat , significance=.85 ){
 					
 	# create igraph object
 	igraph.obj <-  igraph::graph.edgelist(dfr)
-#	igraph.obj <-  graph.adjacency(dfr)
-
 	# create Rgraphviz object
 	
 	
@@ -186,31 +184,20 @@ sia.sirt <- function(dat , significance=.85 ){
 	BB <- 1
 	IS <- I1
 	iter <- 0
-# vv <- "IPT1Wall"	
- # cat("\n.....Iteration " , iter ,  " " , vv , "\n")	
- # Revalpr("I1[vv,-c(1:4)]")	
 	while (BB > .0001){
 		I0 <- IS
 		iter <- iter + 1
-# cat("\n.....Iteration " , iter ,  " " , vv , "\n")	
 		for (ii in 1:I ){
-# print( colnames(I1)[ii] )		
 			for (jj in 1:I){
 				if (ii!= jj ){
 					if ( sum( IS[ii,] * IS[,jj] ) > 0 ){ 
-#							IS[ii,jj] <- 0 
-# Revalpr("IS[ii,] * IS[,jj]" )
 							I1[ii,jj] <- 0
 									}
 						}
 					}
-# Revalpr("I1[vv,-c(1:4)]")						
 				}
-# Revalpr("I1[vv,-c(1:4)]")		
 		  IS <- IS + IS %*% I1
 		  IS <- 1*(IS > 0 )
-# Revalpr("IS[vv,-c(1:4)]")		  
-# stop()
 		  BB <- sum( abs( I0 - IS ) )
 #		  BB <- 0
 			}

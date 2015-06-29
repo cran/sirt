@@ -158,7 +158,7 @@ round( dfr , 3 )
   ##  [...]
 
 # partial credit model in eRm package
-library(eRm)
+miceadds::library_install("eRm")
 mod3 <- eRm::PCM(X=dat)
 summary(mod3)
 eRm::plotINFO(mod3)      # plot item and test information
@@ -241,7 +241,7 @@ round( mod1$b , 3 )
   ##  I11 -1.122  1.159 2.689
 
 #*** Model 2: estimate PCM with pairwise package
-library(pairwise)
+miceadds::library_install("pairwise")
 mod2 <- pairwise::pair(daten=dat)
 summary(mod2)
 plot(mod2)

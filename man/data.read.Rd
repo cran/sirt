@@ -37,15 +37,9 @@ I <- ncol(dat)
 packages <- scan(what="character")
      eRm  ltm  TAM mRm  CDM  mirt psychotools  IsingFit  igraph  qgraph  pcalg 
      poLCA  randomLCA psychomix MplusAutomation lavaan
-     
-# install packages     
-if (FALSE){  # default is FALSE
-   install.packages(packages)
-   	  }
-# load packages
-for (pack in packages){ 
-    library(pack, character.only=TRUE) 
-        }
+        
+# load packages. make an installation if necessary     
+miceadds::library_install(packages)
 
 #*****************************************************
 # Model 1: Rasch model

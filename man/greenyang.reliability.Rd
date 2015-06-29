@@ -98,7 +98,7 @@ This function uses \code{\link{reliability.nonlinearSEM}}.
 #############################################################################
 # EXAMPLE 1: Reliability estimation of Reading dataset data.read
 #############################################################################
-library(psych)
+miceadds::library_install("psych")
 set.seed(789)
 data( data.read )
 dat <- data.read

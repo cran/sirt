@@ -37,6 +37,27 @@ CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+
+
+------------------------------------------------------------------------
+Versions 1.8 -- 2015-06-28  --  CRAN sirt 1.8-9
+------------------------------------------------------------------------
+
+NOTE  * corrected a non-working example in 'lsem.estimate' 
+        (thanks to Takuya Yanagida)
+NOTE  * changed defaults and outputs in 'mcmc.list.descriptives'
+        and 'plot.mcmc.sirt'
+ADDED * included argument 'est.delta' in 'rasch.mml2' for item specific
+        estimation of delta parameters in irtmodel='missing1'. Now,
+        the specification of est.delta has slightly been changed.
+ADDED * included function 'likelihood.adjustment' for adjusting
+        individual likelihood 
+NOTE  * disabled the broken plot method for 'noharm.sirt' objects        
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: lsem.estimate (1),
+        rasch.mml2 (7.12-14, 8), likelihood.adjustment (1)
+
 ------------------------------------------------------------------------
 Versions 1.7 -- 2015-06-05  --  CRAN sirt 1.7-0
 ------------------------------------------------------------------------

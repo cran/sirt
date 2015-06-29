@@ -38,7 +38,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 						irtmodel = "raschtype" , 
 						npformula = NULL , 
 						npirt.monotone=TRUE ,						
-						use.freqpatt = is.null(group) , delta.miss =0 , est.delta=FALSE , 
+						use.freqpatt = is.null(group) , delta.miss =0 , est.delta=rep(NA,ncol(dat)) , 
 						... ){
     #******************************************************************************************##
     # INPUT:                                                                                ***##
@@ -77,19 +77,6 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 	dat <- as.matrix(dat)
 	adaptive.quadrature <- FALSE
 	CALL <- match.call()
-	
-	#**** check for non-integer item responses
-	eps <- 1E-5
-	S1 <- sum( ( dat > eps ) * (dat < 1 - eps ) , na.rm=TRUE )
-	if (S1 > 0 ){
-	    if ( is.null(group) ){
-			group <- rep( 1 , nrow(dat) )
-							}
-					}
-	
-	#****
-	
-	
 # a0 <- Sys.time()	
 	# models
 	npirt <- ramsay.qm <- FALSE
@@ -423,7 +410,12 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		G <- length(unique(group))
 								}
 
-
+		#***** module missing1
+		# if ( ! is.null( est.delta ) ){
+		est_delta <- sum( 1-is.na(est.delta) ) > 0
+		
+								
+								
 								
 		#################################################	
         #--------------------------------#
@@ -518,7 +510,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 				if ( irtmodel == "missing1" ){
 					m1 <- .mstep.mml.missing1( theta.k , n.ik , mitermax , conv1 , 
 						b , beta , delta.miss , pjk , numdiff.parm ,
-						constraints , est.delta , min.beta=min.beta )
+						constraints , est.delta , min.beta=min.beta , est_delta )
 					b <- m1$b
 					se.b <- m1$se.b
 					beta <- m1$beta			
@@ -883,8 +875,15 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 															}
 								if ( irtmodel == "missing1" ){
 								  cat("    Delta = " )
-								  cat( round(as.vector(delta.miss),3))
-								  cat("\n")
+								  r1 <- sort( unique( as.vector(delta.miss) ) )
+								  h1 <- ""
+								  if ( length(r1) > 5 ){
+									r1 <- r1[1:5] 
+									h1 <- " ... "
+												}
+									
+								  cat( round( r1 ,3))
+								  cat( h1 , "\n")
 															}
 														
 															
@@ -965,8 +964,10 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 							}
 		if ( irtmodel == "missing1"){
 			ic$np <- ic$np + I
-			if ( est.delta ){
-				ic$np <- ic$np + 1
+			if ( est_delta ){
+				v1 <- unique( est.delta )
+				v1 <- v1[ ! is.na(v1) ]
+				ic$np <- ic$np + length(v1)
 							}
 					}
 		# parameters for multiple dimensions

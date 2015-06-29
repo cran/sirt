@@ -268,7 +268,7 @@ lines( c(-3,3),c(-3,3) , col="gray")
 
 data(data.inv4gr)
 dat <- data.inv4gr
-library(semTools)
+miceadds::library_install("semTools")
 
 model1 <- "
     F =~ I01 + I02 + I03 + I04 + I05 + I06 + I07 + I08 + I09 + I10 + I11

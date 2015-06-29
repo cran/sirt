@@ -45,14 +45,14 @@ Modelle mit \R}. Available at
 site <- paste0( "http://www.hogrefe.de/fileadmin/redakteure/hogrefe_de/" ,
         "Psychlehrbuchplus/Testtheorie_und_Testkonstruktion/R-Analysen/" )
 
-library(foreign)
+miceadds::library_install("foreign")
 #---- load some IRT packages in R
-library(TAM)        # package (a)
-library(mirt)       # package (b)
-library(sirt)       # package (c)
-library(eRm)        # package (d)
-library(ltm)        # package (e)
-library(psychomix)  # package (f)
+miceadds::library_install("TAM")        # package (a)
+miceadds::library_install("mirt")       # package (b)
+miceadds::library_install("sirt")       # package (c)
+miceadds::library_install("eRm")        # package (d)
+miceadds::library_install("ltm")        # package (e)
+miceadds::library_install("psychomix")  # package (f)
 
 #############################################################################
 # EXAMPLES Ch. 4: Unidimensional IRT models | dichotomous data

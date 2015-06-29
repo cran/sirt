@@ -37,7 +37,7 @@ mcmc.list.descriptives <- function( mcmcobj , quantiles=c(.025,.05,.1,.50,.9,.95
 				statis[,c(3,4) ]	)
 	colnames(statis)[3:4] <- c("MAD" , "skewness" )
 	dfr <- data.frame( "parameter" = rownames(smc3) , 
-		statis , smc3 , "PercSEratio" = 100*smc2[,4] / smc2[,2] ,
+		statis , smc3 , "PercSERatio" = 100*smc2[,4] / smc2[,2] ,
 		"sampSize" = nrow(as.matrix(mcmcobj)) , "effSize" = effSize , 
 		summary.mcmcobj$quantiles )	
     return(dfr)
@@ -53,3 +53,4 @@ skewness.sirt <- function(x){
 	y <- y * ((1 - 1/n))^(3/2)
 	return(y)	
 	}
+	

@@ -11,7 +11,7 @@ by: \code{\link{mcmc.2pno}}, \code{\link{mcmc.2pnoh}},
 }
 \usage{
 \method{plot}{mcmc.sirt}( x, layout = 1, conflevel = 0.9, round.summ = 3, 
-   lag.max = 100, col.smooth = "red", lwd.smooth = 1, col.ci = "orange", 
+   lag.max = .1 , col.smooth = "red", lwd.smooth = 2, col.ci = "orange", 
    cex.summ = 1, ask = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -30,7 +30,8 @@ Confidence level (only applies to \code{layout=2})
 Number of digits to be rounded in summary (only applies to \code{layout=2})
 }
   \item{lag.max}{
-Maximum lag for autocorrelation plot (only applies to \code{layout=2})
+Maximum lag for autocorrelation plot (only applies to \code{layout=2}).
+The default of .1 means that it is set to 1/10 of the number of iterations.
 }
   \item{col.smooth}{
 Color of smooth trend in traceplot (only applies to \code{layout=2})

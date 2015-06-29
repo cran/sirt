@@ -1,7 +1,7 @@
 \name{noharm.sirt}
 \alias{noharm.sirt}
 \alias{summary.noharm.sirt}
-\alias{plot.noharm.sirt}
+% \alias{plot.noharm.sirt}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -24,10 +24,11 @@ noharm.sirt(dat, weights = NULL, Fval = NULL, Fpatt = NULL, Pval = NULL,
    pos.loading=FALSE , pos.variance = FALSE ,  pos.residcorr = FALSE ,       
    maxiter = 1000, conv = 10^(-6), increment.factor = 1.01)
 
-\method{summary}{noharm.sirt}(object, logfile=NULL , \dots)
-
-\method{plot}{noharm.sirt}(x, what="est", efa.load.min=.3, ...)  
+\method{summary}{noharm.sirt}(object, logfile=NULL , \dots) 
 }
+
+%% \method{plot}{noharm.sirt}(x, what="est", efa.load.min=.3, ...)
+
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
@@ -94,17 +95,18 @@ are heavier penalized.
 }
 \item{object}{Object of class \code{noharm.sirt}}
 \item{logfile}{String indicating a file name for summary.}
-\item{x}{Object of class \code{noharm.sirt}}
-\item{what}{A character indicating whether the original estimates (\code{est})
-or standardized estimates (\code{stand}) should be displayed.}
-\item{efa.load.min}{Minimum absolute factor loading to be displayed in
-	plot for exploratory factor analysis.
-}
 \item{\dots}{Further arguments to be passed. For \code{plot.noharm.sirt},
 additional arguments for \code{\link[semPlot:semPaths]{semPlot::semPaths}} (from 
 \pkg{semPlot} package) can be specified. 
 }
 }
+
+%\item{x}{Object of class \code{noharm.sirt}}
+%\item{what}{A character indicating whether the original estimates (\code{est})
+%or standardized estimates (\code{stand}) should be displayed.}
+%\item{efa.load.min}{Minimum absolute factor loading to be displayed in
+%	plot for exploratory factor analysis.
+%}
 
 \details{
 The NOHARM item response model follows the response equation
@@ -335,7 +337,6 @@ summary(mod3)
 mod3b <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
             Psival=Psival , Psipatt=Psipatt , pos.residcorr=TRUE)
 summary(mod3b)
-plot(mod3 , fade=FALSE)
 
 #**** Model 4: Rasch testlet model
 Fval <- Fpatt <- matrix( 0 , I , 4 )
@@ -366,7 +367,6 @@ mod5b <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval 
               pos.loading=TRUE )                        
 summary(mod5b)
 summary( modelfit.sirt(mod5b))
-plot(x= mod5b ,what="stand" ,  ThreshAtSide=TRUE , fade=FALSE , residuals= TRUE )
 
 #**** Model 6: 3-dimensional Rasch model
 Fval <- matrix( 0 , I , 3 )
@@ -380,8 +380,6 @@ colnames(Ppatt) <- c("A", "B","C")
 mod6 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  )
 summary(mod6)
 summary( modelfit.sirt(mod6) )  # model fit
-plot(x= mod6 ,what="stand" , edge.label.cex=.75 , ThreshAtSide=TRUE , 
-     fixedStyle = c("black",1) , freeStyle=c("black",1) , residuals= TRUE )
 
 #**** Model 7: 3-dimensional 2PL model
 Fval <- matrix( 0 , I , 3 )
@@ -396,21 +394,21 @@ colnames(Ppatt) <- c("A", "B","C")
 mod7 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  )
 summary(mod7)
 summary( modelfit.sirt(mod7) )
-plot(x= mod7 ,what="est" , edge.label.cex=.75 , ThreshAtSide=TRUE , fade=FALSE ,
-      residuals= TRUE )
 
 #**** Model 8: Exploratory factor analysis with 3 dimensions
 # estimation
 mod8 <- noharm.sirt( dat=dat , dimensions=3  )
 summary(mod8)
-plot(mod8)   
-# plot only standardized loadings larger than .40
-plot(mod8 , efa.load.min=.4 ) 
 }
 }
+
+% plot(mod8)   
+% # plot only standardized loadings larger than .40
+% plot(mod8 , efa.load.min=.4 ) 
+
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{NOHARM}
 \keyword{summary}
-\keyword{plot}
+% \keyword{plot}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

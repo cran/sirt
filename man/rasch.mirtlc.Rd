@@ -497,7 +497,7 @@ summary(mod2)
 
 #------ 
 # estimate model with MultiLCIRT package
-library(MultiLCIRT)
+miceadds::library_install("MultiLCIRT")
 
 # define matrix to allocate each item to one dimension
 multi1 <- matrix( 1:(3*I) , nrow=3 , byrow=TRUE )

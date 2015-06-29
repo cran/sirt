@@ -180,7 +180,7 @@ mod2 <- lsem.estimate( dat , moderator="age" , moderator.grid=moderator.grid ,
 summary(mod2)
 
 # output step functions
-smod2 <- lsem.MGM.stepfunctions( lsem.object=mod2 , moderator.grid=seq(4,23,1) )
+smod2 <- lsem.MGM.stepfunctions( object=mod2 , moderator.grid=seq(4,23,1) )
 str(smod2)
 }	
 }

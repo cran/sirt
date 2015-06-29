@@ -81,7 +81,7 @@ res1$item.stat
 # EXAMPLE 2: data.timssAusTwn from TAM package
 #############################################################################
 
-library(TAM)
+miceadds::library_install("TAM")
 data(data.timssAusTwn,package="TAM")
 raw.resp <- data.timssAusTwn[,1:11]
 res2 <- automatic.recode( data=raw.resp )

@@ -135,7 +135,7 @@ dif2 <- dif.strata.variance( dif=mod1$uniformDIF , se.dif = mod1$se.uniformDIF ,
 \dontrun{
 #****
 # Likelihood ratio test and graphical model test in eRm package
-library(eRm)
+miceadds::library_install("eRm")
 # estimate Rasch model
 res <- eRm::RM( dat[,items] )
 summary(res)

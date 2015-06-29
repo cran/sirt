@@ -94,12 +94,20 @@
 # M-step for missing data model			
 .mstep.mml.missing1 <- function( theta.k , n.ik , mitermax , conv1 , 
 		b , beta , delta.miss , pjk , numdiff.parm ,
-		constraints , est.delta , min.beta ){
+		constraints , est.delta , min.beta , est_delta ){
     h <- numdiff.parm
 	se.delta <- 0
 	miter <- 0 
 	diffindex <- seq( 1 , length(b) )
-	diffindex1 <- rep( 1 , length(b) )
+	
+	
+	diffindex1 <- est.delta
+	
+	# diffindex1 <- rep( 1 , length(b) )
+	# diffindex1 <- seq( 1 , length(b) )
+	
+	# est_delta <- sum( 1 - is.na( est.delta) ) > 0
+	
 #	Q0 <- 0 * c.rater
 	max_incr_b <- 1
 	max_incr_beta <- 1
@@ -128,24 +136,32 @@
 		pjk2 <- .calcprob.missing1( theta.k , b , beta-h, delta.miss , pjk )				
 		# numerical differentiation			
 		res <- .mml2.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex , 
-				max.increment= max_incr_beta , numdiff.parm )									
+				       max.increment= max_incr_beta , numdiff.parm )									
 		beta <- beta0 + res$increment		
 		max_incr_beta <- max( abs( res$increment ) )
 		se.beta <- sqrt( abs( 1 / res$d2 ) )
-		beta <- ifelse( beta < min.beta , min.beta , beta )
-		
+
 	    #--- update delta
-		if (est.delta){
+		if (est_delta ){
 			delta0 <- delta.miss
 			pjk <- .calcprob.missing1( theta.k , b , beta , delta.miss , pjk )				
 			pjk1 <- .calcprob.missing1( theta.k , b , beta, delta.miss+h , pjk )				
 			pjk2 <- .calcprob.missing1( theta.k , b , beta, delta.miss-h , pjk )				
 			# numerical differentiation			
 			res <- .mml2.numdiff.index( pjk , pjk1 , pjk2 , n.ik , diffindex1 , 
-					max.increment= max_incr_delta , numdiff.parm )			
-			delta.miss <- delta0 + res$increment
-			max_incr_delta <- max( abs( res$increment ) )
-			se.delta <- sqrt( abs( 1 / res$d2 ) )		
+					        max.increment= max_incr_delta , numdiff.parm )								
+			incr <- res$increment
+			d2 <- res$d2
+			d2 <- d2[ est.delta ]
+			d2[ is.na(incr) ] <- 1E10	
+			incr <- incr[ est.delta ]
+			incr[ is.na(incr) ] <- 0
+					
+			delta.miss <- delta0 + incr
+			
+			
+			max_incr_delta <- max( abs( incr ) )
+			se.delta <- sqrt( abs( 1 / d2 ) )		
 				}
 		
 		miter <- miter + 1

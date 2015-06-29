@@ -76,7 +76,7 @@ wM[2,] <- c(1,3,4, 3 )
 monoreg.rowwise( yM , wM )
 # compare results with monoreg function from fdrtool package
 \dontrun{
-library(fdrtool)
+miceadds::library_install("fdrtool")
 fdrtool::monoreg(x=yM[1,] , w=wM[1,])$yf
 fdrtool::monoreg(x=yM[2,] , w=wM[2,])$yf
 }
