@@ -121,7 +121,7 @@ based on tetrachoric correlations see \code{\link{greenyang.reliability}}.
 
 For estimation of bifactor models based on marginal maximum likelihood
 (i.e. full information maximum likelihood) see the 
-\code{\link[TAM:tam.fa]{tam.fa}} function in the \pkg{TAM} package.
+\code{\link[TAM:tam.fa]{TAM::tam.fa}} function in the \pkg{TAM} package.
 }
 
 

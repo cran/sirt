@@ -38,8 +38,11 @@ Data Analysis}, \bold{51}, 5765-5775.
 Alexander Robitzsch
 }
 \note{
-This function uses the \pkg{sfsmisc} package.
+This function uses the
+\code{\link[sfsmisc:QUnif]{sfsmisc::QUnif}} function from
+the \pkg{sfsmisc} package.
 }
+% sfsmisc::QUnif
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 

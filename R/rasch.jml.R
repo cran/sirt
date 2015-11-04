@@ -1,25 +1,6 @@
  
-# 0.01  2012-xx-yy
 
 
-# 0.01  2012-06-23  o initial release
-# 0.02  2012-07-14	o include jackknife function
-# 0.03  2012-07-15	o extended jackknife estimation: 
-# 0.04  2012-07-15	o allow for inits in JML estimation
-# 0.05  2012-08-27	o bug in jackknife.racsh.jml function
-# 0.07  2012-08-31  o include constraints in jackknife function
-#					o modify correction formula in case of item parameter constraints
-# 1.10	2012-10-07	o substantial speed improvement
-# 3.01	2012-10-08	o version ready for use
-
-# 1.0x  2012-xx-yy
-
-#-------------------------------------------------------
-
-
-
-
-##NS export(rasch.jml)
 #-------------------------------------------------------------------------------------------------------------#
 rasch.jml <- function( dat , method = "MLE" , b.init = NULL ,  constraints = NULL ,  weights = NULL , 
                         glob.conv = 10^(-6) , conv1 = 0.00001 , conv2 = 0.001 , progress = TRUE , 

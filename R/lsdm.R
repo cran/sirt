@@ -67,7 +67,7 @@ lsdm <- function( data , Qmatrix , theta = qnorm(seq(.0005,.9995,len=100)) , qua
 			# including weights leads to
 			# log(P) = w1 * log(A1) + w2 * log(A2)
             # restricted linear model
-            mod2.tt <- orlm( mod1.tt , index = 1:K , ui )
+            mod2.tt <- ic.infer::orlm( mod1.tt , index = 1:K , ui )
 			mod2.tt$b.restr
                 } )	
 		#*******************************************
@@ -103,7 +103,6 @@ lsdm <- function( data , Qmatrix , theta = qnorm(seq(.0005,.9995,len=100)) , qua
 #			x.ii <- x.ii * m1		
 #            if (nrow(x.ii) == 1 ){ x.ii <- x.ii[1,] } else { x.ii <- rowSums( x.ii ) }
             y.ii <- as.numeric(logdata[ii,])
-#            mod1.ii <- lm( y.ii ~ x.ii )
             mod1.ii <- lm( y.ii ~ 0 + x.ii )	
 #            ui <- diag( c( - 1 ,  -1 ) )
 #            ci <-  c( 0 , -1 )
@@ -178,7 +177,7 @@ summary.lsdm <- function( object , ... ){
         cat( display.separate , "\n" )
         cat("\nItem Parameters\n\n")
         dfr.i <- round( lsdmobj$item , 3 )
-#        displ.i <- sort( union(  which( colnames(dfr.i)   %in% c( "pistar" , "w" , "a.2PL" , "b.2PL" , "N.Items" , "b.1PL" ) )  ,
+
         displ.i <- sort( union(  which( colnames(dfr.i)   %in% c(  "a.2PL" , "b.2PL" , "N.Items" , "b.1PL" ) )  ,
                             grep( "mad" , colnames(dfr.i)   ) )                        
                                         )

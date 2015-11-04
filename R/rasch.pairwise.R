@@ -8,7 +8,7 @@
 # pairwise likelihood method
 ##NS export(rasch.pairwise)
 rasch.pairwise <- function( dat , conv = 0.0001 , maxiter = 3000 , 
-	progress = TRUE , b.init = NULL ){
+	progress = TRUE , b.init = NULL , zerosum = FALSE ){
 	#******************************************************#
     # INPUT:                                               #
     # dat      ... data frame                              #
@@ -17,6 +17,7 @@ rasch.pairwise <- function( dat , conv = 0.0001 , maxiter = 3000 ,
     # progress ... display progress in MINCHI method       #
     # beta.init ... initial beta values                    #
     s1 <- Sys.time()
+	CALL <- match.call()
         # should items being excluded?
         item.elim <- which( colMeans( dat , na.rm=T ) %in% c(0,1))
         if (length(item.elim)>0){ dat <- dat[ , - item.elim ] }
@@ -44,6 +45,11 @@ rasch.pairwise <- function( dat , conv = 0.0001 , maxiter = 3000 ,
         while( change > conv & iter < maxiter ){
                 eps0 <- eps
                 eps <- sqrt( rowSums( y.ij * eps * delta.ij ) / colSums( y.ij * 1 / eps ) )
+				if (zerosum){
+					b1 <- - log(eps)
+					b2 <- b1 - mean(b1)
+					eps <- exp( - b2 )	
+								}
                 change <- max( abs( eps0 - eps ) ) 
                 iter <- iter + 1
                 if ( progress ){
@@ -60,7 +66,7 @@ rasch.pairwise <- function( dat , conv = 0.0001 , maxiter = 3000 ,
         s2 <- Sys.time()									
         res <- list( "b" = - log( eps ) , "eps" = eps , "iter" = iter , "conv" = conv , "dat" = dat ,
                     "freq.ij" = n.ij  , "item" = item , "fct" = "rasch.pairwise",
-					"s1"=s1 , "s2"=s2  ) 
+					"s1"=s1 , "s2"=s2 , CALL = CALL ) 
         class(res) <- "rasch.pairwise"
         return(res)
     }    
@@ -78,7 +84,10 @@ summary.rasch.pairwise <- function( object , ...){
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 	cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
 	cat("Computation Time:" , print(object$s2 - object$s1), "\n\n")
-    cat(paste0("  Function '" , object$fct , "'") , "\n") 
+    cat(paste0("Function '" , object$fct , "'") , "\n") 
+	
+	cat("Call:\n", paste(deparse(object$CALL), sep = "\n", collapse = "\n"), 
+				"\n\n", sep = "")				
     cat("------------------------------------------- \n")
     cat("Pairwise likelihood estimation \n")
     cat("Rasch Model \n")

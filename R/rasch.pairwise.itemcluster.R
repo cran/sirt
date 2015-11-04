@@ -7,7 +7,8 @@
 ##NS export(rasch.pairwise.itemcluster)
 rasch.pairwise.itemcluster <- function( dat , itemcluster = NULL ,
 			b.fixed=NULL , conv = .00001 , maxiter = 3000 , 
-			progress = TRUE , b.init = NULL){
+			progress = TRUE , b.init = NULL, zerosum = FALSE){
+	CALL <- match.call()		
     if ( is.null(b.init) ){ 
 			b.init <- - qlogis( colMeans( dat , na.rm=TRUE ) ) 
 				}
@@ -20,6 +21,7 @@ rasch.pairwise.itemcluster <- function( dat , itemcluster = NULL ,
 	if ( ! is.null(b.fixed) ){
 	    b[ b.fixed[,1] ] <- b.fixed[,2] 
 		b.fixed <- cbind( b.fixed , exp( b.fixed[,2] ) )
+		zerosum <- FALSE
 			}		
     # create count tables
     Aij <- t( dat == 0 ) %*% ( dat == 1 )
@@ -47,6 +49,11 @@ rasch.pairwise.itemcluster <- function( dat , itemcluster = NULL ,
 	    if ( ! is.null(b.fixed) ){
 	       eps[ b.fixed[,1] ] <- b.fixed[,3] 
 					}				
+		if (zerosum){
+				b1 <- - log(eps)
+				b2 <- b1 - mean(b1)
+				eps <- exp( - b2 )	
+		  		   }										
         max.change <- max(abs( b - b0 ))
         if ( progress ){
                 cat( "PL Iter." , iter , ": max. parm. change = " , 
@@ -61,7 +68,7 @@ rasch.pairwise.itemcluster <- function( dat , itemcluster = NULL ,
 		item$itemcluster <- itemcluster
 		s2 <- Sys.time()									
         res <- list( "b" = b , "eps" = eps , "iter" = iter , "conv" = conv , "dat" = dat0 ,"item" = item ,
-			"fct" = "rasch.pairwise.itemcluster" , "s1"=s1 , "s2"=s2  ) 
+			"fct" = "rasch.pairwise.itemcluster" , "s1"=s1 , "s2"=s2 , CALL =CALL ) 
         class(res) <- "rasch.pairwise"
         return(res)
        }

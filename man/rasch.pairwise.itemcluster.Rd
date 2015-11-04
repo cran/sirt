@@ -10,7 +10,7 @@ for estimating item parameters in the Rasch model.
 }
 \usage{
 rasch.pairwise.itemcluster(dat, itemcluster = NULL, b.fixed=NULL ,
-    conv = 1e-05, maxiter = 3000, progress = TRUE, b.init = NULL)
+    conv = 1e-05, maxiter = 3000, progress = TRUE, b.init = NULL, zerosum = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -38,6 +38,10 @@ A logical which displays progress. Default is \code{TRUE}.
   \item{b.init}{
 Vector of initial item difficulty estimates. Default is \code{NULL}.
 }
+\item{zerosum}{Optional logical indicating whether item difficulties
+	should be centered in each iteration. The default is that
+        no centering is conducted.}
+
 }
 \details{
 This is an adaptation of the algorithm of van der Linden and Eggen (1986). Only item pairs 

@@ -21,7 +21,7 @@ plot.mcmc.sirt <- function( x , layout=1 , conflevel=.90 ,
 		lag.max <- min( nrow(mcmcobj) , lag.max )
 		# index vector
 		a1 <- attr(mcmcobj,"mcpar")
-		iterindex <- seq(a1[1] , a1[2] )
+		iterindex <- seq(a1[1] , a1[2] , a1[3] )
 		smcmcobj <- object$summary.mcmcobj
 		VV <- ncol(mcmcobj)		
 		ci.quant <- -qnorm( (1-conflevel)/2 )

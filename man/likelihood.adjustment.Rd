@@ -94,7 +94,7 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link[CDM:IRT.likelihood]{IRT.likelihood}} (\pkg{CDM}),
+\code{\link[CDM:IRT.likelihood]{CDM::IRT.likelihood}},
 \code{\link[TAM:tam.latreg]{TAM::tam.latreg}}
 }
 

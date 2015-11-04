@@ -203,7 +203,8 @@ Alexander Robitzsch
 \note{
 This function needs the \pkg{combinat} library.
 
-\code{rasch.pml2} uses the \code{pbivnorm} function from the \pkg{pbivnorm} package 
+\code{rasch.pml2} uses the \code{\link[pbivnorm:pbivnorm]{pbivnorm::pbivnorm}}
+function from the \pkg{pbivnorm} package, 
 but \code{rasch.pml3} uses the \code{\link{pbivnorm2}} from this package (\pkg{sirt}) 
 and is somewhat faster.
 }

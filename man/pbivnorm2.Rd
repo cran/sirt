@@ -54,7 +54,9 @@ The function is less precise for correlations near 1 or -1.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-See also the \code{pbivnorm} function in the \pkg{pbivnorm} package.
+See also the 
+\code{\link[pbivnorm:pbivnorm]{pbivnorm::pbivnorm}}
+function in the \pkg{pbivnorm} package.
 }
 \examples{
 library(pbivnorm)

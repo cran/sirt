@@ -66,7 +66,7 @@ mirt.wrapper.posterior <- function( mirt.obj , weights=NULL ){
 # auxiliary function
 # trace function for all items
 Probtrace_sirt <- function(items, Theta){
-		 traces <- lapply(items, probtrace, Theta=Theta)
+		 traces <- lapply(items, mirt::probtrace, Theta=Theta)
 		 ret <- do.call(cbind, traces)
 		 ret
 	}

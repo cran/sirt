@@ -7,37 +7,75 @@ useDynLib(sirt)
 ####################################################
 ################## IMPORTS #########################
 
-#*** Imports/Depends packages
+#***************************************************
+#*************** R Basics / Linking To *************
+
+importFrom(graphics, abline)
+importFrom(graphics, dotchart)
+importFrom(graphics, lines)
+importFrom(graphics, par)
+importFrom(graphics, plot)
+importFrom(graphics, points)
+importFrom(graphics, polygon)
+importFrom(graphics, rug)
+importFrom(graphics, segments)
+importFrom(graphics, text)
+importFrom(methods, is)
+importFrom(Rcpp, evalCpp)
 import(stats)
-import(graphics)
 importFrom(utils, packageDescription)
 importFrom(utils, write.table)
 importFrom(utils, read.table)
 importFrom(utils, flush.console)
-import(mvtnorm)
-import(MASS)
-import(coda)
-importFrom(sfsmisc, QUnif)
-import(TAM)
+
+
+#***************************************************
+#************** Depends ****************************
+
 import(CDM)
-import(combinat)
-import(ic.infer)
-import(sm)
-import(psych)
-import(qgraph)
-importFrom(pbivnorm, pbivnorm)
+import(TAM)
+
+
+#***************************************************
+#************** Imports ****************************
+
+importFrom(coda, as.mcmc.list)
+importFrom(coda, effectiveSize)
+importFrom(combinat, combn)
 importFrom(gtools, permutations)
-importFrom(Rcpp, evalCpp)
-import(lavaan)
-import(semPlot)
+import(ic.infer)
+ # importFrom(ic.infer, orlm)  # one needs to import the whole package ic.infer
 importFrom(igraph, graph.edgelist)
-import(mirt)
-import(Matrix)
+importFrom(lavaan, cfa)
+importFrom(lavaan, fitMeasures)
+importFrom(lavaan, lavaanify)
+importFrom(lavaan, parameterEstimates)
+importFrom(lavaan, sem)
 importFrom(lavaan.survey, lavaan.survey)
+import(Matrix)
+importFrom(MASS, mvrnorm)
+importFrom(mirt, extract.item)
+importFrom(mirt, mirt)
+importFrom(mirt, itemplot)
+importFrom(mirt, mirt.model)
+importFrom(mirt, probtrace)
+importFrom(mvtnorm, dmvnorm)
+importFrom(mvtnorm, pmvnorm)
+importFrom(mvtnorm, rmvnorm)
+importFrom(pbivnorm, pbivnorm)
+importFrom(psych, cor.smooth)
+importFrom(psych, fa)
+importFrom(psych, fisherz)
+importFrom(psych, omega)
+importFrom(sfsmisc, QUnif)
+ # import(semPlot)
+importFrom(sm, h.select)
+importFrom(sm, sm.binomial)
 importFrom(survey, svydesign)
+ # import(qgraph)
 
 
-# importFrom(inline, getDynLib)
+
 
 ####################################################
 ################## EXPORTS #########################
@@ -226,6 +264,7 @@ S3method(plot,rm.sdt)
 S3method(plot,lsem)
 S3method(plot,lsem.permutationTest)
 # S3method(plot,noharm.sirt)
+
 
 #**** summary
 S3method(summary,rasch.mml)

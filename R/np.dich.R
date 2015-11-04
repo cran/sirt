@@ -1,17 +1,7 @@
- 
-# 0.01  2012-xx-yy
-
-
-# 0.01  2012-06-23  o initial release
-# 0.02  2012-07-10	o added "library(sm)"
-
-# 0.01  2012-xx-yy
-
 #-------------------------------------------------------
 
 
 
-##NS export(np.dich)
 #----------------------------------------------------------------------------------------------------
 np.dich <- function( dat , theta , thetagrid , progress = FALSE , 
 			bwscale = 1.1 , method = "normal"){
@@ -46,8 +36,8 @@ np.dich <- function( dat , theta , thetagrid , progress = FALSE ,
             estimate[ii,] <- h1$y
                     }
         if (method == "binomial"){      
-                hsel <- h.select(x = x , y = y )
-                h1 <- sm.binomial( x , y , N=rep(1, length(x) ),  h= hsel  ,
+                hsel <- sm::h.select(x = x , y = y )
+                h1 <- sm::sm.binomial( x , y , N=rep(1, length(x) ),  h= hsel  ,
                                 eval.points = thetagrid , display = "none" )
                 estimate[ ii ,] <- h1$estimate
                 lower[ii,] <- h1$lower
@@ -57,7 +47,7 @@ np.dich <- function( dat , theta , thetagrid , progress = FALSE ,
         flush.console() }
         }
     if (method == "normal"){ lower <- upper <- NULL }
-    if (progress == T){ cat( "\n")}
+    if (progress){ cat( "\n")}
     res <- list( "dat" = dat , "thetagrid" = thetagrid , "theta" = theta , 
             "estimate" = estimate , "lower" = lower , "upper" = upper , 
 			"missing.resp" = missing.resp ) 

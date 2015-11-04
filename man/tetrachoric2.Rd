@@ -83,7 +83,8 @@ See \url{http://sites.education.miami.edu/zopluoglu/software-programs/}.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-See also the \code{tetrachoric} function in the \pkg{psych} package
+See also the \code{\link[psych:tetrachoric]{psych::tetrachoric}}  
+function in the \pkg{psych} package
  and the function \code{tet} in the \pkg{irtoys} package.
  
 See \code{\link{polychoric2}} for estimating polychoric correlations.

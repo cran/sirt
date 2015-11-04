@@ -367,7 +367,7 @@ summary(mod6a)
 ##    Gamma:                  0.25 
 ##    Rule used:              Or-rule 
 # plot results
-qgraph(mod6a$weiadj,fade = FALSE)
+qgraph::qgraph(mod6a$weiadj,fade = FALSE)
 
 #**-- graph estimation using pcalg package
 

@@ -6,12 +6,12 @@ greenyang.reliability <- function( object.tetra , nfactors){
     cat("Reliability Estimation Based on a Nonlinear SEM\n\n")
     cat("Green & Yang (2009, Psychometrika). Reliability of summed item scores\n") 
     cat("  using structural equation modeling: An alternative to coefficient alpha\n\n")
-    mod.omega1 <- omega( m = object.tetra$rho , nfactors = 1) 
+    mod.omega1 <- psych::omega( m = object.tetra$rho , nfactors = 1) 
     # reliability for one factor
     rel1 <- reliability.nonlinearSEM( facloadings = matrix( mod.omega1$schmid$sl[,1] , ncol=1 ) ,
                                 thresh = object.tetra$tau )$omega.rel
     # reliability for f factors
-    mod.omega <- omega( m = object.tetra$rho , nfactors = nfactors) 
+    mod.omega <- psych::omega( m = object.tetra$rho , nfactors = nfactors) 
     rel1h <- reliability.nonlinearSEM( facloadings = matrix( mod.omega$schmid$sl[,1] , ncol=1 ) ,
                                 thresh = object.tetra$tau )
     relf <- reliability.nonlinearSEM( facloadings = mod.omega$schmid$orthog ,
@@ -32,21 +32,21 @@ greenyang.reliability <- function( object.tetra , nfactors){
                 rho.exp[ii1,ii2] <- rel1h$rho.exp[ii1,ii2]
                 rho.exp[ii2,ii1] <- rho.exp[ii1,ii2] 
                 r1 <- rho.exp[ii1,ii2]
-                rel.matrix[ii1,ii2] <- pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
+                rel.matrix[ii1,ii2] <- mvtnorm::pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
                                          corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
                 rel.matrix[ii2,ii1] <- rel.matrix[ii1,ii2]
 				# multidimensional analysis
                 rho.exp[ii1,ii2] <- relf$rho.exp[ii1,ii2]
                 rho.exp[ii2,ii1] <- rho.exp[ii1,ii2] 
                 r1 <- rho.exp[ii1,ii2]				
-                rel.matrix2[ii1,ii2] <- pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
+                rel.matrix2[ii1,ii2] <- mvtnorm::pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
                                          corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
                 rel.matrix2[ii2,ii1] <- rel.matrix2[ii1,ii2]
 				rel.matrix3[ii1,ii2] <- rel.matrix2[ii1,ii2]
 				rel.matrix3[ii2,ii1] <- rel.matrix3[ii1,ii2]				
 				if (ii1 == ii2 ){ 
 					r1 <- 1				
-					rel.matrix3[ii1,ii2] <- pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
+					rel.matrix3[ii1,ii2] <- mvtnorm::pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
 											 corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - 
 											     pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
 					rel.matrix3[ii2,ii1] <- rel.matrix3[ii1,ii2]

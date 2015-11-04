@@ -113,11 +113,11 @@ res <- sia.sirt(dat , significance=.85 )
 library(igraph)
 plot( res$igraph.obj ) # , vertex.shape="rectangle" , vertex.size=30 )
 
+\dontrun{
 #*** plot results with qgraph package
-library(qgraph)
+miceadds::library_install(qgraph)
 qgraph::qgraph( res$adj.matrix )
 
-\dontrun{
 #*** plot results with Rgraphviz package
 # Rgraphviz can only be obtained from Bioconductor
 # If it should be downloaded, select TRUE for the following lines

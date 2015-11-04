@@ -1117,7 +1117,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		if ( irtmodel == "missing1"){
 			item$thresh <- item$est.a <- item$est.c <- item$est.d <- NULL			
 			# missing proportion
-			item$pmiss <- colSums( dat2.resp * ( dat2 == 2 ) ) / colSums( dat2.resp )
+			item$pmiss <- colSums( dat2.resp * ( dat2 == 2 ) , na.rm=TRUE) / colSums( dat2.resp , na.rm=TRUE)
 			item$beta <- beta
 			item$delta.miss <- delta.miss		
 						}

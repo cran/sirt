@@ -11,8 +11,8 @@ f1d.irt <- function( dat=NULL , nnormal=1000 , nfactors=3 ,
 					}
 		tetra <- res <- tetrachoric2(dat , progress=progress)
 		# estimate factor analysis
-		fac1 <- fa( r=res$rho , nfactors=nfactors , rotate="none" )
-		fac0 <- fa( r=res$rho , nfactors=1 , rotate="none" )
+		fac1 <- psych::fa( r=res$rho , nfactors=nfactors , rotate="none" )
+		fac0 <- psych::fa( r=res$rho , nfactors=1 , rotate="none" )
 		# extract standardized loadings
 		A_stand <- as.matrix( fac1$loadings )
 		# calculate communality

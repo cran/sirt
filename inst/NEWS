@@ -38,6 +38,23 @@ CHANGELOG sirt
 
 
 
+------------------------------------------------------------------------
+Versions 1.9 -- 2015-11-04  --  CRAN sirt 1.9-0
+------------------------------------------------------------------------
+
+NOTE  * accomodate thinning in 'plot.mcmc.sirt' function
+NOTE  * fixed a minor bug in summary output of 'rasch.mml2' for
+        irtmodel='missing1'
+NOTE  * included argument 'zerosum' in 'rasch.pairwise' and 
+        'rasch.pairwise.itemcluster' to apply a zero sum constraint of 
+        for item difficulties (suggested by Chen-Wei Liu)
+NOTE  * included example for bootstrapping standard errors for
+        'rasch.pairwise' (suggested by Chen-Wei Liu)
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: rasch.pairwise (1),
+        dif.logistic.regression (2) 
+
 
 ------------------------------------------------------------------------
 Versions 1.8 -- 2015-06-28  --  CRAN sirt 1.8-9
@@ -231,12 +248,12 @@ NOTE  * renamed DeCarlo's hierarchical rater model based on
         signal detection theory 'rm.hrm' into 'rm.sdt'
 NOTE  * fixed an error in description of missing IRT models in
         'rasch.mml2.Rd' (thanks to Carmen Koehler)
-NOTE  * fixed a bug in tam2mirt for polytomous items (thanks to
-        Michal Modzelewski)
+NOTE  * fixed a bug in 'tam2mirt' for polytomous items 
+        (thanks to Michal Modzelewski)
 ADDED * included function 'mirt.specify.partable' for modifying
         a parameter table in mirt package 
 NOTE  * included argument item type for polytomous data in 'lavaan2mirt'
-NOTE  * updated lavaanify.sirt function because of changes in 
+NOTE  * updated 'lavaanify.sirt' function because of changes in 
         the lavaan::lavaanify function from lavaan 0.5-16 to the
         lavaan 0.5-17 package
 NOTE  * changed mean constraint for rater parameters in 'rm.facets' 
@@ -341,10 +358,10 @@ Versions 0.44 -- 2014-04-27  --  CRAN sirt 0.44-48
 FIXED * fixed a bug in calculation of marginal parameters for testlet model
 ADDED * included the partially compensatory item response model
         (irtmodel='partcomp' in 'smirt')
-NOTE  * speeded rasch.copula functions a bit
-NOTE  * included argument increment.factor in rasch.copula to improve
+NOTE  * speeded 'rasch.copula' functions a bit
+NOTE  * included argument 'increment.factor' in rasch.copula to improve
         convergence behavior
-FIXED * fixed a bug in rasch.mirtlc in saved parameter estimates for
+FIXED * fixed a bug in 'rasch.mirtlc' in saved parameter estimates for
         models with different initial estimates (n.starts>0)
 ADDED * included function for calculating marginal item parameters for
         testlet (bifactor) model ('testlet.marginalized')
@@ -387,10 +404,13 @@ NOTE  * changed numerical differentiation parameters in several functions
 ADDED * included missing data IRT model ('rasch.mml2', irtmodel='missing1')
 NOTE  * included person (containing person parameters) as a value in rasch.copula2
         and rasch.copula2
-FIXED * fixed a bug in testlet.yen.q3
-NOTE  * allowed correlated residuals in reliability calculation of 'reliability.nonlinearSEM'
-NOTE  * included reliability estimation for pseudo maximum likelihood estimation (rasch.pml3)
-NOTE  * included marginal item parameters in the output in testlet model (mcmc.3pno.testlet)
+FIXED * fixed a bug in 'testlet.yen.q3'
+NOTE  * allowed correlated residuals in reliability calculation of 
+        'reliability.nonlinearSEM'
+NOTE  * included reliability estimation for pseudo maximum likelihood 
+        estimation ('rasch.pml3')
+NOTE  * included marginal item parameters in the output in testlet model 
+        ('mcmc.3pno.testlet')
 
 DATA  * included/modified datasets: data.reck73C1a, data.reck73C1b,
         data.reck75C2, data.reck78ExA, data.reck79ExB, 

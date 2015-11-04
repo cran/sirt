@@ -55,7 +55,8 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-See the \code{polychoric} function in the \pkg{psych} package.
+See the \code{\link[psych:polychoric]{psych::polychoric}}
+function in the \pkg{psych} package.
 
 For estimating tetrachoric correlations see \code{\link{tetrachoric2}}.
 }

@@ -144,6 +144,98 @@ lrres <- eRm::LRtest(res, splitcr = dat$female)
 summary(lrres)
 # graphical model test
 eRm::plotGOF(lrres) 
+
+#############################################################################
+# SIMULATED EXAMPLE 2: Comparison with Mantel-Haenszel test
+#############################################################################
+
+library(TAM)
+library(difR)
+
+#*** (1) simulate data
+set.seed(776)
+N <- 1500   # number of persons per group
+I <- 12     # number of items
+mu2 <- .5   # impact (group difference)
+sd2 <- 1.3  # standard deviation group 2
+
+# define item difficulties
+b <- seq( -1.5 , 1.5 , length=I)
+# simulate DIF effects
+bdif <- scale( rnorm(I , sd = .6 ) , scale=FALSE )[,1]
+# item difficulties per group
+b1 <- b + 1/2 * bdif
+b2 <- b - 1/2 * bdif
+# simulate item responses
+dat1 <- sim.raschtype( theta = rnorm(N , mean=0 , sd =1 ) , b = b1 )
+dat2 <- sim.raschtype( theta = rnorm(N , mean=mu2 , sd = sd2 ) , b = b2 )
+dat <- rbind( dat1 , dat2 )
+group <- rep( c(1,2) , each=N ) # define group indicator
+
+#*** (2) scale data 
+mod <- TAM::tam.mml( dat , group=group )
+summary(mod)
+
+#*** (3) extract person parameter estimates
+mod_eap <- mod$person$EAP
+mod_wle <- tam.wle( mod )$theta
+
+#*********************************
+# (4) techniques for assessing differential item functioning
+
+# Model 1: assess DIF by logistic regression and WLEs
+dif1 <- dif.logistic.regression( dat=dat , score= mod_wle , group= group)
+# Model 2: assess DIF by logistic regression and EAPs
+dif2 <- dif.logistic.regression( dat=dat , score= mod_eap , group= group)
+# Model 3: assess DIF by Mantel-Haenszel statistic
+dif3 <- difR::difMH(Data=dat, group=group, focal.name="1" ,  purify=FALSE )
+print(dif3)
+  ##  Mantel-Haenszel Chi-square statistic: 
+  ##   
+  ##        Stat.    P-value     
+  ##  I0001  14.5655   0.0001 ***
+  ##  I0002 300.3225   0.0000 ***
+  ##  I0003   2.7160   0.0993 .  
+  ##  I0004 191.6925   0.0000 ***
+  ##  I0005   0.0011   0.9740    
+  ##  [...]
+  ##  Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1  
+  ##  Detection threshold: 3.8415 (significance level: 0.05)
+  ##
+  ##  Effect size (ETS Delta scale): 
+  ##   
+  ##  Effect size code: 
+  ##   'A': negligible effect 
+  ##   'B': moderate effect 
+  ##   'C': large effect 
+  ##   
+  ##        alphaMH deltaMH  
+  ##  I0001  1.3908 -0.7752 A
+  ##  I0002  0.2339  3.4147 C
+  ##  I0003  1.1407 -0.3093 A
+  ##  I0004  2.8515 -2.4625 C
+  ##  I0005  1.0050 -0.0118 A
+  ##  [...]
+  ##  
+  ##  Effect size codes: 0 'A' 1.0 'B' 1.5 'C' 
+  ##   (for absolute values of 'deltaMH') 
+
+# recompute DIF parameter from alphaMH
+uniformDIF3 <- log(dif3$alphaMH) 
+
+# compare different DIF statistics
+dfr <- data.frame( "bdif"=  bdif , "LR_wle" = dif1$uniformDIF ,
+        "LR_eap" = dif2$uniformDIF , "MH" = uniformDIF3 )
+round( dfr , 3 )
+  ##       bdif LR_wle LR_eap     MH
+  ##  1   0.236  0.319  0.278  0.330
+  ##  2  -1.149 -1.473 -1.523 -1.453
+  ##  3   0.140  0.122  0.038  0.132
+  ##  4   0.957  1.048  0.938  1.048
+  ##  [...]
+colMeans( abs( dfr[,-1] - bdif ))
+  ##      LR_wle     LR_eap         MH 
+  ##  0.07759187 0.19085743 0.07501708 
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

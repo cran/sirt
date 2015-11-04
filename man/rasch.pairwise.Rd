@@ -12,7 +12,7 @@ which is a pairwise conditional likelihood estimation approach.
 }
 \usage{
 rasch.pairwise(dat, conv = 1e-04, maxiter = 3000, progress = TRUE, 
-        b.init = NULL)
+        b.init = NULL, zerosum = FALSE)
 
 \method{summary}{rasch.pairwise}(object,...)        
 }
@@ -33,6 +33,9 @@ Display iteration progress?
   \item{b.init}{
 An optional vector of length \eqn{I} of item difficulties
 }
+\item{zerosum}{Optional logical indicating whether item difficulties
+	should be centered in each iteration. The default is that
+        no centering is conducted.}
   \item{object}{
 Object of class \code{rasch.pairwise}
 }
@@ -82,8 +85,33 @@ estimation) can be conducted with \code{\link{rasch.pml3}}.
 #############################################################################
 
 data(data.read)
-mod <- rasch.pairwise( data.read )
-summary(mod)
+
+#*** Model 1: no constraint on item difficulties
+mod1 <- rasch.pairwise( data.read )
+summary(mod1)
+
+#*** Model 2: sum constraint on item difficulties
+mod2 <- rasch.pairwise( data.read , zerosum=TRUE)
+summary(mod2)
+
+\dontrun{
+mod2$item$b   # extract item difficulties
+
+# Bootstrap for item difficulties
+boot_pw <- function(data, indices ){   
+        dd <- data[ indices , ] # bootstrap of indices
+        mod <- rasch.pairwise( dd , zerosum=TRUE , progress=FALSE)
+        mod$item$b   
+    }
+set.seed(986)
+library(boot)
+dat <- data.read
+bmod2 <- boot::boot( dat , boot_pw , R =999 ) 
+bmod2
+summary(bmod2)
+# quantiles for bootstrap sample (and confidence interval)
+apply( bmod2$t , 2 , quantile, c(.025 ,.5 , .975) )
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
