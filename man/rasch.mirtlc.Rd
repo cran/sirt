@@ -372,10 +372,10 @@ summary(mod33)
 set.seed(789)
 N <- 1000   # number of persons
 I <- 20     # number of items
-theta <- sqrt( exp( rnorm( N ) ) )
+theta <- sqrt( exp( stats::rnorm( N ) ) )
 theta <- theta - mean(theta )
 # calculate skewness of theta distribution
-mean( theta^3 ) / sd(theta)^3
+mean( theta^3 ) / stats::sd(theta)^3
 # simulate item responses
 dat <- sim.raschtype( theta , b=seq(-2,2,len=I ) )
 
@@ -443,7 +443,8 @@ dimensions <- rep( 1:3 , each=I)
 # simulate item responses
 dat <- matrix( NA , nrow=N , ncol=I*3)
 for (ii in 1:(3*I) ){   
-    dat[,ii] <- 1 * ( runif(N) < plogis( theta[, dimensions[ii] ] - b[ ii] ) )
+    dat[,ii] <- 1 * ( stats::runif(N) < 
+                 stats::plogis( theta[, dimensions[ii] ] - b[ ii] ) )
             }
 colnames(dat) <- paste0( rep( LETTERS[1:3] , each=I ) , 1:(3*I) )
 
@@ -485,7 +486,7 @@ Qmatrix[ cbind( 1:(3*I) , rep(1:3 , each=I) ) ] <- 1
 
 set.seed(9176)
 # random starting values for theta locations
-theta.k <- matrix( 2*rnorm(5*3) , 5 , 3 )
+theta.k <- matrix( 2*stats::rnorm(5*3) , 5 , 3 )
 colnames(theta.k) <- c("Dim1","Dim2","Dim3")
 # try possibly different starting values
 

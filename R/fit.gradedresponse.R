@@ -6,7 +6,7 @@ fit.gradedresponse <- function( freq.categories , SC , I , K ,
 	conv=.0001 , maxit=100 , progress=TRUE ){
 	#*************************  
 	if (progress){ cat("\n*******Graded Response Model***********\n") }	
-	theta <- qlogis( seq( .5 , SC-1 , len=SC ) / SC )
+	theta <- stats::qlogis( seq( .5 , SC-1 , len=SC ) / SC )
 	# item parameters
 	b <- rep(0,I)
 	b.cat <- seq(1.5 , -1.5 , len=K)

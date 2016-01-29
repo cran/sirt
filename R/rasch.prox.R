@@ -1,20 +1,8 @@
- 
-
-
-
-# 0.01  2012-06-23  o initial release
-# 0.02  2012-08.31  o corrected handling of extreme responses
-
-# 0.01  2012-xx-yy
-
-#-------------------------------------------------------
-
 
 
 
 #------------------------------------------------------------------------------------------------------------------------------
 # PROX routine for Rasch models
-##NS export(rasch.prox)
 rasch.prox <- function( dat , dat.resp = 1 - is.na(dat) , 
 				freq=rep(1,nrow(dat)) , 
 				conv = 0.001 , maxiter = 30 , progress = FALSE ){
@@ -30,11 +18,11 @@ rasch.prox <- function( dat , dat.resp = 1 - is.na(dat) ,
         # calculate logit frequency for every item
         s.i <- colSums( dat * dat.resp * freq )
         n.i <- colSums( dat.resp * freq )
-        logit.freq.i <- qlogis( ( s.i / n.i + .01)/1.02 )
+        logit.freq.i <- stats::qlogis( ( s.i / n.i + .01)/1.02 )
         # calculate logit frequency for every person (response pattern)
         r.n <- rowSums( dat * dat.resp * freq )
         n.n <- rowSums( dat.resp * freq )
-        logit.freq.n <- qlogis( ( r.n / n.n + .01 )/1.02 )
+        logit.freq.n <- stats::qlogis( ( r.n / n.n + .01 )/1.02 )
         # initial mean and SD of logit abilities for persons which answers item i 
         d.i <- mu.i <- rep(0,I)
         sigma.i <- rep(1,I)       
@@ -57,7 +45,7 @@ rasch.prox <- function( dat , dat.resp = 1 - is.na(dat) ,
                 # update ability estimate for pattern
                 b.n <- mu.n + sqrt( ( 1 + sigma.n^2 / 2.9 ) ) * logit.freq.n 
                 # center persons
-                b.n <- b.n - weighted.mean( b.n , freq )
+                b.n <- b.n - stats::weighted.mean( b.n , freq )
                 # update mu.i and sigma.i 
                 # (mean and standard deviation of the logit abilities of the person encountering item i)
                 mu.i <- colSums( Mdf * b.n ) / N.i
@@ -74,7 +62,7 @@ rasch.prox <- function( dat , dat.resp = 1 - is.na(dat) ,
                 par.change <- max( abs(d.i - d.i0) )
                 if ( progress){
                     cat( "PROX Iter." , iter , ": max. parm. change = " , round( par.change , 6 ) , "\n")
-                    flush.console()
+                    utils::flush.console()
                         }
         }    
     return( list( "b" = d.i , "theta" = b.n , "iter" = iter ,

@@ -4,7 +4,7 @@
 # Summary for rm.facets object                         *
 summary.mcmc.sirt <- function( object , digits=3 ,... ){
 	cat("-----------------------------------------------------------------\n")
-	d1 <- packageDescription("sirt")
+	d1 <- utils::packageDescription("sirt")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 	cat( "Date of Analysis:" , "\n" )
 	cat( "   Start:" , paste( object$time$start ) , "\n" )	
@@ -49,6 +49,7 @@ summary.mcmc.sirt <- function( object , digits=3 ,... ){
 	cat("-----------------------------------------------------------------\n")
 	cat("Item Parameters \n")
 	obji <- object$summary.mcmcobj
+	obji$PercSEratio <- obji$PercSERatio
 	vars <- c("parameter" , "Mean" , "SD" , "MAP" , "Rhat" , "PercSEratio" ,
 #			"Q2.5" , "Q5" , "Q95" , "Q97.5" )
 			"Q5" , "Q95"  )

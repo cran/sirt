@@ -411,9 +411,9 @@ round( rowMeans( mod2$nu.resid )[1:8] , 2 )
 I <- 38
 set.seed(18785)
 itempars <- data.frame("item" = paste0("I",1:I) )
-itempars$study1 <- rnorm( I , mean = .3 , sd =1.4 )
+itempars$study1 <- stats::rnorm( I , mean = .3 , sd =1.4 )
 # simulate DIF effects plus some outliers
-bdif <- rnorm(I,mean=.4,sd=.09)+(runif(I)>.9 )* rep( 1*c(-1,1)+.4 , each=I/2 )
+bdif <- stats::rnorm(I,mean=.4,sd=.09)+( stats::runif(I)>.9 )* rep( 1*c(-1,1)+.4 , each=I/2 )
 itempars$study2 <- itempars$study1 + bdif
 # create input for function invariance.alignment
 nu <- t( itempars[,2:3] )

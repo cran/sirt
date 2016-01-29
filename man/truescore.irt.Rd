@@ -111,7 +111,8 @@ plot( theta , dfr$truescore , pch=16 , cex=.6 , xlab=expression(theta) , type="l
     ylab=expression(paste( tau , "(",theta , ")" ))  , main="True Score Transformation" )
 plot( theta , dfr$percscore , pch=16 , cex=.6 , xlab=expression(theta) , type="l",
     ylab=expression(paste( pi , "(",theta , ")" ))  , main="Percent Score Transformation" )
-points( theta , dfr$lower + (dfr$upper-dfr$lower)*plogis(dfr$a*theta+dfr$b) , col=2 , lty=2)
+points( theta , dfr$lower + (dfr$upper-dfr$lower)* 
+                stats::plogis(dfr$a*theta+dfr$b) , col=2 , lty=2)
 plot( theta , error , pch=16 , cex=.6 , xlab=expression(theta) , type="l",
     ylab=expression(paste("SE(",theta , ")" ))  , main="Standard Error Theta" )
 plot( dfr$truescore , dfr$truescore.error , pch=16 , cex=.6 , xlab=expression(tau) ,
@@ -154,7 +155,8 @@ dfr <- truescore.irt( A=A , B=B , theta=theta , error=error ,c=c)
 
 plot( theta , dfr$percscore , pch=16 , cex=.6 , xlab=expression(theta) , type="l",
     ylab=expression(paste( pi , "(",theta , ")" ))  , main="Percent Score Transformation" )
-points( theta , dfr$lower + (dfr$upper-dfr$lower)*plogis(dfr$a*theta+dfr$b) , col=2 , lty=2)
+points( theta , dfr$lower + (dfr$upper-dfr$lower)*
+             stats::plogis(dfr$a*theta+dfr$b) , col=2 , lty=2)
 
 #****
 # Model 2: Rasch model

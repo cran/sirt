@@ -13,7 +13,7 @@
 # }
 # on attach CDM
 .onAttach <- function(libname,pkgname){
-  d <- packageDescription("sirt")
+  d <- utils::packageDescription("sirt")
   d1 <- d$Version
 # d1 <- "1.2"  
   nk <- paste( rep( " " , 20 - nchar(d1) ) , collapse="")
@@ -22,7 +22,7 @@
 		paste("| " ,d$Package," " , d1 ," (",d$Date,")",sep="") , nk , 
 		"                          |" , 
 		"\n| Supplementary Item Response Theory                              |" ,
-        "\n| Maintainer: Alexander Robitzsch <a.robitzsch at bifie.at>       |" ,
+        "\n| Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>     |" ,
 		"\n| https://sites.google.com/site/alexanderrobitzsch/software       |",
 		"\n|---------------------------------------------------" ,
 		"--------------|\n" )
@@ -31,7 +31,7 @@
 	
 version <- function(pkg="sirt"){
   lib <- dirname(system.file(package = pkg))
-  d <- packageDescription(pkg)
+  d <- utils::packageDescription(pkg)
   return(paste(d$Package,d$Version,d$Date,lib))
 }
 

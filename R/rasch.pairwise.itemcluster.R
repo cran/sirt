@@ -10,7 +10,7 @@ rasch.pairwise.itemcluster <- function( dat , itemcluster = NULL ,
 			progress = TRUE , b.init = NULL, zerosum = FALSE){
 	CALL <- match.call()		
     if ( is.null(b.init) ){ 
-			b.init <- - qlogis( colMeans( dat , na.rm=TRUE ) ) 
+			b.init <- - stats::qlogis( colMeans( dat , na.rm=TRUE ) ) 
 				}
 	s1 <- Sys.time()
     I <- ncol(dat)

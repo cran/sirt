@@ -9,7 +9,6 @@ plot.mcmc.sirt <- function( x , layout=1 , conflevel=.90 ,
 	mcmcobj <- (object$mcmcobj)[[1]]
 	lag.max <- round( nrow(mcmcobj) * lag.max )
 	
-	
 	# layout type
 	# layout=1 : standard output from coda package	
     if (layout==1){  plot(object$mcmcobj , ask=ask , ...) }         
@@ -24,8 +23,8 @@ plot.mcmc.sirt <- function( x , layout=1 , conflevel=.90 ,
 		iterindex <- seq(a1[1] , a1[2] , a1[3] )
 		smcmcobj <- object$summary.mcmcobj
 		VV <- ncol(mcmcobj)		
-		ci.quant <- -qnorm( (1-conflevel)/2 )
-		par( mfrow=c(2,2))
+		ci.quant <- - stats::qnorm( (1-conflevel)/2 )
+		graphics::par( mfrow=c(2,2))
 		for (vv in 1:VV){
 #	vv <- 15
 			x.vv <- as.vector( mcmcobj[,vv] )
@@ -33,7 +32,7 @@ plot.mcmc.sirt <- function( x , layout=1 , conflevel=.90 ,
 			sparm.vv <- smcmcobj[ smcmcobj$parameter == parm.vv , ]
 			#***
 			# traceplot
-			plot( iterindex , x.vv , type="l" ,  main= paste0( "Traceplot of " , parm.vv ) ,
+			graphics::plot( iterindex , x.vv , type="l" ,  main= paste0( "Traceplot of " , parm.vv ) ,
 				xlab="Iterations" , ylab="" , ... )
 			x1 <- as.numeric( x.vv )
 			xmin <- min(x1)
@@ -41,68 +40,68 @@ plot.mcmc.sirt <- function( x , layout=1 , conflevel=.90 ,
 			# l1 <- loess( x1 ~ iterindex )$fitted 
 			# include moving average here!!
 			l1 <- .movingAverage(x1 , B = round( lag.max / 2 ) , fill=FALSE)
-			lines( iterindex ,l1  , col= col.smooth , lwd= lwd.smooth )
+			graphics::lines( iterindex ,l1  , col= col.smooth , lwd= lwd.smooth )
 			#***
 			# density estimate
-			plot( density( x.vv ) , main= paste0( "Density of " , parm.vv ) )
+			graphics::plot( stats::density( x.vv ) , main= paste0( "Density of " , parm.vv ) )
 			
-			c1 <- quantile( x1 , ( 1 - conflevel  ) / 2 )			
-			c2 <- quantile( x1 , 1 - ( 1 - conflevel  ) / 2 )			
+			c1 <- stats::quantile( x1 , ( 1 - conflevel  ) / 2 )			
+			c2 <- stats::quantile( x1 , 1 - ( 1 - conflevel  ) / 2 )			
 #			lines( sparm.vv$Mean + c(-1,1)*ci.quant * sparm.vv$SD , c(0,0) , col=col.ci , lwd=3 )
-			lines( c(c1,c2) , c(0,0) , col=col.ci , lwd=3 )
-			points( sparm.vv$Mean , 0 , pch=17 , col= col.ci , cex=1.5)
+			graphics::lines( c(c1,c2) , c(0,0) , col=col.ci , lwd=3 )
+			graphics::points( sparm.vv$Mean , 0 , pch=17 , col= col.ci , cex=1.5)
 			#***
 			# autocorrelation function
-			acf( x.vv , lag.max=lag.max ,
+			stats::acf( x.vv , lag.max=lag.max ,
 				main= paste0( "Autocorrelation of " , parm.vv ) )
 			#***
 			# numerical summary
-			plot( c(0,1) , c(0,1) , axes=FALSE , xlab="" , ylab="", 
+			graphics::plot( c(0,1) , c(0,1) , axes=FALSE , xlab="" , ylab="", 
 					main= paste0( "Summary of " , parm.vv ) , type="n" , ...)
 			x0 <- 0 ; y0 <- 0
 			# heights.summ = c( .05 ,  .20 , .35 ,  .5 , .65 , .8 , .95)
 			heights.summ = c( .05 ,  .15 , .25 ,  .35 , .45 , .55 , .65 , .75)
-			text( x0 + .0015 , y0 + heights.summ[8] , "Posterior Mean =" , cex= cex.summ  , pos=4)
-			text( x0 + .5 , y0 + heights.summ[8] , 
+			graphics::text( x0 + .0015 , y0 + heights.summ[8] , "Posterior Mean =" , cex= cex.summ  , pos=4)
+			graphics::text( x0 + .5 , y0 + heights.summ[8] , 
 				paste0( format.numb( x = mean( x1 ) , digits = round.summ)  )  , pos=4 )
 			hvv <- heights.summ[7]	
-			text( x0 + .0015 , y0 + hvv , "Posterior Mode =" , cex= cex.summ  , pos=4)				
-			text( x0 + .5 , y0 + hvv , 
+			graphics::text( x0 + .0015 , y0 + hvv , "Posterior Mode =" , cex= cex.summ  , pos=4)				
+			graphics::text( x0 + .5 , y0 + hvv , 
 				paste0( format.numb( x = sparm.vv$MAP , digits = round.summ)  )  , pos=4 )			
 				
-			text( x0 + .0015 , y0 + heights.summ[6] , "Posterior SD   =" , cex= cex.summ  , pos=4)
-			text( x0 + .5 , y0 + heights.summ[6] , 
-				paste0( format.numb( x = sd( x1 ) , digits = round.summ)  )  , pos=4 )
+			graphics::text( x0 + .0015 , y0 + heights.summ[6] , "Posterior SD   =" , cex= cex.summ  , pos=4)
+			graphics::text( x0 + .5 , y0 + heights.summ[6] , 
+				paste0( format.numb( x = stats::sd( x1 ) , digits = round.summ)  )  , pos=4 )
 
 			hvv <- heights.summ[5]
-			text( x0 + .0015 , y0 + hvv , 
+			graphics::text( x0 + .0015 , y0 + hvv , 
 							paste( round(100*conflevel ) , "% Credibility Interval = " ,sep="") ,
 							cex= cex.summ , pos=4 )
 
 			hvv <- heights.summ[4]
-				ci.lower <- format.numb( quantile( x1 , ( 1 - conflevel  ) / 2 ) , digits = round.summ )
-				ci.upper <- format.numb( quantile( x1 , 1- ( 1 - conflevel  ) / 2 ) , digits = round.summ )            
-			text( x0 + .25 , y0 + hvv , 
+				ci.lower <- format.numb( stats::quantile( x1 , ( 1 - conflevel  ) / 2 ) , digits = round.summ )
+				ci.upper <- format.numb( stats::quantile( x1 , 1- ( 1 - conflevel  ) / 2 ) , digits = round.summ )            
+			graphics::text( x0 + .25 , y0 + hvv , 
 							paste( "[" , ci.lower ,    "," , ci.upper , "]" ,  sep="") ,
 							cex= cex.summ  , pos=4)
 			hvv <- heights.summ[3]
-			text( x0 + .0015 , y0 + hvv , "Rhat =" , cex= cex.summ  , pos=4)
-			text( x0 + .5 , y0 + hvv , 
+			graphics::text( x0 + .0015 , y0 + hvv , "Rhat =" , cex= cex.summ  , pos=4)
+			graphics::text( x0 + .5 , y0 + hvv , 
 				paste0( format.numb( x = sparm.vv$Rhat , digits = 2)  )  , pos=4 )
 			hvv <- heights.summ[2]
-			text( x0 + .0015 , y0 + hvv , "PercSERatio =" , cex= cex.summ  , pos=4)
-			text( x0 + .5 , y0 + hvv , 
+			graphics::text( x0 + .0015 , y0 + hvv , "PercSERatio =" , cex= cex.summ  , pos=4)
+			graphics::text( x0 + .5 , y0 + hvv , 
 				paste0( format.numb( x = sparm.vv$PercSERatio , digits = 1)  )  , pos=4 )
 
 			hvv <- heights.summ[1]
-			text( x0 + .0015 , y0 + hvv , "Effective Sample Size =" , cex= cex.summ  , pos=4)
-			text( x0 + .705 , y0 + hvv , 
+			graphics::text( x0 + .0015 , y0 + hvv , "Effective Sample Size =" , cex= cex.summ  , pos=4)
+			graphics::text( x0 + .705 , y0 + hvv , 
 				paste0( format.numb( x = sparm.vv$effSize , digits = 1)  )  , pos=4 )
 				
 				
-			par(ask=ask)				
+			graphics::par(ask=ask)				
 					}				
-			par(mfrow=c(1,1))
+			graphics::par(mfrow=c(1,1))
 			 }
 
                     }
@@ -135,7 +134,7 @@ format.numb <- function( x , digits ){
     ybeg <- sapply(j, function(z) sum( x[ seq(1,(2*z+1)) ]) / (2*z+1) )
     yend <- sapply(rev(j), function(z) sum( x[ seq(N-2*z,N) ] ) / (2*z+1) )
     y[j+1] <- ybeg
-    y[rev(N-j)] <- yend
+    y[ base::rev(N-j) ] <- yend
   }
 
   y

@@ -12,9 +12,9 @@ dif.variance <- function( dif , se.dif , items = paste("item",1:length(dif),sep=
         weighted.tauq <- sum( wi^2 * ( dif - md )^2 - wi  ) / sum( wi^2 )
         # unweighted tau2 estimator
         # formula (5) of PENFIELD & ALGINA (2006)
-            unweighted.tauq <- sum( ( dif - md )^2 - se.dif^2 ) / ( length(items) - 1 )
+        unweighted.tauq <- sum( ( dif - md )^2 - se.dif^2 ) / ( length(items) - 1 )
         # calculation of variances v_i
-            vi <- weighted.tauq + se.dif^2
+        vi <- weighted.tauq + se.dif^2
 		weighted.tauq[ weighted.tauq < 0 ] <- 0			
 		unweighted.tauq[ unweighted.tauq < 0 ] <- 0
         # Empirical Bayes DIF estimate
@@ -32,10 +32,10 @@ dif.strata.variance <- function( dif , se.dif , itemcluster ){
     # stratified dif variance
     # means in differential item functioning
     # itemcluster is a vector of strata corresponding to items
-    stratadif <- aggregate( 1+0*dif , list( itemcluster ) , sum , na.rm = T )
+    stratadif <- stats::aggregate( 1+0*dif , list( itemcluster ) , sum , na.rm = T )
     colnames(stratadif) <- c("strata" , "N.Items" )
     stratadif <- data.frame(stratadif)
-    stratadif$M.DIF <- aggregate( dif , list( itemcluster ) , mean , na.rm = T )[,2]
+    stratadif$M.DIF <- stats::aggregate( dif , list( itemcluster ) , mean , na.rm = T )[,2]
     # DIF in strata
     SS <- nrow(stratadif)
     for (ss in 1:SS){

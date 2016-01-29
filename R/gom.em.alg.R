@@ -23,11 +23,11 @@
 .gom.calcprobs <- function( lambda , theta.k , b=NULL , theta0.k=NULL ){
 	if ( ! is.null( b ) ){
 #		lambda <- t( plogis( outer( theta0.k , b , "-" )	) )
-		lambda <- plogis( - b + matrix( theta0.k , length(b) , length(theta0.k) ,
+		lambda <- stats::plogis( - b + matrix( theta0.k , length(b) , length(theta0.k) ,
 					byrow=TRUE )	)
 					}
 #    probs <- lambda %*% t(theta.k)
-    probs <- tcrossprod( lambda ,theta.k)
+    probs <- base::tcrossprod( lambda ,theta.k)
 	probsL <- array( 0 , dim=c( nrow(lambda) , 2 , nrow(theta.k) ) )
 	probsL[,2,] <- probs
 	probsL[,1,] <- 1-probs	
@@ -64,10 +64,10 @@
     n.k <- colSums( f.qk.yi )
     # expected counts at theta.k and item j
 #    n.jk[,,1] <-  t(dat2.resp)  %*% f.qk.yi
-    n.jk[,,1] <-  crossprod(dat2.resp , f.qk.yi )
+    n.jk[,,1] <-  base::crossprod(dat2.resp , f.qk.yi )
     # compute r.jk (expected counts for correct item responses at theta.k for item j
 #    r.jk[,,1] <- t( dat2 * dat2.resp )  %*% f.qk.yi
-    r.jk[,,1] <- crossprod( dat2 * dat2.resp , f.qk.yi )
+    r.jk[,,1] <- base::crossprod( dat2 * dat2.resp , f.qk.yi )
 	K <- 1
 	# expected counts
 	TP <- nrow(theta.k)
@@ -124,11 +124,10 @@
 		it <- it+1
 		if (progress){ 
 				cat("-") 
-				# ; flush.console() 
-					}
+						}
 			}
 	if (progress){		
-		cat(" " , it , "Step(s) \n")	#; flush.console()
+		cat(" " , it , "Step(s) \n")	
 				}
 	res <- list("lambda" = lambda , "se.lambda" = se.lambda , 
 			"ll" = sum(res$ll0) )
@@ -146,7 +145,7 @@
     if (progress){
 		cat("  M steps b parameter |")
 				  }
-	an.ik <- aperm( n.ik , c(2,3,1) )	
+	an.ik <- base::aperm( n.ik , c(2,3,1) )	
 	it <- 0 ;	conv1 <- 1000
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
 		b0 <- b
@@ -162,11 +161,11 @@
 		conv1 <- max( abs( b - b0 ) )
 		it <- it+1
 		if (progress){
-			cat("-") # ; flush.console()
+			cat("-") 
 				}
 			}
 	if (progress){ 
-		cat(" " , it , "Step(s) \n")	#; flush.console()
+		cat(" " , it , "Step(s) \n")	
 					}
 	res <- list("b" = b , "se.b" = sqrt( - 1/res$d2 ) , 
 			"ll" = sum(res$ll0) )
@@ -185,9 +184,6 @@
     ll0 <- rowSums( an.ik * log(pjk+eps) )
     ll1 <- rowSums( an.ik * log(pjk1+eps) )
     ll2 <- rowSums( an.ik * log(pjk2+eps) )	
-#    ll0 <- aggregate( ll0 , list(diffindex) , sum )[,2]
-#    ll1 <- aggregate( ll1 , list(diffindex) , sum )[,2]
-#    ll2 <- aggregate( ll2 , list(diffindex) , sum )[,2]
     d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?
     # second order derivative
     # f(x+h)+f(x-h) = 2*f(x) + f''(x)*h^2
@@ -227,7 +223,8 @@
 									}
 								}
 		diag(Sigma.cov) <- diag(Sigma.cov) + 10^(-10)
-		pi.k <- matrix( dmvnorm( theta.k , mean = mu , sigma = Sigma.cov )	, ncol=1 )		
+		pi.k <- matrix( mvtnorm::dmvnorm( theta.k , mean = mu , sigma = Sigma.cov )	, 
+						ncol=1 )		
 		pi.k <- pi.k / sum( pi.k )			
 		res <- list("mu"=mu , "Sigma"=Sigma.cov , "pi.k"= pi.k )				
 		return(res)

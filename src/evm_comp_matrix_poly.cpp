@@ -154,20 +154,20 @@ BEGIN_RCPP
      // OUTPUT              
                    
      return Rcpp::List::create(    
-         _["D"] = D ,    
-         _["B"] = B ,  
-     //    _["Bjack"] = Bjack ,     
-         _["b_evm"] = b ,  
-         _["b_evm_jack"] = b_evm_jack ,  
-         _["lambda"] = lambda ,  
-         _["lambda_jack"] = lambda_jack ,   
-         _["lambda_jack_na"] = lambda_jack_na ,   
-         _["cons_index"] = cons_index ,  
-         _["cons_index_jack"] = cons_index_jack ,      
-         _["JJ"] = JJ ,  
-         _["JJadj"] = JJadj ,   
-         _["PARS_means"] = PARS_means ,  
-         _["PARS_vcov"] = PARS_vcov         
+         Rcpp::_["D"] = D ,    
+         Rcpp::_["B"] = B ,  
+     //    Rcpp::_["Bjack"] = Bjack ,     
+         Rcpp::_["b_evm"] = b ,  
+         Rcpp::_["b_evm_jack"] = b_evm_jack ,  
+         Rcpp::_["lambda"] = lambda ,  
+         Rcpp::_["lambda_jack"] = lambda_jack ,   
+         Rcpp::_["lambda_jack_na"] = lambda_jack_na ,   
+         Rcpp::_["cons_index"] = cons_index ,  
+         Rcpp::_["cons_index_jack"] = cons_index_jack ,      
+         Rcpp::_["JJ"] = JJ ,  
+         Rcpp::_["JJadj"] = JJadj ,   
+         Rcpp::_["PARS_means"] = PARS_means ,  
+         Rcpp::_["PARS_vcov"] = PARS_vcov         
          ) ;  
 END_RCPP
 }

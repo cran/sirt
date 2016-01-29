@@ -17,7 +17,7 @@ mcmc.2pno <- function(dat , weights=NULL , burnin=500 , iter=1000 , N.sampvalues
 					}	
 	# set initial values
 	a <- rep(1,I)
-	b <- - qnorm( (colMeans(dat0 , na.rm=TRUE) + .01 )/1.02 )
+	b <- - stats::qnorm( (colMeans(dat0 , na.rm=TRUE) + .01 )/1.02 )
 	# item parameters in matrix form
 	aM <- matrix( a , nrow=N , ncol=I , byrow=TRUE)
 	bM <- matrix( b , nrow=N , ncol=I , byrow=TRUE)			
@@ -99,7 +99,7 @@ mcmc.2pno <- function(dat , weights=NULL , burnin=500 , iter=1000 , N.sampvalues
 	if (save.theta){ mcmcobj <- cbind( mcmcobj , theta ) }
 	class(mcmcobj) <- "mcmc"
 	attr(mcmcobj, "mcpar") <- c( burnin+1 , burnin+SV , 1 )
-	mcmcobj <- as.mcmc.list( mcmcobj )
+	mcmcobj <- coda::as.mcmc.list( mcmcobj )
 	
 	#----
 	# summary of the MCMC output

@@ -58,7 +58,7 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
 		dat1 <- data.frame( 1+0*y[,1] , 1 )
 					}
 	LT <- length( theta.list )
-	pi.k <- dnorm( theta.list )
+	pi.k <- stats::dnorm( theta.list )
 	theta.kM <- matrix( theta.list , nrow= nrow(X) ,
 					ncol=length(theta.list)  , byrow=TRUE )
 	theta.kM2 <- theta.kM^2
@@ -100,7 +100,8 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
                                 }
         if ( printprogress ){ 
                 if (ii == 1 ){ cat("\n Iteration ") }
-                cat(paste(ii , ".",sep="")); flush.console() 
+                cat(paste(ii , ".",sep="")); 
+				utils::flush.console() 
                 if ( ( ii %% 10 == 0 ) | ( ii == iter  ) ){ cat("\n     ") }
                         }
                 }
@@ -141,7 +142,7 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
 	theta.listM <- thetaM <- matrix( theta.list , nrow=n , ncol=length(theta.list) ,
 		byrow=TRUE)
     # compute density resulting from regression
-    dens.Regr <- dnorm( thetaM , mean=M.Regr , sd = SD.Regr )
+    dens.Regr <- stats::dnorm( thetaM , mean=M.Regr , sd = SD.Regr )
     dens.total <- f.yi.qk * dens.Regr
     dens.total <- dens.total / rowSums( dens.total)	
 #   theta.listM <- outer( l1 , theta.list )
@@ -151,7 +152,7 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
     SD.Post <- sqrt( rowSums( theta.listM^2 * dens.total ) -  EAP^2 )
     # one draw of plausible values
     if (  ! pvdraw ){ pvdraw <- NULL } else { 
-            pvdraw <- matrix( rnorm( n*pvdraw , 
+            pvdraw <- matrix( stats::rnorm( n*pvdraw , 
 				mean = rep(EAP,each=pvdraw) , sd = rep(SD.Post,each=pvdraw) ) , ncol=pvdraw , byrow=T )
                          }
     # results
@@ -173,19 +174,19 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
         # Z         ... matrix of covariates for explaining residual variance
         #.............................................................
         # latent regression model
-        mod <- lm( pv ~ 0 + X )
+        mod <- stats::lm( pv ~ 0 + X )
         res <- list( "est.beta" = coef(mod) , "vcov.beta" = vcov(mod) )
         # sample beta parameter
-        res$samp.beta <- mvrnorm( mu = res$est.beta , Sigma = res$vcov.beta )
+        res$samp.beta <- MASS::mvrnorm( mu = res$est.beta , Sigma = res$vcov.beta )
         # residual standard deviation
         n <- nrow(X) ; p <- ncol(X)
         res$est.sigma <- summary(mod)$sigma
-        residuals.mod <- ( resid(mod) )^2   * (n-1) / ( n - p - 1)
-        mod1 <- lm( residuals.mod ~ 0 + Z )
+        residuals.mod <- ( stats::resid(mod) )^2   * (n-1) / ( n - p - 1)
+        mod1 <- stats::lm( residuals.mod ~ 0 + Z )
 #        summary(mod1)
         # sample gamma coefficients for heteroscedasticity
-        res$samp.gamma <- mvrnorm( mu = coef(mod1) , Sigma = vcov(mod1) )
-        res$fitted.sigma <- sqrt( fitted(mod1) )
+        res$samp.gamma <- MASS::mvrnorm( mu = stats::coef(mod1) , Sigma = stats::vcov(mod1) )
+        res$fitted.sigma <- sqrt( stats::fitted(mod1) )
         res$lm.latent.regression <- mod
         res$lm.residualsd <- mod1
         return(res)
@@ -197,8 +198,8 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
         # function to calculate adjusted mean: eliminate score on the individual
         # variable <- pv1$plausible.value[,1]
         .adj.groupmean <- function( variable , cluster ){
-            a1 <- aggregate( variable ,    list( cluster ) , mean  )
-            a2 <- aggregate( 1+0*variable ,    list( cluster ) , sum  )
+            a1 <- stats::aggregate( variable ,    list( cluster ) , mean  )
+            a2 <- stats::aggregate( 1+0*variable ,    list( cluster ) , sum  )
             ind <- match( cluster , a1[,1] )
             ( a2[ind,2] * a1[ ind , 2] - variable ) / a2[ ind , 2] 
                     }

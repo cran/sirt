@@ -24,14 +24,14 @@ function( noharmobj , theta.k =seq(-6,6,len=21) , print.output=TRUE ){
                 }
     guessM <- matrix( mod$guess , nrow=I , ncol=TT )
     upperM <- matrix( mod$upper , nrow=I , ncol=TT )	
-    probs1 <- guessM + ( upperM - guessM) * pnorm( probs )
+    probs1 <- guessM + ( upperM - guessM) * stats::pnorm( probs )
     probs <- array( 0 , dim=c(I , TT , 2 ) )
     probs[,,1] <- 1-probs1
     probs[,,2] <- probs1
     
     #****
     # evaluate posterior distribution
-    prior.density <- dmvnorm( as.matrix(theta.k) , mean = rep(0,D) ,sigma = as.matrix(P) )
+    prior.density <- mvtnorm::dmvnorm( as.matrix(theta.k) , mean = rep(0,D) ,sigma = as.matrix(P) )
     prior.density <- prior.density / sum( prior.density )
     prior.density <- matrix( prior.density , nrow=N , ncol=TT , byrow=T )
     like <- matrix( 1 , nrow=N , ncol=TT )
@@ -58,8 +58,9 @@ function( noharmobj , theta.k =seq(-6,6,len=21) , print.output=TRUE ){
         #***
         # calculate EAP reliability
         # EAP variance
-        EAP.variance <- weighted.mean( person$EAP^2 , pweights ) - ( weighted.mean( person$EAP , pweights ) )^2
-        EAP.error <- weighted.mean( person$SD.EAP^2 , pweights )
+        EAP.variance <- stats::weighted.mean( person$EAP^2 , pweights ) - 
+							( stats::weighted.mean( person$EAP , pweights ) )^2
+        EAP.error <- stats::weighted.mean( person$SD.EAP^2 , pweights )
         EAP.rel[dd] <- EAP.variance / ( EAP.variance + EAP.error )    
         colnames(person)[ which( colnames(person) == "EAP" ) ] <- paste("EAP.Dim" , dd , sep="")
         colnames(person)[ which( colnames(person) == "SD.EAP" ) ] <- paste("SD.EAP.Dim" , dd , sep="")                

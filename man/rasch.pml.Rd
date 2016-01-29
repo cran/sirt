@@ -331,7 +331,7 @@ mod3 <- rasch.pml3( dat , error.corr = error.corr )
 set.seed(554)
 N <- 500	# persons
 I <- 10		# items
-theta <- rnorm(N,sd=1.3 )	# trait SD of 1.3
+theta <- stats::rnorm(N,sd=1.3 )	# trait SD of 1.3
 b <- seq(-2 , 2 , length=I) # item difficulties
 
 # simulate data from the Rasch model
@@ -362,7 +362,7 @@ set.seed(5698)
 I <- 11                             # number of items
 n <- 5000                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
-theta <- rnorm( n , sd = 1 )        # person abilities
+theta <- stats::rnorm( n , sd = 1 ) # person abilities
 # itemcluster
 itemcluster <- rep(0,I)
 itemcluster[c(3,5)] <- 1
@@ -445,7 +445,7 @@ I <- 10                             # number of items
 n <- 5000                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
 bsamp <- b <- sample(b)             # sample item difficulties
-theta <- rnorm( n , sd = 1 )        # person abilities
+theta <- stats::rnorm( n , sd = 1 ) # person abilities
 # define itemcluster
 itemcluster <- rep(0,I)
 itemcluster[ 1:2 ] <- 1

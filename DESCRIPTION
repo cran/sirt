@@ -1,8 +1,8 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 1.9-0
-Date: 2015-11-04
+Version: 1.10-0
+Date: 2016-01-29
 Author: Alexander Robitzsch [aut,cre]
 Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 Description: 
@@ -10,17 +10,16 @@ Description:
     functions in R, including multidimensional compensatory and
     noncompensatory IRT models, MCMC for hierarchical IRT models and 
     testlet models, NOHARM, faceted and hierarchical rater models, 
-    ordinal IRT model (ISOP), latent regression models, 
-    DETECT statistic, local structural equation modeling (LSEM).
-Depends: R (>= 2.15.0), TAM, CDM
-Imports: stats, graphics, utils, methods, Rcpp, mirt, lavaan, combinat,
-        ic.infer, sfsmisc, sm, psych, pbivnorm, gtools, igraph, coda,
-        mvtnorm, MASS, Matrix, lavaan.survey, survey
+    ordinal IRT model (ISOP), DETECT statistic, local structural 
+    equation modeling (LSEM).
+Depends: R (>= 2.15.0), CDM, TAM
+Imports: coda, combinat, graphics, gtools, ic.infer, igraph, lavaan,
+        lavaan.survey, MASS, Matrix, methods, mirt, mvtnorm, pbivnorm,
+        plyr, psych, Rcpp, sfsmisc, sm, stats, survey, utils
 Suggests: miceadds
 LinkingTo: Rcpp, RcppArmadillo
 License: GPL (>= 2)
-URL: https://sites.google.com/site/alexanderrobitzsch/software
-Packaged: 2015-11-04 16:06:23 UTC; robitzsch
 NeedsCompilation: yes
+Packaged: 2016-01-29 14:40:55 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2015-11-04 19:04:50
+Date/Publication: 2016-01-29 23:52:40

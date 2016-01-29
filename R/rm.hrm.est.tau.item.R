@@ -39,12 +39,12 @@
 					}
 		conv1 <- max( abs( tau.item - tau.item0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()
+		cat("-") 
 		if (!is.null(tau.item.fixed)){
 			tau.item[ tau.item.fixed[,1:2,drop=FALSE] ] <- tau.item.fixed[,3]
 								}
 			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()
+	cat(" " , it , "Step(s) \n")
 	res <- list("tau.item" = tau.item , "se.tau.item" = se.tau.item , 
 			"ll" = sum(res$ll0) , "prob.item"=r1$prob.item )
     return(res)

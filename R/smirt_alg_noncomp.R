@@ -51,14 +51,14 @@ calcpost <- function (dat2 , dat2resp , probs, dat2ind , pik , K){
 				if (dd1 < dd2 ){ Sigma.cov[dd2,dd1] <- Sigma.cov[dd1,dd2] }
 									}
 								}								
-		if ( est.corr ){ Sigma.cov <- cov2cor(Sigma.cov ) }					
+		if ( est.corr ){ Sigma.cov <- stats::cov2cor(Sigma.cov ) }					
 		if ( ! is.null(variance.fixed ) ){
 				Sigma.cov[ variance.fixed[,1:2,drop=FALSE] ] <- variance.fixed[,3]
 				Sigma.cov[ variance.fixed[,c(2,1),drop=FALSE] ] <- variance.fixed[,3]		
 #										
 									}
 		diag(Sigma.cov) <- diag(Sigma.cov) + 10^(-10)
-		pi.k <- matrix( dmvnorm( theta.k , mean = mu , sigma = Sigma.cov )	, ncol=1 )		
+		pi.k <- matrix( mvtnorm::dmvnorm( theta.k , mean = mu , sigma = Sigma.cov )	, ncol=1 )		
 		pi.k <- pi.k / sum( pi.k )			
 		res <- list("mu"=mu , "Sigma"=Sigma.cov , "pi.k"= pi.k )				
 		return(res)

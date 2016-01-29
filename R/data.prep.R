@@ -9,7 +9,7 @@
         #-------------------
         # should items being excluded?
 # a0 <- Sys.time()		
-        item.means <- colMeans( dat , na.rm=T )
+        item.means <- base::colMeans( dat , na.rm=T )
         item.elim <- which( item.means %in% c(0,1))
         if ( length( item.elim ) > 0 ){
                 stop( cat( paste( "There are" , length(item.elim) , "Items with no variance!") ) ) 
@@ -39,7 +39,7 @@
             # standardize weights
             weights <- weights / sum( weights ) * n 
             if ( use.freqpatt ){ 
-                    dat1[,2] <- aggregate( weights , list( freq.patt) , sum )[,2]
+                    dat1[,2] <- stats::aggregate( weights , list( freq.patt) , sum )[,2]
                         } else { 
 					dat1[,"Freq"] <- weights 
 						}
@@ -53,9 +53,7 @@
 		dat2[ dat2 == 9 ] <- 0
          # mean right
         dat1$mean <- rowSums( dat2 * dat2.resp )  / rowSums( dat2.resp )     
-        freq.patt <- data.frame(  freq.patt ,   
-#		    rowSums( dat.9 * ( 1 - is.na( dat ) ) ) / 	rowSums( 1 - is.na(dat) )  , 
-			rowMeans( dat , na.rm=T ) , 1:n )
+        freq.patt <- data.frame(  freq.patt , rowMeans( dat , na.rm=TRUE ) , 1:n )
         colnames(freq.patt)[2:3] <- c("mean" , "index" )
         list( "dat" = dat , "dat2" = dat2 , "dat2.resp" = dat2.resp , "dat1" = dat1 , 
 				"freq.patt" = freq.patt  , "I" = I , "n" = n ,

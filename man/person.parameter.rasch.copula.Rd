@@ -97,7 +97,7 @@ I <- 12                             # number of items
 n <- 450                            # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
 b <- sample(b)                      # sample item difficulties
-theta <- rnorm( n , sd = 1 )        # person abilities
+theta <- stats::rnorm( n , sd = 1 ) # person abilities
 # itemcluster
 itemcluster <- rep(0,I)
 itemcluster[ 1:4 ] <- 1

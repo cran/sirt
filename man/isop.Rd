@@ -290,7 +290,7 @@ summary(mod1)
 # Dataset students: scale cultural activities
 library(CDM)
 data(data.Students , package="CDM")
-dat <- na.omit( data.Students[ , paste0("act",1:4) ] )
+dat <- stats::na.omit( data.Students[ , paste0("act",1:4) ] )
 
 # fit models
 mod1 <- isop.poly( dat )

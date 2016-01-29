@@ -33,14 +33,14 @@ mcmc.2pno.ml <- function(dat , group ,
 	# set initial values
 	a <- rep(1,I)
 	if (link=="logit"){ 
-		b <- - qnorm( (colMeans(dat0 , na.rm=TRUE) + .01 )/1.02 )
+		b <- - stats::qnorm( (colMeans(dat0 , na.rm=TRUE) + .01 )/1.02 )
 						}
 	if (link=="normal"){b <- - colMeans( dat0 , na.rm=TRUE ) }
-	eps.bG <- bG <- matrix( rnorm( G*I , sd = sigma.b.init ) ,  G , I )	
+	eps.bG <- bG <- matrix( stats::rnorm( G*I , sd = sigma.b.init ) ,  G , I )	
 	aG <- eps.aG <- 0*bG	
 	sigma.res <- rep(1,I)
 	if (link=="normal"){ 
-		sigma.res <- apply( dat0 , 2 , sd , na.rm=TRUE)
+		sigma.res <- apply( dat0 , 2 , stats::sd , na.rm=TRUE)
 		Z <- dat
 				}
 	sigma.b <- rep( sigma.b.init , I )	
@@ -55,19 +55,19 @@ mcmc.2pno.ml <- function(dat , group ,
 	bM <- matrix( b , nrow=N , ncol=I , byrow=TRUE) + bG[ idgroup , ]
 	aM.chainsum <- bM.chainsum <- 0*bM
 	if (link=="logit"){	
-		theta <- qnorm( ( rowMeans( dat0,na.rm=TRUE ) + .01 ) / 1.02 )
+		theta <- stats::qnorm( ( rowMeans( dat0,na.rm=TRUE ) + .01 ) / 1.02 )
 						}
 	if (link=="normal"){	
 		theta <-  ( rowMeans( dat0,na.rm=TRUE ) + .01 ) / 1.02 
 						}
 	theta <- theta - mean( theta )					
 	# theta level 2 part
-	theta2 <- rep( rnorm( G , sd = .2 ) , groupsize )	
+	theta2 <- rep( stats::rnorm( G , sd = .2 ) , groupsize )	
 	# inits Level 1 and Level 2 standard deviations
 	sigma1 <- sqrt( .7 )
 	sigma2 <- sqrt( .3 )
 	# residual standard deviation (only applies in model with normal data)
-	sigma.res <- apply( dat0 , 2  , sd , na.rm=TRUE ) * .8
+	sigma.res <- apply( dat0 , 2  , stats::sd , na.rm=TRUE ) * .8
 	#***
 	# define lower and upper thresholds 
 	ZZ <- 1000

@@ -2,7 +2,7 @@
 
 osink <- function( file , prefix){
 	if ( ! is.null( file ) ){
-		sink( paste0( file , prefix) , split=TRUE )
+		base::sink( paste0( file , prefix) , split=TRUE )
 						}
 				}
 				

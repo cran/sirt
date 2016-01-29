@@ -75,7 +75,7 @@ set.seed(657)
 # simulate data according to the Ramsay model
 N <- 1000       # persons
 I <- 11         # items
-theta <- exp( rnorm( N ) )  # person ability
+theta <- exp( stats::rnorm( N ) )  # person ability
 b <- exp( seq(-2,2,len=I))  # item difficulty
 K <- rep( 3 , I )           # K parameter (=> guessing)
 

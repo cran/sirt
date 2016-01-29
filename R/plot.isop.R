@@ -24,7 +24,7 @@ plotisoppoly <- function(x , ask=TRUE , ... ){
 		#kk <- 2
 		#********************
 		# plot all item response functions
-		par( mfrow=c(2,2))
+		graphics::par( mfrow=c(2,2))
 			# Labels for plots
 			kv <- substitute( expression( a ) , list(a=kk) )
 			xlabplot <- expression( paste( "Modified P Score " , rho[p] ))
@@ -50,8 +50,8 @@ plotisoppoly <- function(x , ask=TRUE , ... ){
 			p1 <- mod$surv.grm
 			mainplot <- paste0( mainplot1 ,  "\nGraded Response Model")
 			plot.all.icc.isop.poly( pers , p1 , xlabplot , ylabplot , mainplot,I,kk)
-		par( mfrow=c(1,1))
-		par(ask=ask)    
+		graphics::par( mfrow=c(1,1))
+		graphics::par(ask=ask)    
 				}
 	}
 #########################################################################	
@@ -66,7 +66,7 @@ plotisopdich <- function(x , ask=TRUE , ... ){
 		I <- ncol( mod3$dat )
 		#********************
 		# plot all item response functions
-		par( mfrow=c(2,2))
+		graphics::par( mfrow=c(2,2))
 			# Labels for plots
 			xlabplot <- expression( paste( "Modified P Score " , rho[p] ))
 			ylabplot <- expression(paste(P,"(",X[i]==1, "|", rho[p] , ")" ))    
@@ -86,29 +86,29 @@ plotisopdich <- function(x , ask=TRUE , ... ){
 			p1 <- mod$prob.logistic
 			mainplot <- paste0( "Item Response Functions \nLogistic Model (Rasch Model)")
 			plot.all.icc.isop.dich( pers , p1 , xlabplot , ylabplot , mainplot,I)
-		par( mfrow=c(1,1))
-		par(ask=ask)    
+		graphics::par( mfrow=c(1,1))
+		graphics::par(ask=ask)    
 		#*********************
 		# separate item response functions
 		for (ii in 1:I){
 		# ii <- 1
-		par( mfrow=c(2,2))
+		graphics::par( mfrow=c(2,2))
 			xlabplot <- expression( paste( "Modified P Score " , rho[p] ))
 			ylabplot <- expression(paste(P,"(",X[i]==1, "|", rho[p] , ")" ))  
 			mainplot <- paste0("Item " , colnames(mod3$dat)[ii] , " | Saturated Model" )
-			plot( pers$mpsc , mod3$prob.saturated[ii,2, pers$scoregroup ] , type="l" ,
+			graphics::plot( pers$mpsc , mod3$prob.saturated[ii,2, pers$scoregroup ] , type="l" ,
 						 xlab=xlabplot , ylab=ylabplot , main=mainplot , ylim=c(0,1)  )
 			mainplot <- paste0("Item " , colnames(mod3$dat)[ii] , " | ISOP Model" )               
-			plot( pers$mpsc , mod3$prob.isop[ii,2, pers$scoregroup ] , type="l" ,
+			graphics::plot( pers$mpsc , mod3$prob.isop[ii,2, pers$scoregroup ] , type="l" ,
 						 xlab=xlabplot , ylab=ylabplot , main=mainplot , ylim=c(0,1)  )
 			mainplot <- paste0("Item " , colnames(mod3$dat)[ii] , " | ADISOP Model" )                              
-			plot( pers$mpsc , mod3$prob.adisop[ii,2, pers$scoregroup ] , type="l" ,
+			graphics::plot( pers$mpsc , mod3$prob.adisop[ii,2, pers$scoregroup ] , type="l" ,
 						 xlab=xlabplot , ylab=ylabplot , main=mainplot , ylim=c(0,1)  )
 			mainplot <- paste0("Item " , colnames(mod3$dat)[ii] , " | Logistic Model" )
-			plot( pers$mpsc , mod3$prob.logistic[ii,2, pers$scoregroup ] , type="l",
+			graphics::plot( pers$mpsc , mod3$prob.logistic[ii,2, pers$scoregroup ] , type="l",
 						 xlab=xlabplot , ylab=ylabplot , main=mainplot , ylim=c(0,1)  )
-		   par( mfrow=c(1,1))    
-		   par(ask=ask)    
+		   graphics::par( mfrow=c(1,1))    
+		   graphics::par(ask=ask)    
 			}		
 	}
 #########################################################################	
@@ -118,10 +118,10 @@ plotisopdich <- function(x , ask=TRUE , ... ){
 plot.all.icc.isop.dich <- function( pers , p1 , 
 	xlabplot , ylabplot , mainplot , I ){
 	# begin plot
-	plot( pers$mpsc , p1[1,2, pers$scoregroup ] , type="l" , ylim=c(0,1),
+	graphics::plot( pers$mpsc , p1[1,2, pers$scoregroup ] , type="l" , ylim=c(0,1),
 		 xlab= xlabplot , ylab=ylabplot , main = mainplot)    
 	for (ii in 2:I){
-		lines( pers$mpsc , p1[ii,2, pers$scoregroup ] , lty=ii , col=ii )
+		graphics::lines( pers$mpsc , p1[ii,2, pers$scoregroup ] , lty=ii , col=ii )
 					}
 				}
 #########################################################################
@@ -129,9 +129,9 @@ plot.all.icc.isop.dich <- function( pers , p1 ,
 plot.all.icc.isop.poly <- function( pers , p1 , 
 	xlabplot , ylabplot , mainplot , I , kk){
 	# begin plot
-	plot( pers$mpsc , p1[1,kk, pers$scoregroup ] , type="l" , ylim=c(0,1),
+	graphics::plot( pers$mpsc , p1[1,kk, pers$scoregroup ] , type="l" , ylim=c(0,1),
 		 xlab= xlabplot , ylab=ylabplot , main = mainplot)    
 	for (ii in 2:I){
-		lines( pers$mpsc , p1[ii,kk, pers$scoregroup ] , lty=ii , col=ii )
+		graphics::lines( pers$mpsc , p1[ii,kk, pers$scoregroup ] , lty=ii , col=ii )
 					}
 				}

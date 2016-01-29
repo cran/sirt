@@ -24,7 +24,7 @@ reliability.nonlinearSEM <- function( facloadings , thresh ,
         # number of items
         I <- nrow(facloadings)
         # transform thresholds
-        pthresh <- pnorm( thresh )
+        pthresh <- stats::pnorm( thresh )
         # create matrix of multiplied facloadings (expected correlation)
         rho.exp <- matrix( 0 , I , I )
         colnames(rho.exp) <- rownames(rho.exp) <- rownames(facloadings)
@@ -38,21 +38,22 @@ reliability.nonlinearSEM <- function( facloadings , thresh ,
 											matrix( as.vector(facloadings[ii2,]) , ncol=1 )
                 rho.exp[ii2,ii1] <- rho.exp[ii1,ii2] 
                 r1 <- rho.exp[ii1,ii2]			
-                rel.matrix[ii1,ii2] <- pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
+                rel.matrix[ii1,ii2] <- mvtnorm::pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
                                          corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - 
-										 pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
+										 stats::pnorm( pthresh[ii1] ) * stats::pnorm( pthresh[ii2] )
 				r1 <- max( -1 , min( r1 + resid.cov[ii1,ii2] , 1 ) )
-                rel.matrix2[ii1,ii2] <- pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
+                rel.matrix2[ii1,ii2] <- mvtnorm::pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
                                          corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - 
-										 pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )										 
+										 stats::pnorm( pthresh[ii1] ) * stats::pnorm( pthresh[ii2] )										 
 #				rel.matrix2[ii1,ii2] <- rel.matrix[ii1,ii2]										 
                 rel.matrix[ii2,ii1] <- rel.matrix[ii1,ii2]
 				rel.matrix2[ii2,ii1] <- rel.matrix2[ii1,ii2] 
                 if (ii1 == ii2){
                     r1 <- 1
 #					r1 <- 1 - 1e-6
-                    rel.matrix2[ii1,ii2] <- pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
-                                            corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
+                    rel.matrix2[ii1,ii2] <- mvtnorm::pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
+                                               corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - 
+													stats::pnorm( pthresh[ii1] ) * stats::pnorm( pthresh[ii2] )
                     rel.matrix2[ii2,ii1] <- rel.matrix2[ii1,ii2]
                                     }					
                                 }

@@ -29,7 +29,8 @@ likelihood.adjustment <- function( likelihood , theta = NULL , prob.theta=NULL ,
 	N <- nrow(like0)
 	TP <- length(theta)
 	thetaM <- matrix( theta , nrow=N , ncol=TP  , byrow=TRUE)
-	S1 <- plogis( thetaM + extreme.item ) * ( 1 - plogis( thetaM - extreme.item ) )
+	S1 <- stats::plogis( thetaM + extreme.item ) * 
+				( 1 - stats::plogis( thetaM - extreme.item ) )
 	likelihood <- likelihood * S1
 	
 # Revalpr( "mean(abs( like0 - likelihood) )")

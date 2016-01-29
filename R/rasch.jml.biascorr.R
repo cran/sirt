@@ -16,7 +16,7 @@ rasch.jml.biascorr <- function( jmlobj , itemfac = NULL # , adjmin=.5
 	I1 <- mean( rowSums( data.resp ) )
 	if (! is.null( itemfac) ){ I1 <- itemfac }
     N <- nrow(data)
-    p_it <- plogis( outer( theta , b , "-" ) )
+    p_it <- stats::plogis( outer( theta , b , "-" ) )
     q_it <- 1 - p_it
     u_it <- - data + p_it   # d/d(theta) f
     v_it <- - u_it      # d/d(alpha) f

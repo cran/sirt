@@ -117,7 +117,9 @@ BEGIN_RCPP
      			  
      ///////////////////////////////////////////////////////  
      ///////////// O U T P U T   ///////////////////////////  
-     return List::create(_["fyiqk"] = fyiqk );   
+     return Rcpp::List::create(
+            Rcpp::_["fyiqk"] = fyiqk 
+                );   
      	  
        
      /// print output on R console  
@@ -239,7 +241,10 @@ BEGIN_RCPP
                            
       ///////////////////////////////////////////////////////
       ///////////// O U T P U T   ///////////////////////////
-      return List::create(_["PRA"] = PRA , _["probtotal"] = CC);            
+      return Rcpp::List::create(
+         Rcpp::_["PRA"] = PRA , 
+         Rcpp::_["probtotal"] = CC
+                    );            
                   
       //return( wrap(res0) );
 END_RCPP
@@ -448,8 +453,13 @@ BEGIN_RCPP
      			  
      ///////////////////////////////////////////////////////  
      ///////////// O U T P U T   ///////////////////////////  
-     return List::create(_["fyiqk"] = fyiqk , _["f.qk.yi"]=fqkyi ,   
-     	_["pi.k"] = PIK , _["n.ik"] = nik , _["N.ik"]=NIK );   
+     return Rcpp::List::create(
+        Rcpp::_["fyiqk"] = fyiqk , 
+        Rcpp::_["f.qk.yi"]=fqkyi ,   
+     	Rcpp::_["pi.k"] = PIK , 
+        Rcpp::_["n.ik"] = nik , 
+        Rcpp::_["N.ik"]=NIK 
+                 );   
      	  
        
      /// print output on R console  
@@ -743,8 +753,12 @@ BEGIN_RCPP
                            
      ///////////////////////////////////////////////////////  
      ///////////// O U T P U T   ///////////////////////////  
-     return List::create(_["nk"] = NK , _["njk"] = NJK ,   
-                     _["rjk"] = RJK , _["ll"] = LL );   
+     return Rcpp::List::create(
+         Rcpp::_["nk"] = NK , 
+         Rcpp::_["njk"] = NJK ,   
+         Rcpp::_["rjk"] = RJK , 
+         Rcpp::_["ll"] = LL 
+                 );   
      	  
        
      /// print output on R console  
@@ -797,7 +811,9 @@ BEGIN_RCPP
      			  
      ///////////////////////////////////////////////////////  
      ///////////// O U T P U T   ///////////////////////////  
-     return List::create(_["fyiqk"] = fyiqk );   
+     return Rcpp::List::create(
+       Rcpp::_["fyiqk"] = fyiqk 
+                   );   
      	  
        
      /// print output on R console  
@@ -854,7 +870,9 @@ BEGIN_RCPP
      			  
      ///////////////////////////////////////////////////////  
      ///////////// O U T P U T   ///////////////////////////  
-     return List::create(_["fyiqk"] = fyiqk );   
+     return Rcpp::List::create(
+        Rcpp::_["fyiqk"] = fyiqk 
+           );   
      	  
        
      /// print output on R console  
@@ -913,7 +931,9 @@ BEGIN_RCPP
      			  
      ///////////////////////////////////////////////////////  
      ///////////// O U T P U T   ///////////////////////////  
-     return List::create(_["fyiqk"] = fyiqk );   
+     return Rcpp::List::create(
+         Rcpp::_["fyiqk"] = fyiqk 
+                        );   
      	  
        
      /// print output on R console  

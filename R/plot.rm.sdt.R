@@ -19,17 +19,17 @@ plot.rm.sdt <- function( x , ask=TRUE , ... ){
 			# kk <- 1
 			m1 <- as.vector(rtii1[,kk])
 			if (kk==1){
-				dotchart( m1 , xlim=xlim , labels= rtii$rater , 
+				graphics::dotchart( m1 , xlim=xlim , labels= rtii$rater , 
 					main = paste0("Rater Parameters | Item " , ii ) , ...)
 						}
 			RR <- nrow(rtii)
-			lines( rep( kk - .5 , RR ) , 1:RR , lty=2 , col= "darkred" )
-			points( m1 , 1:RR , pch=16 )
-			lines( m1 , 1:RR , col="darkred" )    
+			graphics::lines( rep( kk - .5 , RR ) , 1:RR , lty=2 , col= "darkred" )
+			graphics::points( m1 , 1:RR , pch=16 )
+			graphics::lines( m1 , 1:RR , col="darkred" )    
 						}
-		text( K + 1 - 0.2 , 1:RR , format( rtii$d , digits=2, nsmall=2 )	)
-		text( K + 1 - 0.2 , RR + .7  , expression(d) )
-		par( ask=ask )
+		graphics::text( K + 1 - 0.2 , 1:RR , format( rtii$d , digits=2, nsmall=2 )	)
+		graphics::text( K + 1 - 0.2 , RR + .7  , expression(d) )
+		graphics::par( ask=ask )
 			}
 		}
 ###########################################################		

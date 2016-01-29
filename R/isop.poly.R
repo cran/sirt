@@ -21,7 +21,7 @@ isop.poly <- function( dat , score.breaks=seq(0,1,len=10 ) ,
     stud.p <- person$mpsc
 	# different scores of students
 	if ( ! is.null( score.breaks) ){
-	    qsc <- quantile( stud.p , probs=score.breaks) 
+	    qsc <- stats::quantile( stud.p , probs=score.breaks) 
 		qsc[1] <- -1.001
 		qsc[ length(qsc) ] <- 1.001
 		qsc <- unique( qsc)
@@ -46,16 +46,16 @@ isop.poly <- function( dat , score.breaks=seq(0,1,len=10 ) ,
 	for (kk in 0:K){
 		# kk <- 0
 		if (kk < K ){
-			a1 <- aggregate( 1*(dat <= kk ) , list( stud.p ) , mean , na.rm=TRUE )
+			a1 <- stats::aggregate( 1*(dat <= kk ) , list( stud.p ) , mean , na.rm=TRUE )
 			freq.correct[,,kk+1] <- as.matrix(a1[,-1])		
 					}
-		a2 <- aggregate( 1*(dat == kk ) , list( stud.p ) , sum , na.rm=TRUE )		
+		a2 <- stats::aggregate( 1*(dat == kk ) , list( stud.p ) , sum , na.rm=TRUE )		
 		freq.categories[,,kk+1] <- as.matrix(a2[,-1])		
 			}
 	
 	# weights
 	wgt <- freq.correct[,,1]
-	a1 <- aggregate( dat.resp , list( stud.p ) , sum , na.rm=TRUE )
+	a1 <- stats::aggregate( dat.resp , list( stud.p ) , sum , na.rm=TRUE )
 	wgt <- a1[,-1]			
 	freq.isop.fitted <- freq.correct.ordered <- list(1:K)
 	for (kk in 0:(K-1) ){

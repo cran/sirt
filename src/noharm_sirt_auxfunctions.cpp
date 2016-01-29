@@ -206,8 +206,8 @@ BEGIN_RCPP
      // OUTPUT              
                    
      return Rcpp::List::create(    
-         _["Fval_"] = Fval ,  
-         _["change"] = parchange   
+         Rcpp::_["Fval_"] = Fval ,  
+         Rcpp::_["change"] = parchange   
          ) ;  
 END_RCPP
 }
@@ -410,9 +410,9 @@ BEGIN_RCPP
      // OUTPUT              
                    
      return Rcpp::List::create(    
-         _["Pval_"] = Pval ,  
-         _["change"] = parchange ,  
-         _["residuals"] = eps0jj   
+         Rcpp::_["Pval_"] = Pval ,  
+         Rcpp::_["change"] = parchange ,  
+         Rcpp::_["residuals"] = eps0jj   
          ) ;  
 END_RCPP
 }
@@ -598,8 +598,8 @@ BEGIN_RCPP
      // OUTPUT              
                    
      return Rcpp::List::create(    
-         _["Psival_"] = Psival ,  
-         _["change"] = parchange   
+         Rcpp::_["Psival_"] = Psival ,  
+         Rcpp::_["change"] = parchange   
          ) ;  
 END_RCPP
 }

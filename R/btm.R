@@ -41,9 +41,9 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 
 		# calculate scores for each team
 		TP <- length(teams)
-		r1 <- rowsum( dfr , dat0[,1] )
+		r1 <- base::rowsum( dfr , dat0[,1] )
 		ind1 <- as.numeric(rownames(r1))
-		r2 <- rowsum( dfr , dat0[,2] )
+		r2 <- base::rowsum( dfr , dat0[,2] )
 		ind2 <- as.numeric(rownames(r2))
 		r2 <- r2[, c(2,1,3) ]
 		r0 <- as.data.frame(matrix( 0 , nrow=TP , ncol=3 ))
@@ -58,7 +58,7 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 		propscore <- score / maxscore
 
 		# initial ability for each team
-		theta <- qlogis( propscore )
+		theta <- stats::qlogis( propscore )
 		# eliminate individuals with extreme scores
 		elim_persons <- FALSE
 		if ( sum( propscore %in% c(0,1) ) > 0 ){
@@ -87,11 +87,8 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 		
 		# number of dyads
 		ND <-  nrow(dat0)
-
-
 		max.change <- 1E5
-		iter <- 0
-			
+		iter <- 0			
 		incrfac <- .98
 		maxincr <- 1
 		se.delta <- NA
@@ -148,8 +145,8 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 			deriv_theta_i2 <- fac2
 			# d1a <- ( rowsum( deriv_theta_i1 , dat0[,1] )[,1] + 
 			# 			rowsum( deriv_theta_i2 , dat0[,2] )[,1] )
-			h1 <- rowsum( deriv_theta_i1 , dat0[,1] )
-			h2 <- rowsum( deriv_theta_i2 , dat0[,2] )
+			h1 <- base::rowsum( deriv_theta_i1 , dat0[,1] )
+			h2 <- base::rowsum( deriv_theta_i2 , dat0[,2] )
 			d1a <- rep(0,TP)
 			d1a[ ind1 ] <- d1a[ ind1 ] + h1
 			d1a[ ind2 ] <- d1a[ ind2 ] + h2
@@ -161,8 +158,8 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 							M1[,3]/2 * (1/2 - M1[,2] - M1[,3] / 2 )
 			# d2 <- ( rowsum( d2a , dat0[,1] ) + rowsum( d2b , dat0[,2] ) )[,1]
 
-			h1 <- rowsum( d2a , dat0[,1] )
-			h2 <- rowsum( d2b , dat0[,2] )
+			h1 <- base::rowsum( d2a , dat0[,1] )
+			h2 <- base::rowsum( d2b , dat0[,2] )
 			d2 <- rep(1E-20,TP)
 			d2[ ind1 ] <- d2[ ind1 ] + h1
 			d2[ ind2 ] <- d2[ ind2 ] + h2			
@@ -179,7 +176,7 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 								}			
 			
 			if (center.theta){
-				theta <- theta - mean(theta2 , na.rm=TRUE)	
+				theta <- theta - base::mean(theta2 , na.rm=TRUE)	
 							}
 							
 			if (some.fixed.theta){
@@ -191,16 +188,16 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 			# assess convergence			
 			iter <- iter + 1	
 			
-			theta_ch <- abs( theta - theta0 )
+			theta_ch <- base::abs( theta - theta0 )
 
 			if (elim_persons){
 				theta_ch <- ifelse( theta_ch == Inf , NA , theta_ch )
 							}
 			
-			theta.change <- max( theta_ch , na.rm=TRUE)
-			delta.change <- max( abs( delta - delta0 ))
-			eta.change <- max( abs( eta - eta0 ))
-			max.change <- max( c(theta.change,delta.change, eta.change) )
+			theta.change <- base::max( theta_ch , na.rm=TRUE)
+			delta.change <- base::max( abs( delta - delta0 ))
+			eta.change <- base::max( abs( eta - eta0 ))
+			max.change <- base::max( c(theta.change,delta.change, eta.change) )
 			
 			cat(paste0("**** Iteration " , iter , 
 						" | Maximum parameter change = " , round(max.change , 7) , "\n")
@@ -208,9 +205,7 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 			flush.console()
 			
 						}
-			
-
-			
+						
 			# arrange output			
 			pars <- data.frame("parlabel" = c("Ties" , "Home") ,
 						"par" = c("delta" , "eta") )
@@ -233,15 +228,14 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 			theta2 <- theta
 			theta2[ abs(theta) %in% Inf ] <- NA	
 			summary.effects <- data.frame( "M" = mean(theta2,na.rm=TRUE) ,
-					"median" = median(theta) ,
-					"SD" = sd(theta2,na.rm=TRUE) , "min" = min(theta) ,
+					"median" = stats::median(theta) ,
+					"SD" = stats::sd(theta2,na.rm=TRUE) , "min" = min(theta) ,
 					"max" = max(theta) )
 			
 			# probabilities
 			probs <- M1
 			colnames(probs) <- c("p1" , "p0" , "pD")
-			
-			
+						
 			# fit statistics
 			res0 <- btm_fit( probs , dat0 , ind1 , ind2 , TP)
 			effects$outfit <- res0$outfit
@@ -249,17 +243,15 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 			
 			# MLE reliability
 			v2 <- mean(effects$se.theta^2)
-			v0 <- var(effects$theta) 
+			v0 <- stats::var(effects$theta) 
 			mle.rel <- 1 - v2 / v0
 			sep.rel <- sqrt( v0 / v2 )
-			
+			# output list
 			res <- list( effects = effects , pars=pars , summary.effects=summary.effects,
 						mle.rel = mle.rel , sepG = sep.rel , 
-						probs=probs , data = dat0 )
-			
+						probs=probs , data = dat0 )			
 			res$CALL <- CALL
-			res$iter <- iter
-			
+			res$iter <- iter			
 			ic <- list( "n" = length(teams) , "D" = nrow(dat0) )
 			res$ic <- ic							
 			s2 <- Sys.time()

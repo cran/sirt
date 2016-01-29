@@ -5,7 +5,7 @@ lavaan2mirt <- function( dat , lavmodel , est.mirt =TRUE , poly.itemtype="gpcm" 
 	# lavaanify model
 	# lavmodel2 <- lavaan::lavaanify( lavmodel )		
 #    lavmodel2 <- lavaanify.sirt( lavmodel )$lavpartable
-	lavmodel2 <- lavaanify.IRT( lavmodel , data=dat )$lavpartable	
+	lavmodel2 <- TAM::lavaanify.IRT( lavmodel , data=dat )$lavpartable	
 		
 	# select used items
 	items <- intersect( unique( paste(lavmodel2$rhs )) , colnames(dat) )

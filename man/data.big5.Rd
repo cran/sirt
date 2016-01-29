@@ -225,7 +225,7 @@ P.normal <- function(par,Theta,ncat){
      probs <- matrix( NA , nrow=TP, ncol= ncat )
      eps <- .01
      for (cc in 1:ncat){
-        probs[,cc] <- dnorm( cc , mean = mui   , sd = sqrt( abs( psi + eps) ) )
+        probs[,cc] <- stats::dnorm( cc , mean = mui   , sd = sqrt( abs( psi + eps) ) )
                     }
      psum <- matrix( rep(rowSums( probs ),each=ncat)  , nrow=TP , ncol=ncat , byrow=TRUE)    
      probs <- probs / psum

@@ -127,13 +127,13 @@ Alexander Robitzsch
 set.seed(123)
 I <- 20          # number of items
 b <- matrix(NA,I,ncol=3)
-b[,1] <- -.5 + runif( I , -.75 , .75 )
-b[,2] <- -1.5 + runif( I , -.75 , .75 )
-b[,3] <- -2.5 + runif( I , -.75 , .75 )
+b[,1] <- -.5 + stats::runif( I , -.75 , .75 )
+b[,2] <- -1.5 + stats::runif( I , -.75 , .75 )
+b[,3] <- -2.5 + stats::runif( I , -.75 , .75 )
 K <- 3           # number of distractors
 N <- 2000        # number of persons
 # apply simulation function
-dat <- nedelsky.sim( theta = rnorm(N,sd=1.2) , b=b )
+dat <- nedelsky.sim( theta = stats::rnorm(N,sd=1.2) , b=b )
 
 #*** latent response patterns
 K <- 3

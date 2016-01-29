@@ -18,12 +18,11 @@ lsem.residualize <- function( data , moderator , moderator.grid ,
 					modgrid_index , gg )
 		
 			}
-		
 	# compute weights for every grid point gg
 	weights <- matrix( NA , nrow=N , ncol=G )	
-	sd.moderator <- sd( data.mod , na.rm=TRUE)
+	sd.moderator <- stats::sd( data.mod , na.rm=TRUE)
 	bw <- h * sd.moderator * N^(-1/5) 
-	moderator.density <- density( data.mod , from= min( moderator.grid) ,
+	moderator.density <- stats::density( data.mod , from= min( moderator.grid) ,
 				to = max(moderator.grid ) , n = G )$y		
 	moderator.density <- data.frame( "moderator"=moderator.grid , 
 				"wgt"=moderator.density / sum(moderator.density) )
@@ -31,7 +30,8 @@ lsem.residualize <- function( data , moderator , moderator.grid ,
 	for (gg in 1:G){
 		# gg <- 1
 		xgg <- moderator.grid[gg]	
-		wgt <- dnorm( data.mod , mean = xgg , sd = bw ) / dnorm( xgg , mean=xgg , sd=bw )
+		wgt <- stats::dnorm( data.mod , mean = xgg , sd = bw ) / 
+					stats::dnorm( xgg , mean=xgg , sd=bw )
 		weights[,gg] <- ifelse( wgt < eps , eps , wgt )
 				}
 	
@@ -45,7 +45,7 @@ lsem.residualize <- function( data , moderator , moderator.grid ,
 
 	
 	if ( residualize){
-		if (verbose){ cat("** Residualize Data\n") ; flush.console() }
+		if (verbose){ cat("** Residualize Data\n") ; utils::flush.console() }
 		
 		for (vv in 1:V){
 		# vv <- 1
@@ -53,10 +53,10 @@ lsem.residualize <- function( data , moderator , moderator.grid ,
 		for (gg in 1:G){
 			# gg <- 1
 			x <- dat2[,moderator]
-			mod <- lm( data[ , var.vv ] ~  x + I( x^2 ) ,weights= weights[,gg]  )
-			m1 <- predict( mod , data.frame( x = moderator.grid[gg] ) )
+			mod <- stats::lm( data[ , var.vv ] ~  x + I( x^2 ) ,weights= weights[,gg]  )
+			m1 <- stats::predict( mod , data.frame( x = moderator.grid[gg] ) )
 			residualized_interceps[gg,vv] <- m1
-			y <- resid(mod)
+			y <- stats::resid(mod)
 			
 			dat2[ , var.vv ] <- ifelse( modgrid_index == gg , y , dat2[ , var.vv ] )
 						}	

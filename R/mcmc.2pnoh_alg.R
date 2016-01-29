@@ -6,13 +6,13 @@
     # calculate means
     mij <- aM * ( theta - bM )
     # simulate uniform data
-    rij <- matrix( runif( N*I ) , nrow=N , ncol=I )
+    rij <- matrix( stats::runif( N*I ) , nrow=N , ncol=I )
     # calculate corresponding value
-    pl <- pnorm( threshlow , mean=mij) 
-    pu <- pnorm( threshupp , mean=mij)
+    pl <- stats::pnorm( threshlow , mean=mij) 
+    pu <- stats::pnorm( threshupp , mean=mij)
     pij <- pl + (pu-pl)*rij
     # simulate Z
-    Zij <- qnorm( pij , mean = mij )
+    Zij <- stats::qnorm( pij , mean = mij )
     return(Zij)
         }
 		
@@ -21,8 +21,8 @@
 .draw.theta.2pnoh <- function( aM , bM , N , I , Z ){
     vtheta <- 1 / ( rowSums( aM^2 ) + 1  )
     mtheta <- rowSums( aM * ( Z + aM*bM ) ) * vtheta
-    theta <- rnorm( N , mean=mtheta , sd = sqrt( vtheta ) )
-	v1 <- var(mtheta)
+    theta <- stats::rnorm( N , mean=mtheta , sd = sqrt( vtheta ) )
+	v1 <- stats::var(mtheta)
     res <- list("theta" = theta )
     return(res)
             }
@@ -44,7 +44,7 @@
 		m.ik <- a * colSums( weights*(aM * theta - Z)  ) + xi[ itemgroup ] / sig^2
 					}					
     m.ik <- m.ik * v.ik
-	b <- rnorm( I , mean = m.ik , sd = sqrt(v.ik ) )
+	b <- stats::rnorm( I , mean = m.ik , sd = sqrt(v.ik ) )
 	bM <- matrix( b , nrow=N , ncol=I , byrow=TRUE )		
 
 	#************************
@@ -57,17 +57,17 @@
 		m.ik <- colSums( weights*( theta - bM) *Z  ) + omega[ itemgroup ] / nu^2
 					}
     m.ik <- m.ik * v.ik
-	a <- rnorm( I , mean = m.ik , sd = sqrt(v.ik ) )
+	a <- stats::rnorm( I , mean = m.ik , sd = sqrt(v.ik ) )
 	
 	#*********************************
 	# sampling of xi parameter	
-	m.xi <- aggregate( b , list(itemgroup) , mean )[,2]
-	xi <- rnorm(K , mean=m.xi , sd = sqrt( sig^2 / Ik) )
+	m.xi <- stats::aggregate( b , list(itemgroup) , mean )[,2]
+	xi <- stats::rnorm(K , mean=m.xi , sd = sqrt( sig^2 / Ik) )
 
 	#*********************************
 	# sampling of omega parameter	
-	m.xi <- aggregate( a , list(itemgroup) , mean )[,2]
-	omega <- rnorm(K , mean=m.xi , sd = sqrt( nu^2 / Ik) )
+	m.xi <- stats::aggregate( a , list(itemgroup) , mean )[,2]
+	omega <- stats::rnorm(K , mean=m.xi , sd = sqrt( nu^2 / Ik) )
 	
 	# output
     return( list( "a"=a , "b"=b , "xi"=xi , "omega" = omega ) )
@@ -76,7 +76,7 @@
 # compute deviance
 .mcmc.deviance.2pnoh <- function( aM , bM , theta , dat , dat.resp , 
 				weights , eps ){
-	pij <- pnorm( aM * theta - bM )
+	pij <- stats::pnorm( aM * theta - bM )
 	llij <- log( dat.resp * ( dat*pij + ( 1-dat )*(1-pij) ) + eps )
 	if ( is.null( weights ) ){ deviance <- -2*sum( llij ) }
 	if ( ! is.null( weights ) ){ 
@@ -90,7 +90,7 @@
 		# inverse gamma distribution
 		# n <- 20
 		# sig2 <- 1
-		# 1 / rgamma( 1 , n/2 , n*sig2/2 )
+		# 1 / stats::rgamma( 1 , n/2 , n*sig2/2 )
 		a0 <- prior.variance[1]
 		b0 <- prior.variance[2]
 		#****
@@ -98,21 +98,21 @@
 #		tau2 <- ( sum( ( b - xi[ itemgroup ] )^2 ) + 1 )
 #		p1 <- 1 / rchisq( 1 , df= I + 1 )
 #		sig <- sqrt( tau2 * p1 )	
-		sig <- sqrt( 1 / rgamma( 1 , (I+a0)/2 , ( sum( ( b - xi[ itemgroup ] )^2 ) + b0 ) / 2 )	)	
+		sig <- sqrt( 1 / stats::rgamma( 1 , (I+a0)/2 , ( sum( ( b - xi[ itemgroup ] )^2 ) + b0 ) / 2 )	)	
 		
 		#****
 		# sample sig2
 #		tau2 <- ( sum( ( a - omega[ itemgroup ] )^2 ) + 1 )
 #		p1 <- 1 / rchisq( 1 , df= I + 1 )
 #		nu <- sqrt( tau2 * p1 )		
-		nu <- sqrt( 1 / rgamma( 1 , (I+a0)/2 , ( sum( ( a - omega[ itemgroup ] )^2 ) + b0 ) / 2 )	)
+		nu <- sqrt( 1 / stats::rgamma( 1 , (I+a0)/2 , ( sum( ( a - omega[ itemgroup ] )^2 ) + b0 ) / 2 )	)
 		res <- list("sig" = sig , "nu" = nu )
 		return(res)
 		}
 #################################################
 # calculation of mastery probabilities		
 .mcmc.mastery.2pnoh <- function( xi , omega , N , K , weights , theta , prob.mastery ){
-	h1 <- pnorm( matrix( omega , nrow=N , ncol=K , byrow=TRUE) * 
+	h1 <- stats::pnorm( matrix( omega , nrow=N , ncol=K , byrow=TRUE) * 
 			( theta - matrix( xi , nrow=N , ncol=K , byrow=TRUE) ) )
 	if ( is.null(weights)){
 		nonmastery <- colMeans( h1 < prob.mastery[1] )

@@ -63,7 +63,7 @@ See also the \code{md.pattern} function in the \pkg{mice} package.
 set.seed(7654)
 N <- 21         # number of rows
 I <- 4          # number of columns
-dat <- matrix( 1*(runif(N*I) > .3 ) , N, I )
+dat <- matrix( 1*( stats::runif(N*I) > .3 ) , N, I )
 res <- md.pattern.sirt(dat)
 # plot of response patterns
 res$dat.ordered

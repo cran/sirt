@@ -89,7 +89,7 @@ x <- seq( -3 ,3 , .1 )
 #***
 # logistic link
 y <- pgenlogis( x , alpha1=0, alpha2=0 )
-plot( x , plogis(x) , type="l" , main="Logistic Link" , lwd=2)
+plot( x , stats::plogis(x) , type="l" , main="Logistic Link" , lwd=2)
 points( x , y , pch=1 , col=2 )
 
 #***
@@ -99,7 +99,7 @@ round( genlogis.moments( alpha1=.165 , alpha2=.165 ) , 3 )
   ##   0.000 1.472 2.167 
 # SD of generalized logistic link function is 1.472
 y <- pgenlogis( x * 1.47 , alpha1=.165 , alpha2=.165 )
-plot( x , pnorm(x) , type="l" , main="Probit Link" , lwd=2)
+plot( x , stats::pnorm(x) , type="l" , main="Probit Link" , lwd=2)
 points( x , y , pch=1 , col=2 )
 
 #***

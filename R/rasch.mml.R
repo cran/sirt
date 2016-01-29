@@ -86,7 +86,7 @@ rasch.mml <- function( dat , theta.k = seq(-4,4,len=20) , group = NULL , weights
             t1 <- table(sort(group) )
 			group.orig <- group
 			group <- match( group.orig , sort(unique( group.orig)) )	
-			ag1 <- aggregate( group , list( group.orig) , mean )
+			ag1 <- stats::aggregate( group , list( group.orig) , mean )
 			colnames(ag1) <- c("group" , "groupindex" )
 #            x1 <- seq( 1 , length(t1) ) 
 #            x2 <- as.numeric(sort(names(t1)) )
@@ -173,7 +173,7 @@ rasch.mml <- function( dat , theta.k = seq(-4,4,len=20) , group = NULL , weights
         n <- dp$n
         I <- dp$I
         # probability weights at theta.k
-        pi.k <- dnorm( theta.k ) 
+        pi.k <- stats::dnorm( theta.k ) 
         pi.k <- pi.k / sum( pi.k )
         # group calculations
         if ( !is.null( group )){ 
@@ -186,11 +186,11 @@ rasch.mml <- function( dat , theta.k = seq(-4,4,len=20) , group = NULL , weights
                     }
         # initial estimates for item difficulties
         if ( is.null(b.init) ){   
-			b <- - qlogis( colMeans( dat , na.rm=T ) )
+			b <- - stats::qlogis( colMeans( dat , na.rm=T ) )
 				if ( FALSE ){ 			
 #				if ( ramsay.qm ){ 			
-						b <-   - log( ( fixed.K * colSums( dat , na.rm=T ) ) / 
-									( colSums( 1 - dat , na.rm=T ) ) ) 
+						b <-   - log( ( fixed.K * colSums( dat , na.rm=TRUE ) ) / 
+									( colSums( 1 - dat , na.rm=TRUE ) ) ) 
 								}
 						} else { 
 					b <- b.init 
@@ -247,11 +247,11 @@ rasch.mml <- function( dat , theta.k = seq(-4,4,len=20) , group = NULL , weights
                 if (normal.trait){ 
                     sd.trait <- mean.trait <- rep(0,G)
                     for (gg in 1:G){ 
-                        mean.trait[gg] <- weighted.mean( theta.k , pi.k[,gg] )
-                        sd.trait[gg] <- sqrt( weighted.mean( ( theta.k - mean.trait[gg] )^2 , pi.k[,gg] ) ) 
+                        mean.trait[gg] <- stats::weighted.mean( theta.k , pi.k[,gg] )
+                        sd.trait[gg] <- sqrt( stats::weighted.mean( ( theta.k - mean.trait[gg] )^2 , pi.k[,gg] ) ) 
                         if (center.trait){ mean.trait[1] <- 0 } 
 						if ( ! is.null(est.a) ){ sd.trait[1] <- 1 }	
-                        pi.k[,gg] <- dnorm( theta.k , mean = mean.trait[gg] , sd = sd.trait[gg] )
+                        pi.k[,gg] <- stats::dnorm( theta.k , mean = mean.trait[gg] , sd = sd.trait[gg] )
                         pi.k[,gg] <- pi.k[,gg] / sum( pi.k[,gg] )
 							}
 					# sigma <- sd.trait
@@ -589,28 +589,28 @@ rasch.mml <- function( dat , theta.k = seq(-4,4,len=20) , group = NULL , weights
                                                     " | max alpha change " , round( maxalphachange ,7 ) , "\n" , sep=""))
 												}
                                     if ( sum(est.a) > 0  ){           
-										apars <- aggregate( fixed.a , list(est.a) , mean )
+										apars <- stats::aggregate( fixed.a , list(est.a) , mean )
 																apars <- apars[ apars[,1] > 0 , ]
 																a.est <- apars[  , 2 ]
                                         cat( paste( "    Estimated discrimination parameter groups a = " , 
 												paste( round(a.est ,3) , collapse=" " ) , "\n" , sep=""))
 												}
 									if ( sum(est.c) > 0  ){           
-										cpars <- aggregate( fixed.c , list(est.c) , mean )
+										cpars <- stats::aggregate( fixed.c , list(est.c) , mean )
 																cpars <- cpars[ cpars[,1] > 0 , ]
 																c.est <- cpars[  , 2 ]
                                         cat( paste( "    Estimated guessing parameter groups c = " , 
 												paste( round(c.est ,3) , collapse=" " ) , "\n" , sep=""))
 												}
                                     if ( sum(est.d) > 0  ){           
-										dpars <- aggregate( fixed.d , list(est.d) , mean )
+										dpars <- stats::aggregate( fixed.d , list(est.d) , mean )
 																dpars <- dpars[ dpars[,1] > 0 , ]
 																d.est <- dpars[  , 2 ]
                                         cat( paste( "    Estimated slipping parameter groups d = " , 
 												paste( round(d.est ,3) , collapse=" " ) , "\n" , sep=""))
 												}
                                     if ( sum(est.K) > 0  ){           
-										dpars <- aggregate( fixed.K , list(est.K) , mean )
+										dpars <- stats::aggregate( fixed.K , list(est.K) , mean )
 																dpars <- dpars[ dpars[,1] > 0 , ]
 																K.est <- dpars[  , 2 ]
                                         cat( paste( "    Estimated K parameter groups K = " , 
@@ -661,7 +661,7 @@ rasch.mml <- function( dat , theta.k = seq(-4,4,len=20) , group = NULL , weights
 		if ( ! is.null( est.c) ){ item$est.c <- est.c } else { item$est.c <- rep(0,I) }
         item$d <- fixed.d
 		if ( ! is.null( est.d) ){  item$est.d <- est.d } else { item$est.d <- rep(0,I) }
-        if (m1$center == T){  if ( is.null(constraints) ){ #    item[I,4] <- NA 
+        if (m1$center){  if ( is.null(constraints) ){ #    item[I,4] <- NA 
                                                                     } 
                     else { item[ constraints[,1] ,4] <- NA } }
         rownames(item) <- colnames(dat)

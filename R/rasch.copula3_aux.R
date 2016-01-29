@@ -1,9 +1,4 @@
 
-
-
-
-
-
 #----------------------------------------------------------------------------------------------
 .ll.rasch.copula320 <- function( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
 		CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , wgt.theta , I , 

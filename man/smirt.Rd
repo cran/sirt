@@ -99,8 +99,9 @@ Initial covariance matrix \eqn{\Sigma}
 }
   \item{theta.k}{
 Vector of discretized trait distribution. This vector is expanded in all
-dimensions by using the \code{expand.grid} function. If a user specifies
-a design matrix \code{theta.kDES} of transformed \eqn{\bold{\theta}_p}
+dimensions by using the \code{\link[base:expand.grid]{base::expand.grid}}  
+function. If a user specifies a design matrix \code{theta.kDES} of transformed 
+\eqn{\bold{\theta}_p}
 values (see Details and Examples), then \code{theta.k} must be a matrix, too.
 }
   \item{theta.kDES}{
@@ -109,8 +110,8 @@ theta grid in case of nonlinear item response models.
 }
   \item{qmcnodes}{
 Number of integration nodes for quasi Monte Carlo integration (see Pan & 
-Thompson, 2007). Integration points are obtained by using the function 
-\code{\link{qmc.nodes}}. Note that when using quasi Monte Carlo nodes, 
+Thompson, 2007; Gonzales et al., 2006). Integration points are obtained by using 
+the function \code{\link{qmc.nodes}}. Note that when using quasi Monte Carlo nodes, 
 no theta design matrix \code{theta.kDES} can be specified. 
 See Simulated Example 1, Model 11.
 }
@@ -244,6 +245,10 @@ Bolt, D. M., & Lall, V. F. (2003). Estimation of compensatory and
 noncompensatory multidimensional item response models using Markov chain 
 Monte Carlo. \emph{Applied Psychological Measurement}, \bold{27}, 395-414.
 
+Gonzalez, J., Tuerlinckx, F., De Boeck, P., & Cools, R. (2006). 
+Numerical integration in logistic-normal models. 
+\emph{Computational Statistics & Data Analysis}, \bold{51}, 1535-1548.	
+
 Pan, J., & Thompson, R. (2007). Quasi-Monte Carlo estimation in
 generalized linear mixed models. \emph{Computational Statistics &
 Data Analysis}, \bold{51}, 5765-5775.
@@ -265,6 +270,10 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+See the \code{\link[mirt:mirt]{mirt::mirt}} and 
+\code{itemtype="partcomp"} for estimating noncompensatory item response models
+using the \pkg{mirt} package. See also \code{\link[mirt:mixedmirt]{mirt::mixedmirt}}.
+	
 Other multidimensional IRT models can also be estimated
 with \code{\link{rasch.mml2}} and \code{\link{rasch.mirtlc}}.
 
@@ -272,7 +281,7 @@ See \code{\link[CDM:itemfit.sx2]{itemfit.sx2}} (\pkg{CDM}) for item fit
 statistics.
 
 See also the \pkg{mirt} and \pkg{TAM} packages for estimation of
-multidimensional models.
+compensatory multidimensional item response models.
 }
 \examples{
 #############################################################################
@@ -298,10 +307,10 @@ a <- matrix( 1 , I  , 2 )
 # simulate data                                     
 prob <- dat <- matrix(0 , nrow=N , ncol=I )
 for (ii in 1:I){
-prob[,ii] <- ( plogis( theta1 - b[ii,1]  ) )^Q[ii,1]
-prob[,ii] <- prob[,ii] * ( plogis( theta2 - b[ii,2]  ) )^Q[ii,2]
+prob[,ii] <- ( stats::plogis( theta1 - b[ii,1]  ) )^Q[ii,1]
+prob[,ii] <- prob[,ii] * ( stats::plogis( theta2 - b[ii,2]  ) )^Q[ii,2]
             }
-dat[ prob > matrix(runif( N*I),N,I) ] <- 1
+dat[ prob > matrix( stats::runif( N*I),N,I) ] <- 1
 colnames(dat) <- paste0("I",1:I)
 
 #***
@@ -494,7 +503,7 @@ Q <- matrix( 0 , 3*I,2)  # Q-matrix
 Q[1:I,1] <- 1
 Q[1:I + I ,2] <- 1
 Q[1:I + 2*I ,1:2] <- 1
-b <- matrix( runif( 3*I *2, -2 , 2 ) , nrow=3*I , 2 )
+b <- matrix( stats::runif( 3*I *2, -2 , 2 ) , nrow=3*I , 2 )
 b <- b*Q
 b <- round( b , 2 )
 mui <- rep(0,3*I)
@@ -513,7 +522,7 @@ for (ii in 1:(3*I)){
                   ( 1 + exp( theta[,2] * Q[ii,2] - b[ii,2] ) )
     co1 <- ( 1 + tmp1 )  
     p1 <- tmp1 / ( mui[ii] * nco1 + ( 1 - mui[ii] )*co1 )
-    dat[,ii] <- 1 * ( runif(N) < p1 )
+    dat[,ii] <- 1 * ( stats::runif(N) < p1 )
             }
 
 #*** Model 1: Joint mu.i parameter for all items

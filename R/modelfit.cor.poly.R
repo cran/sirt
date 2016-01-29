@@ -14,8 +14,8 @@ modelfit.cor.poly <- function( data , probs , theta.k , f.qk.yi){
     tamobj$theta <- vec2mat.sirt(theta.k)
     tamobj$hwt <- f.qk.yi
     # apply tam.modelfit
-    # tmod <- TAM::tam.modelfit( tamobj)
-	tmod <- tam.modelfit( tamobj)
+    tmod <- TAM::tam.modelfit( tamobj)
+	# tmod <- tam.modelfit( tamobj)
     return(tmod)
             }
 ##########################################################################

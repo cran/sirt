@@ -27,7 +27,7 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 	lambda[ missM == 0 ] <- mean( lambda , na.rm=TRUE )
 	nu[ missM == 0 ] <- mean( nu , na.rm=TRUE )
 	
-	group.combis <- t( combn( G , 2 ) )
+	group.combis <- t( combinat::combn( G , 2 ) )
 	group.combis <- rbind( group.combis , group.combis[,c(2,1) ] )
 #	group.combis <- group.combis[ order( group.combis[,1] ) , ]
 
@@ -64,10 +64,10 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 	# no lambda residuals
 	eps2 <- 1E-10
 	lambda_constant <- FALSE
-	if( sd( lambda ) < 1E-10 ){
+	if( stats::sd( lambda ) < 1E-10 ){
 			I <- ncol(lambda)
 			G <- nrow(lambda)
-			lambda <- lambda + matrix( runif( I*G , -eps2 , eps2 ) , nrow=G , ncol=I)
+			lambda <- lambda + matrix( stats::runif( I*G , -eps2 , eps2 ) , nrow=G , ncol=I)
 			lambda_constant <- TRUE
 							}
 	
@@ -75,17 +75,16 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 	
 	#****************************
 	# define design for optimization
-    gridp <- expand.grid( increment.factor , fac.oldpar )
+    gridp <- base::expand.grid( increment.factor , fac.oldpar )
 	GP <- nrow(gridp)
 
-	
 	#**************************************************
 	# OPTIMIZATION LAMBDA	
 	
 	if (progress){
 	    cat("* OPTIMIZATION LAMBDA\n")
 	    cat( paste0( "|" , paste0( rep("*" , GP ) , collapse="") , "|\n|") )
-		flush.console()
+		utils::flush.console()
 				}
 	psi0_init <- psi0	
 	for (gp in 1:GP){	
@@ -100,9 +99,9 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 		psi0.min <- psi0	
 		fopt[1] <- res0$fopt
 					}
-		if (progress){ cat("-") ; flush.console() }
+		if (progress){ cat("-") ; utils::flush.console() }
 					}
-		if (progress){ cat("|\n") ; flush.console() }	
+		if (progress){ cat("|\n") ; utils::flush.console() }	
 
 	#**************************************************
 	# OPTIMIZATION NU		
@@ -115,7 +114,7 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 	if (progress){
 	    cat("* OPTIMIZATION NU\n")
 	    cat( paste0( "|" , paste0( rep("*" , GP ) , collapse="") , "|\n|") )
-		flush.console()
+		utils::flush.console()
 				}
     
     alpha0_init <- alpha0	
@@ -132,9 +131,9 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 		alpha0.min <- alpha0	
 		fopt[2] <- res0$fopt
 					}					
-		if (progress){ cat("-") ; flush.console() }				
+		if (progress){ cat("-") ; utils::flush.console() }				
 					}
-    if (progress){ cat("|\n") ; flush.console() }			
+    if (progress){ cat("|\n") ; utils::flush.console() }			
 	
 	#*****************************
 	# calculate item statistics and R-squared measures
@@ -143,9 +142,9 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 	nu.aligned <- nu - alpha0.min * lambda 
 	# average aligned parameter
 	itempars.aligned <- data.frame("M.lambda" = colMeans(lambda.aligned) ,
-			"SD.lambda" = apply( lambda.aligned , 2 , sd , na.rm=TRUE ) ,
+			"SD.lambda" = apply( lambda.aligned , 2 , stats::sd , na.rm=TRUE ) ,
 			"M.nu" = colMeans( nu.aligned ) ,
-			"SD.nu" = apply( nu.aligned , 2 , sd , na.rm=TRUE ) 	
+			"SD.nu" = apply( nu.aligned , 2 , stats::sd , na.rm=TRUE ) 	
 				)
 	rownames(itempars.aligned) <- colnames(lambda)
 	lambda.resid <- lambda.aligned - 

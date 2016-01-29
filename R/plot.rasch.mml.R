@@ -19,10 +19,10 @@ plot.rasch.mml <- function( x , items=NULL , xlim=NULL , main=NULL ,
 	if (object$irtmodel == "ramsay.qm"){
 			xlabplot <- expression( paste( "log " ,theta ))	
 						}	
-    plot( theta , as.vector(probs[1,]) , type="l" , lty=1 , xlab=xlabplot , 
+    graphics::plot( theta , as.vector(probs[1,]) , type="l" , lty=1 , xlab=xlabplot , 
         ylab=ylabplot , xlim=xlim , ylim=c(0,1) , main=main , ... )
     for (ii in 2:I){
-        lines( theta , as.vector(probs[ii,]) , type="l" , lty=ii)
+        graphics::lines( theta , as.vector(probs[ii,]) , type="l" , lty=ii)
                     }
             }
 ##############################################################

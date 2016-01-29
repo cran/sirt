@@ -115,7 +115,7 @@ mu <- c(3,1,0)
 Sigma <- diag(3)
 # simulate data
 dat_m1 <- mvtnorm::rmvnorm( Nclass , mean=mu , sigma = Sigma )
-dat_s1 <- matrix( runif( Nclass * 3 ) , nrow=Nclass )
+dat_s1 <- matrix( stats::runif( Nclass * 3 ) , nrow=Nclass )
 for ( ii in 1:3){ dat_s1[,ii] <- dat_s1[,ii] * sd_uncertain[ii] }
 dat_m <- rbind( dat_m , dat_m1 )
 dat_s <- rbind( dat_s , dat_s1 )
@@ -127,7 +127,7 @@ mu <- c(0,-2,0.4)
 Sigma <- diag(c(0.5 , 2 , 2 ) )
 # simulate data
 dat_m1 <- mvtnorm::rmvnorm( Nclass , mean=mu , sigma = Sigma )
-dat_s1 <- matrix( runif( Nclass * 3 ) , nrow=Nclass )
+dat_s1 <- matrix( stats::runif( Nclass * 3 ) , nrow=Nclass )
 for ( ii in 1:3){ dat_s1[,ii] <- dat_s1[,ii] * sd_uncertain[ii] }
 dat_m <- rbind( dat_m , dat_m1 )
 dat_s <- rbind( dat_s , dat_s1 )
@@ -176,7 +176,7 @@ summary(res3)
   ##  [2,] 0.9933 0.9592 0.9535
 
 #*** Model 4: kmeans cluster analysis
-res4 <- kmeans( dat_m , centers = 2 )
+res4 <- stats::kmeans( dat_m , centers = 2 )
   ##   K-means clustering with 2 clusters of sizes 607, 393
   ##   Cluster means:
   ##             I1        I2          I3

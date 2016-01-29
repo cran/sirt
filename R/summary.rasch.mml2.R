@@ -14,7 +14,7 @@ summary.rasch.mml <- function( object , ... ){
 	a5 <- 1*( npirt & ncol( object$item) == 5 )
 
 	cat("------------------------------------------------------------\n")
-		d1 <- packageDescription("sirt")
+		d1 <- utils::packageDescription("sirt")
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 		cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
 		cat("Computation time:" , print(object$s2 - object$s1), "\n\n")
@@ -34,7 +34,7 @@ summary.rasch.mml <- function( object , ... ){
 	    if ( object$ramsay.qm ){  cat("Quotient Model (Ramsay, 1989) \n") 	}
 	    if ( object$irtmodel == "npirt" ){  cat("Nonparametric IRT \n") 	}
 		if ( object$irtmodel == "missing1"){ cat("Missing Data IRT Model \n")		}
-        flush.console()
+        utils::flush.console()
 	if ( sum(object$est.c) > 0){ cat(paste( "Estimated guessing parameter groups \n") )}  
 				## estimated guessing parameters
     if ( object$G > 1 ){ cat("\nMultiple Group Estmation with",object$G , "Groups \n") 
@@ -68,8 +68,8 @@ summary.rasch.mml <- function( object , ... ){
 				  ) 
 						}
 	if ( ! is.null( object$trait.weights) ){
-		M1 <- weighted.mean( object$theta.k ,object$trait.weights )
-		S1 <- sqrt( weighted.mean( object$theta.k^2 ,object$trait.weights ) - M1^2	)
+		M1 <- stats::weighted.mean( object$theta.k ,object$trait.weights )
+		S1 <- sqrt( stats::weighted.mean( object$theta.k^2 ,object$trait.weights ) - M1^2	)
 		cat( "Fixed Trait Distribution (" , length(object$trait.distr[,1]) , " Knots )\n" , 
 				  "Mean=" , round( M1 ,3 ) , 
 					" SD=" , round( S1 , 3) 
@@ -83,7 +83,7 @@ summary.rasch.mml <- function( object , ... ){
 		cat("\nCovariance Matrix\n") ; print( round( object$Sigma.cov , 3 ) )	
 		cat("\n")
 		covmat <- object$Sigma.cov 
-		covmat2 <- cov2cor( covmat )
+		covmat2 <- stats::cov2cor( covmat )
 		diag(covmat2) <- sqrt( diag(covmat) )
 		cat("\nStandard Deviations / Correlation Matrix\n") ; print( round( covmat2 , 3 ) )	
 		cat("\n")
@@ -92,11 +92,11 @@ summary.rasch.mml <- function( object , ... ){
 	if ( object$irtmodel != "npirt" ){	
 		cat( "Item Difficulty Distribution (" , nrow(object$item) , " Items )\n" , 
 				  "Mean=" , round( mean(object$item$b) ,3) , " SD=" , 
-							round( sd(object$item$b) , 3) , "\n") 
+							round( stats::sd(object$item$b) , 3) , "\n") 
 							}
     cat( "Distribution of Items Administered (" , nrow(object$item) , " Items )\n" , 
               "Mean=" , round( mean(rowSums( 1 - is.na(object$dat) )) ,3) , " SD=" , 
-                        round( sd(rowSums( 1 - is.na(object$dat) )) ,3) , "\n\n") 
+                        round( stats::sd(rowSums( 1 - is.na(object$dat) )) ,3) , "\n\n") 
 	cat( "EAP Reliability: ") 
 	cat(round( object$reliability$eap.reliability,3 ) )
 	cat( "\n")

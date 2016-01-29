@@ -44,10 +44,10 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 		pi.k <- rep( 1/Nclasses , Nclasses )
 		if (G>1){ pi.k <- matrix( pi.k , nrow=Nclasses , ncol=G ) }
 		lc.probs <- matrix( NA , nrow=Nclasses , ncol= I )
-		b <- - qnorm( colMeans( dat , na.rm=T ) )
-		theta.k <- qnorm( ( seq( 1 , Nclasses , 1 ) - .5 ) / Nclasses )
+		b <- - stats::qnorm( colMeans( dat , na.rm=T ) )
+		theta.k <- stats::qnorm( ( seq( 1 , Nclasses , 1 ) - .5 ) / Nclasses )
 		for (cc in 1:Nclasses ){
-			lc.probs[ cc , ] <- plogis( theta.k[cc] - b )
+			lc.probs[ cc , ] <- stats::plogis( theta.k[cc] - b )
 					}
 		pjk <- lc.probs
 						}  # end LC
@@ -61,7 +61,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 										}
 		inut <- is.null(theta.k) 
 	    if (inut){
-			theta.k <- 2*qnorm( seq( 1 / Nclasses / 2, 1 , 1/Nclasses ) )
+			theta.k <- 2* stats::qnorm( seq( 1 / Nclasses / 2, 1 , 1/Nclasses ) )
 							} else {
 					if (D==1){ Nclasses <- length(theta.k )  }	# works for D=1
 					if (D>1){ Nclasses <- nrow(theta.k )  }
@@ -84,13 +84,13 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 			pi.k <- rep(1/Nclasses , Nclasses )
 								} # end if D > 1
 		pi.k <- pi.k / sum( pi.k )
-		b <- - qlogis( colMeans( dat , na.rm=T ) )	
+		b <- - stats::qlogis( colMeans( dat , na.rm=T ) )	
         a <- rep(1,I)
 		if (G>1){ pi.k <- matrix( pi.k , nrow=Nclasses , ncol=G ) }
 		lc.probs <- matrix( NA , nrow=Nclasses , ncol= I )
 		if (D==1){
 		for (cc in 1:Nclasses ){
-			lc.probs[ cc , ] <- plogis( theta.k[cc] - b )
+			lc.probs[ cc , ] <- stats::plogis( theta.k[cc] - b )
 					}
 				}
 		pjk <- lc.probs
@@ -147,7 +147,7 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 	#***************
 		# iterate over different starts
 		if ( ( seed[1] < 0) | ( length(seed) < nstarts) ){ 
-			seed <- round(runif( nstarts , 1 , 10000 )) 
+			seed <- round( stats::runif( nstarts , 1 , 10000 )) 
 					}
 		devL <- rep(NA , nstarts )
 		NN1dev <-  1*10^90
@@ -157,18 +157,18 @@ rasch.mirtlc <- function( dat , Nclasses=NULL , modeltype="LC" ,
 			seed.nn <- seed[nn]
 			if ( seed[nn] > 0 ){
 				set.seed( seed.nn )
-				pjk <- matrix( runif( I*Nclasses ) , nrow= Nclasses , ncol=I )
+				pjk <- matrix( stats::runif( I*Nclasses ) , nrow= Nclasses , ncol=I )
 #				theta.k <- theta.k + matrix( rnorm( Nclasses*D , sd =.7 ) , ncol=D 
 #				theta.k <- theta.kstart + matrix( rnorm( Nclasses*D , sd =.07 ) , ncol=D )
 			if (modeltype%in%c("MLC1","MLC2") & ( nstarts > 1 ) & ( ! theta.fixed ) & (D>1) ){ 
-					pi.k <- runif( Nclasses , 0 , 1 ) 
+					pi.k <- stats::runif( Nclasses , 0 , 1 ) 
 					pi.k <- pi.k / sum( pi.k )
-					theta.k <- .7*theta.k + matrix( rnorm( Nclasses*D , sd =.97 ) , ncol=D )
+					theta.k <- .7*theta.k + matrix( stats::rnorm( Nclasses*D , sd =.97 ) , ncol=D )
 								}
 			if (modeltype%in%c("MLC1","MLC2") & ( nstarts > 1 ) & ( ! theta.fixed ) & (D==1) ){ 
-					pi.k <- runif( Nclasses , 0 , 1 ) 
+					pi.k <- stats::runif( Nclasses , 0 , 1 ) 
 					pi.k <- pi.k / sum( pi.k )
-					theta.k <- .7*theta.k + rnorm( Nclasses*D , sd =.97 ) 
+					theta.k <- .7*theta.k + stats::rnorm( Nclasses*D , sd =.97 ) 
 								}
 								}
 	dev <- 1

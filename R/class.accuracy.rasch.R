@@ -12,14 +12,14 @@ function( cutscores , b , meantheta , sdtheta , theta.l , n.sims=0 , seed=988){
     cutscores.long <- c(-Inf , cutscores , Inf )
     # MLE standard error
     semle <- rasch.info.mle(dat=dat0, theta=theta.l , b=b )
-    wgttheta <- dnorm( theta.l , mean = meantheta , sd = sdtheta )
+    wgttheta <- stats::dnorm( theta.l , mean = meantheta , sd = sdtheta )
     wgttheta <- wgttheta / sum( wgttheta )
     
     # distribution of estimated theta values
     m1 <- matrix( NA , nrow = L , ncol=L )
     for (tt in 1:L ){ 
         # tt <- 1
-        w.tt <- dnorm( theta.l , mean= theta.l[tt]  , sd = semle[tt] )
+        w.tt <- stats::dnorm( theta.l , mean= theta.l[tt]  , sd = semle[tt] )
         w.tt <- w.tt / sum( w.tt )
         m1[tt,] <- w.tt
                     }
@@ -53,7 +53,7 @@ function( cutscores , b , meantheta , sdtheta , theta.l , n.sims=0 , seed=988){
 	#########################################
 	# accuracy by simulation
 	if ( n.sims > 0 ){
-		theta0 <- rnorm(n.sims, mean=meantheta , sd=sdtheta )
+		theta0 <- stats::rnorm(n.sims, mean=meantheta , sd=sdtheta )
 		theta.sim <- data.frame( "theta.true" = theta0 )
 		theta.sim$true.class <- as.numeric( paste( cut( theta0 , breaks= cutscores.long , labels=1:CC) ))
 		theta.sim$random.class <- sample( theta.sim$true.class )
@@ -67,7 +67,7 @@ function( cutscores , b , meantheta , sdtheta , theta.l , n.sims=0 , seed=988){
 		theta.sim$WLE2.class <- as.numeric( paste( cut( theta.sim$WLE2 , breaks= cutscores.long , labels=1:CC )) )
 		# calculate WLE reliability
 		v2 <- mean( ( theta.sim$WLE - theta0)^2 )
-		wle.rel <- var( theta0) / ( var( theta0) + v2 )
+		wle.rel <- stats::var( theta0) / ( var( theta0) + v2 )
 		stats2 <- stats
 		rownames(stats2) <- "simulated"
 		stats2$agree0 <- mean( theta.sim$true.class == theta.sim$WLE.class )
@@ -78,7 +78,7 @@ function( cutscores , b , meantheta , sdtheta , theta.l , n.sims=0 , seed=988){
 		cat("\nWLE reliability (by simulation) =" , round( wle.rel , 3) , "\n" )
 		stats[2,"consistency"] <- mean( theta.sim$WLE2.class == theta.sim$WLE.class )	
 		cat("WLE consistency (correlation between two parallel forms) = " )
-		cat( round( cor( theta.sim$WLE , theta.sim$WLE2 ) , 3 ), "\n")
+		cat( round( stats::cor( theta.sim$WLE , theta.sim$WLE2 ) , 3 ), "\n")
 					}
 	cat("\nClassification accuracy and consistency\n")
     print( stats , digits=3 )

@@ -41,9 +41,9 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 			se.b <- (sqrt(  1 / abs(res$d2) ))[ind]	
 		conv1 <- max( abs( b - b0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()
+		cat("-") 
 			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()	
+	cat(" " , it , "Step(s) \n")	
 	if ( increment.factor > 1){
 		b <- .adj.maxincrement.parameter( oldparm=b00 , newparm=b , 
 					max.increment=max.increment )		
@@ -93,13 +93,13 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 						}   # end dd
 		conv1 <- max( abs( a - a0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()
+		cat("-") 
 			}
 	if ( increment.factor > 1){
 		a <- .adj.maxincrement.parameter( oldparm=a00 , newparm=a , 
 					max.increment=max.a.increment )		
 						}				
-	cat(" " , it , "Step(s) \n")	#; flush.console()	
+	cat(" " , it , "Step(s) \n")	
     res <- list("a" = a , "se.a" = se.a , 
 			"ll" = sum(res$ll0) )
     return(res)
@@ -142,9 +142,9 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 			se.c <- (sqrt(  1 / abs(res$d2) ))[ind]	
 		conv1 <- max( abs( c - c0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()
+		cat("-") 
 			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()	
+	cat(" " , it , "Step(s) \n")	
 	if ( increment.factor > 1){
 		c <- .adj.maxincrement.parameter( oldparm=c00 , newparm=c , 
 					max.increment=max.increment )		
@@ -191,9 +191,9 @@ calcprob.comp <- function (a,b,Q,thetak,cc,dd){
 			se.d <- (sqrt(  1 / abs(res$d2) ))[ind]	
 		conv1 <- max( abs( d - d0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()
+		cat("-") 
 			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()	
+	cat(" " , it , "Step(s) \n")	
 	if ( increment.factor > 1){
 		d <- .adj.maxincrement.parameter( oldparm=d00 , newparm=d , 
 					max.increment=max.increment )		

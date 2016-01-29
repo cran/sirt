@@ -75,7 +75,8 @@ rasch.jml <- function( dat , method = "MLE" , b.init = NULL ,  constraints = NUL
 		 dat1$theta.index <- match( ti , unique( ti ))
 		 dat1$caseid <- seq( 1 , nrow(dat1) )	
 	 
-		 theta.pattern <- as.data.frame(aggregate( dat1$caseid , list( dat1$theta.index ) , min ))
+		 theta.pattern <- as.data.frame( 
+				stats::aggregate( dat1$caseid , list( dat1$theta.index ) , min ))
 		 colnames(theta.pattern) <- c("theta.index" , "caseid")
 		 
 		 
@@ -95,13 +96,13 @@ rasch.jml <- function( dat , method = "MLE" , b.init = NULL ,  constraints = NUL
 	   
        # starting values item parameter
        if ( is.null( b.init) ){ 
-               b <- - qlogis( colSums( dat2 * dat2.resp * dat1[,2] ) / colSums( dat1[,2] * dat2.resp ) )
+               b <- - stats::qlogis( colSums( dat2 * dat2.resp * dat1[,2] ) / colSums( dat1[,2] * dat2.resp ) )
                     } else { b <- b.init }
        if (!is.null(constraints)){ b[ constraints[,1] ] <- constraints[,2] }
 
        # starting values person paramters
        if ( is.null(theta.init)){
-				theta <- qlogis( dat1$mean * ( 1  - 1 / I ) + 1 / ( 2*I ) ) 
+				theta <- stats::qlogis( dat1$mean * ( 1  - 1 / I ) + 1 / ( 2*I ) ) 
 							} else { 
 							theta <- theta.init 
 							theta[ theta == Inf ] <- 20	
@@ -118,7 +119,7 @@ rasch.jml <- function( dat , method = "MLE" , b.init = NULL ,  constraints = NUL
                 theta[ind] <- prox.res$theta
                         }  
         # center across persons
-        if (centerpersons ){  theta <- theta - weighted.mean( theta , dat1[,2] )     }
+        if (centerpersons ){  theta <- theta - stats::weighted.mean( theta , dat1[,2] )     }
         
         # initial settings       
         dev0 <- 1 ; dev.change <- 1 ;   iter <- 0 ;   b0 <- 0
@@ -157,7 +158,7 @@ rasch.jml <- function( dat , method = "MLE" , b.init = NULL ,  constraints = NUL
 			theta <- theta[ dat1$theta.index ]							
             # center theta around the mean 
             if (centerpersons){   
-					theta <- theta - weighted.mean( theta , dat1[,2] )    
+					theta <- theta - stats::weighted.mean( theta , dat1[,2] )    
 						}
             # calculate Log-Likelihood and Deviance	
 			 p.ia <- (m1$p.ia)[ dat1$theta.index, ]
@@ -175,7 +176,7 @@ rasch.jml <- function( dat , method = "MLE" , b.init = NULL ,  constraints = NUL
 				if (iter > 1){ cat(	" | Deviance change = " , round( dev1a , 5 ) ) }
 								cat( "\n  Max. parm. change = " , 
                                  round( bconv , 6 ) , "\n"  )  
-								  flush.console() 
+								  utils::flush.console() 
 								  }
                             }
 
@@ -256,14 +257,14 @@ rasch.jml <- function( dat , method = "MLE" , b.init = NULL ,  constraints = NUL
     b.change <- 1
 	iter <- 0
     while( max( abs( b.change  ) ) > conv & ( iter < bsteps ) ){
-		p.ia <- plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
+		p.ia <- stats::plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
 		deriv <- colSums( - freq.thetapattern * p.ia * ( 1- p.ia ) )
 		diff <- suffB + colSums( freq.dat.resp.thetapattern *  p.ia  )
         b.change <-  diff / deriv
         if (! is.null(constraints)){  
 				b.change[ constraints[,1] ] <- 0 
 					}
-		if (progress){	cat("-");flush.console() }
+		if (progress){	cat("-"); utils::flush.console() }
         b <- b - b.change
 		iter <- iter + 1
 				}
@@ -293,7 +294,7 @@ rasch.info.mle <- function( dat , theta , b){
     # theta ... ability estimates
     # b     ... item difficulties
     dat.resp <- 1 - is.na(dat)
-    p.ia <- plogis( outer( theta , b , "-" ) )
+    p.ia <- stats::plogis( outer( theta , b , "-" ) )
     # calculate information function
     info <- rowSums( dat.resp * p.ia * ( 1- p.ia ) )
     # calculate standard error
@@ -321,7 +322,7 @@ mle.rasch <- function( dat , dat.resp = 1-is.na(dat) , b , theta , conv = .001 ,
     while( max( abs( theta.change) > conv )){
         # calculate P and Q
 #        p.ia <- plogis( outer( theta , b , "-" ) ) ; 
-		p.ia <- plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
+		p.ia <- stats::plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
 		q.ia <- 1 - p.ia
         # Likelihood
         l1 <- rowSums( dat.resp* ( dat - p.ia ) )
@@ -341,22 +342,22 @@ mle.rasch <- function( dat , dat.resp = 1-is.na(dat) , b , theta , conv = .001 ,
 #-----------------------------------------------------------------------------------------------------------#
 # gradient Rasch function
 .b.gradient.rasch <- function( b , theta , freq , dat , dat.resp ){
-    colSums(  - freq * dat.resp * ( dat - plogis(  outer( theta , b , "-" ) ) ) )
+    colSums(  - freq * dat.resp * ( dat - stats::plogis(  outer( theta , b , "-" ) ) ) )
     }
 # Information Matrix item difficulties
 .infb.rasch1 <- function( b , theta , freq ){
 #    p.ia <- plogis( outer( theta , b , "-" ) )
-    p.ia <- plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
+    p.ia <- stats::plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
 	colSums( - freq * p.ia * ( 1- p.ia ) )
     }
 .infb.rasch <- function( b , theta , freq ){
-    p.ia <- plogis( outer( theta , b , "-" ) )
+    p.ia <- stats::plogis( outer( theta , b , "-" ) )
 	colSums( - freq * p.ia * ( 1- p.ia ) )
     }	
 # calculate P_i ( theta)
 .prob.rasch <- function( theta , b ){
 #    plogis( outer( theta , b , "-" ) ) 
-    plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
+    stats::plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
     }
 # calculate P_i(theta) for 3PL model
 .prob.3pl <- function( theta , b , a , c){
@@ -365,7 +366,7 @@ mle.rasch <- function( dat , dat.resp = 1-is.na(dat) , b , theta , conv = .001 ,
     aM <- outer( l1 , a )
     bM <- outer( l1 , b )
     thetaM <- outer( theta , rep(1,length(b) ) )
-    cM + (1-cM) * plogis( aM*(thetaM - bM ) )
+    cM + (1-cM) * stats::plogis( aM*(thetaM - bM ) )
     }    
 #-----------------------------------------------------------------------------------------------------------#
 
@@ -389,7 +390,9 @@ mle.reliability.rasch <- function(  b , mean.abil=NULL , var.abil=NULL , npoints
 	# theta grid ... optional
     #...................................
     q.grid <- seq( 1 /npoints  , 1 - 1/npoints , len=npoints )
-	if ( is.null(theta)){   theta <- qnorm( q.grid , mean = mean.abil , sd = sqrt( var.abil ) ) }
+	if ( is.null(theta)){   
+			theta <- stats::qnorm( q.grid , mean = mean.abil , sd = sqrt( var.abil ) ) 
+						}
     info <- .info.rasch( theta = theta , b = b )
     # mean estimate of variance
     mean.var.est <- mean( info^2 )
@@ -412,7 +415,7 @@ mle.reliability.rasch <- function(  b , mean.abil=NULL , var.abil=NULL , npoints
     # update item difficulties   
     b.change <- 1
     while( max( abs( b.change  ) ) > conv ){
-		p.ia <- plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
+		p.ia <- stats::plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
 		if ( ! is.null( thetaindex ) ){ 
 			p.ia <- p.ia[ thetaindex , ]
 									}
@@ -422,7 +425,7 @@ mle.reliability.rasch <- function(  b , mean.abil=NULL , var.abil=NULL , npoints
         if (! is.null(constraints)){  
 				b.change[ constraints[,1] ] <- 0 
 					}
-		if (progress){	cat("-");flush.console() }
+		if (progress){	cat("-"); utils::flush.console() }
         b <- b - b.change
         }
     b
@@ -556,7 +559,7 @@ rasch.jml.jackknife1 <- function( jmlobj  ){
         j.itemdiff[-uu,uu] <- mod.uu$item$itemdiff
         if ( uu %in% prbar.display ){ 
                     suu <- sum( prbar.display == uu )
-                    cat(paste( rep("-",suu) , collapse="")) ; flush.console() 
+                    cat(paste( rep("-",suu) , collapse="")) ; utils::flush.console() 
                                 }
                     }
     cat("|\n\n")

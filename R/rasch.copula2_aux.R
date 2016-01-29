@@ -665,7 +665,7 @@ person.parameter.rasch.copula <- function( raschcopula.object , numdiff.parm = .
         dat20 <- dat2 * dat2.resp
 		dat20[ dat2.resp == 0 ] <- NA
 		theta0 <- rowMeans( dat20 , na.rm=T )
-        theta0 <- qlogis( theta0 )
+        theta0 <- stats::qlogis( theta0 )
         # theta0[1:2] <- c(0,1)
         theta0[ theta0 == - Inf] <- -9999
         theta0[ theta0 ==  Inf] <- 9999
@@ -728,7 +728,7 @@ person.parameter.rasch.copula <- function( raschcopula.object , numdiff.parm = .
             cat("Iteration" , ii , ":   max. parm. change" , round( a1m , 5))
 			cat("   |" , sum(ind1) , "out of" , ndat2 , "cases converged")
 			cat(" (", round(100*sum(ind1)/length(ind1),1) , "%)\n")
-			flush.console()
+			utils::flush.console()
                     }
 		theta0[ abs( theta.init  ) == 9999 ] <- NA
 		theta0i[ abs( theta.init  ) == 9999 ] <- NA
@@ -752,25 +752,34 @@ person.parameter.rasch.copula <- function( raschcopula.object , numdiff.parm = .
 		# calculate a summary
 		index <- rep( seq(1,nrow(res0)) , res$freqwgt )
 		res <- res[ index , ]
-		a1 <- aggregate( res[ , c("theta.dep" , "theta.ind")] , list( res$missing.pattern ,  res$score , res$max) , mean , na.rm=T )
+		a1 <- stats::aggregate( res[ , c("theta.dep" , "theta.ind")] , list( res$missing.pattern ,  res$score , res$max) , mean , na.rm=T )
 		colnames(a1) <- c("missing.pattern" , "score" , "max" , "M.theta.dep" , "M.theta.ind" )
-		a1$N <- aggregate( 1+0*res[ , c("theta.dep")] , list( res$missing.pattern ,res$score, res$max) , sum  , na.rm=T )[,4]	
+		a1$N <- stats::aggregate( 1+0*res[ , c("theta.dep")] , list( res$missing.pattern ,res$score, res$max) , sum  , na.rm=T )[,4]	
 		a1 <- a1[ , c(1:3,6,4,5) ]
-		a1$SD.theta.dep <- aggregate( res[ , c("theta.dep")] , list( res$missing.pattern ,res$score, res$max) , sd  , na.rm=T)[,4]		
-		a1$Min.theta.dep <- aggregate( res[ , c("theta.dep")] , list( res$missing.pattern ,res$score, res$max) , min  , na.rm=T)[,4]
-		a1$Max.theta.dep <- aggregate( res[ , c("theta.dep" )] , list( res$missing.pattern ,res$score, res$max) , max , na.rm=T )[,4]
+		a1$SD.theta.dep <- stats::aggregate( res[ , c("theta.dep")] , 
+				list( res$missing.pattern ,res$score, res$max) , stats::sd  , na.rm=T)[,4]		
+		a1$Min.theta.dep <- stats::aggregate( res[ , c("theta.dep")] , 
+				list( res$missing.pattern ,res$score, res$max) , min  , na.rm=T)[,4]
+		a1$Max.theta.dep <- stats::aggregate( res[ , c("theta.dep" )] , 
+				list( res$missing.pattern ,res$score, res$max) , max , na.rm=T )[,4]
 		if ( abs(alpha1) + abs( alpha2) > 0 ){
-			a1$SD.theta.ind <- aggregate( res[ , c("theta.ind")] , list( res$missing.pattern ,res$score, res$max) , sd  , na.rm=T)[,4]		
-			a1$Min.theta.ind <- aggregate( res[ , c("theta.ind")] , list( res$missing.pattern ,res$score, res$max) , min  , na.rm=T )[,4]
-			a1$Max.theta.ind <- aggregate( res[ , c("theta.ind" )] , list( res$missing.pattern ,res$score, res$max) , max  , na.rm=T)[,4]
+			a1$SD.theta.ind <- stats::aggregate( res[ , c("theta.ind")] , 
+					list( res$missing.pattern ,res$score, res$max) , stats::sd  , na.rm=T)[,4]		
+			a1$Min.theta.ind <- stats::aggregate( res[ , c("theta.ind")] , 
+						list( res$missing.pattern ,res$score, res$max) , min  , na.rm=T )[,4]
+			a1$Max.theta.ind <- stats::aggregate( res[ , c("theta.ind" )] , 
+						list( res$missing.pattern ,res$score, res$max) , max  , na.rm=T)[,4]
 					}		
-		a1$M.seinflat <- aggregate( res[ , c("seinflat")] , list( res$missing.pattern ,res$score, res$max) , mean  , na.rm=T)[,4]
-		a1$M.setheta.dep <- aggregate( res[ , c("setheta.dep" )] , list( res$missing.pattern ,res$score, res$max) , mean , na.rm=T )[,4]		
-		a1$M.setheta.ind <- aggregate( res[ , c("setheta.ind" )] , list( res$missing.pattern ,res$score, res$max) , mean  , na.rm=T)[,4]		
+		a1$M.seinflat <- stats::aggregate( res[ , c("seinflat")] , 
+				list( res$missing.pattern ,res$score, res$max) , mean  , na.rm=T)[,4]
+		a1$M.setheta.dep <- stats::aggregate( res[ , c("setheta.dep" )] , 
+					list( res$missing.pattern ,res$score, res$max) , mean , na.rm=T )[,4]		
+		a1$M.setheta.ind <- stats::aggregate( res[ , c("setheta.ind" )] , 
+					list( res$missing.pattern ,res$score, res$max) , mean  , na.rm=T)[,4]		
 		if (print.summary){
 			cat("\n..................................................................\n")
 			cat("Mean percentage standard error inflation\n\n")
-			a4 <- aggregate( res[,"seinflat"] , list( res$missing.pattern) , mean , na.rm=T)
+			a4 <- stats::aggregate( res[,"seinflat"] , list( res$missing.pattern) , mean , na.rm=T)
 			a4[,2] <- round( 100*(a4[,2] - 1) , 2 )
 			colnames(a4) <- c("missing.pattern" , "Mperc.seinflat")
 			print(a4)	

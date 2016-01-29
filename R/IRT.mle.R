@@ -45,11 +45,11 @@ IRT.mle <- function(data, irffct, arg.list, theta=rep(0,nrow(data)), type="MLE",
 		#-----
 		# prior distribution
 		if (MAP){
-		   llP0 <- llP0 + log( dnorm( theta , mean=mu,sd=sigma) )
-		   llP1 <- llP1 + log( dnorm( theta+h , mean=mu,sd=sigma) )			
-		   llP2 <- llP2 + log( dnorm( theta+2*h , mean=mu,sd=sigma) )		
-		   llM1 <- llM1 + log( dnorm( theta-h , mean=mu,sd=sigma) )			
-		   llM2 <- llM2 + log( dnorm( theta-2*h , mean=mu,sd=sigma) )		
+		   llP0 <- llP0 + log( stats::dnorm( theta , mean=mu,sd=sigma) )
+		   llP1 <- llP1 + log( stats::dnorm( theta+h , mean=mu,sd=sigma) )			
+		   llP2 <- llP2 + log( stats::dnorm( theta+2*h , mean=mu,sd=sigma) )		
+		   llM1 <- llM1 + log( stats::dnorm( theta-h , mean=mu,sd=sigma) )			
+		   llM2 <- llM2 + log( stats::dnorm( theta-2*h , mean=mu,sd=sigma) )		
 					}		
 		#-----
 		
@@ -74,7 +74,7 @@ IRT.mle <- function(data, irffct, arg.list, theta=rep(0,nrow(data)), type="MLE",
 		if (progress){
 			cat("* Iteration" , iter , ":" , "maximum parameter change" ,
 				round( conv, 5 ) , "\n") 
-			flush.console();
+			utils::flush.console();
 					}	
 		iter <- iter + 1					
 			}

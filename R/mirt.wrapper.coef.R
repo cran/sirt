@@ -32,10 +32,10 @@ mirt.wrapper.coef <- function( mirt.obj ){
 						}         
 		rownames(dfr) <- NULL
 		if( sum(colnames(dfr) %in% "g") > 0 ){
-		     dfr$g <- plogis(dfr$g) 
+		     dfr$g <- stats::plogis(dfr$g) 
 						}
 		if( sum(colnames(dfr) %in% "u") > 0 ){
-		     dfr$u <- plogis(dfr$u) 
+		     dfr$u <- stats::plogis(dfr$u) 
 						}		
 				
 #		coefmirt <- coef(mirt.obj)

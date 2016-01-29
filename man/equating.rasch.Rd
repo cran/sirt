@@ -28,7 +28,7 @@ difficulties
 Vector of theta values at which the linking functions
 should be evaluated. If a weighting according to a prespecified normal 
 distribution \eqn{N( \mu,\sigma^2)} is aimed, then choose
-\code{theta=qnorm( seq(.001 , .999 , len=100) , mean=mu, sd=sigma)}
+\code{theta=stats::qnorm( seq(.001 , .999 , len=100) , mean=mu, sd=sigma)}
 }
   \item{alpha1}{
 Fixed \eqn{\alpha_1} parameter in the generalized item

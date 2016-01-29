@@ -1,5 +1,3 @@
-#-------------------------------------------------------
-
 
 
 #----------------------------------------------------------------------------------------------------
@@ -27,11 +25,11 @@ np.dich <- function( dat , theta , thetagrid , progress = FALSE ,
     for (ii in 1:I){
 	    dfr <- data.frame( dat[,ii ] , theta )
         missing.resp[ , ii] <- 1* ( rowSums( is.na(dfr) ) > 0 )
-        dfr <- na.omit(dfr)
+        dfr <- stats::na.omit(dfr)
         y <- dfr[,1]
         x <- dfr[,2]
         if (method == "normal" ){
-            h1 <- ksmooth( x , y , bandwidth = bwscale * sd( x ) * length(x)^(-1/5)  , 
+            h1 <- stats::ksmooth( x , y , bandwidth = bwscale * sd( x ) * length(x)^(-1/5)  , 
 						x.points = thetagrid , kernel="normal")
             estimate[ii,] <- h1$y
                     }
@@ -44,7 +42,7 @@ np.dich <- function( dat , theta , thetagrid , progress = FALSE ,
                 upper[ii,] <- h1$upper 
                 }
     if (progress ){ if ( ii %% 20 == 0) { cat("" , ii , "\n" ) } else { cat( "" , ii ) } 
-        flush.console() }
+        utils::flush.console() }
         }
     if (method == "normal"){ lower <- upper <- NULL }
     if (progress){ cat( "\n")}
@@ -68,7 +66,7 @@ np.dich <- function( dat , theta , thetagrid , progress = FALSE ,
     yvaldiff <- 1*( yval1 - yval2 )
     xx <- c( xval , rev(xval) ) 
     yy <- c( yval1 - eps*yvaldiff , rev( yval2 ) - eps * yvaldiff )
-    polygon(xx, yy, col= shadecol , border = shadecol )
+    graphics::polygon(xx, yy, col= shadecol , border = shadecol )
     }
 #--------------------------------------------------------------------------------------------------
 
@@ -88,7 +86,8 @@ plot.np.dich <- function( x , b , infit = NULL , outfit = NULL , nsize = 100 ,
     # progress  ... display iteration process of nonparametric estimation       #
     # bands     ... should confidence bands be drawn?                           #
     # plot.b    ... plot item difficulties                                      #
-    np.dich.obj <- object <- x
+    P <- NULL
+	np.dich.obj <- object <- x
     # extract informations from object np.dich
     thetagrid <- np.dich.obj$thetagrid
     theta <- np.dich.obj$theta
@@ -100,39 +99,44 @@ plot.np.dich <- function( x , b , infit = NULL , outfit = NULL , nsize = 100 ,
     missing.resp <- np.dich.obj$missing.resp
     I <- ncol(dat)
     n <- nrow(dat)
-    p <- .prob.rasch( thetagrid , b )     
+    p <- .prob.rasch( thetagrid , b )     	
     for (ii in 1:I){
         plotname <- paste( colnames(dat)[ii] , ": N=" , 
 				sum((1-is.na(dat))[,ii]) , 
 				";  b=" , formatC( b[ii] , 2 , format="f") , sep="")
         if ( !is.null(infit) ){ plotname <- paste( plotname , "\n Infit=" , formatC( infit[ii],2, format="f") ) }
         if ( !is.null(infit) ){ plotname <- paste( plotname , " Outfit=" , formatC( outfit[ii],2 , format="f") ) }
-        plot( thetagrid , estimate[ii,] , type="n"  , ylim = c( - .02 , 1.02 ) ,
-                    xlab = expression( theta ) , ylab = expression( P( theta )) , 
+        graphics::plot( thetagrid , estimate[ii,] , type="n"  , ylim = c( - .02 , 1.02 ) ,
+                    xlab = base::expression( theta ) , ylab = base::expression( P( theta )) , 
                     main = plotname )
-        abline( h = 0 , lty=3 )
-        abline( h = 1 , lty=3 )
-        rug( theta[ missing.resp[,ii] == 0 ]  , col= "cyan" )
+        graphics::abline( h = 0 , lty=3 )
+        graphics::abline( h = 1 , lty=3 )
+        # graphics::rug( theta[ missing.resp[,ii] == 0 ]  , col= "cyan" )
         # shade area
-        if (shade == T){ .shade.area( xval = thetagrid  , yval1 = p[,ii] , yval2 = estimate[ii,] , 
+        if (shade ){ 
+			.shade.area( xval = thetagrid  , yval1 = p[,ii] , yval2 = estimate[ii,] , 
                             eps=0 , shadecol= shadecol )
                       }
-        if (bands ==T & !is.null(upper) ){ segments( thetagrid , lower[ii,] , thetagrid ,   upper[ii,] , col = "gray") }
+        if (bands & !is.null(upper) ){ 
+			graphics::segments( thetagrid , lower[ii,] , thetagrid ,   
+					upper[ii,] , col = "gray") 
+								}
         # select display
         theta.ii <- theta[  missing.resp[,ii] == 0 ]
         ind <- which( thetagrid > min(theta.ii) & thetagrid < max(theta.ii ) )
-        lines( thetagrid[ind] , estimate[  ii, ind ] , lwd= 2 , col = 1 ,  lty= 5 )
-        lines( thetagrid , p[ , ii ] , lwd= 2, col = 2 )
-        if (plot.b == T){   lines( c( b[ii] , b[ii] ) , c( 0 , .5) , col=3 , lty=4 , lwd=2)
-                            lines( c( -90 , b[ii] ) , c( .5 , .5) , col=3 , lty=4 ,  lwd=2 )        
-                            th80 <- qlogis(.8) + b[ii]
-                            lines( c( th80 , th80 ) , c( 0 , .8 ) , col=3 , lty=3 ,  lwd=2 )                                    
-                            lines( c(  th80 , 90 ) , c( .8 , .8 ) , col=3 , lty=3 ,  lwd=2 ) 
-                            lines( c( b[ii] , th80) , c(0,0) , col=3 , lwd=2 )             
+        graphics::lines( thetagrid[ind] , estimate[  ii, ind ] , lwd= 2 , col = 1 ,  lty= 5 )
+        graphics::lines( thetagrid , p[ , ii ] , lwd= 2, col = 2 )
+        if (plot.b ){   
+			graphics::lines( c( b[ii] , b[ii] ) , c( 0 , .5) , col=3 , lty=4 , lwd=2)
+            graphics::lines( c( -90 , b[ii] ) , c( .5 , .5) , col=3 , lty=4 ,  lwd=2 )        
+            th80 <- stats::qlogis(.8) + b[ii]
+            graphics::lines( c( th80 , th80 ) , c( 0 , .8 ) , col=3 , lty=3 ,  lwd=2 )                                    
+            graphics::lines( c(  th80 , 90 ) , c( .8 , .8 ) , col=3 , lty=3 ,  lwd=2 ) 
+            graphics::lines( c( b[ii] , th80) , c(0,0) , col=3 , lwd=2 )             
                          }
-        par(ask = askplot)
+        graphics::par(ask = askplot)
         }
-    par(ask=F)
+    graphics::par(! askplot )
     }
 #-------------------------------------------------------------------------------------------#
 

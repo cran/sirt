@@ -43,7 +43,7 @@ rowKSmallest.sirt <- function( matr , K , break.ties=TRUE){
     M1 <- matr
     N1 <- dim(M1)[1] ; N2 <- dim(M1)[2]
     # generate random number matrix
-    rM1 <- matrix( round( runif( N1*N2 ) ) , N1 , N2 )
+    rM1 <- matrix( round( stats::runif( N1*N2 ) ) , N1 , N2 )
     if ( ! break.ties ){ rM1 <- 0*rM1 }
     # define integer matrix
     indexmatr <- matrix( 1:N2 , N1 , N2 , byrow=TRUE )

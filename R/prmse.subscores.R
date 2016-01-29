@@ -1,21 +1,6 @@
- 
-# 0.01  2012-xx-yy
-
-
-# 0.01  2012-06-23  o initial release
-
-
-#-------------------------------------------------------
-
-
-
-
-
-
 
 #--------------------------------------------------------------------------
 # calculation of PRMSE for Subscores according to Haberman (2007)
-##NS export(prmse.subscores)
 prmse.subscores <- function( data.X , data.Z){
     ind <- which( rowSums( is.na( data.Z ) ) > 0 )
 #    require(psy)
@@ -29,20 +14,20 @@ prmse.subscores <- function( data.X , data.Z){
     score.X <- rowSums( data.X )
     score.Z <- rowSums( data.Z )
     res$M.X <- mean( score.X )
-    res$Var.X <- var( score.X )
+    res$Var.X <- stats::var( score.X )
     res$SD.X <- sqrt( res$Var.X )
     res$alpha.X <- aX$alpha
     res$Var.TX <- res$Var.X * res$alpha.X
     res$Var.EX <- res$Var.X * ( 1 - res$alpha.X )
     res$nZ <- aZ$number.of.items
     res$M.Z <- mean( score.Z )
-    res$Var.Z <- var( score.Z )
+    res$Var.Z <- stats::var( score.Z )
     res$SD.Z <- sqrt( res$Var.Z )
     res$alpha.Z <- aZ$alpha
     res$Var.TZ <- res$Var.Z * res$alpha.Z
     res$Var.EZ <- res$Var.Z * ( 1 - res$alpha.Z )
-    res$cor.X_Z <- cor( score.X , score.Z )
-    res$cor.X_Y <- cor( score.X , score.Z - score.X )
+    res$cor.X_Z <- stats::cor( score.X , score.Z )
+    res$cor.X_Y <- stats::cor( score.X , score.Z - score.X )
     res$cor.TX_TY <- res$cor.X_Y / sqrt( res$alpha.X ) / 
                 sqrt( .cronbach.alpha( data.Z[ , setdiff( colnames(data.Z) , colnames(data.X) ) ] )$alpha )
     res$Var.TX <- res$Var.X - res$Var.EX
@@ -83,7 +68,6 @@ prmse.subscores <- function( data.X , data.Z){
 
 #--------------------------------------------------------------------------------
 # calculation of PRMSE for a number of subscales
-##NS export(prmse.subscores.scales)
 prmse.subscores.scales <- function( data , subscale ){ 
         # data ... original data frame
         # scales ... classification of items in data into scales
@@ -105,7 +89,7 @@ prmse.subscores.scales <- function( data , subscale ){
 # aux function for Cronbach's Alpha
     .cronbach.alpha <- function( data ){ 
         # covariance
-        c1 <- cov( data , use = "pairwise.complete.obs" )
+        c1 <- stats::cov( data , use = "pairwise.complete.obs" )
         # mean covariance
         c1a <- c1 ; diag(c1a) <- 0
         I <- ncol(data)

@@ -2,7 +2,7 @@
 # Summary for smirt object
 summary.invariance.alignment <- function( object , ...){
 	cat("-----------------------------------------------------------------\n")
-    d1 <- packageDescription("sirt")
+    d1 <- utils::packageDescription("sirt")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 	cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
 	cat("Computation Time:" , print(object$s2 - object$s1), "\n\n")

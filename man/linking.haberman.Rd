@@ -99,7 +99,7 @@ A list with following entries
   \item{es.invariance}{Effect size measures of invariance,
   	  separately for item slopes and intercepts.
   	  In the rows, \eqn{R^2} and \eqn{\sqrt{1-R^2}}
-          are displayed.}
+          are reported.}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -220,8 +220,8 @@ N <- 2000       # number of persons
 # define item parameters
 b <- seq( -1.5 , 1.5 , length=I )
 # simulate data
-dat1 <- sim.raschtype( rnorm( N , mean=0,sd=1 ) , b=b )
-dat2 <- sim.raschtype( rnorm( N , mean=0.5,sd=1.50 ) , b=b )
+dat1 <- sim.raschtype( stats::rnorm( N , mean=0,sd=1 ) , b=b )
+dat2 <- sim.raschtype( stats::rnorm( N , mean=0.5,sd=1.50 ) , b=b )
 
 #*** Model 1: 1PL
 # 1PL Study 1
@@ -304,9 +304,9 @@ N <- 1500       # number of persons
 # define item parameters
 b <- seq( -1.5 , 1.5 , length=I )
 # simulate data
-dat1 <- sim.raschtype( rnorm( N , mean=0,sd=1 ) , b=b )
-dat2 <- sim.raschtype( rnorm( N , mean=0.5,sd=1.50 ) , b=b )
-dat3 <- sim.raschtype( rnorm( N , mean=-.2,sd=.8 ) , b=b )
+dat1 <- sim.raschtype( stats::rnorm( N , mean=0,sd=1 ) , b=b )
+dat2 <- sim.raschtype( stats::rnorm( N , mean=0.5,sd=1.50 ) , b=b )
+dat3 <- sim.raschtype( stats::rnorm( N , mean=-.2,sd=.8 ) , b=b )
 # set some items to non-administered
 dat3 <- dat3[ , -c(1,4) ]
 dat2 <- dat2[ , -c(1,2,3) ] 

@@ -149,12 +149,12 @@ Ik <- Ik[1:K] ; xi.k <- xi.k[1:K] ; omega.k <- omega.k[1:K]
 sig2 <- 3.02
 nu2 <- .09
 I <- sum(Ik)
-b <- rep( xi.k , Ik ) + rnorm(I , sd = sqrt(sig2) )
-a <- rep( omega.k , Ik ) + rnorm(I , sd = sqrt(nu2) )
-theta1 <- rnorm(N)
+b <- rep( xi.k , Ik ) + stats::rnorm(I , sd = sqrt(sig2) )
+a <- rep( omega.k , Ik ) + stats::rnorm(I , sd = sqrt(nu2) )
+theta1 <- stats::rnorm(N)
 t1 <- rep(1,N)
-p1 <- pnorm( outer(t1,a) * ( theta1 - outer(t1,b) ) )
-dat <- 1  * ( p1 > runif(N*I)  )
+p1 <- stats::pnorm( outer(t1,a) * ( theta1 - outer(t1,b) ) )
+dat <- 1  * ( p1 > stats::runif(N*I)  )
 itemgroups <- rep( paste0("A" , 1:K ) , Ik )
 
 # estimate model

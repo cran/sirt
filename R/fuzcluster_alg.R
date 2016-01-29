@@ -6,23 +6,23 @@ fuzcluster_estimate <- function(K , dat_m , dat_s , dat_resp ,
 	dat.resp <- dat_resp
 	# inits
 	m1 <- colMeans( dat_m , na.rm=TRUE)
-	s1 <- apply( dat_m , 2 , sd , na.rm=TRUE )
+	s1 <- apply( dat_m , 2 , stats::sd , na.rm=TRUE )
     
 	# items
 	I <- ncol(dat_m)
 	N <- nrow(dat_m)
-    if ( is.null(seed) ){ seed <- round(runif(1 ,1000, 9999 ) )}
+    if ( is.null(seed) ){ seed <- round( stats::runif(1 ,1000, 9999 ) )}
 	set.seed( seed )
 	# initial mu estimate
-	mu_est <- rmvnorm( K , mean=m1 , sigma = 1.0*diag(s1) )
+	mu_est <- mvtnorm::rmvnorm( K , mean=m1 , sigma = 1.0*diag(s1) )
 # mu_est[1,] <- 4
 # mu_est[2,] <- 2
 
 	# initial SD estimate
 	sd_est <- t(sapply( 1:K , FUN = function(kk){ 
-			runif( I , 1.05*s1 , 2*s1 ) } ))
+			stats::runif( I , 1.05*s1 , 2*s1 ) } ))
 	# initial pi estimate
-	pi_est <- runif(K)
+	pi_est <- stats::runif(K)
 #	pi_est <- rep(1/K , K )
 	pi_est <- pi_est / sum( pi_est )
     dev <- 0
@@ -66,7 +66,7 @@ fuzcluster_estimate <- function(K , dat_m , dat_s , dat_resp ,
 			# xi estimate
 			xi_ik[,,kk] <- mu_ik[,,kk]^2 + sig2_ik[,,kk]
 			# t_ik: posterior distribution
-			phi_ik[,,kk] <- dnorm( dat.resp*( dat_m - mu_k ) / sqrt( sd_k^2 + dat_s^2 + eps) )
+			phi_ik[,,kk] <- stats::dnorm( dat.resp*( dat_m - mu_k ) / sqrt( sd_k^2 + dat_s^2 + eps) )
 			t_ik[,kk] <- pi_est[kk] * rowProds2( phi_ik[,,kk] )
 					}
 		t_ik <- t_ik / rowSums( t_ik )
@@ -123,7 +123,7 @@ fuzcluster_estimate <- function(K , dat_m , dat_s , dat_resp ,
 		   cat(paste(" | Deviance Change =" , round(devchange1,3) , "\n"))
 		   cat("Class Probabilities =", paste(round( pi_est,4) ))		   
 		   cat(paste(" | Maximum Parameter Change =" , round(parmchange,3) ,"\n"))
-		   flush.console()	
+		   utils::flush.console()	
 				}
 		if ( dev < dev_min){
 			t_ikmin <- t_ik

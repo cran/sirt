@@ -1,6 +1,6 @@
 
 #***********************************************
-# idea of algorithm:
+# parts of algorithm:
 # * draw Z
 # * draw theta2
 # * draw theta1 (centering!)
@@ -31,13 +31,13 @@
     # calculate means
     mij <- aM * theta - bM
     # simulate uniform data
-    rij <- matrix( runif( N*I ) , nrow=N , ncol=I )
+    rij <- matrix( stats::runif( N*I ) , nrow=N , ncol=I )
     # calculate corresponding value
-    pl <- pnorm( threshlow , mean=mij) 
-    pu <- pnorm( threshupp , mean=mij)
+    pl <- stats::pnorm( threshlow , mean=mij) 
+    pu <- stats::pnorm( threshupp , mean=mij)
     pij <- pl + (pu-pl)*rij
     # simulate Z
-    Zij <- qnorm( pij , mean = mij )
+    Zij <- stats::qnorm( pij , mean = mij )
     return(Zij)
         }
 #############################################
@@ -83,7 +83,7 @@
 	prectotal <- prec1 + prec2	
 	mtheta <- ( prec1*m1ij + prec2 * m2ij ) / prectotal
 	vtheta <- 1 / prectotal				
-    theta <- rnorm( N , mean=mtheta , sd = sqrt( vtheta ) )
+    theta <- stats::rnorm( N , mean=mtheta , sd = sqrt( vtheta ) )
 	theta <- theta - mean(theta)
     return(theta)
             }
@@ -98,7 +98,7 @@
 		prec.tot <- prec.ij1 + prec.ij2
 		vtheta <- 1 / prec.tot
 		mtheta <- mij1 * prec.ij1 / prec.tot
-		theta2 <- rnorm( G , mean=mtheta , sd = sqrt( vtheta ))
+		theta2 <- stats::rnorm( G , mean=mtheta , sd = sqrt( vtheta ))
 		theta2 <- theta2 - mean(theta2)
 		return(theta2)
 			}
@@ -145,7 +145,7 @@
 		vij <- 1 / prectotal	
 				} # end link=normal
 	#*** sample b parameter
-	b <- rnorm( I , mean=mij , sd = sqrt( vij ) )
+	b <- stats::rnorm( I , mean=mij , sd = sqrt( vij ) )
 	return(b)
 			}
 ####################################################
@@ -156,7 +156,7 @@
 			# sample mu.b
 			mij <- mean(b)
 			vij <- omega.b^2 / I
-			mu.b <- rnorm(1 , mean=mij , sd = sqrt(vij) )
+			mu.b <- stats::rnorm(1 , mean=mij , sd = sqrt(vij) )
 			# sample omega.b
 			sig2 <- sum( ( b - mu.b )^2 ) / I
 			omega.b <- sqrt( .mcmc.draw.variance( 1 , 
@@ -196,7 +196,7 @@
 				vij <- 1 / prectotal	
 						} # end link=normal
 			#*** sample b parameter
-			b <- rnorm( I , mean=mij , sd = sqrt( vij ) )			
+			b <- stats::rnorm( I , mean=mij , sd = sqrt( vij ) )			
 			return(b)
 				}
 ####################################################################
@@ -225,13 +225,13 @@
 		mtot <- ( mij1*prec1 + mij2*prec2 ) / prectot	
 		vtot <- 1 / prectot
 		# sampling of bG
-		bG <- matrix( rnorm( G*I , mean=mtot  , sd = sqrt(vtot) ) , G , I )
+		bG <- matrix( stats::rnorm( G*I , mean=mtot  , sd = sqrt(vtot) ) , G , I )
 		# adjustment
 #		bG1 <- rowMeans( bG )
 #		bG1 <- bG1 - mean(bG1)
 #		bG <- bG - bG1
 #		bG1 <- colMeans( bG )
-		bG <- as.matrix( scale( bG , scale=FALSE ) )
+		bG <- as.matrix( base::scale( bG , scale=FALSE ) )
 		return(bG)
 			}
 ##################################################################
@@ -280,7 +280,7 @@
 		# define mean and variance of posterior
 		m1 <- ( m1ij * prec1 + m2ij * prec2 ) / prectotal
 		# sampling of a
-		a <- rnorm( I , mean=m1 , sd = 1/sqrt(prectotal) )
+		a <- stats::rnorm( I , mean=m1 , sd = 1/sqrt(prectotal) )
 #		a <- a - ( mean(a) - 1 )	
 		a[ a < 0 ] <- eps
 		a <- exp( log(a) - mean( log( a ) ) )
@@ -326,7 +326,7 @@
 		# define mean and variance of posterior
 		m1 <- ( m1ij * prec1 + m2ij * prec2 ) / prectotal
 		# sampling of a
-		a <- rnorm( I , mean=m1 , sd = 1/sqrt(prectotal) )
+		a <- stats::rnorm( I , mean=m1 , sd = 1/sqrt(prectotal) )
 		a <- a - ( mean(a) - 1 )				
 		return(a)
 			}
@@ -357,7 +357,7 @@
 		prec2 <- matrix( 1 / sigma.a^2 , G , I , byrow=TRUE )
 		prectotal <- prec1 + prec2 
 		m1 <- ( m1ij*prec1 + m2ij * prec2 ) / prectotal 		
-		aG <- matrix( rnorm(G*I , mean = m1 , sd = sqrt( 1 / prectotal )) , G , I )
+		aG <- matrix( stats::rnorm(G*I , mean = m1 , sd = sqrt( 1 / prectotal )) , G , I )
 		# center aG parameters within each group
 #		aG <- aG - ( rowMeans( aG ) - 0 )
 		aG <- scale( aG , scale=FALSE)

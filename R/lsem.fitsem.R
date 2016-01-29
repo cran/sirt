@@ -2,12 +2,12 @@
 ##############################################################
 lsem.fitsem <- function( dat , weights , lavfit ,
 			fit_measures , NF , G , moderator.grid , verbose ,
-			pars ){
+			pars , standardized ){
 
     parameters <- NULL
 	fits <- NULL 	
 	pars0 <- pars	
-			
+	
 	if (verbose){
 		cat( "** Fit lavaan model\n")
 		G1 <- min(G,10)	
@@ -25,8 +25,16 @@ lsem.fitsem <- function( dat , weights , lavfit ,
 		datsvy <- survey::svydesign(id=~index,   weights=~weight ,    data=dat)
 		# fit the model using weighted data
 		survey.fit <- lavaan.survey::lavaan.survey(lavfit, datsvy )
-		dfr.gg <- pars <- lavaan::parameterEstimates(survey.fit) 
-		pars <- paste0( pars$lhs , pars$op , pars$rhs )
+		dfr.gg <- pars <- lavaan::parameterEstimates(survey.fit) 		
+		if (standardized){			
+			sol <- lavaan::standardizedSolution( survey.fit )
+			colnames(sol)[ which( colnames(sol) == "est.std" ) ] <- "est"
+			sol$lhs <- paste0( "std__" , sol$lhs)
+			pars <- plyr::rbind.fill( pars , sol )	
+			dfr.gg <- pars
+						} 
+						
+		pars <- paste0( pars$lhs , pars$op , pars$rhs )					
 		NP <- length(pars0)
 		ind <- match( pars0 , pars )
 		dfr.gg <- dfr.gg[ ind , ]
@@ -43,13 +51,13 @@ lsem.fitsem <- function( dat , weights , lavfit ,
 		# fits <- rbind( fits , dfr.gg ) 
 		if (verbose){
 			if ( gg %in% pr ){
-				cat("-") ; flush.console()
+				cat("-") ; utils::flush.console()
 					}
 					}
 				}
 	if (verbose){
 		cat("|\n")
-		flush.console()
+		utils::flush.console()
 				}
 
 

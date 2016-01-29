@@ -288,7 +288,7 @@ data(data.reck79ExB)
 # Example A
 dat <- data.reck78ExA$data
 #- estimate person score
-score <- qnorm( ( rowMeans( dat )+.5 )  / ( ncol(dat) + 1 ) )
+score <- stats::qnorm( ( rowMeans( dat )+.5 )  / ( ncol(dat) + 1 ) )
 #- extract item cluster
 itemcluster <- substring( colnames(dat) , 1 , 1 )
 #- confirmatory DETECT Item cluster
@@ -330,7 +330,7 @@ colnames(dat)[ cluster_membership == 3 ]
 # Example B
 dat <- data.reck79ExB$data
 #- estimate person score
-score <- qnorm( ( rowMeans( dat )+.5 )  / ( ncol(dat) + 1 ) )
+score <- stats::qnorm( ( rowMeans( dat )+.5 )  / ( ncol(dat) + 1 ) )
 #- extract item cluster
 itemcluster <- substring( colnames(dat) , 1 , 1 )
 #- confirmatory DETECT Item cluster

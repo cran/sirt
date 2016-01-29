@@ -239,7 +239,7 @@ emod <- R2noharm.EAP(mod)
 #*****-----
 # Model 1b: Include student weights in estimation
 N <- nrow(dat)
-weights <- runif( N , 1 , 5 )
+weights <- stats::runif( N , 1 , 5 )
 mod1b <- R2noharm( dat = dat , model.type="CFA" ,  weights=weights ,  
             F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
             P.init = P.init , writename = "ex1__1dim_1pl_w" , 

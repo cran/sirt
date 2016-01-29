@@ -10,7 +10,7 @@ summary.R2noharm <- function( object , logfile=NULL , ...){
 	if ( ! is.null(logfile) ){ sink( paste0(logfile,".Rout") , split=TRUE ) }
 	cat( paste( "-------------------------------------------------") , "\n" )	
 	cat( paste( "NOHARM4 " , object$systime , sep="") , "\n" )	
-	d <- packageDescription("sirt")
+	d <- utils::packageDescription("sirt")
 	cat(paste(d$Package," " , d$Version," (",d$Date,")",sep=""))
 	cat( paste( "\n-------------------------------------------------") , "\n\n" )	
 	#**********************
@@ -43,7 +43,7 @@ summary.R2noharm <- function( object , logfile=NULL , ...){
 		print( object$factor.cor )
 		if ( object$modtype %in% 3){ 
 			cat( "\nFactor Correlation Matrix\n")				
-			print( round( cov2cor(object$factor.cor) , 3 ))
+			print( round( stats::cov2cor(object$factor.cor) , 3 ))
 									}
 								}
 	if ( object$modtype %in% 3:4){

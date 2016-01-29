@@ -162,13 +162,13 @@ sd2 <- 1.3  # standard deviation group 2
 # define item difficulties
 b <- seq( -1.5 , 1.5 , length=I)
 # simulate DIF effects
-bdif <- scale( rnorm(I , sd = .6 ) , scale=FALSE )[,1]
+bdif <- scale( stats::rnorm(I , sd = .6 ) , scale=FALSE )[,1]
 # item difficulties per group
 b1 <- b + 1/2 * bdif
 b2 <- b - 1/2 * bdif
 # simulate item responses
-dat1 <- sim.raschtype( theta = rnorm(N , mean=0 , sd =1 ) , b = b1 )
-dat2 <- sim.raschtype( theta = rnorm(N , mean=mu2 , sd = sd2 ) , b = b2 )
+dat1 <- sim.raschtype( theta = stats::rnorm(N , mean=0 , sd =1 ) , b = b1 )
+dat2 <- sim.raschtype( theta = stats::rnorm(N , mean=mu2 , sd = sd2 ) , b = b2 )
 dat <- rbind( dat1 , dat2 )
 group <- rep( c(1,2) , each=N ) # define group indicator
 

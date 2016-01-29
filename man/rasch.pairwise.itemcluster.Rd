@@ -108,7 +108,7 @@ For simulation of locally dependent data see \code{\link{sim.rasch.dep}}.
 
 \examples{
 #############################################################################
-# EXAMPLE 1: Example with locally dependent items
+# SIMULATED EXAMPLE 1: Example with locally dependent items
 #      12 Items: Cluster 1 -> Items 1,...,4
 #                Cluster 2 -> Items 6,...,9
 #                Cluster 3 -> Items 10,11,12
@@ -119,7 +119,7 @@ I <- 12                             # number of items
 n <- 5000                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
 bsamp <- b <- sample(b)             # sample item difficulties
-theta <- rnorm( n , sd = 1 )        # person abilities
+theta <- stats::rnorm( n , sd = 1 ) # person abilities
 # itemcluster
 itemcluster <- rep(0,I)
 itemcluster[ 1:4 ] <- 1
@@ -158,7 +158,7 @@ M1 <- cbind( "true.b"=bsamp ,  "b.rasch" = mod4$item$b ,
 # center item difficulties
 M1 <- scale( M1  , scale=FALSE )
 round( M1 , 3 )
-round( apply( M1 , 2 , sd ) , 3 )
+round( apply( M1 , 2 , stats::sd ) , 3 )
 
 #  Below the output of the example is presented.
 #  It is surprising that the rasch.pairwise.itemcluster is pretty close

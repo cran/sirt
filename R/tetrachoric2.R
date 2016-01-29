@@ -9,7 +9,7 @@ tetrachoric2 <- function( dat , method="Ol" ,  delta=.007 , maxit = 1000000 ,
 	if ( method != "Ol" ){
 	
 		# calculate tau
-		tau <- - qnorm( colMeans(dat,na.rm=TRUE ) )
+		tau <- - stats::qnorm( colMeans(dat,na.rm=TRUE ) )
 		dat.resp <- 1 - is.na(dat)
 		dat[ dat.resp==0] <- 9
 		I <- ncol(dat)
@@ -41,15 +41,15 @@ tetrachoric2 <- function( dat , method="Ol" ,  delta=.007 , maxit = 1000000 ,
 		dfr <- dfr[ dfr$item1 > dfr$item2 , ]
 		dfr <- dfr[ dfr$ftot > 0 , ]	
 		
-		dfr$qi1 <- qnorm( dfr$pi1)
-		dfr$qi2 <- qnorm( dfr$pi2)
+		dfr$qi1 <- stats::qnorm( dfr$pi1)
+		dfr$qi2 <- stats::qnorm( dfr$pi2)
 		#******************
 		# method of Bonett
 		if ( method %in% c("Bo","Di") ){ 
 			dfr$pmin <- ifelse( dfr$pi1 < dfr$pi2 , dfr$pi1 , dfr$pi2 )
 			dfr$c <- ( 1 - abs( dfr$pi1 - dfr$pi2 ) / 5 - ( 0.5 - dfr$pmin)^2  ) / 2
 			dfr$omega <- ( dfr$f00 * dfr$f11 ) / ( dfr$f01 * dfr$f10)
-			dfr$r0 <- cos( pi / ( 1 + dfr$omega^( dfr$c )  ) )
+			dfr$r0 <- base::cos( pi / ( 1 + dfr$omega^( dfr$c )  ) )
 						}
 		#*****
 		# method of Divgi
@@ -96,7 +96,7 @@ tetrachoric2 <- function( dat , method="Ol" ,  delta=.007 , maxit = 1000000 ,
 				i2 <- which( dfr$conv==1 & dfr0$conv==1 )
 				if (length(i2) > 0){    dfr[ i2 , vars] <- dfr0[ i2 , vars] }
 				if (progress){
-					if (ii %% 100 == 0 ){ cat(".") ; flush.console() }
+					if (ii %% 100 == 0 ){ cat(".") ; utils::flush.console() }
 					if (ii %% 1000 == 0 ){ cat("\n" ,ii, ": ") }    
 							}
 					}

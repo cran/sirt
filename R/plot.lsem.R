@@ -32,7 +32,7 @@ plot.lsem <- function( x , parindex=NULL , ask=TRUE , ci = TRUE ,
 	#*******************************
 	# loop over all parameters
 	for (pp in parindex ){	
-		par( mfrow=c(1,1))
+		graphics::par( mfrow=c(1,1))
 	#	pp <- 6
 		ind.pp <- which( parindex == pp)
 		x.pp <- x$parameters
@@ -71,43 +71,43 @@ plot.lsem <- function( x , parindex=NULL , ask=TRUE , ci = TRUE ,
 			ylab1 <- ylab[ind.pp]
 						}
 						
-		plot( modgrid[,1] , x.pp$est , xlab= xlab1  , ylab= ylab1 , 
+		graphics::plot( modgrid[,1] , x.pp$est , xlab= xlab1  , ylab= ylab1 , 
 					main = t1 , type="p" , pch=16 , ylim=ylim1 , xlim=xlim1 )
 		if ( x$type == "LSEM" ){			
-			lines( spline( modgrid[,1] , y = x.pp$est , n=100 )  )
+			graphics::lines( stats::spline( modgrid[,1] , y = x.pp$est , n=100 )  )
 									}
 		if ( x$type == "MGM" ){
 			G <- nrow(moderator.grouped)
 			for (gg in 1:G){
-			lines( moderator.grouped[gg,1:2] , rep( x.pp$est[gg] , 2 ) )
+			graphics::lines( moderator.grouped[gg,1:2] , rep( x.pp$est[gg] , 2 ) )
 							}
-			points( modgrid[,1] , y = x.pp$est , pch=16 )		
+			graphics::points( modgrid[,1] , y = x.pp$est , pch=16 )		
 								  }
 				
 		x1 <- modgrid[,1]
 		if (lintrend){
 			# x1a <- x1
 			x1a <- xlim1
-			lines( x1a , x$parameters_summary$lin_int[pp] + 
+			graphics::lines( x1a , x$parameters_summary$lin_int[pp] + 
 				x1a*x$parameters_summary$lin_slo[pp] , lty=2 , col=2)
 						}		
 		if (ci & ( x.pp$op[1] != "fit" )  ){
 			if ( x$type == "LSEM" ){ 
-				lines( spline( x1 , y = x.pp$ci.lower , n=100 )  , lty=4)
-				lines( spline( x1 , y = x.pp$ci.upper , n=100 )  , lty=4)
+				graphics::lines( stats::spline( x1 , y = x.pp$ci.lower , n=100 )  , lty=4)
+				graphics::lines( stats::spline( x1 , y = x.pp$ci.upper , n=100 )  , lty=4)
 								}
 			if ( x$type == "MGM" ){
 			  
 			  tick_length <- diff(xlim1) / 100
 			
 			  for (gg in 1:G){
-			     lines( rep( x1[gg] , 2 ) , c( x.pp$ci.lower[gg] , x.pp$ci.upper[gg]) ,
+			     graphics::lines( rep( x1[gg] , 2 ) , c( x.pp$ci.lower[gg] , x.pp$ci.upper[gg]) ,
 							col="gray" , lty=1)
-				 points( x1[gg] , x.pp$est[gg] , pch=16 )
+				 graphics::points( x1[gg] , x.pp$est[gg] , pch=16 )
 				 
-			     lines( x1[gg] + c(-1,1)*tick_length ,  rep(x.pp$ci.lower[gg],2) ,
+			     graphics::lines( x1[gg] + c(-1,1)*tick_length ,  rep(x.pp$ci.lower[gg],2) ,
 									col="gray" , lty=1)				 
-			     lines( x1[gg] + c(-1,1)*tick_length ,  rep(x.pp$ci.upper[gg],2) ,
+			     graphics::lines( x1[gg] + c(-1,1)*tick_length ,  rep(x.pp$ci.upper[gg],2) ,
 									col="gray" , lty=1)									
 							  }	
 #				lines(  x1 , y = x.pp$ci.lower , n=100 )  , lty=4)
@@ -117,8 +117,8 @@ plot.lsem <- function( x , parindex=NULL , ask=TRUE , ci = TRUE ,
 #			lines( x1 , y = x.pp$ci.lower , lty=4)
 #			lines( x1 , y = x.pp$ci.upper , lty=4)			
 				}
-		par( mfrow=c(1,1))				
-		par(ask=ask)					
+		graphics::par( mfrow=c(1,1))				
+		graphics::par(ask=ask)					
 					}
 	 #***************** end loop				
 

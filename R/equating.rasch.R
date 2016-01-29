@@ -1,15 +1,4 @@
- 
-# 0.01  2012-xx-yy
 
-
-# 0.01  2012-06-23  o initial release
-
-
-#-------------------------------------------------------
-
-
-
-##NS export(equating.rasch)
 #***************************************************************************************************
 # Equating (Linking) in the Rasch model
 equating.rasch <- function( x , y , theta = seq( -4 , 4 , len=100) ,
@@ -25,7 +14,7 @@ equating.rasch <- function( x , y , theta = seq( -4 , 4 , len=100) ,
     y[,1] <- gsub( " " , "" , paste( y[,1] ) )
     b.xy <- data.frame( merge( x , y , by.x = 1 , by.y = 1 ) )
     colnames(b.xy) <- c("item" , "Itempar.Gr1" , "Itempar.Gr2" )
-    b.xy <- na.omit( b.xy )
+    b.xy <- stats::na.omit( b.xy )
     #    b.xy <- b.xy[ rowSums( is.na( b.xy[,2:3] ) ) < 2 , ]
     # mean-mean method 
         B.mm <- mean(b.xy[,3]) - mean(b.xy[,2])
@@ -40,7 +29,7 @@ equating.rasch <- function( x , y , theta = seq( -4 , 4 , len=100) ,
 						.prob.raschtype.genlogis( theta = theta , b = b.xy[,3] - B , alpha1 = alpha1 , alpha2 = alpha2 ) )^2 )
 											}
 								}
-        B.ha <- optimize(  ha , c(-4,4) )$minimum
+        B.ha <- stats::optimize(  ha , c(-4,4) )$minimum
     # Stocking and Lord Approach
         sl <- function(B){
             sum( ( rowSums( 1 / ( 1+  exp( outer( theta , b.xy[,2] , "-" )  ) )  - 
@@ -54,7 +43,7 @@ equating.rasch <- function( x , y , theta = seq( -4 , 4 , len=100) ,
 											) )^2 )
 											}
 								}						
-        B.sl <- optimize(  sl , c(-4,4) )$minimum
+        B.sl <- stats::optimize(  sl , c(-4,4) )$minimum
     # all parameter estimates    
     B.est <- data.frame( B.mm , B.ha , B.sl )
     colnames(B.est) <- c("Mean.Mean" , "Haebara" , "Stocking.Lord")
@@ -66,7 +55,7 @@ equating.rasch <- function( x , y , theta = seq( -4 , 4 , len=100) ,
     colnames(transf.par) <- c("item" , "TransfItempar.Gr1" , "Itempar.Gr2"  )
     transf.par <- transf.par[ order( paste(transf.par$item ) ) , ]
     # calculate variance and linking error
-    des <- data.frame( "N.Items" = nrow(b.xy) , "SD" = sd( b.xy$TransfItempar.Gr1 - b.xy$Itempar.Gr2 ) )
+    des <- data.frame( "N.Items" = nrow(b.xy) , "SD" = stats::sd( b.xy$TransfItempar.Gr1 - b.xy$Itempar.Gr2 ) )
     des$Var <- des$SD^2
     des$linkerror  <- as.vector( sqrt( des["SD"]^2 / des["N.Items"] ) )[1,1]
     # OUTPUT:
@@ -92,7 +81,7 @@ equating.rasch.jackknife <- function( pars.data , display = TRUE , se.linkerror 
         # second column: parameter first scale
         # third column: parameter second scale
 		# fourth column: item ?????
-        pars.data <- as.data.frame( na.omit( pars.data ) )
+        pars.data <- as.data.frame( stats::na.omit( pars.data ) )
         itemunits <- unique( pars.data[,1] )
         N.units <- length( itemunits )
         N.items <- nrow( pars.data )
@@ -127,7 +116,8 @@ equating.rasch.jackknife <- function( pars.data , display = TRUE , se.linkerror 
                                    }
             # display progress
                 if (display == TRUE){
-                    cat( paste( nn , " " , sep="" ) ) ; flush.console()
+                    cat( paste( nn , " " , sep="" ) ) ; 
+					utils::flush.console()
                     if ( nn %% 10 == 0){ cat("\n") }
                                 }
                     }

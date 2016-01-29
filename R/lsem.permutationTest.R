@@ -18,13 +18,16 @@ lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 						}
 		arglist2 <- lsem.object$lavaan.args
 		NL <- length(arglist2)
+		if (NL > 0){
 		for (ll in 1:NL){
 			arglist[[ names(arglist2)[ll] ]] <- arglist2[[ names(arglist2)[ll] ]]
 						}
-
+					}
 		arglist$residualize <- residualize
 		arglist$verbose <- FALSE
-		
+		arglist$standardized <- lsem.object$standardized
+		arglist$standardized_type <- lsem.object$standardized_type
+	
 		data1 <- data0 <- object$data		
 		parameters <- object$parameters
 		parameters_summary <- object$parameters_summary
@@ -53,7 +56,7 @@ lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 						}
 			data1[ , moderator ] <- sample( data0[ , moderator ] )
             arglist$data <- data1			
-			res0 <- do.call( lsem.estimate , arglist )
+			res0 <- base::do.call( lsem.estimate , arglist )
 			parameters_permutation[, bb] <- res0$parameters$est
 			parameters_summary_M[,bb] <- res0$parameters_summary$M
 			parameters_summary_SD[,bb] <- res0$parameters_summary$SD

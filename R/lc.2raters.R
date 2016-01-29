@@ -4,7 +4,7 @@
 # latent class model for two exchangeable raters
 lc.2raters <- function( data , conv=.001 , maxiter=1000 , progress=TRUE ){
 	#**********************
-	data <- na.omit(data)
+	data <- stats::na.omit(data)
 	# data preparation and creation of a frequency table
 	res <- lc2.data.prep(data)
 	maxK <- res$maxK
@@ -55,7 +55,7 @@ lc.2raters <- function( data , conv=.001 , maxiter=1000 , progress=TRUE ){
 		if (progress){
 		   cat( paste0("Iteration " , iter , " | Max. probability change = " ,
 				round( par.change , 6 ) , "\n") )
-			flush.console()	
+			utils::flush.console()	
 					}
 			} # end iter
 	#******* end iterations
@@ -108,10 +108,10 @@ lc.2raters <- function( data , conv=.001 , maxiter=1000 , progress=TRUE ){
 summary.lc.2raters <- function( object , ... ){
 
 	cat("---------------------------------------------------------------\n")
-		d1 <- packageDescription("sirt")
+		d1 <- utils::packageDescription("sirt")
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 		cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
-    cat("Letent Class Model for Two Exchangeable Raters \n")
+    cat("Latent Class Model for Two Exchangeable Raters \n")
 	cat("---------------------------------------------------------------\n")
     cat( "Number of persons =" , nrow(object$data) , "\n" )    
     cat( "Number of item categories =" , object$N.categ , "\n" )    

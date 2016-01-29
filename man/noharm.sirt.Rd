@@ -95,10 +95,7 @@ are heavier penalized.
 }
 \item{object}{Object of class \code{noharm.sirt}}
 \item{logfile}{String indicating a file name for summary.}
-\item{\dots}{Further arguments to be passed. For \code{plot.noharm.sirt},
-additional arguments for \code{\link[semPlot:semPaths]{semPlot::semPaths}} (from 
-\pkg{semPlot} package) can be specified. 
-}
+\item{\dots}{Further arguments to be passed. }
 }
 
 %\item{x}{Object of class \code{noharm.sirt}}
@@ -107,6 +104,10 @@ additional arguments for \code{\link[semPlot:semPaths]{semPlot::semPaths}} (from
 %\item{efa.load.min}{Minimum absolute factor loading to be displayed in
 %	plot for exploratory factor analysis.
 %}
+
+% For \code{plot.noharm.sirt},
+% additional arguments for \code{\link[semPlot:semPaths]{semPlot::semPaths}} (from 
+%\pkg{semPlot} package) can be specified. 
 
 \details{
 The NOHARM item response model follows the response equation
@@ -122,7 +123,7 @@ The response equation can be equivalently written by introducing a latent
 continuous item response \eqn{X_{pi}^\ast}
 \deqn{ X_{pi}^\ast = f_{i0} + f_{i1} \theta_{p1} + ... +
 f_{iD} \theta_{pD} + e_{pi} }
-with a standard normally distributed residuals \eqn{e_{pi}}. These residuals
+with a standard normally distributed residual \eqn{e_{pi}}. These residuals
 have a correlation matrix \eqn{\bold{\Psi}} with ones in the diagonal. 
 In this \R implementation of the NOHARM model, correlations between residuals
 are allowed.
@@ -241,7 +242,8 @@ theta <- MASS::mvrnorm(N , mu=c(0,0) , Sigma = Pval )
 # simulate item responses
 dat <- matrix( NA , N , I )
 for (ii in 1:I){ # ii <- 1
-    dat[,ii] <- 1*(pnorm(f0[ii]+theta[,1]*f1[ii,1]+theta[,2]*f1[ii,2])>runif(N))
+    dat[,ii] <- 1*( stats::pnorm(f0[ii]+theta[,1]*f1[ii,1]+theta[,2]*f1[ii,2])>
+                     stats::runif(N) )
         }
 colnames(dat) <- paste0("I" , 1:I)
 

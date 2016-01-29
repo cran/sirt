@@ -1,18 +1,7 @@
- 
-# 0.01  2012-xx-yy
-
-
-# 0.01  2012-06-23  o initial release
-
-
-#-------------------------------------------------------
-
-
 
 
 ########################################################################################
 # stratified Cronbach's Alpha
-##NS export(stratified.cronbach.alpha)
 stratified.cronbach.alpha <- function( data , itemstrata=NULL ){
     stratcomp <- TRUE
     if ( is.null(itemstrata) ){ 
@@ -22,7 +11,7 @@ stratified.cronbach.alpha <- function( data , itemstrata=NULL ){
 	# function .cronbach.alpha
     .cronbach.alpha <- function( data ){ 
         # covariance
-        c1 <- cov( data , use = "pairwise.complete.obs" )
+        c1 <- stats::cov( data , use = "pairwise.complete.obs" )
         # mean covariance
         c1a <- c1 ; diag(c1a) <- 0
         I <- ncol(data)
@@ -31,7 +20,7 @@ stratified.cronbach.alpha <- function( data , itemstrata=NULL ){
         mv <- mean( diag(c1) )
         alpha <- I * mc / ( mv + (I-1) *mc )
         mean.tot <- mean( rowSums(data) )
-        var.tot <- var( rowSums( data ) )
+        var.tot <- stats::var( rowSums( data ) )
         res <- list( "I" = I , "alpha" = alpha , "mean.tot" = mean.tot ,  "var.tot" = var.tot )
         return(res)
             }

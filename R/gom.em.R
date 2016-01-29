@@ -30,7 +30,7 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 	mu <- Sigma <- b <- NULL
 	# design matrices
 	if (model=="GOMRasch"){ 
-		b <- - qlogis( colMeans(dat, na.rm=T)  )
+		b <- - stats::qlogis( colMeans(dat, na.rm=T)  )
 		theta.kM <- as.matrix( expand.grid( theta0.k , xsi0.k ))
 		TP <- nrow(theta.kM)
 		m1 <- exp( - ( theta.kM[,1] - matrix( theta0.k , TP , K , byrow=T ) )^2 / ( 2*theta.kM[,2]^2 ) )
@@ -38,9 +38,9 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 		#***
 		mu <- c(0, .7)
 		Sigma <- as.matrix(diag(c(1 , 1 )))
-		pi.k <- dmvnorm( theta.kM , mu , Sigma )
+		pi.k <- mvtnorm::dmvnorm( theta.kM , mu , Sigma )
 		pi.k <- pi.k / sum( pi.k )
-		lambda <- plogis( - outer( b , theta0.k , "-" ) )
+		lambda <- stats::plogis( - outer( b , theta0.k , "-" ) )
 		# design matrix skill space
 #		Z <- cbind( 1 , theta.kM[,1] , theta.kM[,1]^2 , theta.kM[,1]^3 ,
 #				 theta.kM[,2] , theta.kM[,2]^2 , theta.kM[,2]^3 ,
@@ -83,7 +83,7 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 		probs <- problong2probarray( probs , I , TP )
 		
 		# calculate counts
-		probsM <- matrix( aperm( probs , c(2,1,3) ) , nrow=I*2 , ncol=TP )	
+		probsM <- matrix( base::aperm( probs , c(2,1,3) ) , nrow=I*2 , ncol=TP )	
 		res1 <- calcpost( dat2 , dat2.resp , probsM , dat2.ind , pi.k , K=1 )
 		f.yi.qk <- res1$fyiqk
 		f.qk.yi <- res1$f.qk.yi
@@ -106,7 +106,7 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 					mstepconv , eps = .001 , progress=progress)
 			b <- res$b
 			se.b <- res$se.b
-			lambda <- t( plogis( outer( theta0.k , b , "-" )	) )
+			lambda <- t( stats::plogis( outer( theta0.k , b , "-" )	) )
 			max.increment <- max( abs(b-b0))/1.2	
 							}
 		flush.console()		

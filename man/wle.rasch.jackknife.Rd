@@ -118,11 +118,11 @@ wle5 <- wle.rasch.jackknife(dat, b =res$item$thresh ,
   ## WLE Reliability = 0.876 
          
 # compare different estimated standard errors
-a2 <- aggregate( wle2$wle$wle.jackse , list( wle2$wle$wle) , mean )
+a2 <- stats::aggregate( wle2$wle$wle.jackse , list( wle2$wle$wle) , mean )
 colnames(a2) <- c("wle" , "se.simple")
-a2$se.testlet <- aggregate( wle3$wle$wle.jackse , list( wle3$wle$wle) , mean )[,2]
-a2$se.strata <- aggregate( wle4$wle$wle.jackse , list( wle4$wle$wle) , mean )[,2]
-a2$se.finitepop.strata <- aggregate( wle5$wle$wle.jackse , 
+a2$se.testlet <- stats::aggregate( wle3$wle$wle.jackse , list( wle3$wle$wle) , mean )[,2]
+a2$se.strata <- stats::aggregate( wle4$wle$wle.jackse , list( wle4$wle$wle) , mean )[,2]
+a2$se.finitepop.strata <- stats::aggregate( wle5$wle$wle.jackse , 
 	list( wle5$wle$wle) , mean )[,2]
 round( a2 , 3 )
   ## > round( a2 , 3 )

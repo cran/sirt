@@ -9,7 +9,7 @@
 	if (param==1){ tau.ni <- aM * theta + gamma.testletM + bM }
 	if (param==2){ tau.ni <- aM * theta + aM*gamma.testletM + bM }	
 	if (param==3){ tau.ni <- aM * theta + a.testletM*gamma.testletM + bM }		
-	pij <- guessM + ( 1 - guessM )*pnorm( tau.ni )
+	pij <- guessM + ( 1 - guessM )* stats::pnorm( tau.ni )
 	llij <- log( dat.resp * ( dat*pij + ( 1-dat )*(1-pij) ) + eps )
 	if ( is.null( weights ) ){ deviance <- -2*sum( llij ) }
 	if ( ! is.null( weights ) ){ 
@@ -101,7 +101,7 @@
 	if (save.theta){ mcmcobj <- cbind( mcmcobj , theta ) }
 	class(mcmcobj) <- "mcmc"
 	attr(mcmcobj, "mcpar") <- c( burnin+1 , burnin+SV , 1 )
-	mcmcobj <- as.mcmc.list( mcmcobj )
+	mcmcobj <- coda::as.mcmc.list( mcmcobj )
 	res <- list( "mcmcobj"=mcmcobj , "theta" = theta )
 	return(res)
 	}
@@ -128,7 +128,7 @@
 	###################
 	# EAP reliability
 	    N <- ncol(theta.chain )
-		v1 <- var( colMeans( theta.chain ) )
+		v1 <- stats::var( colMeans( theta.chain ) )
 		SV <- nrow(theta.chain)
 		if ( is.null(weights) ){ 				
 				h1 <- ( rowSums( theta.chain^2 ) - ( N * rowMeans( theta.chain ) )^2 ) / N 

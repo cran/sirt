@@ -15,16 +15,11 @@ sirt: Supplementary Item Response Theory
 ##   
 
 Alexander Robitzsch
-Federal Institute for Educational Research, Innovation and 
-Development of the Austrian School System (BIFIE)
-Salzburg (Austria)
-http://www.bifie.at
-
-See also URL: 
-https://sites.google.com/site/alexanderrobitzsch/software
+IPN - Leibniz Institute for Science and Mathematics Education 
+at Kiel University
 
 Questions or suggestions about sirt can be sent to:
-a.robitzsch /-\ bifie.at
+robitzsch@ipn.uni-kiel.de
 
 For reporting a bug, please provide always a reproducible R script 
 and (if necessary) a corresponding dataset.
@@ -37,12 +32,30 @@ CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+------------------------------------------------------------------------
+Versions 1.10 -- 2016-01-29  --  CRAN sirt 1.10-0
+------------------------------------------------------------------------
+
+FIXED * fixed a bug in summary function of MCMC based item
+        response models (thanks to Andres Burga)  
+FIXED * fixed a bug in 'rasch.mml2' when using the 'center.b'
+        argument (thanks to Sarah Thomas) 
+NOTE  * renamed functions 'yen.q3' into 'Q3' and 'testlet.yen.q3'
+        into 'Q3.testlet'. The old function names can still be used.
+NOTE  * included argument 'standardized' in 'lsem.estimate' which
+        adds standardized solutions in the output using
+        'lavaan::standardizedSolution' (thanks to Janina Kuenecke)
+NOTE  * cleaned namespace file and defined imported functions
+        in a more explicit way
+		
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: lsem.estimate (1)
 
 ------------------------------------------------------------------------
 Versions 1.9 -- 2015-11-04  --  CRAN sirt 1.9-0
 ------------------------------------------------------------------------
 
-NOTE  * accomodate thinning in 'plot.mcmc.sirt' function
+NOTE  * allows thinning in 'plot.mcmc.sirt' function
 NOTE  * fixed a minor bug in summary output of 'rasch.mml2' for
         irtmodel='missing1'
 NOTE  * included argument 'zerosum' in 'rasch.pairwise' and 
@@ -54,7 +67,6 @@ NOTE  * included example for bootstrapping standard errors for
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: rasch.pairwise (1),
         dif.logistic.regression (2) 
-
 
 ------------------------------------------------------------------------
 Versions 1.8 -- 2015-06-28  --  CRAN sirt 1.8-9

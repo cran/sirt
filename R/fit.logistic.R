@@ -25,8 +25,8 @@ fit.logistic <- function( freq.correct , wgt , scores , item.p ,
 		cat("\n*******Logistic Model***********\n") 
 #		cat("*** " , paste(Sys.time())  , "*******\n")		
 			}	
-	theta <- qlogis( scores1 )
-	b <- qlogis( item.p )
+	theta <- stats::qlogis( scores1 )
+	b <- stats::qlogis( item.p )
 	#***********************************
 	# begin algorithm
     numdiff.parm <- .001

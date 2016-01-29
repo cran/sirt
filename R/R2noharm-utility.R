@@ -54,7 +54,7 @@
 			}
     r1 <- intersect( which( noharmout1 == "" ) , rows )
     VV <- length(r1)/2
-    r2 <- aggregate( r1 , list(rep( 1:VV , each=2 )) , mean )
+    r2 <- stats::aggregate( r1 , list(rep( 1:VV , each=2 )) , mean )
     colnames(r2) <- c("index" , "index.row" )
     index.m <- data.frame( r2 , "begin" = r2[,2] + 2 , 
                     "end" = c( r2[,2][-1] - 2 , i2-4 ) )
@@ -94,7 +94,7 @@
     rows <- seq( i1+2 , i2-4 )
     r1 <- intersect( which( noharmout1 == "" ) , rows )
     VV <- length(r1)/2
-    r2 <- aggregate( r1 , list(rep( 1:VV , each=2 )) , mean )
+    r2 <- stats::aggregate( r1 , list(rep( 1:VV , each=2 )) , mean )
     colnames(r2) <- c("index" , "index.row" )
     index.m <- data.frame( r2 , "begin" = r2[,2] + 2 , 
                     "end" = c( r2[,2][-1] - 2 , i2-4 ) )
@@ -140,7 +140,7 @@
     rows <- seq( i1+2 , i2-4 )
     r1 <- intersect( which( noharmout1 == "" ) , rows )
     VV <- length(r1)/2
-    r2 <- aggregate( r1 , list(rep( 1:VV , each=2 )) , mean )
+    r2 <- stats::aggregate( r1 , list(rep( 1:VV , each=2 )) , mean )
     colnames(r2) <- c("index" , "index.row" )
     index.m <- data.frame( r2 , "begin" = r2[,2] + 2 , 
 #                    "end" = c( r2[,2][-1] - 2 , i2-4 ) )

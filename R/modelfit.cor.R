@@ -181,16 +181,16 @@ function( data=NULL , posterior=NULL , probs=NULL , pmlobject=NULL ){
 		
 		# X2 statistic
 		itempairs$X2_df <- 1
-		itempairs$X2_p <- 1 - pchisq(itempairs$X2 , df=1 )
-		itempairs$X2_p.holm <- p.adjust( itempairs$X2_p , method="holm")
+		itempairs$X2_p <- 1 - stats::pchisq(itempairs$X2 , df=1 )
+		itempairs$X2_p.holm <- stats::p.adjust( itempairs$X2_p , method="holm")
 		itempairs$X2_sig.holm <- 1 * ( itempairs$X2_p.holm < .05 )	
-		itempairs$X2_p.fdr <- p.adjust( itempairs$X2_p , method="fdr")
+		itempairs$X2_p.fdr <- stats::p.adjust( itempairs$X2_p , method="fdr")
 		# fcor statistic
 		itempairs$fcor_se <- ( itempairs$n - 3 )^(-1/2)
 		itempairs$fcor_z <- itempairs$fcor / itempairs$fcor_se
-		itempairs$fcor_p <- 1 - pnorm( abs(itempairs$fcor_z ) )
-		itempairs$fcor_p.holm <- p.adjust( itempairs$fcor_p , method="holm")
-		itempairs$fcor_p.fdr <- p.adjust( itempairs$fcor_p , method="fdr")
+		itempairs$fcor_p <- 1 - stats::pnorm( abs(itempairs$fcor_z ) )
+		itempairs$fcor_p.holm <- stats::p.adjust( itempairs$fcor_p , method="holm")
+		itempairs$fcor_p.fdr <- stats::p.adjust( itempairs$fcor_p , method="fdr")
 
 		#**********************
 		# model fit

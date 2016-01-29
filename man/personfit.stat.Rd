@@ -101,8 +101,8 @@ pf1 <- personfit.stat( dat = dat , abil=wle1 , b=b)
 
 \dontrun{
 # dimensional analysis of person fit statistics
-x0 <- na.omit(pf1[ , -c(1:3) ] )
-factanal( x=x0 , factors=2 , rotation="promax" )
+x0 <- stats::na.omit(pf1[ , -c(1:3) ] )
+stats::factanal( x=x0 , factors=2 , rotation="promax" )
   ## Loadings:
   ##                Factor1 Factor2
   ## caution         0.914         

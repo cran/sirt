@@ -224,16 +224,16 @@ mirtmodel <- mirt::mirt.model("
   # a prior N(-1.38,.25) is specified for transformed guessing parameters: qlogis(g)
   # simulate values from this prior for illustration
 N <- 100000
-logit.g <- rnorm(N, mean=-1.38 , sd=sqrt(.5) )
-plot( density(logit.g) )  # transformed qlogis(g)
-plot( density(plogis(logit.g)) )  # g parameters
+logit.g <- stats::rnorm(N, mean=-1.38 , sd=sqrt(.5) )
+graphics::plot( stats::density(logit.g) )  # transformed qlogis(g)
+graphics::plot( stats::density( stats::plogis(logit.g)) )  # g parameters
   # estimate 3PL with priors
 mod3c1 <- mirt::mirt(dat, mirtmodel, itemtype = "3PL",verbose=TRUE)
 coef(mod3c1)
   # In addition, set upper bounds for g parameters of .35
 mirt.pars <- mirt::mirt( dat , mirtmodel , itemtype = "3PL" ,  pars="values")
 ind <- which( mirt.pars$name == "g" )
-mirt.pars[ ind , "value" ] <- plogis(-1.38)
+mirt.pars[ ind , "value" ] <- stats::plogis(-1.38)
 mirt.pars[ ind , "ubound" ] <- .35
   # prior distribution for slopes
 ind <- which( mirt.pars$name == "a1" )
@@ -381,7 +381,7 @@ if (FALSE){  # set 'if (TRUE)' if packages should be downloaded
 #----  M6b: graph estimation based on Pearson correlations
 V <- colnames(dat)
 n <- nrow(dat)
-mod6b <- pcalg::pc(suffStat = list(C = cor(dat), n = n ),
+mod6b <- pcalg::pc(suffStat = list(C = stats::cor(dat), n = n ),
              indepTest = gaussCItest, ## indep.test: partial correlations
              alpha=0.05, labels = V, verbose = TRUE)
 plot(mod6b)
@@ -421,7 +421,7 @@ matplot( t(mod7b$pjk) , type="l" , xlab="Item" )
   #   define formula for outcomes
 f7c <- paste0( "cbind(" , paste0(colnames(dat),collapse=",") , ") ~ 1 " )
 dat1 <- as.data.frame( dat + 1 ) # poLCA needs integer values from 1,2,..
-mod7c <- poLCA::poLCA( as.formula(f7c),dat1,nclass=3 , verbose=TRUE)
+mod7c <- poLCA::poLCA( stats::as.formula(f7c),dat1,nclass=3 , verbose=TRUE)
 plot(mod7c)
 
 #----  M7d: gom.em (in sirt) 
@@ -446,10 +446,10 @@ set.seed(9976)
   # set starting values for class specific item probabilities
 mod.pars[ mod.pars$name == "d" ,"value" ]  <- 0
 mod.pars[ mod.pars$name == "d" ,"est" ]  <- FALSE
-b1 <- qnorm( colMeans( dat ) )
+b1 <- stats::qnorm( colMeans( dat ) )
 mod.pars[ mod.pars$name == "a1" ,"value" ]  <- b1
   # random starting values for other classes
-mod.pars[ mod.pars$name \%in\% c("a2","a3") ,"value" ]  <- b1+runif( 12*2 , -1 ,1 )
+mod.pars[ mod.pars$name \%in\% c("a2","a3") ,"value" ]  <- b1 + stats::runif( 12*2 , -1 ,1 )
 mod.pars
   #** define prior for latent class analysis
 lca_prior <- function(Theta,Etable){
@@ -484,7 +484,7 @@ mirt::M2(mod7e)     # TLI and CFI does not make sense in this example
   #** extract item parameters
 mirt.wrapper.coef(mod7e)
   #** extract class-specific item-probabilities
-probs <- apply( coef1[ , c("a1","a2","a3") ] , 2 , plogis )
+probs <- apply( coef1[ , c("a1","a2","a3") ] , 2 , stats::plogis )
 matplot( probs , type="l" , xlab="Item" , main="mirt::mirt")
   #** inspect estimated distribution
 mod7e@Theta
@@ -529,20 +529,20 @@ mod.pars[ mod.pars$name == "d" ,"est" ]  <- FALSE
 mod.pars[ mod.pars$name == "a1" ,"value" ]  <- 1
 mod.pars[ mod.pars$name == "a3" ,"value" ]  <- 1
   # initial values difficulties
-b1 <-  qlogis( colMeans(dat) )
+b1 <-  stats::qlogis( colMeans(dat) )
 mod.pars[ mod.pars$name == "a2" ,"value" ]  <- b1
-mod.pars[ mod.pars$name == "a4" ,"value" ]  <- b1 + runif(I , -1 , 1)
+mod.pars[ mod.pars$name == "a4" ,"value" ]  <- b1 + stats::runif(I , -1 , 1)
   #* define prior for mixed Rasch analysis
 mixed_prior <- function(Theta,Etable){
   NC <- 2   # number of theta classes
   TP <- nrow(Theta) / NC
-  prior1 <- dnorm( Theta[1:TP,1] )
+  prior1 <- stats::dnorm( Theta[1:TP,1] )
   prior1 <- prior1 / sum(prior1) 
   if ( is.null(Etable) ){   prior <- c( prior1 , prior1 ) }
   if ( ! is.null(Etable) ){  
     prior <- ( rowSums( Etable[ , seq(1,2*I,2)] ) + 
                    rowSums( Etable[,seq(2,2*I,2)]) )/I
-    a1 <- aggregate( prior , list( rep(1:NC , each=TP) ) , sum )
+    a1 <- stats::aggregate( prior , list( rep(1:NC , each=TP) ) , sum )
     a1[,2] <- a1[,2] / sum( a1[,2])
     # print some information during estimation
     cat( paste0( " Class proportions: " , 
@@ -718,7 +718,7 @@ mirtmodel <- mirt::mirt.model("
   # get parameters
 mod.pars <- mirt(dat, model=mirtmodel ,  pars = "values")   
  # set starting values for class specific item probabilities
-mod.pars[ mod.pars$name == "d" ,"value" ]  <- qlogis( colMeans(dat,na.rm=TRUE) )
+mod.pars[ mod.pars$name == "d" ,"value" ]  <- stats::qlogis( colMeans(dat,na.rm=TRUE) )
   # set item difficulty of reference item to zero
 ind <- which( ( paste(mod.pars$item) == items[ref.item] ) & 
                ( ( paste(mod.pars$name) == "d" ) ) )                        
@@ -793,10 +793,10 @@ mirtmodel <- mirt::mirt.model("
 mod.pars <- mirt(dat, model=mirtmodel ,  pars = "values")   
 # starting values d parameters (transformed guessing parameters)
 ind <- which(  mod.pars$name == "d"  )
-mod.pars[ind,"value"] <- qlogis(.2)
+mod.pars[ind,"value"] <- stats::qlogis(.2)
 # starting values transformed slipping parameters
 ind <- which( ( mod.pars$name \%in\% paste0("a",1:3)  ) &  ( mod.pars$est ) )
-mod.pars[ind,"value"] <- qlogis(.8) - qlogis(.2)
+mod.pars[ind,"value"] <- stats::qlogis(.8) - stats::qlogis(.2)
 mod.pars
 
   #* define prior for latent class analysis
@@ -828,11 +828,11 @@ mod13c@Prior[[1]]
 dfr <- coef(mod13a)[ , c("guess","slip") ]
 colnames(dfr) <- paste0("din.",c("guess","slip") )
 # estimated parameters from gdm
-dfr$gdm.guess <- plogis(mod13b$item$b)
-dfr$gdm.slip <- 1 - plogis( rowSums(mod13b$item[,c("b.Cat1","a.F1","a.F2","a.F3")] ) )
+dfr$gdm.guess <- stats::plogis(mod13b$item$b)
+dfr$gdm.slip <- 1 - stats::plogis( rowSums(mod13b$item[,c("b.Cat1","a.F1","a.F2","a.F3")] ) )
 # estimated parameters from mirt
-dfr$mirt.guess <- plogis( coef13c$d )
-dfr$mirt.slip <- 1 - plogis( rowSums(coef13c[,c("d","a1","a2","a3")]) )
+dfr$mirt.guess <- stats::plogis( coef13c$d )
+dfr$mirt.slip <- 1 - stats::plogis( rowSums(coef13c[,c("d","a1","a2","a3")]) )
 # comparison
 round(dfr[, c(1,3,5,2,4,6)],3)
   ##      din.guess gdm.guess mirt.guess din.slip gdm.slip mirt.slip
@@ -899,10 +899,10 @@ mirtmodel <- mirt::mirt.model("
 mod.pars <- mirt(dat, model=mirtmodel ,  pars = "values")   
 # starting values d parameters (transformed guessing parameters)
 ind <- which(  mod.pars$name == "d"  )
-mod.pars[ind,"value"] <- qlogis(.2)
+mod.pars[ind,"value"] <- stats::qlogis(.2)
 # starting values transformed slipping parameters
 ind <- which( ( mod.pars$name \%in\% paste0("a",1:3)  ) &  ( mod.pars$est ) )
-mod.pars[ind,"value"] <- qlogis(.8) - qlogis(.2)
+mod.pars[ind,"value"] <- stats::qlogis(.8) - stats::qlogis(.2)
 mod.pars
  #* use above defined prior lca_prior
  # lca_prior <- function(prior,Etable) ...
@@ -920,8 +920,8 @@ coef14b <- mirt.wrapper.coef(mod14b)$coef
 dfr <- coef(mod14a)[ , c("guess","slip") ]
 colnames(dfr) <- paste0("din.",c("guess","slip") )
 # estimated parameters from mirt
-dfr$mirt.guess <- plogis( coef14b$d )
-dfr$mirt.slip <- 1 - plogis( rowSums(coef14b[,c("d","a1","a2","a3")]) )
+dfr$mirt.guess <- stats::plogis( coef14b$d )
+dfr$mirt.slip <- 1 - stats::plogis( rowSums(coef14b[,c("d","a1","a2","a3")]) )
 # comparison
 round(dfr[, c(1,3,2,4)],3)
   ##      din.guess mirt.guess din.slip mirt.slip

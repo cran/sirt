@@ -55,8 +55,8 @@ Rcpp::List parameters_jackknife( Rcpp::NumericMatrix PARS ){
 	 } 
 	
 	    return Rcpp::List::create(
-		_["PARS_means"]= PARS_means,
-		_["PARS_vcov"]= PARS_vcov
+		Rcpp::_["PARS_means"]= PARS_means,
+		Rcpp::_["PARS_vcov"]= PARS_vcov
 			) ;
 	}
 
@@ -101,10 +101,10 @@ Rcpp::List evm_aux( arma::mat B , int I , int powD ,
 // Rcpp::Rcout << "a200  " <<   std::endl ;      
 
     return Rcpp::List::create(
-        _["lambda"]= lambda ,
-        _["D"] = D , 
-        _["cons_index"] = cons_index ,
-      	_["b"] = b 
+        Rcpp::_["lambda"]= lambda ,
+        Rcpp::_["D"] = D , 
+        Rcpp::_["cons_index"] = cons_index ,
+      	Rcpp::_["b"] = b 
                 ) ;   
     	}
     	

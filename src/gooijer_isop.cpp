@@ -87,8 +87,8 @@ BEGIN_RCPP
      // OUTPUT              
                    
       return Rcpp::List::create(    
-         _["stat"] = stat ,    
-         _["stat_perm"]=stat_perm  
+         Rcpp::_["stat"] = stat ,    
+         Rcpp::_["stat_perm"]=stat_perm  
          ) ;  
 END_RCPP
 }
@@ -207,10 +207,10 @@ BEGIN_RCPP
      /// OUTPUT                  
        
      return List::create(  
-             _["W1test"] = W1test ,   
-     		_["W1i"] = W1i ,  
-     		_["Esi"] = Esi ,  
-             _["Edi"] = Edi  
+             Rcpp::_["W1test"] = W1test ,   
+             Rcpp::_["W1i"] = W1i ,  
+             Rcpp::_["Esi"] = Esi ,  
+             Rcpp::_["Edi"] = Edi  
      			) ;  
      
 END_RCPP

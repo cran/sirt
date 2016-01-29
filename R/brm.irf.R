@@ -14,10 +14,10 @@ brm.irf <- function( Theta , delta , tau , ncat , thdim=1 , eps=1E-10 ){
 	m2 <- exp( m2 / 2 )
 	for (cc in 1:ncat){
 		# cc <- 1
-		probs[,cc] <- dbeta( mp[cc] , shape1 = m1 , shape2 = m2 )
+		probs[,cc] <- stats::dbeta( mp[cc] , shape1 = m1 , shape2 = m2 )
 					   }
 	probs <- probs + eps
-	probs <- probs / rowSums(probs)
+	probs <- probs / base::rowSums(probs)
 	return(probs)
 		}
 ################################################################

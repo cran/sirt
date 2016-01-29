@@ -71,8 +71,8 @@ BEGIN_RCPP
      ////////////////////////////////////  
      // OUTPUT:  
      return Rcpp::List::create(  
-         _["d"]=dvec  ,   
-         _["u"]= u   
+         Rcpp::_["d"]=dvec  ,   
+         Rcpp::_["u"]= u   
             		) ;  
        
        

@@ -272,11 +272,11 @@ N <- 1000	# number of persons
 I <- 10		# number of items
 # simulate data for first group
 b <- seq(-1.5,1.5,len=I)
-dat1 <- sim.raschtype( rnorm(N) , b )
+dat1 <- sim.raschtype( stats::rnorm(N) , b )
 # simulate data for second group
 b1 <- b
 b1[4] <- b1[4] + .5 # introduce DIF for fourth item
-dat2 <- sim.raschtype( rnorm(N,mean=.3) , b1 )
+dat2 <- sim.raschtype( stats::rnorm(N,mean=.3) , b1 )
 dat <- rbind(dat1 , dat2 )
 group <- rep( 1:2 , each=N )
 # estimate model

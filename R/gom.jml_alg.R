@@ -18,18 +18,17 @@
     # create starting values for person parameters
     score <- rowSums( dat ) / rowSums( dat.resp )
     theta0 <- seq( -1.5 ,1.5 , len=K )
-    #g <- plogis( outer(  qlogis( ( score + .1 ) / 1.2 ) , theta0 , "-" ) )
-    g <- exp( - ( outer( qlogis( ( score + .1 ) / 1.2 ) , theta0 , "-" ) )^2 )
+    g <- exp( - ( outer( stats::qlogis( ( score + .1 ) / 1.2 ) , theta0 , "-" ) )^2 )
     g <- g / rowSums(g)
     # create starting values item parameters
     p.item <- colSums( dat ) / colSums( dat.resp )
     theta0 <- seq( -2 ,2 , len=K )
-    lambda <- t( plogis( outer( theta0 , - qlogis( p.item ) , "-" ) ) )
+    lambda <- t( stats::plogis( outer( theta0 , - stats::qlogis( p.item ) , "-" ) ) )
 	# random start
 	if ( ! is.null(seed) ){
-		g <- matrix( runif( N*K ) , N , K )
+		g <- matrix( stats::runif( N*K ) , N , K )
 		g <- g / rowSums( g)
-		lambda <- matrix( runif(I*K) , nrow=I , ncol=K)		
+		lambda <- matrix( stats::runif(I*K) , nrow=I , ncol=K)		
 			}
 	
     res <- list( "dat"=dat , "dat.resp"=dat.resp , "N"=N , "K"=K , 

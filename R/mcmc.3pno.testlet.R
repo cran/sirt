@@ -33,7 +33,7 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) ,
 	# set initial values
 #	a.testlet <- a <- rep(.6,I)	
 	a.testlet <- a <- rep(1,I)	
-	b <- qnorm( (colMeans(dat0 , na.rm=TRUE) + .01 )/1.02 )
+	b <- stats::qnorm( (colMeans(dat0 , na.rm=TRUE) + .01 )/1.02 )
 	# guessing parameters
 	if ( is.null(guess.prior) ){
 		guess.prior <- matrix( c(1,1) , nrow=I , ncol=2 , byrow=TRUE )
@@ -49,7 +49,7 @@ mcmc.3pno.testlet <- function(dat , testlets=rep(NA , ncol(dat)) ,
 	a.testletM <- aM <- matrix( a , nrow=N , ncol=I , byrow=TRUE)
 	bM <- matrix( b , nrow=N , ncol=I , byrow=TRUE)			
 	# theta effects
-	theta <- qnorm( ( rowMeans( dat0,na.rm=TRUE ) + .01 ) / 1.02 )
+	theta <- stats::qnorm( ( rowMeans( dat0,na.rm=TRUE ) + .01 ) / 1.02 )
 	theta <- theta - mean(theta)
 	mu <- 0
 	sigma <- 1

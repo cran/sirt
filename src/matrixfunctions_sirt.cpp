@@ -402,8 +402,14 @@ BEGIN_RCPP
      /// OUTPUT                  
        
       return List::create(  
-      _["D"] = D , _["res"] = res , _["matr"] = matr , _["res_rr"] = res_rr , _["rowsums_res"] = rowsums_res ,  
-      _["g1_rr"] = g1_rr , _["res_patt"] = res_patt	) ;  
+      Rcpp::_["D"] = D , 
+      Rcpp::_["res"] = res , 
+      Rcpp::_["matr"] = matr , 
+      Rcpp::_["res_rr"] = res_rr , 
+      Rcpp::_["rowsums_res"] = rowsums_res ,  
+      Rcpp::_["g1_rr"] = g1_rr , 
+      Rcpp::_["res_patt"] = res_patt	
+              ) ;  
      //	   _["matrk"]=MATRK  , _["indexmatr"]=INDEXMATR ) ;     
      // return List::create(_["yM"]=YM , _["wM"]=WM ) ;     
      
@@ -479,15 +485,15 @@ BEGIN_RCPP
      ////////////////////////////////////  
      // OUTPUT:  
      return Rcpp::List::create(  
-         _["dat"] = dat ,  
-         _["dat.resp1"] = dat_ind1 ,  
-         _["dat.resp0"] = dat_ind0 ,  
-         _["resp_patt"] = resp_patt ,  
-         _["unique_resp_patt"] = unique_resp_patt ,  
-         _["unique_resp_patt_freq"]=unique_resp_patt_freq ,  
-         _["unique_resp_patt_firstobs"]=unique_resp_patt_firstobs ,              
-         _["freq1"] = freq1 ,  
-         _["freq0"] = freq0  
+         Rcpp::_["dat"] = dat ,  
+         Rcpp::_["dat.resp1"] = dat_ind1 ,  
+         Rcpp::_["dat.resp0"] = dat_ind0 ,  
+         Rcpp::_["resp_patt"] = resp_patt ,  
+         Rcpp::_["unique_resp_patt"] = unique_resp_patt ,  
+         Rcpp::_["unique_resp_patt_freq"]=unique_resp_patt_freq ,  
+         Rcpp::_["unique_resp_patt_firstobs"]=unique_resp_patt_firstobs ,              
+         Rcpp::_["freq1"] = freq1 ,  
+         Rcpp::_["freq0"] = freq0  
             		) ;  
      
 END_RCPP

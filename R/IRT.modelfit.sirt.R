@@ -4,7 +4,7 @@
 # general model fit function for sirt objects
 IRT.modelfit.sirt <- function( object , mod ){
     res <- modelfit.sirt(object)
-	res$IRT.IC <- IRT.IC(object)
+	res$IRT.IC <- CDM::IRT.IC(object)
 	res$objname <- mod
 	class(res) <- paste0("IRT.modelfit." , class(object) )
 	return(res)
@@ -57,7 +57,7 @@ IRT.modelfit.rm.facets <- function(object, ... ){
 	theta.k <- object$theta.k
 	f.qk.yi <- object$f.qk.yi
 	res <- modelfit.cor.poly( data , probs, theta.k , f.qk.yi )
-	res$IRT.IC <- IRT.IC(object)
+	res$IRT.IC <- CDM::IRT.IC(object)
 	res$objname <- mod
 	class(res) <- paste0("IRT.modelfit." , class(object) )
 	return(res)		

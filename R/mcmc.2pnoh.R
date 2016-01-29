@@ -16,14 +16,14 @@ mcmc.2pnoh <- function(dat , itemgroups , prob.mastery = c(.5 , .8 ) ,
 	itemgroups.unique <- sort( unique( itemgroups ) )
 	K <- length(itemgroups.unique)
 	itemgroup <- match( itemgroups , itemgroups.unique )
-	Ik <- aggregate( 1 + 0*1:I , list(itemgroup) , sum )[,2]
+	Ik <- stats::aggregate( 1 + 0*1:I , list(itemgroup) , sum )[,2]
 	# redefine weights
 	if (! is.null(weights) ){
 		weights <- N * weights / sum(weights )
 					}	
 	# set initial values
 	a <- rep(1,I)
-	b <- - qnorm( (colMeans(dat0 , na.rm=TRUE) + .01 )/1.02 )
+	b <- - stats::qnorm( (colMeans(dat0 , na.rm=TRUE) + .01 )/1.02 )
 	xi <- rep(0,K)
 	omega <- rep(1,K)
 	sig <- 1.5	# SD of item difficulties
@@ -31,7 +31,7 @@ mcmc.2pnoh <- function(dat , itemgroups , prob.mastery = c(.5 , .8 ) ,
 	# item parameters in matrix form
 	aM <- matrix( a , nrow=N , ncol=I , byrow=TRUE)
 	bM <- matrix( b , nrow=N , ncol=I , byrow=TRUE)			
-	theta <- qnorm( ( rowMeans( dat0,na.rm=TRUE ) + .01 ) / 1.02 )
+	theta <- stats::qnorm( ( rowMeans( dat0,na.rm=TRUE ) + .01 ) / 1.02 )
 	# define lower and upper thresholds 
 	ZZ <- 1000
 	threshlow <- -ZZ + ZZ*dat
@@ -154,7 +154,7 @@ mcmc.2pnoh <- function(dat , itemgroups , prob.mastery = c(.5 , .8 ) ,
 	if (save.theta){ mcmcobj <- cbind( mcmcobj , theta ) }
 	class(mcmcobj) <- "mcmc"
 	attr(mcmcobj, "mcpar") <- c( burnin+1 , burnin+SV , 1 )
-	mcmcobj <- as.mcmc.list( mcmcobj )
+	mcmcobj <- coda::as.mcmc.list( mcmcobj )
 	
 	#----
 	# summary of the MCMC output

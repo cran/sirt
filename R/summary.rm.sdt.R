@@ -4,7 +4,7 @@
 # Summary for rm.facets object                         *
 summary.rm.sdt <- function( object , ...){
 	cat("-----------------------------------------------------------------\n")
-		d1 <- packageDescription("sirt")
+		d1 <- utils::packageDescription("sirt")
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 		cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
 		cat("Computation time:" , print(object$s2 - object$s1), "\n\n")

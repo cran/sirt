@@ -156,7 +156,7 @@ set.seed(789)
 N <- 500    # number of persons
 I <- 11     # number of items
 b <- seq( -2 , 2 , length=I )
-dat <- sim.raschtype( rnorm( N ) , b )
+dat <- sim.raschtype( stats::rnorm( N ) , b )
 colnames(dat) <- paste( "I" , 1:I , sep="")
 
 # JML estimation of the Rasch model

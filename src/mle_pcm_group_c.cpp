@@ -137,9 +137,9 @@ BEGIN_RCPP
      /////////////////////////////////////////////  
      // OUTPUT:  
      return Rcpp::List::create(  
-         _["theta"] = theta ,  
-         _["setheta"]=setheta ,  
-         _["Niter"] = Niter  
+         Rcpp::_["theta"] = theta ,  
+         Rcpp::_["setheta"]=setheta ,  
+         Rcpp::_["Niter"] = Niter  
                  ) ;  
        
      ////****** PRINT OUTPUT ****************************  
@@ -264,9 +264,9 @@ BEGIN_RCPP
      /////////////////////////////////////////////  
      // OUTPUT:  
      return Rcpp::List::create(  
-         _["theta"] = theta ,  
-         _["setheta"]=setheta ,  
-         _["Niter"] = Niter  
+         Rcpp::_["theta"] = theta ,  
+         Rcpp::_["setheta"]=setheta ,  
+         Rcpp::_["Niter"] = Niter  
                  ) ;  
        
      ////****** PRINT OUTPUT ****************************  

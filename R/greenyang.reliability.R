@@ -33,14 +33,15 @@ greenyang.reliability <- function( object.tetra , nfactors){
                 rho.exp[ii2,ii1] <- rho.exp[ii1,ii2] 
                 r1 <- rho.exp[ii1,ii2]
                 rel.matrix[ii1,ii2] <- mvtnorm::pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
-                                         corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
+                                         corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - stats::pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
                 rel.matrix[ii2,ii1] <- rel.matrix[ii1,ii2]
 				# multidimensional analysis
                 rho.exp[ii1,ii2] <- relf$rho.exp[ii1,ii2]
                 rho.exp[ii2,ii1] <- rho.exp[ii1,ii2] 
                 r1 <- rho.exp[ii1,ii2]				
                 rel.matrix2[ii1,ii2] <- mvtnorm::pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
-                                         corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
+                                         corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - 
+										 stats::pnorm( pthresh[ii1] ) * stats::pnorm( pthresh[ii2] )
                 rel.matrix2[ii2,ii1] <- rel.matrix2[ii1,ii2]
 				rel.matrix3[ii1,ii2] <- rel.matrix2[ii1,ii2]
 				rel.matrix3[ii2,ii1] <- rel.matrix3[ii1,ii2]				
@@ -48,7 +49,7 @@ greenyang.reliability <- function( object.tetra , nfactors){
 					r1 <- 1				
 					rel.matrix3[ii1,ii2] <- mvtnorm::pmvnorm( c(-Inf,-Inf) , pthresh[c(ii1,ii2)] ,
 											 corr = matrix( c( 1 , r1 , r1 , 1) ,2 ,2 ) ) - 
-											     pnorm( pthresh[ii1] ) * pnorm( pthresh[ii2] )
+											     stats::pnorm( pthresh[ii1] ) * stats::pnorm( pthresh[ii2] )
 					rel.matrix3[ii2,ii1] <- rel.matrix3[ii1,ii2]
 										}
                                 }
@@ -58,7 +59,7 @@ greenyang.reliability <- function( object.tetra , nfactors){
        rel1h <- sum( rel.matrix ) / sum( rel.matrix3 )	
 	#'''''''''
 	# eigenvalue decomposition	
-	eigenval.rho <- svd( object.tetra$rho )$d
+	eigenval.rho <- base::svd( object.tetra$rho )$d
 	#'''''''''								
 #	rel1h <- rel1h$omega.rel
 	relf <- relf$omega.rel
@@ -95,7 +96,7 @@ greenyang.reliability <- function( object.tetra , nfactors){
 	cat("\n\n") 
 	cat( paste( rep( "." , 45) , collapse="") )
 	cat( paste( "\n" , 1 , "-dimensional model\n\n",sep="") )
-	mod.omega1 <- omega( m = object.tetra$rho , nfactors = 1) 
+	mod.omega1 <- psych::omega( m = object.tetra$rho , nfactors = 1) 
 	print(mod.omega1)
     invisible(dfr1)
     }

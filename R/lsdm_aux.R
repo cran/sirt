@@ -49,7 +49,7 @@ est.logist.quant <- function( probcurves , theta , quantiles , est.icc = TRUE ){
     objfct <- function( x ){ 
         mean( ( y - (1 + exp(  - x[2] * ( theta - x[1] )) )^(-1) )^2 )
         }
-    res <- optim( c(0,1) , objfct )
+    res <- stats::optim( c(0,1) , objfct )
     return( c(  res$par , sqrt( res$value ) ) )
             }
 #...........................................................................................##
@@ -64,7 +64,7 @@ est.logist.quant <- function( probcurves , theta , quantiles , est.icc = TRUE ){
     objfct <- function( x ){ 
         mean( ( y - (1 + exp(  - 1 * ( theta - x )) )^(-1) )^2 )
         }
-    res <- optimize( objfct , lower = -10 , upper = 10 )
+    res <- stats::optimize( objfct , lower = -10 , upper = 10 )
     return( c(  res$minimum , sqrt( res$objective ) ) )
             }
 #...........................................................................................##

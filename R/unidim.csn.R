@@ -4,7 +4,7 @@ unidim.test.csn <- function( dat , RR=400 , prop.perm=.75 ,
 	progress=TRUE){
 
 	dat <- as.matrix(dat)
-	dat <- na.omit(dat)
+	dat <- stats::na.omit(dat)
 	#****
 	score <- rowSums(dat)
 	dat <- dat[ order(score) , ]
@@ -19,7 +19,7 @@ unidim.test.csn <- function( dat , RR=400 , prop.perm=.75 ,
 	for (ss in 1:SS){
 	for (ii in 1:ncol(dat)){
 		iss <- score_index[ss,1]:score_index[ss,2]
-		dat_perm[iss,ii] <- sample( dat[iss,ii] )
+		dat_perm[iss,ii] <- base::sample( dat[iss,ii] )
 					}
 			}
 	score_index <- cbind( score_index , round( score_index[,3] * prop.perm ) )
@@ -39,7 +39,7 @@ unidim.test.csn <- function( dat , RR=400 , prop.perm=.75 ,
 				as.matrix(score_index) ,
 				package="sirt" )
 	res$p <- mean(res$stat < res$stat_perm)
-	res$H0_quantiles <- quantile(res$stat_perm , c(.05 , .25 , .50 , .75 , .95 , .99 , .999 ) )
+	res$H0_quantiles <- stats::quantile(res$stat_perm , c(.05 , .25 , .50 , .75 , .95 , .99 , .999 ) )
 	if ( progress == 1 ){
 		cat( paste0("CSN Statistic = " , round( res$stat , 5) ) )
 		cat( " , p =" , round( res$p , 5 ) , "\n")		

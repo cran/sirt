@@ -29,8 +29,7 @@ f1d.irt <- function( dat=NULL , nnormal=1000 , nfactors=3 ,
 		names.dat <- names(intercept)
 		tetra <- NULL
 				}
-		
-				
+						
 	#***************************************
 	# approximation of normal distribution using quasi Monte Carlo integration nodes
     theta <- qmc.nodes( nnormal , nfactors )
@@ -41,8 +40,7 @@ f1d.irt <- function( dat=NULL , nnormal=1000 , nfactors=3 ,
 		Sigma <- diag(1,nfactors)
 						}
 	
-	wgt_theta <- dmvnorm(x=theta, mean= mu, 
-				sigma= Sigma )
+	wgt_theta <- mvtnorm::dmvnorm(x=theta, mean= mu, sigma= Sigma )
 	wgt_theta <- wgt_theta / sum( wgt_theta )
 
 	I <- length(intercept)
@@ -80,7 +78,7 @@ f1d.irt <- function( dat=NULL , nnormal=1000 , nfactors=3 ,
 		Ypi <- Zpi - matrix( diast , TP , I , byrow=TRUE)
 		aiastM <- matrix( aiast , TP , I , byrow=TRUE )
 		thetaast <- rowSums( Ypi * aiastM ) / rowSums( aiastM^2 )
-		wM <- weighted.mean( thetaast , wgt_theta )
+		wM <- stats::weighted.mean( thetaast , wgt_theta )
 		sdM <- sqrt( sum( ( thetaast - wM )^2 * wgt_theta ) )
 		thetaast <- ( thetaast - wM ) / sdM
 
@@ -102,7 +100,7 @@ f1d.irt <- function( dat=NULL , nnormal=1000 , nfactors=3 ,
 				" | Approximation error = " , round( approx.error , 5 ) ,
 				" | Max. parameter change = " , round( parchange , 5) ,
 				 "\n") )
-			flush.console()
+			utils::flush.console()
 					}
 		}
 	#**************************************************

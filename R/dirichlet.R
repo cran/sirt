@@ -8,7 +8,7 @@ dirichlet.simul <- function( alpha ){
     K <- ncol(alpha)
     ygamma <- 0*alpha
     for (ii in 1:K){   # ii <- 1
-        ygamma[,ii] <- rgamma( n=N , shape=alpha[,ii] )
+        ygamma[,ii] <- stats::rgamma( n=N , shape=alpha[,ii] )
                 }
     x <- ygamma / rowSums(ygamma)
     return(x)
@@ -16,14 +16,13 @@ dirichlet.simul <- function( alpha ){
 #################################################
 # derivative of digamma function
 digamma1 <- function(x,h=.001){
-    ( digamma(x+h) - digamma(x-h) ) / (2*h)
+    ( base::digamma(x+h) - base::digamma(x-h) ) / (2*h)
                 }
 ##################################################
 # Maximum likelihood estimation of distribution parameters
 dirichlet.mle <- function( x ,  weights=NULL , eps=10^(-5),convcrit=.00001 , maxit=1000,
 		oldfac = .3 , progress=FALSE){
 	
-
 	#***
     N <- nrow(x)
     K <- ncol(x)
@@ -51,7 +50,7 @@ dirichlet.mle <- function( x ,  weights=NULL , eps=10^(-5),convcrit=.00001 , max
     # BEGIN iterations
     while( ( conv > convcrit ) & (iter < maxit) ){
         alpha0 <- alpha
-        g <- N * digamma( sum(alpha ) ) - N * digamma(alpha) + N * log.pbar
+        g <- N * base::digamma( sum(alpha ) ) - N * base::digamma(alpha) + N * log.pbar
         z <- N * digamma1( sum(alpha ))
         H <- diag( -N*digamma1( alpha ) ) + z
         alpha <- alpha0 - solve(H , g )
@@ -60,7 +59,7 @@ dirichlet.mle <- function( x ,  weights=NULL , eps=10^(-5),convcrit=.00001 , max
         conv <- max( abs( alpha0 - alpha ) )	
 		if (progress){     print( paste( iter , sum(alpha) , conv) ) }
 		iter <- iter+1
-		flush.console()
+		utils::flush.console()
                 }
     alpha0 <- sum(alpha)
     xsi <- alpha / alpha0

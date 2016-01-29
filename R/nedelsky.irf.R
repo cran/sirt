@@ -11,7 +11,7 @@ nedelsky.irf <- function( Theta , K , b , a , tau , combis ,
     prob.cats <- matrix(NA,nrow=TP , ncol=K)
     for (cc in 1:K){
         # cc <- 1
-        prob.cats[,cc] <- plogis( a*Theta[,thdim ] - b[cc] )
+        prob.cats[,cc] <- stats::plogis( a*Theta[,thdim ] - b[cc] )
                 }
     prob.latclasses <- matrix(1 , nrow=TP , ncol=C1)
     # probabilities of latent classes

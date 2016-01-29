@@ -76,7 +76,7 @@ prob.guttman <- function( dat , pid = NULL , guess.equal=FALSE ,
 									if( iter>0){round( - dev + dev0 , 6 )} else { ""}  ," |",sep=""))                       
 		cat( paste( " Maximum parameter change = " , 
 									round( max(abs( par.change )) , 6 ) ,  " \n"   )  )  
-		flush.console()
+		utils::flush.console()
 		dev0 <- dev                                    
 		iter <- iter + 1
 			}
@@ -136,7 +136,7 @@ summary.prob.guttman <- function( object , ... ){
     # object      ... object from rasch.mml                #
 	
     cat("---------------------------------------------------------------------------------------------------------- \n")
-		d1 <- packageDescription("sirt")
+		d1 <- utils::packageDescription("sirt")
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 #		cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
 #		cat("Computation time:" , print(object$s2 - object$s1), "\n\n")

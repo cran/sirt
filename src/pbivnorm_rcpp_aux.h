@@ -312,9 +312,12 @@ Ntot1[0] = Ntotal ;
 // OUTPUT            
             
 return Rcpp::List::create(  
-    _["thresh1"] = thresh1n , _["thresh2"] = thresh2n ,    
-    _["rho"] = rho  , _["maxK1"] = maxK11 , _["maxK2"] = maxK21 ,
-    _["Ntotal"]=Ntot1 
+    Rcpp::_["thresh1"] = thresh1n , 
+    Rcpp::_["thresh2"] = thresh2n ,    
+    Rcpp::_["rho"] = rho  , 
+    Rcpp::_["maxK1"] = maxK11 , 
+    Rcpp::_["maxK2"] = maxK21 ,
+    Rcpp::_["Ntotal"]=Ntot1 
     ) ;  
 	
 }

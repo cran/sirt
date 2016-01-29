@@ -126,7 +126,7 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
     abs.change <- 1
     miter <- 0
     # update pi.k 
-    if (is.null( trait.weights) ){ pi.k <- n.k / n  } else { pi.k <- dnorm( theta.k) ; pi.k <- pi.k/sum(pi.k) }
+    if (is.null( trait.weights) ){ pi.k <- n.k / n  } else { pi.k <- stats::dnorm( theta.k) ; pi.k <- pi.k/sum(pi.k) }
     while( abs.change > conv1 & miter < mitermax ){
         b0 <- b       
         if (pure.rasch == 1){        
@@ -182,7 +182,15 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 	b00 <- b
     # number of subjects within groups
     n <- colSums(n.k)
-	if ( is.null(Qmatrix) ){ NT <- length(theta.k) } else { NT <- nrow(theta.k) }
+	if ( is.null(Qmatrix) ){ 
+			NT <- length(theta.k) 
+					} else {
+            if ( is.matrix(theta.k) ){					
+				NT <- nrow(theta.k) 
+						} else {
+				NT <- length(theta.k)
+						}
+					}
     #*****
     # begin loop
     eps <- numdiff.parm 
@@ -230,10 +238,10 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 		
 		#***
 		if ( ! is.null(est.b) ){
-			d1 <- aggregate( d1 , list(est.b ) , sum )
+			d1 <- stats::aggregate( d1 , list(est.b ) , sum )
 			i1 <- d1[,1]
 			d1 <- d1[,2]
-			d2 <- aggregate( d2 , list(est.b) , sum )[,2]
+			d2 <- stats::aggregate( d2 , list(est.b) , sum )[,2]
 								}						
         increment <- - d1 / d2
 #		ci <- ceiling( abs(increment) / ( abs( old_increment) + 10^(-10) ) )
@@ -253,8 +261,8 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 		b <- b + increment
         # linear parameter constraints
         if ( ! is.null( designmatrix ) & is.null(est.b) ){ 
-            mod <- lm( b ~ 0 + designmatrix  )
-            b <- fitted(mod)
+            mod <- stats::lm( b ~ 0 + designmatrix  )
+            b <- stats::fitted(mod)
                 }
         # last item is the sum of all other item difficulties
         center <- is.null(constraints) 
@@ -269,7 +277,6 @@ mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){
 
 		#*** squeeze parameter estimates
 		b <- squeeze.mml2( b , c( min.b , max.b ) )
-
 		#-----
 	   # center b
        if ( center.b ){
@@ -341,7 +348,7 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
 #    expprob <- matrix( t(trlat) , ncol= length(b) )    # This was a formatting error!
     expprob <- trlat
     # define response matrix
-    dat.resp <- 1 * ( expprob > matrix( runif( nrow(expprob)*ncol(expprob) ) , ncol= ncol(expprob )) )
+    dat.resp <- 1 * ( expprob > matrix( stats::runif( nrow(expprob)*ncol(expprob) ) , ncol= ncol(expprob )) )
 	I <- length(b)
 	colnames(dat.resp) <- paste( "I" , substring(10000+1:I,2) , sep="")
     return(dat.resp)
@@ -387,7 +394,7 @@ sim.raschtype <- function( theta , b , alpha1 = 0, alpha2 = 0 , fixed.a = NULL ,
 					ll1 <- rowSums(ll1)
 					ll2 <- rowSums(ll2)
 					# aggregate with respect to estimation of a
-					a1 <- aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.a) , sum , na.rm=T)	
+					a1 <- stats::aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.a) , sum , na.rm=T)	
 					a1 <- a1[ a1[,1] > 0 , ]					
 					ll0 <- a1[,2]
 					ll1 <- a1[,3]
@@ -467,7 +474,7 @@ squeeze.mml2 <- function( v1 , rgvec ){
 					ll1 <- rowSums(ll1)
 					ll2 <- rowSums(ll2)
 					# aggregate with respect to estimation of a
-					a1 <- aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.c) , sum , na.rm=T)	
+					a1 <- stats::aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.c) , sum , na.rm=T)	
 					a1 <- a1[ a1[,1] > 0 ,]					
 					ll0 <- a1[,2]
 					ll1 <- a1[,3]
@@ -534,7 +541,7 @@ squeeze.mml2 <- function( v1 , rgvec ){
 					ll1 <- rowSums(ll1)
 					ll2 <- rowSums(ll2)
 					# aggregate with respect to estimation of a
-					a1 <- aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.d) , sum , na.rm=T)		
+					a1 <- stats::aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.d) , sum , na.rm=T)		
 					a1 <- a1[ a1[,1] > 0 ,]										
 					ll0 <- a1[,2]
 					ll1 <- a1[,3]
@@ -632,11 +639,11 @@ squeeze.mml2 <- function( v1 , rgvec ){
 							mean.trait , sd.trait , theta.k , h){	
 						ll0 <- sum( dat1.gg * log( rowSums( f.yi.qk.gg * outer( X1 , pi.k[,gg] ) ) ) )	
 						pi.k2 <- pi.k0
-						pi.k2[,gg] <- dnorm( theta.k , mean = mean.trait[gg]+h , sd = sd.trait[gg]  )	
+						pi.k2[,gg] <- stats::dnorm( theta.k , mean = mean.trait[gg]+h , sd = sd.trait[gg]  )	
 						pi.k2[,gg] <- pi.k2[,gg] / sum( pi.k2[,gg] )
 						ll1 <- sum( dat1.gg * log( rowSums( f.yi.qk.gg * outer( X1 , pi.k2[,gg] ) ) )) 									
 						pi.k2 <- pi.k0
-						pi.k2[,gg] <- dnorm( theta.k , mean = mean.trait[gg] -h, sd = sd.trait[gg]  )						
+						pi.k2[,gg] <- stats::dnorm( theta.k , mean = mean.trait[gg] -h, sd = sd.trait[gg]  )						
 						pi.k2[,gg] <- pi.k2[,gg] / sum( pi.k2[,gg] )
 						ll2 <- sum( dat1.gg * log( rowSums( f.yi.qk.gg * outer( X1 , pi.k2[,gg] ) ) ) )							
 						d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?
@@ -656,11 +663,11 @@ squeeze.mml2 <- function( v1 , rgvec ){
 							mean.trait , sd.trait , theta.k , h){	
 		ll0 <- sum( dat1.gg * log( rowSums( f.yi.qk.gg * outer( X1 , pi.k[,gg] ) ) ) )	
 		pi.k2 <- pi.k
-		pi.k2[,gg] <- dnorm( theta.k , mean = mean.trait[gg] , sd = sd.trait[gg] + h )	
+		pi.k2[,gg] <- stats::dnorm( theta.k , mean = mean.trait[gg] , sd = sd.trait[gg] + h )	
 		pi.k2[,gg] <- pi.k2[,gg] / sum( pi.k2[,gg] )
 		ll1 <- sum( dat1.gg * log( rowSums( f.yi.qk.gg * outer( X1 , pi.k2[,gg] ) ) ) )		
 		pi.k2 <- pi.k
-		pi.k2[,gg] <- dnorm( theta.k , mean = mean.trait[gg] , sd = sd.trait[gg] - h )	
+		pi.k2[,gg] <- stats::dnorm( theta.k , mean = mean.trait[gg] , sd = sd.trait[gg] - h )	
 		pi.k2[,gg] <- pi.k2[,gg] / sum( pi.k2[,gg] )
 		ll2 <- sum( dat1.gg * log( rowSums( f.yi.qk.gg * outer( X1 , pi.k2[,gg] ) ) ) )		
 		d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?

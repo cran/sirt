@@ -21,7 +21,7 @@ mcmc.list.descriptives <- function( mcmcobj , quantiles=c(.025,.05,.1,.50,.9,.95
             B <-  S1 / 2 * sum( ( est.chains - mean( est.chains ) )^2 ) 
             Rhat[ii] <- ( ( S1-1 ) / S1 * W + B / S1 ) / W
             # mode estimation   
-            m1 <- density( dat.vv , from = min(dat.vv) , to = max(dat.vv) )
+            m1 <- stats::density( dat.vv , from = min(dat.vv) , to = max(dat.vv) )
             MAP[ii] <- m1$x[ which( m1$y  == max( m1$y) ) ]         
                             }						
     res <- data.frame( "MAP" = MAP , "Rhat" = Rhat )
@@ -32,7 +32,7 @@ mcmc.list.descriptives <- function( mcmcobj , quantiles=c(.025,.05,.1,.50,.9,.95
 	# calculate effective sample size
 	effSize <- coda::effectiveSize( mcmcobj )	
 	statis <- summary.mcmcobj$statistics
-	statis <- cbind( statis[ , c(1,2) ] , apply( as.matrix(mcmcobj) , 2 , mad ) , 
+	statis <- cbind( statis[ , c(1,2) ] , apply( as.matrix(mcmcobj) , 2 , stats::mad ) , 
 				apply( as.matrix(mcmcobj) , 2 , skewness.sirt ) ,
 				statis[,c(3,4) ]	)
 	colnames(statis)[3:4] <- c("MAD" , "skewness" )

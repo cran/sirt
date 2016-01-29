@@ -4,7 +4,7 @@
 # Summary for isop object                         *
 summary.isop <- function( object , ... ){
 	cat("-----------------------------------------------------------------\n")
-		d1 <- packageDescription("sirt")
+		d1 <- utils::packageDescription("sirt")
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 		cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
     cat("ISOP and ADISOP Model \n")

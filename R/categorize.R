@@ -15,14 +15,14 @@ categorize <- function( dat , categorical=NULL , quant=NULL ,
 			# vv <- 1
 			var.vv <- categorical[vv]    
 			dat.vv <- dat[,var.vv]
-			vals.vv <- sort( unique( dat.vv ) )
+			vals.vv <- base::sort( unique( dat.vv ) )
 			dfr.vv <- data.frame( "index" = vv , "variable" = var.vv ,
 					"column" = which( colnames(dat) == var.vv ) ,
 					"orig" = vals.vv , 
 					"recode" = seq( lowest , length(vals.vv) -1 + lowest)
 								)      
-			dfr <- rbind( dfr, dfr.vv )
-			dat2[ , var.vv] <- match( dat[,var.vv] , vals.vv ) - 1 + lowest
+			dfr <- base::rbind( dfr, dfr.vv )
+			dat2[ , var.vv] <- base::match( dat[,var.vv] , vals.vv ) - 1 + lowest
 					}
 					}
 	#**************************
@@ -38,22 +38,22 @@ categorize <- function( dat , categorical=NULL , quant=NULL ,
 			# vv <- 1
 			vars.vv <- vars[vv]
 			q1 <- quant[ vars.vv ]
-			quant.vv <- quantile( dat[,vars.vv] , na.rm=TRUE , 
-						prob = seq( 0 , 1 , len=q1+1 )  )
+			quant.vv <- stats::quantile( dat[,vars.vv] , na.rm=TRUE , 
+						   prob = seq( 0 , 1 , len=q1+1 )  )
 			quant.vv[1] <- quant.vv[1] - 1
 			quant.vv[q1+1] <- quant.vv[q1+1] + 1		
-			quant.vv <- unique( quant.vv )
+			quant.vv <- base::unique( quant.vv )
 
-			m1 <- cut( dat[,vars.vv]  , breaks = quant.vv )
-			m2 <- sort( unique(m1) )
+			m1 <- base::cut( dat[,vars.vv]  , breaks = quant.vv )
+			m2 <- base::sort( unique(m1) )
 
 			dfr2.vv <- data.frame( "index" = vv , "variable" = vars.vv ,
 						"column" = which( colnames(dat) == vars.vv ) ,
 						"orig" = m2 , 
 						"recode" = seq( 0 , length(m2) -1 + lowest)
 									)  				
-			dfr2 <- rbind( dfr2 , dfr2.vv )							
-			dat2[ , vars.vv ] <- match( m1 , m2 ) - 1 + lowest		
+			dfr2 <- base::rbind( dfr2 , dfr2.vv )							
+			dat2[ , vars.vv ] <- base::match( m1 , m2 ) - 1 + lowest		
 				}
 
 						}

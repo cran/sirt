@@ -11,7 +11,7 @@ summary.noharm.sirt <- function( object , logfile=NULL , ...){
 	cat( paste( "-------------------------------------------------") , "\n" )	
 #	cat( paste( "NOHARM | '", class(object),"' | " , object$systime , sep="") , "\n" )	
 	cat( paste( "Function '", class(object),"' | " , object$systime , sep="") , "\n" )	
-	d <- packageDescription("sirt")
+	d <- utils::packageDescription("sirt")
 	cat(paste(d$Package," " , d$Version," (",d$Date,")",sep=""))
 	cat( paste( "\n-------------------------------------------------") , "\n\n" )	
 	#**********************

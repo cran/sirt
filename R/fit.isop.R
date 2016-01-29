@@ -41,7 +41,7 @@ fit.isop <- function( freq.correct , wgt , conv = .0001 ,
 		iter <- iter + 1
         if (progress){ 
 			cat( "Iteration" , iter , "- Deviation =" ,  round( deviation , 6 ) , "\n")
-			flush.console()			
+			utils::flush.console()			
 					}
                     }  # end algorithm					
     ###############################################

@@ -32,7 +32,7 @@
 #							dfr1 <- data.frame( "theta" = theta.k , "y" = 1 , "wgt" = rjk0[ii,] )
 #							dfr0 <- data.frame( "theta" = theta.k , "y" = 0 , "wgt" = njk0[ii,] - rjk0[ii,] )
 #							dafr <- data.frame( rbind( dfr0 , dfr1 ) )
-							if ( prbar[ii] == 1){ cat("~"); flush.console() }
+							if ( prbar[ii] == 1){ cat("~"); utils::flush.console() }
 #							theta <- dafr$theta.k
 #							wgt <- dafr$wgt
 #							y <- dafr$y
@@ -40,11 +40,11 @@
 							y <- rep( c(0,1) , each=LK)
 							wgt <- c( njk0[ii,] - rjk0[ii,] , rjk0[ii,]  )
 							ICC_ <- ICC_model_matrix[[ii]]
-							npmodel[[ii]] <- glm( y ~ 0 + ICC_ , weights = wgt , family="binomial" ,
+							npmodel[[ii]] <- stats::glm( y ~ 0 + ICC_ , weights = wgt , family="binomial" ,
 										control=list(maxit=4) )						
 #							npmodel[[ii]] <- glm( npformula[[ii]] , 
 #										data = dafr , weights = dafr$wgt , family="binomial")					
-							pjk[,ii] <- fitted( npmodel[[ii]] )[ seq( 1 , LK ) + LK ]
+							pjk[,ii] <- stats::fitted( npmodel[[ii]] )[ seq( 1 , LK ) + LK ]
 								}
 							cat("\n")		
 						}

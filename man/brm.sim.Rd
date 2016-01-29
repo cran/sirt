@@ -153,7 +153,7 @@ N <- 500        # number of persons
 I <- length(delta) # number of items
 
 set.seed(865)
-theta <- rnorm( N )
+theta <- stats::rnorm( N )
 dat <- brm.sim( theta=theta , delta=delta , tau=tau , K=K)
 psych::describe(dat)
 
@@ -166,7 +166,7 @@ Theta <- matrix( seq( -4 , 4, len=21) , ncol=1 )
 ii <- 1     # item ii=1
 b1 <- brm.irf( Theta=Theta , delta=delta[ii] , tau=tau[ii] ,  ncat=K )
 # plot item response functions
-matplot( Theta[,1] , b1 , type="l" )
+graphics::matplot( Theta[,1] , b1 , type="l" )
 
 #*** defining the beta item response function for estimation in mirt
 par <- c( 0 , 1 ,  1)
@@ -215,7 +215,7 @@ library(TAM)
 TP <- 21                   # number of theta points
 theta.k <- diag(TP)
 theta.vec <-  seq( -6 ,6 , len=TP)
-d1 <- dnorm(theta.vec)
+d1 <- stats::dnorm(theta.vec)
 d1 <- d1 / sum(d1)
 delta.designmatrix <- matrix( log(d1) , ncol=1 )
 delta.fixed <- cbind( 1 , 1 , 1 )

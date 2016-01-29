@@ -40,9 +40,7 @@ item intercepts (\code{nu}):
 %%  ~~ possibly secondary sources and usages ~~
 %% }
 
-\section{Example Index}{
-\code{\link{invariance.alignment}} (Example 1)
-}
+
 
 %%\examples{
 %%data(data.activity.itempars)

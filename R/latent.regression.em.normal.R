@@ -44,20 +44,20 @@ latent.regression.em.normal <- function( y, X , sig.e ,
 	# begin iterations
     while( ( parchange > max.parchange ) & ( iter < maxiter ) ){
 		# estimate latent regression model (linear model)
-        mod <- lm( EAP ~ 0 + X , weights = weights)
-        cmod <- coef(mod)
+        mod <- stats::lm( EAP ~ 0 + X , weights = weights)
+        cmod <- stats::coef(mod)
         # Calculation of SD
-        sigma <- sqrt( mean( weights* ( SE.EAP^2 + resid(mod)^2 ) ) )
+        sigma <- sqrt( mean( weights* ( SE.EAP^2 + stats::resid(mod)^2 ) ) )
 		# fitted values
-		fmod <- fitted(mod)
-		sigma.res <- sd(resid(mod))		
+		fmod <- stats::fitted(mod)
+		sigma.res <- stats::sd( stats::resid(mod) )		
 		prec <- 1 / SE.EAP.like^2 + 1 / sigma^2
 		EAP <- ( 1 / SE.EAP.like^2 * EAP.like  + 1/sigma^2 * fmod )/prec
 		SE.EAP  <- 1 / sqrt( prec )
         parchange <- max( abs(sigma - sig0) , abs( cmod - beta0) )
 		if (progress){ 
 			cat( paste("Iteration " , iter,": max parm. change " , round( parchange , 6 ) ,sep="") ,
-					 "\n") ; flush.console()
+					 "\n") ; utils::flush.console()
 					 }
         # parameter update
         sig0 <- sigma ; beta0 <- cmod ; iter <- iter + 1
@@ -86,17 +86,17 @@ latent.regression.em.normal <- function( y, X , sig.e ,
 	scoefs[, "se.simple"] <- sqrt( diag( vcov.simple) )
 	scoefs[, "se"] <- sqrt( diag( vcov.latent) )
 	# explained variance
-	explvar <- var( fmod )
+	explvar <- stats::var( fmod )
 	totalvar <- explvar + sigma^2
 	rsquared <- explvar / totalvar
-	scoefs$beta <- scoefs$est / sqrt( totalvar ) * apply( X , 2 , sd )
+	scoefs$beta <- scoefs$est / sqrt( totalvar ) * apply( X , 2 , stats::sd )
 	scoefs$fmi <- 1 -  scoefs$se.simple^2 / scoefs$se^2
 #	scoefs[,"N.simple" ] <- nrow(data)
 	scoefs[,"N.simple" ] <- nrow(X)	
 	
 	scoefs[,"pseudoN.latent"] <- sum( error.weights )  
     scoefs$t <- scoefs$est / scoefs$se
-    scoefs$p <- 2 * ( 1 - pnorm( abs( scoefs$t ) ) )
+    scoefs$p <- 2 * ( 1 - stats::pnorm( abs( scoefs$t ) ) )
     if ( ! is.null( colnames(X) ) ){ rownames(scoefs) <- colnames(X) } # use column names of X
 	if (progress){
 		cat("\nRegression Parameters\n\n")

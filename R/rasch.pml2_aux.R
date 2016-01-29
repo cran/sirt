@@ -66,8 +66,8 @@
     cor.Sigma <- ( t1 + eps.corr ) / ( 1 + t1 )
 	cor.Sigma[ cor.Sigma > 1 ] <- .99
 # cat("cor sigma") ; a1 <- Sys.time(); print(a1-a0) ; a0 <- a1		        	
-	pxi1 <- pnorm( xib1 )
-	pxi2 <- pnorm( xib2 )	
+	pxi1 <- stats::pnorm( xib1 )
+	pxi2 <- stats::pnorm( xib2 )	
 # cat("pnorm") ; a1 <- Sys.time(); print(a1-a0) ; a0 <- a1		        		
     itempairs$p1.item1 <- pxi1[ itempairs$item1 ]
     itempairs$p1.item2 <- pxi2[ itempairs$item2 ]
@@ -167,8 +167,8 @@
     cor.Sigma <- ( t1 + eps.corr ) / ( 1 + t1 )
 	cor.Sigma[ cor.Sigma > 1 ] <- .99
     
-	pxi1 <- pnorm( xib1 )
-	pxi2 <- pnorm( xib2 )	
+	pxi1 <- stats::pnorm( xib1 )
+	pxi2 <- stats::pnorm( xib2 )	
 	
     itempairs$p1.item1 <- pxi1[ itempairs$item1 ]
     itempairs$p1.item2 <- pxi2[ itempairs$item2 ]
@@ -247,8 +247,8 @@
     cor.Sigma <- ( t1 + eps.corr ) / ( 1 + t1 )
 	cor.Sigma[ cor.Sigma > 1 ] <- .99
     
-	pxi1 <- pnorm( xib1 )
-	pxi2 <- pnorm( xib2 )	
+	pxi1 <- stats::pnorm( xib1 )
+	pxi2 <- stats::pnorm( xib2 )	
 	
     itempairs$p1.item1 <- pxi1[ itempairs$item1 ]
     itempairs$p1.item2 <- pxi2[ itempairs$item2 ]

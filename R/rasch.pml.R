@@ -88,7 +88,7 @@ rasch.pml <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
     #*******
     # evaluate pairwise likelihood
 	if ( is.null(b.init)){ 
-		b <- b0 <- - qnorm( colMeans( dat0 , na.rm=T) )
+		b <- b0 <- - stats::qnorm( colMeans( dat0 , na.rm=T) )
      if ( sum( est.b != 	seq( 1 , ncol(dat) ))>0 ){
 		b <- 0*b
 				}
@@ -304,8 +304,8 @@ rasch.pml <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 						}
 		######################################
         # convergence display
-        a1 <- aggregate( b , list( est.b) , mean )
-        a1aa <- aggregate( a , list( est.a) , mean )		
+        a1 <- stats::aggregate( b , list( est.b) , mean )
+        a1aa <- stats::aggregate( a , list( est.a) , mean )		
 #        cat("   b parameters: " , paste( round( a1[,2] , 3 ) , collapse= " " ) , "\n" )
 #        cat("   a parameters: " , paste( round( a1aa[,2] , 3 ) , collapse= " " ) , "\n" )
 #		if ( D== 1){ 		
@@ -347,7 +347,7 @@ rasch.pml <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
 	item <- data.frame( "item" = colnames(dat0) , 
 				"N" = colSums(!is.na(dat0)) , 
 				"sumWeights" = colSums( ( !is.na(dat0)) * WM ) , 
-				"p" = colMeans( dat0 , na.rm=T ), 
+				"p" = colMeans( dat0 , na.rm=TRUE ), 
 				"b" = b , "est.b"= est.b , 
 				"a" = a , "est.a" = est.a )
 	if (D==1){ item$sigma <- sigma }							

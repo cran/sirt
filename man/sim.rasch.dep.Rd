@@ -71,7 +71,7 @@ set.seed(7654)
 I <- 11                             # number of items
 n <- 1500                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
-theta <- rnorm( n , sd = 1 )        # person abilities
+theta <- stats::rnorm( n , sd = 1 )        # person abilities
 # itemcluster
 itemcluster <- rep(0,I)
 itemcluster[ c(3,5)] <- 1
@@ -108,7 +108,7 @@ I <- 12                             # number of items
 n <- 450                            # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
 b <- sample(b)                      # sample item difficulties
-theta <- rnorm( n , sd = 1 )        # person abilities
+theta <- stats::rnorm( n , sd = 1 )        # person abilities
 # itemcluster
 itemcluster <- rep(0,I)
 itemcluster[ 1:4 ] <- 1

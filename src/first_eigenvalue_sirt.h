@@ -64,8 +64,8 @@ Rcpp::List firsteigenvalsirt(arma::mat X, int maxit, double conv, double K){
     ////////////////////////////////////
     // OUTPUT:
     return Rcpp::List::create(
-        _["u"]=z , 
-        _["lambda1"]=lambda_est 
+        Rcpp::_["u"]=z , 
+        Rcpp::_["lambda1"]=lambda_est 
                 ) ;
 }
 

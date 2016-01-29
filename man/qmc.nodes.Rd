@@ -5,7 +5,9 @@ Calculation of Quasi Monte Carlo Integration Points
 }
 \description{
 This function calculates integration nodes based on the multivariate
-standard normal distribution.
+normal distribution with zero mean vector and identity covariance
+matrix. See Pan and Thompson (2007) and Gonzales et al. (2006)
+for details.
 }
 \usage{
 qmc.nodes(snodes, ndim)
@@ -19,17 +21,19 @@ Number of integration nodes
 Number of dimensions
 }
 }
+
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
 %}
+
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
  \item{theta}{A matrix of integration points}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
 }
 \references{
+Gonzalez, J., Tuerlinckx, F., De Boeck, P., & Cools, R. (2006). 
+Numerical integration in logistic-normal models. 
+\emph{Computational Statistics & Data Analysis}, \bold{51}, 1535-1548.	
+	
 Pan, J., & Thompson, R. (2007). Quasi-Monte Carlo estimation in
 generalized linear mixed models. \emph{Computational Statistics &
 Data Analysis}, \bold{51}, 5765-5775.
@@ -37,6 +41,7 @@ Data Analysis}, \bold{51}, 5765-5775.
 \author{
 Alexander Robitzsch
 }
+
 \note{
 This function uses the
 \code{\link[sfsmisc:QUnif]{sfsmisc::QUnif}} function from
@@ -49,6 +54,7 @@ the \pkg{sfsmisc} package.
 %\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
+
 \examples{
 ## some toy examples
 

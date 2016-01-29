@@ -1,24 +1,25 @@
 
 
 
-
-##NS export(read.fwf2)    
 ############################################################################
 # This function reads fwf files                                            #
 read.fwf2 <- function( file , format , variables = NULL){
-    ff <- readLines( file )
-    ind.ff1 <- c( 1, cumsum(format)[- length(format) ] + 1 )
-    ind.ff2 <- cumsum(format)
+    ff <- base::readLines( file )
+    ind.ff1 <- c( 1, base::cumsum(format)[- length(format) ] + 1 )
+    ind.ff2 <- base::cumsum(format)
     I <- length(format)
     n <- length( ff )
     dfr <- data.frame( matrix(0 , nrow= n , ncol=I ) )
-    for (ii in 1:I){  dfr[,ii ] <- as.numeric( substring( ff , ind.ff1[ii] , ind.ff2[ii] )  ) }
-    if (!is.null(variables)){ colnames(dfr) <- variables }
+    for (ii in 1:I){  
+		dfr[,ii ] <- base::as.numeric( substring( ff , ind.ff1[ii] , ind.ff2[ii] )  ) 
+					}
+    if (!is.null(variables)){ 
+		colnames(dfr) <- variables 
+			}
     return(dfr)
     } 
 ############################################################################
 
-##NS # export(.write.format2)
 #----------------------------------------------------------------
 # utility function for formatting output in write.fwf2
 .write.format2 <- function( vec1 , ff , fr ){
@@ -40,10 +41,11 @@ read.fwf2 <- function( file , format , variables = NULL){
     }
 #---------------------------------------------------------------
 
-##NS export(write.fwf2)
 ##############################################################################
 write.fwf2 <- function( dat  , format.full , format.round , savename ){
-        if (is.null( colnames(dat) ) ){ colnames(dat) <- paste( "V" , 1:( ncol(dat) ) , sep="") }
+        if (is.null( colnames(dat) ) ){ 
+			colnames(dat) <- paste( "V" , 1:( ncol(dat) ) , sep="") 
+							}
         matr <- matrix( " " , nrow= nrow(dat) , ncol = ncol(dat) )
         ind1 <- which( format.round <= 0  )
         format.full[ ind1 ] <- format.full[ind1] 
@@ -53,14 +55,12 @@ write.fwf2 <- function( dat  , format.full , format.round , savename ){
             fff <- format.full[vv]
             matr[,vv] <- .write.format2( vec1 = dat[,vv] , ff = fff , fr = fvv )
                 }
-        matr <- apply( matr , 1 , FUN = function(ll){ paste( ll , 
+        matr <- base::apply( matr , 1 , FUN = function(ll){ paste( ll , 
 						collapse="" ) } )			
-#        write.table( matr , paste( savename , ".dat" , sep="") , 
-#						quote=F , row.names=F , col.names=F)
 		if ( is.vector(matr) ){
-        writeLines( matr , paste( savename , ".dat" , sep="") )
+			base::writeLines( matr , paste( savename , ".dat" , sep="") )
 					} else {
-        write.table( matr , paste( savename , ".dat" , sep="") , 
+			utils::write.table( matr , paste( savename , ".dat" , sep="") , 
 						row.names=F , col.names=F)
 						}
         dfr <- data.frame( "variable" = colnames(dat) , 
@@ -69,7 +69,7 @@ write.fwf2 <- function( dat  , format.full , format.round , savename ){
                     "end" = cumsum( format.full )  ,
                     "length" = format.full
                             )
-        write.table( dfr , paste( savename , "__LEGEND.txt",sep="") , 
+        utils::write.table( dfr , paste( savename , "__LEGEND.txt",sep="") , 
 				quote=FALSE , row.names=FALSE , col.names=TRUE)
 				
         return(dfr)

@@ -10,10 +10,10 @@ rasch.va <- function( dat , globconv=.001 , maxiter=1000){
 	dat2.resp <- 1 - is.na(dat) 
 	dat2[ dat2.resp==0 ] <- 0
 	# initial values
-	b <- - qlogis( colMeans( dat , na.rm=T ) )
+	b <- - stats::qlogis( colMeans( dat , na.rm=T ) )
 	sig2 <- 1
 	mu.i <- rep(0,N)
-	mu.i <- .8*qnorm( rowMeans( ( dat + .1 ) / 1.2 ) )
+	mu.i <- .8*stats::qnorm( rowMeans( ( dat + .1 ) / 1.2 ) )
 	sigma2.i <- rep( sig2 , N )
 	disp <- "...........................................................\n"	
 	iter <- 0
@@ -30,7 +30,7 @@ rasch.va <- function( dat , globconv=.001 , maxiter=1000){
 					2 * matrix( b , N , I , byrow=T ) * mu.i +  # 2nd term
 					mu.i^2 + sigma2.i             
 		xsi.ij <- sqrt( xsi.ij )             
-		lam.xsi.ij <- tanh( xsi.ij / 2 ) / ( 4*xsi.ij )
+		lam.xsi.ij <- base::tanh( xsi.ij / 2 ) / ( 4*xsi.ij )
 		# update beta
 		t1 <- colSums( 2 * lam.xsi.ij  * dat2.resp )
 		b <- colSums( - ( dat2 - .5 ) * dat2.resp + 2 * lam.xsi.ij * mu.i ) / t1
@@ -39,7 +39,8 @@ rasch.va <- function( dat , globconv=.001 , maxiter=1000){
 		# update sigma2.i
 		sigma2.i <- 1 / ( 2 * rowSums( lam.xsi.ij ) + 1 / sig2  )
 		# update mu.i
-		mu.i <- rowSums( ( dat2 - 1/2 + 2*lam.xsi.ij * matrix( b , N , I , byrow=T ) ) * dat2.resp  ) * sigma2.i
+		mu.i <- rowSums( ( dat2 - 1/2 + 2*lam.xsi.ij * matrix( b , N , I , byrow=TRUE ) ) 
+								* dat2.resp  ) * sigma2.i
 		# display progress
 		conv <- max( abs(b-b0))
 		iter <- iter+1
@@ -47,7 +48,7 @@ rasch.va <- function( dat , globconv=.001 , maxiter=1000){
 				paste( round(max(abs(b-b0)) ,6) , collapse=" " ) , "\n" , sep=""))
 		cat( paste( "    SD Trait = " , 
 				paste( round(sqrt(sig2) ,3) , collapse=" " ) , "\n" , sep=""))				
-		flush.console()		
+		utils::flush.console()		
     }
 	item <- data.frame("item"=colnames(dat) , "b"=b )
 	res <- list("sig" = sqrt(sig2) , 

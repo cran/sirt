@@ -7,9 +7,9 @@ summary.lsem.permutationTest <- function( object , file=NULL , digits=3 , ... ){
 	cat("-----------------------------------------------------------------\n")
 	cat("Permutation Test for Local Structural Equation Model \n\n")
 		
-    d1 <- packageDescription("sirt")
+    d1 <- utils::packageDescription("sirt")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , " | " )	
-    d1 <- packageDescription("lavaan")
+    d1 <- utils::packageDescription("lavaan")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
 		
 	

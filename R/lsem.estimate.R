@@ -5,13 +5,19 @@
 lsem.estimate <- function( data , moderator , moderator.grid ,
 		lavmodel , type="LSEM" , h = 1.1 , 
 		residualize=TRUE, fit_measures = c("rmsea","cfi","tli","gfi","srmr"),
+		standardized = FALSE , 
+		standardized_type = "std.all" ,
 		eps=1E-8 , verbose=TRUE , ... ){
 	
 	CALL <- match.call()
 	s1 <- Sys.time()	
 	
 	lavaan.args <- list(...)	
-	
+	if (standardized){
+		if ( type == "MGM"){
+			stop("standardized=TRUE cannot be applied for type='MGM'")
+						}
+				}
 	# group moderator if type="MGM"
 	out <- lsem.group.moderator( data , type , moderator.grid , moderator ,
 				residualize , h)
@@ -20,7 +26,7 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 	h <- out$h
 	residualize <- out$residualize
 	moderator.grid <- out$moderator.grid
-	
+
 	# residualize input data	
 	out <- lsem.residualize( data , moderator , moderator.grid ,
 				lavmodel , h , residualize , eps , verbose )		
@@ -30,7 +36,6 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
     data$index <- seq(1,nrow(data))	
 	residualized_interceps <- out$residualized_interceps
 	
-	
 	# unweighted fit of lavaan model
 	dat <- data
 	lavfit <- lavaan::sem(lavmodel, data=dat,  ... )
@@ -38,12 +43,19 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 	fit_measures <- intersect( fit_measures , names(fM) )
 	NF <- length(fit_measures)
 	pars <- lavaan::parameterEstimates(lavfit)
+ 	if (standardized){			
+		sol <- lavaan::standardizedSolution( lavfit , type=standardized_type)
+		colnames(sol)[ which( colnames(sol) == "est.std" ) ] <- "est"
+		sol$lhs <- paste0( "std__" , sol$lhs)
+		pars <- plyr::rbind.fill( pars , sol )	
+					} 
 	pars <- apply( pars[ , c("lhs" , "op" , "rhs" ) ] , 1 , FUN = function(ll){
 				paste0( ll[1] , ll[2] , ll[3] ) } )
-	
+				
 	# fit LSEM for all moderator groups
 	out2 <- lsem.fitsem( dat , weights , lavfit ,
-			  fit_measures , NF , G , moderator.grid , verbose , pars )	
+			  fit_measures , NF , G , moderator.grid , verbose , pars ,
+			  standardized )	
 	parameters <- out2$parameters
 	# fits <- out2$fits
 			
@@ -61,7 +73,7 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 	obji$wgt <- obji$wgt
 	obji$Neff <- obji$Neff
 	dfr <- data.frame( "M" = colMeans( obji0[,-1] ) , 
-			"SD"= apply( obji0[,-1] , 2 , sd ) ,
+			"SD"= apply( obji0[,-1] , 2 , stats::sd ) ,
 			"min" = apply( obji0[,-1] , 2 , min ) ,
 			"max" = apply( obji0[,-1] , 2 , max ) 
 					)		
@@ -90,6 +102,8 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 				 "data"=data , "residualized.intercepts" = residualized_interceps , 
 				 "lavaan.args"=lavaan.args ,
 				 "fit_measures"=fit_measures , "s1"=s1 , "s2"=s2 ,
+				 "standardized" = standardized , 
+				 "standardized_type" = standardized_type , 
 				 "type"=type , "CALL" = CALL )	
 	class(res) <- "lsem"	
 	return(res)	

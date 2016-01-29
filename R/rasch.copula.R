@@ -94,7 +94,7 @@ rasch.copula <- function( dat , itemcluster , group = NULL ,
 	dat2[ is.na(dat2) ] <- 0
 		# data preparation in case of item clusters
 		dat2.ld <- NULL		# dat2.ld is NULL if there are no item clusters
-			if ( is.null(delta)){ delta <- runif( CC , .2 , .8 ) }	# initial estimate of delta
+			if ( is.null(delta)){ delta <- stats::runif( CC , .2 , .8 ) }	# initial estimate of delta
 			if ( is.null(est.delta)){ est.delta <- 1:CC }
 			dp.ld <- as.list( 1:CC )
 			# item pattern
@@ -160,17 +160,17 @@ rasch.copula <- function( dat , itemcluster , group = NULL ,
 	#--------------------------------------------------
 	# initial estimate of item difficulty
 #	b <- rasch.pairwise( dat , progress = FALSE)$item$itemdiff
-	b <- - qlogis( ( colMeans( dat00 , na.rm=T ) + .005 ) / 1.01 )
+	b <- - stats::qlogis( ( colMeans( dat00 , na.rm=T ) + .005 ) / 1.01 )
 	I <- ncol(dat2)
 	# initial estimate of (mean) item discrimination
 	a <- rep( 1 , I )
 	# density weights
-	wgt.theta <- dnorm(theta.k)
+	wgt.theta <- stats::dnorm(theta.k)
 	wgt.theta <- wgt.theta / sum( wgt.theta )
     if ( G > 1){
 		wgt.theta <- matrix(0 , length(theta.k) , G )
 		for ( gg in 1:G){
-			wgt.theta[,gg] <- dnorm( theta.k , mean = mu[gg] , sd = sigma[gg] )
+			wgt.theta[,gg] <- stats::dnorm( theta.k , mean = mu[gg] , sd = sigma[gg] )
 			wgt.theta[,gg] <- wgt.theta[,gg] / sum( wgt.theta[,gg] )			
 						}
 				}
@@ -390,7 +390,7 @@ rasch.copula <- function( dat , itemcluster , group = NULL ,
 			ll0 <- rescop$ll
 			# mu + h		
 			w1 <- wgt.theta
-			w2 <- dnorm( theta.k , mean = mu[gg] + h , sd = sigma[gg] )
+			w2 <- stats::dnorm( theta.k , mean = mu[gg] + h , sd = sigma[gg] )
 			w1[,gg] <- w2 / sum(w2)
 			rescop <- .ll.rasch.copula2( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
 							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , 
@@ -414,7 +414,7 @@ rasch.copula <- function( dat , itemcluster , group = NULL ,
 			mu.change <- ifelse( abs( mu.change ) > .3 , .3*sign(mu.change) , mu.change )      		
 			mu.change <- mu.change * ( ( 1:G ) == gg )
 			mu <- mu + mu.change
-			w2 <- dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] )
+			w2 <- stats::dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] )
 			wgt.theta[,gg] <- w2 / sum(w2)
 #			cat( aa , " ") ; 
 			cat( paste( rep( "-" , prbar[gg-1]), collapse="") )
@@ -454,7 +454,7 @@ rasch.copula <- function( dat , itemcluster , group = NULL ,
 			ll1 <- rescop$ll
 			# sigma - h		
 			w1 <- wgt.theta
-			w2 <- dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg]-h )
+			w2 <- stats::dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg]-h )
 			w1[,gg] <- w2 / sum(w2)
 			rescop <- .ll.rasch.copula2( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
 							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , 
@@ -469,7 +469,7 @@ rasch.copula <- function( dat , itemcluster , group = NULL ,
 			sigma.change <- ifelse( abs( sigma.change ) > .3 , .3*sign(sigma.change) , sigma.change )      		
 			sigma.change <- sigma.change * ( ( 1:G ) == gg )
 			sigma <- sigma + sigma.change
-			w2 <- dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] )
+			w2 <- stats::dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] )
 			wgt.theta[,gg] <- w2 / sum(w2)
 #			cat( aa , " ") ; 
 			cat( paste( rep( "-" , prbar[gg-1]), collapse="") )
@@ -485,9 +485,9 @@ rasch.copula <- function( dat , itemcluster , group = NULL ,
 		
 		#**********************************************************************************
 		# convergence display 
-		a1 <- aggregate( b , list( est.b) , mean )
+		a1 <- stats::aggregate( b , list( est.b) , mean )
 		cat("   b parameters: " , paste( round( a1[,2] , 3 ) , collapse= " " ) , "\n" )
-		a1 <- aggregate( a , list( est.a) , mean )
+		a1 <- stats::aggregate( a , list( est.a) , mean )
 		cat("   a parameters: " , paste( round( a1[,2] , 3 ) , collapse= " " ) , "\n" )
 		cat("   delta parameters: " , paste( round( delta , 3 ) , collapse= " " ) , "\n" )
 		cat("   alpha parameters: " , paste( round( c(alpha1 , alpha2) , 3 ) , collapse= " " ) , "\n" )		

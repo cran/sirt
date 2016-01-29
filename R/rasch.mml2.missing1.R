@@ -2,11 +2,11 @@
 ####################################################################
 # calculation of probabilities in the missing data IRT model
 .calcprob.missing1 <- function( theta.k , b , beta , delta.miss , pjk ){	
-	M1 <- t(plogis( outer( theta.k[,1] , b , "-" ) ))
+	M1 <- t( stats::plogis( outer( theta.k[,1] , b , "-" ) ))
 	# probability of a response for incorrect item responses
-	M2a <- t(plogis( outer( theta.k[,2] , beta , "-" ) ))
+	M2a <- t( stats::plogis( outer( theta.k[,2] , beta , "-" ) ))
 	# probability of a response for correct item responses
-	M2b <- t(plogis( outer( theta.k[,2] , beta + delta.miss , "-" ) ))
+	M2b <- t( stats::plogis( outer( theta.k[,2] , beta + delta.miss , "-" ) ))
 	pjk[,1,] <- 1 - M1
 	pjk[,2,] <- M1
 	# compute joint probability (R,Y)
@@ -71,9 +71,9 @@
     ll0 <- rowSums( an.ik * log(pjk+eps) )
     ll1 <- rowSums( an.ik * log(pjk1+eps) )
     ll2 <- rowSums( an.ik * log(pjk2+eps) )
-    ll0 <- aggregate( ll0 , list(diffindex) , sum )[,2]
-    ll1 <- aggregate( ll1 , list(diffindex) , sum )[,2]
-    ll2 <- aggregate( ll2 , list(diffindex) , sum )[,2]
+    ll0 <- stats::aggregate( ll0 , list(diffindex) , sum )[,2]
+    ll1 <- stats::aggregate( ll1 , list(diffindex) , sum )[,2]
+    ll2 <- stats::aggregate( ll2 , list(diffindex) , sum )[,2]
     d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?
     # second order derivative
     # f(x+h)+f(x-h) = 2*f(x) + f''(x)*h^2

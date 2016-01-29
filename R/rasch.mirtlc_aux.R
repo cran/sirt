@@ -1,7 +1,4 @@
 
-
-
-
 #*************************************************************************************
 # E Step Multidimensional Latent Class Rasch Model                                 #
 .e.step.mirtlc.mlc1 <- function( dat1 , dat2 , dat2.resp , pi.k , pjk , I , 
@@ -18,7 +15,7 @@
 			thetaPred <- theta.k %*% t(Qmatrix )
 			bPred <- matrix( b , nrow=nrow(theta.k) , ncol= I , byrow=TRUE)
 			aPred <- matrix( a , nrow=nrow(theta.k) , ncol= I , byrow=TRUE)
-			pjk <- plogis( aPred*(thetaPred - bPred ) )
+			pjk <- stats::plogis( aPred*(thetaPred - bPred ) )
 				}
 #		pjkL <- array( NA , dim=c(2 , nrow(pjk) , ncol(pjk) ) )
 #		pjkL[1,,] <- 1 - pjk
@@ -196,7 +193,7 @@
 			des.theta <- des.theta * outer( des1[,1] , rep(1,ncol(des.theta) ) )
 			des.b <- des.b * outer( des1[,1] , rep(1,ncol(des.b) ) )
 								}
-    		mod2 <- glm( y ~ 0 + des.theta + des.b  , weights = wgt , family ="binomial" ,
+    		mod2 <- stats::glm( y ~ 0 + des.theta + des.b  , weights = wgt , family ="binomial" ,
 				control=list(maxit=mstep.maxit ) )
 		if (D==1){ 
 			theta.k <- coef(mod2)[ 1:Nclasses ]	# theta
@@ -228,7 +225,7 @@
 			theta.offset <- des1[,1] * theta.offset
 			des.b <- des.b * outer( des1[,1] , rep(1,ncol(des.b) ) )
 								}
-		mod2 <- glm( y ~ 0 + offset(theta.offset) + des.b  , weights = wgt , family ="binomial" ,
+		mod2 <- stats::glm( y ~ 0 + offset(theta.offset) + des.b  , weights = wgt , family ="binomial" ,
 				control=list(maxit=mstep.maxit ) )
 		b0 <- coef(mod2)
 		b[ setdiff( 1:I , ref.item ) ] <- b0	
@@ -239,7 +236,7 @@
 				pik1 <-	pi.k[,gg]
 				m1 <- sum( theta.k * pik1 )
 				sd1 <- sqrt( sum( theta.k^2 * pik1 ) - m1^2 )
-				pik2 <- dnorm( theta.k , mean=m1 , sd = sd1 )
+				pik2 <- stats::dnorm( theta.k , mean=m1 , sd = sd1 )
 				pi.k[,gg] <- pik2 / sum(pik2)
 							}
 						}
@@ -261,7 +258,7 @@
 				if ( distribution.trait=="smooth4"){ 
 						formula1 <- lpik1 ~ tk + I(tk^2) + I(tk^3) + I(tk^4)
 										}
-				mod <- lm( formula1 , weights = pik1 )
+				mod <- stats::lm( formula1 , weights = pik1 )
 				pik2 <- exp( fitted(mod))
 				pi.k[,gg] <- pik2 / sum(pik2)
 							}
@@ -349,7 +346,7 @@
 					ll1 <- rowSums(ll1)
 					ll2 <- rowSums(ll2)
 					# aggregate with respect to estimation of a
-					a1 <- aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.a) , sum , na.rm=T)	
+					a1 <- stats::aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.a) , sum , na.rm=T)	
 					a1 <- a1[ a1[,1] > 0 , ]					
 					ll0 <- a1[,2]
 					ll1 <- a1[,3]

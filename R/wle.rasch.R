@@ -40,7 +40,7 @@ wle.rasch <- function( dat , dat.resp = NULL , b , # a = 1 + 0*b , c = 0*b ,
 	old_increment <- rep( 5 , length(theta))
     while( ( max(abs( theta.change )) > conv ) & ( iter < maxit ) ){
         # calculate P and Q
-        p.ia <- plogis( outer( theta , b , "-" ) ) 
+        p.ia <- stats::plogis( outer( theta , b , "-" ) ) 
 #		p.ia <- plogis( theta , matrix( b , nrow=length(theta) , length(b) , byrow=T ) )
 		q.ia <- 1 - p.ia
         # Log Likelihood (for every subject)
@@ -76,7 +76,7 @@ wle.rasch <- function( dat , dat.resp = NULL , b , # a = 1 + 0*b , c = 0*b ,
 	   res <- list( "theta" = theta  , "se.theta" = 1 / sqrt( abs( f1.obj ) ) ,
 				"dat.resp" = dat.resp ,	"p.ia" = p.ia )
 	   #*** compute WLE reliability				
-	   v1 <- var(res$theta)
+	   v1 <- stats::var(res$theta)
 	   v2 <- mean(res$se.theta^2 )
 	   wle.rel <- ( v1 - v2 ) / v1
 	   cat("WLE Reliability =" , round(wle.rel,3) , "\n")
@@ -164,7 +164,8 @@ wle.rasch.jackknife <- function( dat , b , itemweights = 1+0*b , pid = NULL ,
 								}                    
                     wlevarstrata[,ss] <- fcs * (N.wlejack -1 )/ N.wlejack  * i1
                     sk <- sk+1
-                    cat(paste(sk , ".",sep="")) ; flush.console() ; if( sk %% 10 == 0 | sk == S ){ cat("\n") }
+                    cat(paste(sk , ".",sep="")) ; 
+					utils::flush.console() ; if( sk %% 10 == 0 | sk == S ){ cat("\n") }
                         }   # end loop strata
             jack.se <- sqrt( rowSums(wlevarstrata )   )
             jackunits <- NA
@@ -186,7 +187,8 @@ wle.rasch.jackknife <- function( dat , b , itemweights = 1+0*b , pid = NULL ,
                                             theta = wle$theta  )$theta
                     testletcount <- testletcount + ( rowSums( wle$dat.resp[ , testlet == testlets[ii] ] ) > 0 )
                     testlet.ind[,ii] <- ( rowSums( wle$dat.resp[ , testlet == testlets[ii] ] ) > 0 )
-                    cat(paste(ii , ".",sep="")) ; flush.console() ; if( ii %% 10 == 0 | ii == I ){ cat("\n") }
+                    cat(paste(ii , ".",sep="")) ; 
+					utils::flush.console() ; if( ii %% 10 == 0 | ii == I ){ cat("\n") }
                             }
                 # number of Jackknife units
                 jackunits <- testletcount
@@ -208,7 +210,8 @@ wle.rasch.jackknife <- function( dat , b , itemweights = 1+0*b , pid = NULL ,
                 # ii <- 1
                 wlejack[,ii] <- wle.rasch( dat=dat[ , -ii ] , b = b[-ii] , itemweights = itemweights[-ii] ,  
                             theta = wle$theta  )$theta
-                cat(paste(ii , ".",sep="")) ; flush.console() ; if( ii %% 10 == 0 | ii == I ){ cat("\n") }
+                cat(paste(ii , ".",sep="")) ; 
+				utils::flush.console() ; if( ii %% 10 == 0 | ii == I ){ cat("\n") }
                         }
 			# estimate WLE bias
 			dfr <- data.frame( "wle" = wle$theta )
@@ -225,7 +228,7 @@ wle.rasch.jackknife <- function( dat , b , itemweights = 1+0*b , pid = NULL ,
                             }   # end simple random sampling
 		#*********************************
 		# calculate and print reliability
-		v1 <- var(wle$theta)
+		v1 <- stats::var(wle$theta)
 		v2 <- mean( jack.se^2	)
 		wle.rel <- 	( v1 - v2 ) / v1
 		cat("WLE Reliability =" , round(wle.rel,3) , "\n")

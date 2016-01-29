@@ -7,7 +7,7 @@
 	TP <- length(theta)
 	I <- length(b)
 	# calculate probabilities
-	prob <- plogis( theta + matrix( b , nrow=TP , ncol=I, byrow=TRUE) )
+	prob <- stats::plogis( theta + matrix( b , nrow=TP , ncol=I, byrow=TRUE) )
 	# calculate log-likelihood
 	ll <- freq.correct*wgt*log( prob + eps) + (1-freq.correct)*wgt*log( 1-prob+eps )	
 	res <- ll

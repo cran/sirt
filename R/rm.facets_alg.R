@@ -168,9 +168,9 @@ sumtau <- function(tau.item){
 						}
 		conv1 <- max( abs( a.item - a.item0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()
+		cat("-") 
 			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()	
+	cat(" " , it , "Step(s) \n")	
     res <- list("a.item" = a.item , "se.a.item" = sqrt( abs(-1/res$d2 )) , 
 			"ll" = sum(res$ll0) )
     return(res)
@@ -226,12 +226,12 @@ zz0 <- sirtcat( "  *** tau.item for one k and one iteration   " , zz0 , active )
 					
 		conv1 <- max( abs( tau.item - tau.item0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()
+		cat("-") 
 		if (!is.null(tau.item.fixed)){
 			tau.item[ tau.item.fixed[,1:2,drop=FALSE] ] <- tau.item.fixed[,3]
 								}
 			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()
+	cat(" " , it , "Step(s) \n")	
 	res <- list("tau.item" = tau.item , "se.tau.item" = se.tau.item , 
 			"ll" = sum(res$ll0) )
     return(res)
@@ -276,7 +276,7 @@ zz0 <- sirtcat( "  *** tau.item for one k and one iteration   " , zz0 , active )
 #		max.b.increment <- abs( b.rater - b0 )
 		conv1 <- max( abs( b.rater - b0 ) )
 		it <- it+1
-		cat("-")  #; flush.console()
+		cat("-")  
 			}
 	cat(" " , it , "Step(s) \n")	
     res <- list("b.rater" = b.rater , "se.b.rater" = sqrt( abs(-1/res$d2 ) ) , 
@@ -322,9 +322,9 @@ zz0 <- sirtcat( "  *** tau.item for one k and one iteration   " , zz0 , active )
 							}
 		conv1 <- max( abs( a.rater - a.rater0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()
+		cat("-") 
 			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()	
+	cat(" " , it , "Step(s) \n")	
     res <- list("a.rater" = a.rater , "se.a.rater" = sqrt( abs(-1/res$d2 )) , 
 			"ll" = sum(res$ll0) )
     return(res)
@@ -340,9 +340,9 @@ zz0 <- sirtcat( "  *** tau.item for one k and one iteration   " , zz0 , active )
     ll0 <- rowSums( an.ik * log(pjk+eps) )
     ll1 <- rowSums( an.ik * log(pjk1+eps) )
     ll2 <- rowSums( an.ik * log(pjk2+eps) )
-    ll0 <- aggregate( ll0 , list(diffindex) , sum )[,2]
-    ll1 <- aggregate( ll1 , list(diffindex) , sum )[,2]
-    ll2 <- aggregate( ll2 , list(diffindex) , sum )[,2]
+    ll0 <- stats::aggregate( ll0 , list(diffindex) , sum )[,2]
+    ll1 <- stats::aggregate( ll1 , list(diffindex) , sum )[,2]
+    ll2 <- stats::aggregate( ll2 , list(diffindex) , sum )[,2]
     d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?
     # second order derivative
     # f(x+h)+f(x-h) = 2*f(x) + f''(x)*h^2

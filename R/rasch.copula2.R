@@ -122,7 +122,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 		# data preparation in case of item clusters
 		dat2.ld <- NULL		# dat2.ld is NULL if there are no item clusters
 			if ( is.null(delta)){ 
-					delta <- runif( CC , .3 , .7 ) 
+					delta <- stats::runif( CC , .3 , .7 ) 
 					delta <- ifelse( copula.type == "frank" , 1.3 , delta )
 #					delta <- ifelse( copula.type == "cook.johnson" , 1 , delta )										
 							}	# initial estimate of delta
@@ -225,17 +225,17 @@ rasch.copula2 <- function( dat , itemcluster ,
 #	b <- rasch.pairwise( dat , progress = FALSE)$item$itemdiff
 	I <- ncol(dat2)
 	if ( is.null( b.init) ){
-		b <- - qlogis( ( colMeans( dat00 , na.rm=T ) + .005 ) / 1.01 )
+		b <- - stats::qlogis( ( colMeans( dat00 , na.rm=T ) + .005 ) / 1.01 )
 				} else { b <- b.init }
 	# initial estimate of (mean) item discrimination
 	if ( is.null(a.init) ){ a <- rep( 1 , I ) } else { a <- a.init }
 	# density weights
-	wgt.theta <- dnorm(theta.k)
+	wgt.theta <- stats::dnorm(theta.k)
 	wgt.theta <- wgt.theta / sum( wgt.theta )
     if ( G > 1){
 		wgt.theta <- matrix(0 , length(theta.k) , G )
 		for ( gg in 1:G){
-			wgt.theta[,gg] <- dnorm( theta.k , mean = mu[gg] , sd = sigma[gg] )
+			wgt.theta[,gg] <- stats::dnorm( theta.k , mean = mu[gg] , sd = sigma[gg] )
 			wgt.theta[,gg] <- wgt.theta[,gg] / sum( wgt.theta[,gg] )			
 						}
 				}
@@ -325,7 +325,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 					ll1[itemcluster1[jj]] <- sum( rjkCC[[cc]] * log( rest1$pjk.theta.kCC[[cc]] ) )
 					ll2[itemcluster1[jj]] <- sum( rjkCC[[cc]] * log( rest2$pjk.theta.kCC[[cc]] ) )			
 								}
-			a1 <- aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.b) , sum , na.rm=TRUE)					
+			a1 <- stats::aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.b) , sum , na.rm=TRUE)					
 			ll0 <- a1[,2]
 			ll1 <- a1[,3]
 			ll2 <- a1[,4]			
@@ -433,7 +433,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 					ll1[cc] <- sum( rjkCC[[cc]] * log( rest1$pjk.theta.kCC[[cc]] ) )
 					ll2[cc] <- sum( rjkCC[[cc]] * log( rest2$pjk.theta.kCC[[cc]] ) )				
 								}
-			a1 <- aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.delta) , sum , na.rm=T)				
+			a1 <- stats::aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.delta) , sum , na.rm=T)				
 			ll0 <- a1[,2]
 			ll1 <- a1[,3]
 			ll2 <- a1[,4]		
@@ -540,7 +540,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 			ll0 <- rescop$ll
 			# mu + h		
 			w1 <- wgt.theta
-			w2 <- dnorm( theta.k , mean = mu[gg] + h , sd = sigma[gg] )
+			w2 <- stats::dnorm( theta.k , mean = mu[gg] + h , sd = sigma[gg] )
 			w1[,gg] <- w2 / sum(w2)
 			rescop <- .ll.rasch.copula20( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
 							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , 
@@ -549,7 +549,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 			ll1 <- rescop$ll
 			# mu - h		
 			w1 <- wgt.theta
-			w2 <- dnorm( theta.k , mean = mu[gg] - h , sd = sigma[gg] )
+			w2 <- stats::dnorm( theta.k , mean = mu[gg] - h , sd = sigma[gg] )
 			w1[,gg] <- w2 / sum(w2)
 			rescop <- .ll.rasch.copula20( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
 							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , 
@@ -564,7 +564,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 			mu.change <- ifelse( abs( mu.change ) > .3 , .3*sign(mu.change) , mu.change )      		
 			mu.change <- mu.change * ( ( 1:G ) == gg )
 			mu <- mu + mu.change
-			w2 <- dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] )
+			w2 <- stats::dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] )
 			wgt.theta[,gg] <- w2 / sum(w2)
 			cat( paste( rep( "-" , prbar[gg-1]), collapse="") )
 			flush.console()
@@ -594,7 +594,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 			ll0 <- rescop$ll
 			# sigma + h		
 			w1 <- wgt.theta
-			w2 <- dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] +h)
+			w2 <- stats::dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] +h)
 			w1[,gg] <- w2 / sum(w2)
 			rescop <- .ll.rasch.copula20( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
 							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , 
@@ -603,7 +603,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 			ll1 <- rescop$ll
 			# sigma - h		
 			w1 <- wgt.theta
-			w2 <- dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg]-h )
+			w2 <- stats::dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg]-h )
 			w1[,gg] <- w2 / sum(w2)
 			rescop <- .ll.rasch.copula20( theta.k , b , alpha1 , alpha2 , a , dat2.li , itemcluster0 , 
 							CC , dp.ld , dat2.ld , dat3.ld , dat2.ld.resp , dat2.li.resp , delta , 
@@ -618,7 +618,7 @@ rasch.copula2 <- function( dat , itemcluster ,
 			sigma.change <- ifelse( abs( sigma.change ) > .3 , .3*sign(sigma.change) , sigma.change )      		
 			sigma.change <- sigma.change * ( ( 1:G ) == gg )
 			sigma <- sigma + sigma.change
-			w2 <- dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] )
+			w2 <- stats::dnorm( theta.k , mean = mu[gg]  , sd = sigma[gg] )
 			wgt.theta[,gg] <- w2 / sum(w2)
 #			cat( aa , " ") ; 
 			cat( paste( rep( "-" , prbar[gg-1]), collapse="") )

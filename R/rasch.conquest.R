@@ -28,7 +28,7 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
             cat("Marginal Maximum Likelihood Estimation \n")
             cat("Estimation of the Rasch Model in ConQuest\n")
             cat("---------------------------------------------------------------------------------------------------------- \n")
-            flush.console()
+            utils::flush.console()
                 }
         # shQuote() for path.conquest
         path.conquest <- shQuote( path.conquest )
@@ -47,7 +47,7 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
         # initial warnings (no responses on some items)
         if ( length(items.elim) > 0 & is.null(constraints) ){ 
                     cat( "\nSome items have been removed because they have no responses!\n" ) 
-                    flush.console()
+                    utils::flush.console()
                     dat <- dat[ , - items.elim ]
                     }
         # data preparation (eliminate persons)
@@ -57,7 +57,7 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 			persons.elim <- which( rowSums( 1 - is.na(dat) ) == 0 )        
 			if ( length(persons.elim) > 0 ){ 
 						cat( "\nSome persons have been removed because they have no responses!\n" ) 
-						flush.console()
+						utils::flush.console()
 						dat <- dat[ - persons.elim ,  ]
 						pid <- pid[ - persons.elim ]
 						wgt <- wgt[ - persons.elim ]
@@ -73,9 +73,9 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
         h1 <- gsub( "rasch" , name , h1 )
         f1 <- getwd()
         h1 <- intersect( list.files( f1 ) , h1 )
-        file.remove(h1 )  
+        base::file.remove(h1 )  
         # generate label file for ConQuest
-        writeLines( c( "===> item" , paste( 1:I , colnames(dat) ) ) , 
+        base::writeLines( c( "===> item" , paste( 1:I , colnames(dat) ) ) , 
                         paste( name ,".nam" ,sep="") )
 
 										
@@ -84,7 +84,7 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
             constraints$itemnr <- match( constraints[,1] , colnames(dat) )
             constraints <- constraints[ order( constraints$itemnr) , ]                       
             c1 <- paste( constraints[,3] ,  constraints[,2] ,       paste(  " /* " , constraints[,1] , "*/" ) )
-            write.table( c1  ,  paste(  name ,".constrpar" ,sep="") , quote=F , row.names=F , col.names=F )
+            utils::write.table( c1  ,  paste(  name ,".constrpar" ,sep="") , quote=F , row.names=F , col.names=F )
                     }											
         # extract decimals for person ID
         PP <- round( max( floor( log(  pid , 10 ) + 1 ) ) )
@@ -127,11 +127,11 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 										
         # input designmatrix
         if ( ! is.null(designmatrix) ){        
-            write.table( designmatrix , paste( name , ".des" , sep="") , col.names=F , row.names=F , quote=F )
+            utils::write.table( designmatrix , paste( name , ".des" , sep="") , col.names=F , row.names=F , quote=F )
             desformat <- readLines(  paste( name , ".des" , sep="")  )    
             desformat <- gsub( "0" , "-0" , desformat )
             desformat <- c( ncol(designmatrix) , desformat )
-            writeLines( desformat , paste( name , ".des" , sep="") )         
+            base::writeLines( desformat , paste( name , ".des" , sep="") )         
                                     }
         # regression statement
         if (is.null(X)){ regrstate <- "" } else { 
@@ -207,10 +207,10 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
                 ifelse(!only.calibration , "itanal >> %name%.itn;","") ,
                 "quit;"               )	
         # write ConQuest syntax
-        writeLines( cqc , paste( name , ".cqc" , sep="") )
+        base::writeLines( cqc , paste( name , ".cqc" , sep="") )
         # write bat file
 		if ( save.bat ){ 
-			writeLines( paste( path.conquest , "\\" , conquest.name , " " ,  
+			base::writeLines( paste( path.conquest , "\\" , conquest.name , " " ,  
 					paste( name , ".cqc" , sep="") , sep = "") , "analysis.bat" )
 						}
         if ( onlysyntax ){ 
@@ -221,9 +221,9 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
         # link to conquest console
 		if ( use.bat ){
 #			system( "analysis.bat" , show.output.on.console = show.conquestoutput , invisible = FALSE )
-			system( "analysis.bat"  )			
+			base::system( "analysis.bat"  )			
 					} else {
-        system(paste(path.conquest,"\\" , conquest.name , ".exe ", name,".cqc",sep=""),
+        base::system(paste(path.conquest,"\\" , conquest.name , ".exe ", name,".cqc",sep=""),
 					show.output.on.console = show.conquestoutput , invisible = FALSE)
 							}
 							
@@ -235,7 +235,7 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 		if (read.output){ 					
 			if ( ( ! only.calibration ) & est.wle  ){
 				# read WLEs and add pid
-				wle <- read.table( paste( name , ".wle" , sep="")  )		
+				wle <- utils::read.table( paste( name , ".wle" , sep="")  )		
 				v1 <- c("score" , "max" , "wle" , "se.wle" )
 				if (DD > 1 ){ 
 					v1 <- rep( v1 , each = DD )
@@ -253,7 +253,7 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 						} else { wle <- NA }
 												
 			# read shw file
-			shw <- readLines( paste( name , ".shw" , sep="") )
+			shw <- base::readLines( paste( name , ".shw" , sep="") )
 			deviance <- as.numeric( substring( shw[ grep( "Final Deviance:" , shw ) ]  , 17 ) )
 			numbiter <- as.numeric( substring( shw[ grep( "The number of iterations:" , shw ) ]  , 26 ) )
 			ind1 <- grep("TERM 1: item" , shw ) + 6
@@ -261,7 +261,7 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 						
 			# extract trait mean and trait variance
 #			m3 <- read.table( paste( name , ".regr" , sep="") , header=F)
-			m3 <- read.table( paste( name , ".regr" , sep="") )			
+			m3 <- utils::read.table( paste( name , ".regr" , sep="") )			
 			mean.trait <- m3[ 1, 3]
 			trait.variance <- as.numeric( substring( shw[ grep( "Variance " , shw ) ] , 25 ) )
 			wle.rel <-  as.numeric( substring( shw[ grep( " WLE Person separation RELIABILITY:" , shw ) ] , 37 ) )
@@ -290,24 +290,24 @@ rasch.conquest <- function( dat , path.conquest , conquest.name = "console" ,
 			reliability <- NULL
 			if ( ! only.calibration & DD==1){ 
 				# WLE reliability
-				reliability$wle.reliability <- 1 - mean( wle$se.wle^2 ) / var( wle$wle )
+				reliability$wle.reliability <- 1 - mean( wle$se.wle^2 ) / stats::var( wle$wle )
 				# EAP reliability
-				reliability$eap.reliability <- 1 - mean( wle$se.eap^2 ) / ( var( wle$eap ) +  mean( wle$se.eap^2 ) )		
+				reliability$eap.reliability <- 1 - mean( wle$se.eap^2 ) / ( stats::var( wle$eap ) +  mean( wle$se.eap^2 ) )		
 									}
 			# calculate expected probability
 			if (DD == 1 & pv ){ 
 				thetagrid <- seq( -10 , 10 , .01 )
 				mean.trait <- mean( pv1$PV1)
-				sd.trait <- sd( pv1$PV1 )
-				dens.thetagrid <- dnorm( thetagrid , mean = mean.trait  , sd = sd.trait )
+				sd.trait <- stats::sd( pv1$PV1 )
+				dens.thetagrid <- stats::dnorm( thetagrid , mean = mean.trait  , sd = sd.trait )
 				dens.thetagrid <- dens.thetagrid / sum( dens.thetagrid )
 				p.exp <- sapply( itemdiff , FUN = function(bii) { 
-					weighted.mean( plogis( thetagrid - bii ) , dens.thetagrid )
+					   stats::weighted.mean( stats::plogis( thetagrid - bii ) , dens.thetagrid )
 					} )    }
 		if ( DD > 1 |  ( !pv )) { p.exp <- rep(NA,I)  }
 		if ( DD == 1 & pv  ) { 
 	#		emp.discrim <- round( item.discrim( dat , wle$wle ),3) } 
-			emp.discrim <- cor( dat , wle$wle , use="pairwise.complete.obs") }
+			emp.discrim <- stats::cor( dat , wle$wle , use="pairwise.complete.obs") }
 					else { emp.discrim <- NA  }			
 
 					

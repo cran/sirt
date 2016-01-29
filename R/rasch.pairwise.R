@@ -33,7 +33,7 @@ rasch.pairwise <- function( dat , conv = 0.0001 , maxiter = 3000 ,
         delta.ij <- 1 * ( n.ij + t( n.ij ) > 0 ) 
 
         # initial values for beta
-        if( is.null( b.init) ){ beta <- - qlogis( colMeans( dat , na.rm=T ) ) } else { beta <- b.init } 
+        if( is.null( b.init) ){ beta <- - stats::qlogis( colMeans( dat , na.rm=T ) ) } else { beta <- b.init } 
         # calculate y_{ij} values
         y.ij <- n.ij / ( n.ij + t( n.ij) )
         y.ij[ delta.ij == 0 ] <- 0
@@ -55,7 +55,7 @@ rasch.pairwise <- function( dat , conv = 0.0001 , maxiter = 3000 ,
                 if ( progress ){
                     cat( "PL Iter." , iter , ": max. parm. change = " , 
                                 round( max(abs( log(eps0) - log(eps))) , 6 ) , "\n")
-                    flush.console()
+                    utils::flush.console()
                         }                
                 }
         item <- data.frame( "N" = colSums(1 -is.na(dat)) , "p" = colMeans( dat , na.rm=T ) , 
@@ -80,7 +80,7 @@ rasch.pairwise <- function( dat , conv = 0.0001 , maxiter = 3000 ,
 ##NS S3method(summary,rasch.pairwise)
 summary.rasch.pairwise <- function( object , ...){
     cat("------------------------------------------- \n")
-    d1 <- packageDescription("sirt")
+    d1 <- utils::packageDescription("sirt")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 	cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
 	cat("Computation Time:" , print(object$s2 - object$s1), "\n\n")

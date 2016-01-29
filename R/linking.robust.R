@@ -34,7 +34,7 @@ linking.robust <- function(  itempars ){
             
 		v1 <- paste0("k" , 0:KK)
 		meanpars <- c( mean(x) , meanpars )
-		se <- c( sd(x) / sqrt(I) , se )
+		se <- c( stats::sd(x) / sqrt(I) , se )
 		names(meanpars) <- v1
 		names(se) <- v1
 
@@ -46,8 +46,8 @@ linking.robust <- function(  itempars ){
     res1$se.kopt <- se[ ind.kopt ]
     res1$meanpars <- meanpars
     res1$se <- se    
-    res1$sd <- sd(x)
-	res1$mad <- mad(x)
+    res1$sd <- stats::sd(x)
+	res1$mad <- stats::mad(x)
     res1$k.robust <- c(0,kvec  )
 	res1$I <- I
 	res1$itempars <- itempars0
@@ -57,27 +57,20 @@ linking.robust <- function(  itempars ){
 #############################################################################
 # S3 plot method
 plot.linking.robust <- function( x ,  ... ){
-        par( mfrow=c(2,1))
+        graphics::par( mfrow=c(2,1))
 	KK <- length(x$k.robust)
-    plot( x$k.robust , x$meanpars[1:KK] , type="l" , xlab="k" , 
+    graphics::plot( x$k.robust , x$meanpars[1:KK] , type="l" , xlab="k" , 
 		ylab="Linking constant" ,
         main="Linking constant")
-    points( 0 , x$meanpars[1] , pch=16 , col=3 , cex=1.4 )              	
-	points( x$kopt , x$meanpars.kopt , pch=17 , col=2 , cex=1.4 )              	
+    graphics::points( 0 , x$meanpars[1] , pch=16 , col=3 , cex=1.4 )              	
+	graphics::points( x$kopt , x$meanpars.kopt , pch=17 , col=2 , cex=1.4 )              	
 	#****
-    plot( x$k.robust , x$se[1:KK] , type="l" , 
+    graphics::plot( x$k.robust , x$se[1:KK] , type="l" , 
 			main= paste0( "Standard error of linking constant (k_opt = " , round(x$kopt , 3 ),")" ) ,
             xlab="k" , ylab="Standard error")
-	points( 0 , x$se[1] , pch=16 , col=3 , cex=1.4 ) 
-    points( x$kopt , x$se.kopt , pch=17 , col=2 , cex=1.4 )  	
-        par( mfrow=c(1,1) )
-#    plot( x$k.robust , x$weights_k[1,1:KK] ,ylim= c(-.05,1.05) , type="n" ,         
-#		main= paste0( "Trace of item weights | k_opt = " , round(x$kopt , 3 ) )	,	
-#		xlab="k" , ylab="Item weight" )
-#    abline( v=x$kopt , lwd=2 , lty=1 )    
-#    for (ii in 1:(nrow(x$weights_k)) ){ 
-#        lines( x$k.robust , x$weights_k[ii,1:KK] , col=ii , lty=ii)
-#                    }                
+	graphics::points( 0 , x$se[1] , pch=16 , col=3 , cex=1.4 ) 
+    graphics::points( x$kopt , x$se.kopt , pch=17 , col=2 , cex=1.4 )  	
+        graphics::par( mfrow=c(1,1) )          
         }
 #################################################################################
 # S3 summary method

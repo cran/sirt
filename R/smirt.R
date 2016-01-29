@@ -79,9 +79,9 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	# init b parameters
 	if ( is.null(b.init)){ 
 		if (irtmodel!="comp"){
-			b <- Qmatrix * matrix( - qlogis( colMeans(dat , na.rm =TRUE ) ) ,I , D )
+			b <- Qmatrix * matrix( - stats::qlogis( colMeans(dat , na.rm =TRUE ) ) ,I , D )
 				} else {	# irtmodel="comp"s
-			b <-  - qlogis( colMeans(dat , na.rm =TRUE ) )
+			b <-  - stats::qlogis( colMeans(dat , na.rm =TRUE ) )
 						}
 					} else { 
 				b <- b.init 
@@ -137,7 +137,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 			Sigma[ variance.fixed[,c(2,1),drop=FALSE] ] <- variance.fixed[,3]		
 							}	
 						
-	pi.k <- dmvnorm( theta.k , mean=mu , sigma=Sigma )
+	pi.k <- mvtnorm::dmvnorm( theta.k , mean=mu , sigma=Sigma )
 	pi.k <- pi.k / sum( pi.k)
 	# init counts
 	n.ik <- array( 0 , dim=c(TP,I , K+1) )
@@ -292,7 +292,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 		#--- distribution parameters
 		cat( " Means: " , round( mu , 3 ) , "\n")				
 		cat( " Standard deviations: " , round( sqrt(diag(Sigma)) , 3 ) , "\n")
-		c1 <- cov2cor(Sigma)
+		c1 <- stats::cov2cor(Sigma)
 		cat( " Correlations " , round( c1[lower.tri(c1)] , 3 ) , "\n")		
 		# flush.console()			
 				}

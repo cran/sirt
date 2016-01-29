@@ -92,7 +92,7 @@ whichrowMaxs <- function(mat){
     arg <- matrix(  dfr[ ind , 3]  , p , n )[p,]
     x <- matrix(x[ind], p, n)   
     val <- x[p , ]
-list( "val" =val , "arg" = arg )
+    list( "val" =val , "arg" = arg )
 }
 #------------------------------------------------------------------------#
 whichcolMaxs <- function(mat){ t( whichrowMaxs( mat ) ) }
@@ -155,7 +155,7 @@ rowSums.colbundles <- function( mat , ind , multmat = NULL ){
 #..........................................................................
 # function for calculation of Cronbach's Alpha
 .cronbach <- function(matr){
-                matr <- na.omit(matr)
+                matr <- stats::na.omit(matr)
                 p <- ncol(matr)
                 p / ( p - 1 )* ( sum( matr ) - sum( diag( matr ) ) )/ sum(matr )
                     }

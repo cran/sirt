@@ -30,15 +30,15 @@ rasch.evm.pcm.dif <- function( b_evm , item , PARS_vcov , I , G , group.unique ,
         difstats[jj,"df"] <- nrow(Rdesign.jj)
 	
     # compute item-wise DIF statistics
-    difjj <- aggregate( delta.jj , list( rep(1:G , each=nj) ) ,  mean )[,2]
+    difjj <- stats::aggregate( delta.jj , list( rep(1:G , each=nj) ) ,  mean )[,2]
     for (gg1 in 1:(G-1)){
     for (gg2 in (gg1+1):(G)){ # gg1 <- 1 ; gg2 <- 2
         difstats[jj,paste0("DIF.",group.unique[gg1],".",group.unique[gg2]) ] <- difjj[gg1] - difjj[gg2]
                             }
         }
 }
-	difstats$p <- 1 - pchisq( difstats$X2 , df=difstats$df )
-	difstats$p.holm <- p.adjust( difstats$p )               
+	difstats$p <- 1 - stats::pchisq( difstats$X2 , df=difstats$df )
+	difstats$p.holm <- stats::p.adjust( difstats$p )               
 #	difstats$V <- sqrt( difstats$X2 / ( colSums( dat.resp ) * difstats$df ) )	
 	return(difstats)
 }

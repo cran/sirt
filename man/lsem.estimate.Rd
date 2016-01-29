@@ -11,12 +11,12 @@ Local Structural Equation Models (LSEM)
 \description{
 Local structural equation models (LSEM) are structural equation models (SEM)
 which are evaluated for each value of a pre-defined moderator variable
-(Hildenbrandt, Wilhelm, & Robitzsch, 2009).
+(Hildebrandt, Wilhelm, & Robitzsch, 2009; Hildebrandt et al., in press).
 Like in nonparametric regression models, observations near a focal point - at
 which the model is evaluated - obtain higher weights, far distant obervations
-obtain lower weight. The LSEM can be specified by making use of \pkg{lavaan} syntax.
-It is also possible to specify a discretized version of LSEM which 
-means that values of the moderator are grouped into a small number of groups.
+obtain lower weights. The LSEM can be specified by making use of \pkg{lavaan} syntax.
+It is also possible to specify a discretized version of LSEM in which 
+values of the moderator are grouped and a multiple group SEM is specified.
 The LSEM can be tested by employing a permutation test, see
 \code{\link{lsem.permutationTest}}.
 The function \code{lsem.MGM.stepfunctions} outputs stepwise functions
@@ -26,7 +26,7 @@ moderator, specified in \code{moderator.grid}.
 \usage{
 lsem.estimate(data, moderator, moderator.grid, lavmodel, type="LSEM", h = 1.1, 
     residualize=TRUE, fit_measures = c("rmsea", "cfi", "tli", "gfi", "srmr"), 
-    eps = 1e-08, verbose = TRUE, ...)
+    standardized=FALSE, standardized_type = "std.all", eps = 1e-08, verbose = TRUE, ...)
     
 \method{summary}{lsem}(object, file=NULL, digits=3, ...)
 
@@ -50,7 +50,7 @@ breaks are defined in this vector.
 }
   \item{lavmodel}{
 Specified SEM in \pkg{lavaan}. The function 
-\code{\link[lavaan:sem]{sem}} (\pkg{lavaan}) is used.
+\code{\link[lavaan:sem]{lavaan::sem}} (\pkg{lavaan}) is used.
 }
 \item{type}{Type of estimated model. The default is \code{type="LSEM"} which means
 	that a local structural equation model is estimated.
@@ -66,6 +66,18 @@ Bandwidth factor
   \item{fit_measures}{
 Vector with names of fit measures following the labels in \pkg{lavaan}
 }
+\item{standardized}{Optional logical indicating whether
+ standardized solution should be included as parameters in 
+ the output using the
+\code{\link[lavaan:standardizedSolution]{lavaan::standardizedSolution}}
+function. Standardized parameters are labelled as \code{std__}.
+}
+\item{standardized_type}{Type of standardization if \code{standardized=TRUE}.
+The types are described in 
+\code{\link[lavaan:standardizedSolution]{lavaan::standardizedSolution}}.
+}
+
+
   \item{eps}{
 Minimum number for weights
 }
@@ -118,6 +130,11 @@ residualization.}
 
 
 \references{
+Hildebrandt, A., Luedtke, O., Robitzsch, A., Sommer, C., &
+Wilhelm, O. (in press). Exploring factor model parameters across continuous variables 
+with local structural equation models. 
+\emph{Multivariate Behavioral Research}, \bold{xx}, xxx-xxx.	
+	
 Hildebrandt, A., Wilhelm, O., & Robitzsch, A. (2009). Complementary and 
 competing factor analytic approaches for the investigation of measurement invariance. 
 \emph{Review of Psychology}, \bold{16}, 87-102.
@@ -125,7 +142,7 @@ competing factor analytic approaches for the investigation of measurement invari
 
 
 \author{
-Alexander Robitzsch, Oliver Luedtke, Andrea Hildebrandt
+Alexander Robitzsch, Oliver Luedtke, Andrea Hildebrand
 }
 
 %\note{
@@ -182,6 +199,41 @@ summary(mod2)
 # output step functions
 smod2 <- lsem.MGM.stepfunctions( object=mod2 , moderator.grid=seq(4,23,1) )
 str(smod2)
+
+#********************************
+#*** Model 3: define standardized loadings as derived variables
+
+# specify lavaan model
+lavmodel <- "
+        F =~ a1*v1+a2*v2+a3*v3+a4*v4
+        v1 ~~ s1*v1
+        v2 ~~ s2*v2
+        v3 ~~ s3*v3
+        v4 ~~ s4*v4                                
+        F ~~ 1*F
+        # standardized loadings
+        l1 := a1 / sqrt(a1^2 + s1 )
+        l2 := a2 / sqrt(a2^2 + s2 )
+        l3 := a3 / sqrt(a3^2 + s3 )
+        l4 := a4 / sqrt(a4^2 + s4 )                        
+        "        
+# estimate model
+mod3 <- lsem.estimate( dat , moderator="age" , moderator.grid=moderator.grid , 
+               lavmodel=lavmodel , h=2 , std.lv=TRUE)
+summary(mod3)
+plot(mod3)
+
+#********************************
+#*** Model 4: estimate LSEM and automatically include standardized solutions
+
+lavmodel <- "
+        F =~ 1*v1+v2+v3+v4
+        F ~~ F"
+mod4 <- lsem.estimate( dat , moderator="age" , moderator.grid=moderator.grid , 
+               lavmodel=lavmodel , h=2 , standardized=TRUE)
+summary(mod4)
+# permutation test
+pmod1 <- lsem.permutationTest( mod4 , B=3 )    
 }	
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

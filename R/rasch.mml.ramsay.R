@@ -1,16 +1,5 @@
 
 
-
-# 1.01  2012-11-yy	O collect all QM ramsay functions into this file
-
-
-
-# 1.0x  2012-11-yy
-################################################################
-
-
-
-
 ######################################################
 # probability ramsay qm
 .prob.ramsay <- function( theta , b ,  fixed.K = 3 + 0*b , pow = 1){
@@ -34,7 +23,7 @@ sim.qm.ramsay <- function( theta , b , K  ){
     I <- length(b)
     p1 <- exp( outer( theta , 1/b ) )
     p1 <- p1 / ( outer( rep(1,length(theta)) , K ) + p1 )
-    dat <- 1* ( p1 > matrix( runif( N*I ) , ncol=I) )
+    dat <- 1* ( p1 > matrix( stats::runif( N*I ) , ncol=I) )
 	colnames(dat) <- paste( "I" , substring(100+1:I,2) , sep="")	
     return(dat )
     }
@@ -127,7 +116,7 @@ sim.qm.ramsay <- function( theta , b , K  ){
     for (gg in 1:G){ 
         if (is.null( trait.weights) | G > 1 ){ 
                 pi.k[,gg] <- n.k[,gg] / n[gg]  } else  {
-                 pi.k <- dnorm( theta.k)
+                 pi.k <- stats::dnorm( theta.k)
                  pi.k <- pi.k/sum(pi.k) 
                  pi.k <- matrix( pi.k , ncol=1 )
                         }
@@ -178,8 +167,8 @@ sim.qm.ramsay <- function( theta , b , K  ){
         b <- b + b.change
         # linear parameter constraints
         if ( ! is.null( designmatrix )){ 
-            mod <- lm( b ~ 0 + designmatrix  )
-            b <- fitted(mod)
+            mod <- stats::lm( b ~ 0 + designmatrix  )
+            b <- stats::fitted(mod)
                 }
         # last item is the sum of all other item difficulties
         center <- is.null(constraints) 
@@ -227,7 +216,7 @@ sim.qm.ramsay <- function( theta , b , K  ){
 					ll1 <- rowSums(ll1)
 					ll2 <- rowSums(ll2)
 					# aggregate with respect to estimation of a
-					a1 <- aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.K) , sum , na.rm=T)		
+					a1 <- stats::aggregate( cbind( ll0 , ll1 , ll2 ) , list(est.K) , sum , na.rm=T)		
 					a1 <- a1[ a1[,1] > 0 , ]										
 					ll0 <- a1[,2]
 					ll1 <- a1[,3]

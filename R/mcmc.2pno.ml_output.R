@@ -27,7 +27,7 @@
 	# group statistics
 	ic$G <- length(groupsize)
 	ic$M.n <- mean(groupsize)
-	ic$SD.n <- sd(groupsize)	
+	ic$SD.n <- stats::sd(groupsize)	
 	return(ic)
 		}
 #######################################################		
@@ -44,7 +44,7 @@
 	colnames(b) <- paste0("b[", 1:I , "]")
 	mcmcobj <- cbind( deviance.chain , b )	
 	# include a parameters
-	if( max( apply( a , 2 , sd) ) > 0 ){
+	if( max( apply( a , 2 , stats::sd) ) > 0 ){
 		mcmcobj <- cbind( mcmcobj , a )
 				}		
 	colnames(mcmcobj)[1] <- "deviance"
@@ -82,7 +82,7 @@
 							}						
 	class(mcmcobj) <- "mcmc"
 	attr(mcmcobj, "mcpar") <- c( burnin+1 , burnin+SV , 1 )
-	mcmcobj <- as.mcmc.list( mcmcobj )
+	mcmcobj <- coda::as.mcmc.list( mcmcobj )
     return(mcmcobj)
 		}
 ######################################################
@@ -91,7 +91,8 @@
 		theta , N , I , dat , dat.resp , sigma.res ){							
 	mexp <- aM*theta - bM							
 	mres <- dat - mexp
-	llres <- - sum( dat.resp * log( dnorm( mres , sd=matrix( sigma.res , N, I , byrow=TRUE ) )	) )
+	llres <- - sum( dat.resp * 
+		log( stats::dnorm( mres , sd=matrix( sigma.res , N, I , byrow=TRUE ) )	) )
 	return(llres)
 		}		
 		
@@ -102,7 +103,7 @@
 .mcmc.person.2pno.ml <- function( theta.chain , weights ){	
 	###################
 	# EAP reliability
-		v1 <- var( colMeans( theta.chain ) )
+		v1 <- stats::var( colMeans( theta.chain ) )
 		if ( is.null(weights) ){ 
 			weights <- rep(1,ncol(theta.chain)) }
 		w1 <- weights / sum(weights )

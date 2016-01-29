@@ -1,4 +1,5 @@
-\name{yen.q3}
+\name{Q3}
+\alias{Q3}
 \alias{yen.q3}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -10,6 +11,8 @@ The statistic \eqn{Q_3} is calculated for every item pair \eqn{(i,j)}
 which is the correlation between item residuals after fitting the Rasch model.
 }
 \usage{
+Q3(dat, theta, b, progress=TRUE)
+
 yen.q3(dat, theta, b, progress=TRUE)
 }
 \arguments{
@@ -60,7 +63,7 @@ Alexander Robitzsch
 
 \seealso{
 For the estimation of the average \eqn{Q_3} statistic within testlets see 
-\code{\link{testlet.yen.q3}}. 
+\code{\link{Q3.testlet}}. 
 
 For modelling testlet effects see \code{\link{mcmc.3pno.testlet}}.
 
@@ -79,7 +82,7 @@ mod <- rasch.mml2( data.read)
 # estmate WLEs
 mod.wle <- wle.rasch( dat = data.read , b = mod$item$b )
 # calculate Yen's Q3 statistic
-mod.q3 <- yen.q3( dat = data.read , theta = mod.wle$theta , b = mod$item$b )
+mod.q3 <- Q3( dat = data.read , theta = mod.wle$theta , b = mod$item$b )
   ##   Yen's Q3 Statistic based on an estimated theta score 
   ##   *** 12 Items | 66 item pairs
   ##   *** Q3 Descriptives

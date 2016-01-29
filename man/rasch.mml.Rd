@@ -633,7 +633,7 @@ plot(mod1)
 # simulate theta values
 set.seed(786)
 N <- 1000                  # number of persons
-theta <- rnorm( N , sd =1.5 ) # N persons with SD 1.5
+theta <- stats::rnorm( N , sd =1.5 ) # N persons with SD 1.5
 b <- seq( -2 , 2 , len=15)
 
 # simulate data
@@ -711,9 +711,9 @@ summary(mod4)
 set.seed(8765)
 N1 <- 1000     # N1=1000 persons in group 1
 N2 <- 500      # N2= 500 persons in group 2
-dat1 <- sim.raschtype( theta = rnorm( N1 , sd = 1.5 )  , b = b , 
+dat1 <- sim.raschtype( theta = stats::rnorm( N1 , sd = 1.5 )  , b = b , 
 			alpha1 = -0.3 , alpha2=0)
-dat2 <- sim.raschtype( theta = rnorm( N2 , mean=-.5 , sd =.75)  , 
+dat2 <- sim.raschtype( theta = stats::rnorm( N2 , mean=-.5 , sd =.75)  , 
 			b = b , alpha1 = -0.3 , alpha2=0)
 dat1 <- rbind( dat1 , dat2 )
 group <- c( rep(1,N1) , rep(2,N2))
@@ -733,11 +733,11 @@ N <- 500
 theta <- mvtnorm::rmvnorm( N,mean=c(0,0), sigma=matrix( c(1.45,.5,.5,1.7) , 2 , 2 ))
 I <- 10
 # 10 items load on the first dimension
-p1 <- plogis( outer( theta[,1] , seq( -2 , 2 , len=I ) , "-" ) )
-resp1 <- 1 * ( p1 > matrix( runif( N*I ) , nrow=N , ncol=I ) )
+p1 <- stats::plogis( outer( theta[,1] , seq( -2 , 2 , len=I ) , "-" ) )
+resp1 <- 1 * ( p1 > matrix( stats::runif( N*I ) , nrow=N , ncol=I ) )
 # 10 items load on the second dimension
-p1 <- plogis( outer( theta[,2] , seq( -2 , 2 , len=I ) , "-" ) )
-resp2 <- 1 * ( p1 > matrix( runif( N*I ) , nrow=N , ncol=I ) )
+p1 <- stats::plogis( outer( theta[,2] , seq( -2 , 2 , len=I ) , "-" ) )
+resp2 <- 1 * ( p1 > matrix( stats::runif( N*I ) , nrow=N , ncol=I ) )
 #Combine the two sets of items into one response matrix
 resp <- cbind(resp1,resp2)
 colnames(resp) <- paste("I" , 1:(2*I), sep="")
@@ -792,7 +792,7 @@ b1 <- seq(-1.5,1.5,length=I)
 # item slopes group 1
 a1 <- rep(1, I)
 # simulate data group 1
-dat1 <- sim.raschtype( rnorm(n1) , b=b1 , fixed.a=a1 )
+dat1 <- sim.raschtype( stats::rnorm(n1) , b=b1 , fixed.a=a1 )
 colnames(dat1) <- paste0("I" , 1:I , "des1" )
 # group 2
 b2 <- b1 - .15
@@ -801,7 +801,7 @@ a2 <- 1.1*a1
 # compared to the first group. This indicates possible item context effects.
 
 # simulate data group 2
-dat2 <- sim.raschtype( rnorm(n2) , b=b2 , fixed.a=a2 )
+dat2 <- sim.raschtype( stats::rnorm(n2) , b=b2 , fixed.a=a2 )
 colnames(dat2) <- paste0("I" , 1:I , "des2" )
 # define joint dataset
 dat <- matrix( NA , nrow=n1+n2 , ncol=2*I)
@@ -869,11 +869,11 @@ summary(mod2)
 # data recoding
 dat3 <- dat
 # simulate theta estimate from posterior distribution
-theta <- rnorm( nrow(dat3) , mean = mod1$person$EAP , sd=mod1$person$SE.EAP )
+theta <- stats::rnorm( nrow(dat3) , mean = mod1$person$EAP , sd=mod1$person$SE.EAP )
 rho <- .3   # define a rho parameter value of .3
 for (ii in items){
     ind <- which( dat[,ii] == 9 )
-    dat3[ind,ii] <- rho*plogis( theta[ind] - mod1$item$b[ which( items == ii ) ] )
+    dat3[ind,ii] <- rho*stats::plogis( theta[ind] - mod1$item$b[ which( items == ii ) ] )
                 }
 
 # estimate Rasch model
@@ -891,12 +891,12 @@ set.seed(789)
 # data recoding
 dat4 <- dat
 # simulate theta estimate from posterior distribution
-theta <- rnorm( nrow(dat4) , mean = mod1$person$EAP , sd=mod1$person$SE.EAP )
+theta <- stats::rnorm( nrow(dat4) , mean = mod1$person$EAP , sd=mod1$person$SE.EAP )
 rho <- .3   # define a rho parameter value of .3
 for (ii in items){
     ind <- which( dat[,ii] == 9 )
-    p3 <- rho*plogis( theta[ind] - mod1$item$b[ which( items == ii ) ] )
-    dat4[ ind , ii ] <- 1*(runif( length(ind) , 0 , 1 ) < p3)    
+    p3 <- rho*stats::plogis( theta[ind] - mod1$item$b[ which( items == ii ) ] )
+    dat4[ ind , ii ] <- 1*( stats::runif( length(ind) , 0 , 1 ) < p3)    
                 }
 
 # estimate Rasch model

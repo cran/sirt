@@ -21,21 +21,21 @@ ccov.np <- function( data , score , bwscale = 1.1 , thetagrid = seq( -3,3,len=20
             for ( ii in 1:I ){
                 x <- score[ ! is.na( data[,ii] )  ]
                 y <- data[ ! is.na( data[,ii] ) , ii ]
-                icc.items[,ii] <- ksmooth( x  , y , bandwidth = bwscale * length(x)^(-1/5)  , 
+                icc.items[,ii] <- stats::ksmooth( x  , y , bandwidth = bwscale * length(x)^(-1/5)  , 
 							x.points = thetagrid , kernel="normal")$y
                 if ( i < 20 ){ if ( ii == display[i] & progress ){ 
 							cat( paste( 5*i  , "% " , sep="" ) ) ; i <- i + 1 ; 
                                                         if (i == 11){ cat("\n" ) }
-                                                        flush.console()} }
+                                                        utils::flush.console()} }
                 }
             if ( progress){ cat("\n") }
             # weights thetagrid
-            wgt.thetagrid <- dnorm(thetagrid)
+            wgt.thetagrid <- stats::dnorm(thetagrid)
             wgt.thetagrid <- wgt.thetagrid 
             if (progress ){
                 cat("...........................................................\n" )
                 cat("Nonparametric Estimation of conditional covariances \n " ) 
-                flush.console()
+                utils::flush.console()
                     }
             # calculation of conditional covariance
             ccov.table <- data.frame( "item1ID" = rep( 1:I , I ) , "item2ID" = rep( 1:I , each = I ) )
@@ -57,18 +57,20 @@ ccov.np <- function( data , score , bwscale = 1.1 , thetagrid = seq( -3,3,len=20
                 which.ff <- which( rowSums( is.na( data.ff ) ) == 0  )
                 data.ff <- data.ff[ which.ff , ]
 #                y <- data[ ! is.na( data[,ii] ) , ii ]     #       Bug: 2011-07-20
-                prod.matrix[,ff] <- ksmooth( x = score[ which.ff]  , y = data.ff[,1]*data.ff[,2] , 
+                prod.matrix[,ff] <- stats::ksmooth( x = score[ which.ff]  , y = data.ff[,1]*data.ff[,2] , 
                         bandwidth = bwscale * length(which.ff)^(-1/5)  , x.points = thetagrid , kernel="normal")$y
                 ccov.matrix[ , ff ] <- prod.matrix[,ff] -  icc.items[, ccov.table[ff,1] ] * icc.items[, ccov.table[ff,2] ]
-                if ( ii < 20 ){ if ( ff == display[ii] & progress==T ){ cat( paste( 5*ii  , "% " , sep="" ) ) ; ii <- ii + 1 ; flush.console()
+                if ( ii < 20 ){ if ( ff == display[ii] & progress==T ){ cat( paste( 5*ii  , "% " , sep="" ) ) ; ii <- ii + 1 ; 
+				utils::flush.console()
                                                             if (ii == 11){ cat("\n" ) }
                             } }
                 }
             # remove NAs from ccov.matrix
             ccov.matrix[ is.na( ccov.matrix) ] <- 0
-            if ( progress == T){ cat("\n") }
+            if ( progress ){ cat("\n") }
             # calculate (weighted) conditional covariance
-            ccov.table$ccov <- apply( ccov.matrix , 2 , FUN = function(sp){ weighted.mean( sp  , wgt.thetagrid ) } )
+            ccov.table$ccov <- apply( ccov.matrix , 2 , FUN = function(sp){ 
+						stats::weighted.mean( sp  , wgt.thetagrid ) } )
             res <- list( "ccov.table" = ccov.table , "ccov.matrix" = ccov.matrix ,
                             "data" = data , "score" = score , "icc.items" = icc.items )
             return( res ) 
@@ -90,8 +92,8 @@ detect.index <- function( ccovtable , itemcluster ){
                 mean( sign( ccovtable$ccov ) * ccovtable$delta ) , 
                     sum( ccovtable$ccov  * ccovtable$delta ) / sum( abs( ccovtable$ccov ) ) )
 	# calculate weighted indizes 
-    weighted.indizes <- c( 100* weighted.mean( ccovtable$ccov * ccovtable$delta , sqrt(ccovtable$N) ) ,
-        weighted.mean( sign( ccovtable$ccov ) * ccovtable$delta , sqrt(ccovtable$N) ) , 
+    weighted.indizes <- c( 100* stats::weighted.mean( ccovtable$ccov * ccovtable$delta , sqrt(ccovtable$N) ) ,
+        stats::weighted.mean( sign( ccovtable$ccov ) * ccovtable$delta , sqrt(ccovtable$N) ) , 
         sum( ccovtable$ccov  * ccovtable$delta * sqrt(ccovtable$N) ) / sum( abs( ccovtable$ccov ) * sqrt(ccovtable$N) ) )
     res <- data.frame( "unweighted" = indizes , "weighted" = weighted.indizes )
     rownames(res) <- c("DETECT" , "ASSI" , "RATIO" )
@@ -114,7 +116,7 @@ conf.detect <- function( data , score , itemcluster , bwscale = 1.1 , progress =
     if (! h1  ){  cat("Conditioning on 1 Score\n" )  } else {
             cat(paste("Conditioning on ",PP, " Scores\n" , sep="") ) }
     cat(paste("Bandwidth Scale:" , bwscale , "\n" ) ) 
-    flush.console()
+    utils::flush.console()
     if ( ! h1 ){
         ccovtable <- ccov.np( data , score = score, bwscale = bwscale , 
                                 progress= progress , thetagrid = thetagrid )
@@ -122,7 +124,8 @@ conf.detect <- function( data , score , itemcluster , bwscale = 1.1 , progress =
                     } else {
             ccovtable.list <- list()
             for (pp in 1:PP){
-                cat( paste( "DETECT Calculation Score " , pp , "\n" , sep="") ) ; flush.console()
+                cat( paste( "DETECT Calculation Score " , pp , "\n" , sep="") ) ; 
+				utils::flush.console()
                 ccovtable.list[[pp]] <- ccov.np( data , score = score[,pp], 
                                     bwscale = bwscale , progress= FALSE )
                     }  
@@ -130,7 +133,7 @@ conf.detect <- function( data , score , itemcluster , bwscale = 1.1 , progress =
                     detect.index( ccovtable , itemcluster=itemcluster ) } )
         detect.matrix <- matrix( unlist( lapply( detect.list , FUN = function( ll){ c( ll[1,] , ll[2,] , ll[3,] ) } ) ) , nrow=PP , byrow=T)
         detect.summary <- data.frame( "NScores" = PP , "Mean" = colMeans( detect.matrix ) , 
-                    "SD" = apply( detect.matrix , 2 , sd ) , 
+                    "SD" = apply( detect.matrix , 2 , stats::sd ) , 
                     "Min" = apply( detect.matrix , 2 , min ) , 
                     "Max" = apply( detect.matrix , 2 , max ) 
                     )
@@ -168,15 +171,15 @@ expl.detect <- function( data , score , nclusters , N.est = NULL , seed=897 , bw
     # create distance matrix
     cc1 <- max(ccov.matrix) - ccov.matrix
     # Ward Hierarchical Clustering
-    d <- as.dist(cc1)
-    fit <- hclust(d, method="ward")         # hierarchical cluster analysis
+    d <- stats::as.dist(cc1)
+    fit <- stats::hclust(d, method="ward")         # hierarchical cluster analysis
     clusterfit <- fit
     itemcluster <- data.frame( matrix( 0 , I , nclusters ) )
     itemcluster[,1] <- colnames(data)
     colnames(itemcluster) <- c( "item" , paste( "cluster" , 2:nclusters , sep="") )
     detect.unweighted <- detect.weighted <- NULL
     for (k in 2:nclusters){ 
-        itemcluster[,k] <- cutree( fit , k=k ) 
+        itemcluster[,k] <- stats::cutree( fit , k=k ) 
         h1 <- detect.index( ccovtable=cc , itemcluster = itemcluster[,k] )
         detect.unweighted <- rbind( detect.unweighted , h1$unweighted )
         detect.weighted <- rbind( detect.weighted , h1$weighted )    
@@ -215,10 +218,10 @@ expl.detect <- function( data , score , nclusters , N.est = NULL , seed=897 , bw
     res <- list( "detect.unweighted" = detect.unweighted , "detect.weighted" = detect.weighted ,
                     "clusterfit" = clusterfit , "itemcluster" = itemcluster )
 	# plot cluster solution
-	plot( res$clusterfit , 
+	graphics::plot( res$clusterfit , 
 			main = paste( "Cluster Dendogram with " , clopt , " Clusters" , sep="")
 					)
-    rect.hclust(res$clusterfit, k=clopt, border="red")
+    stats::rect.hclust(res$clusterfit, k=clopt, border="red")
 	return(res)
     }
 ###############################################################################

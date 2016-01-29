@@ -22,7 +22,7 @@ s1 <- Sys.time()
 	if ( is.null(pid)){  pid <- seq(1,nrow(dat) ) }
 	pcm.param <- FALSE	
 	theta.k0 <- theta.k
-	pi.k <- dnorm( theta.k )
+	pi.k <- stats::dnorm( theta.k )
 	pi.k <- pi.k / sum( pi.k )
 	# process data
 	procdata <- res <- .prep.data.rm( dat=dat , rater=rater , pid=pid )
@@ -76,7 +76,7 @@ s1 <- Sys.time()
 	
 				
 	# starting values for item difficulties
-	b.item <- - qlogis( colMeans( dat , na.rm=TRUE ) / maxK  )
+	b.item <- - stats::qlogis( colMeans( dat , na.rm=TRUE ) / maxK  )
 	if ( ! pcm.param ){ b.item <- 0*b.item	}
 	
 	tau.item <- matrix( 0 , nrow=VV , ncol=K )
@@ -85,9 +85,9 @@ s1 <- Sys.time()
 
 	M1 <- colSums( dat2 ) / colSums( dat2.resp )
 	N <- colSums( dat2.resp )
-	N <- aggregate( N , list( rater.index ) , sum )[,2]
-	M1 <- aggregate( M1 , list( rater.index ) , mean )[,2]		
-	b.rater <- - qlogis( M1 / K )
+	N <- stats::aggregate( N , list( rater.index ) , sum )[,2]
+	M1 <- stats::aggregate( M1 , list( rater.index ) , mean )[,2]		
+	b.rater <- - stats::qlogis( M1 / K )
 	b.rater <- b.rater - mean( b.rater )
 	a.item <- rep(1,VV)
 	a.rater <- rep(1,RR)

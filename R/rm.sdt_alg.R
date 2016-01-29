@@ -66,7 +66,7 @@ arraymult1 <- function (A,dimA,B,dimB){
 											}
 		conv1 <- max( abs( c.rater - b0 ) )
 		it <- it+1
-		cat("-")  #; flush.console()
+		cat("-")  
 			}
 	cat(" " , it , "Step(s) \n")	
     res <- list("c.rater" = c.rater , "se.c.rater" = se.c.rater , 
@@ -113,7 +113,7 @@ arraymult1 <- function (A,dimA,B,dimB){
 #		max.b.increment <- abs( b.rater - b0 )
 		conv1 <- max( abs( d.rater - b0 ) )
 		it <- it+1
-		cat("-")  #; flush.console()
+		cat("-")  
 			}
 	cat(" " , it , "Step(s) \n")	
     res <- list("d.rater" = d.rater , "se.d.rater" = sqrt( abs(-1/res$d2) ) , 
@@ -164,9 +164,9 @@ arraymult1 <- function (A,dimA,B,dimB){
 										}				
 		conv1 <- max( abs( a.item - a.item0 ) )
 		it <- it+1
-		cat("-") # ; flush.console()	
+		cat("-") 
 			}
-	cat(" " , it , "Step(s) \n")	#; flush.console()	
+	cat(" " , it , "Step(s) \n")	
     res <- list("a.item" = a.item , "se.a.item" = sqrt( abs(-1/res$d2 )) , 
 			"ll" = sum(res$ll0) , "prob.item" = r1$prob.item )
     return(res)

@@ -14,7 +14,7 @@ brm.sim <- function( theta , delta , tau , K=NULL){
 		# ii <- 1
 		m1 <- exp( ( theta - delta[ii] + tau[ii] ) / 2 )
 		n1 <- exp( ( - theta + delta[ii] + tau[ii] ) / 2 )
-		dat[,ii] <- rbeta( N , shape1 = m1 , shape2 = n1 )
+		dat[,ii] <- stats::rbeta( N , shape1 = m1 , shape2 = n1 )
 		if ( ! is.null(K) ){
 			dat[,ii] <- as.numeric(cut( dat[,ii] , breaks= br )) - 1       
                         }

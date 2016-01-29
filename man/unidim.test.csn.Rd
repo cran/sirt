@@ -111,9 +111,9 @@ set.seed(775)
 N <- 2000 
 I <- 30   # number of items
 rho <- .60   # correlation between 2 dimensions
-t0 <- rnorm(N)
-t1 <- sqrt(rho)*t0 + sqrt(1-rho)*rnorm(N)
-t2 <- sqrt(rho)*t0 + sqrt(1-rho)*rnorm(N)
+t0 <- stats::rnorm(N)
+t1 <- sqrt(rho)*t0 + sqrt(1-rho)*stats::rnorm(N)
+t2 <- sqrt(rho)*t0 + sqrt(1-rho)*stats::rnorm(N)
 dat1 <- sim.raschtype(t1 , b=seq(-1.5,1.5,length=I/2) ) 
 dat2 <- sim.raschtype(t2 , b=seq(-1.5,1.5,length=I/2) ) 
 dat <- as.matrix(cbind( dat1 , dat2) )

@@ -120,10 +120,10 @@ SC <- length(scores)
 freq.correct <- matrix( NA , SC , I )
 wgt <- freq.correct
 # percent correct
-a1 <- aggregate( dat == 1 , list( stud.p ) , mean , na.rm=TRUE )
+a1 <- stats::aggregate( dat == 1 , list( stud.p ) , mean , na.rm=TRUE )
 freq.correct <- a1[,-1]
 # weights
-a1 <- aggregate( dat.resp , list( stud.p ) , sum , na.rm=TRUE )
+a1 <- stats::aggregate( dat.resp , list( stud.p ) , sum , na.rm=TRUE )
 wgt <- a1[,-1]
 
 #***

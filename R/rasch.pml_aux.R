@@ -25,11 +25,11 @@
 				}
     cor.Sigma <- ( t1 + eps.corr ) / ( 1 + t1 )
 	cor.Sigma[ cor.Sigma > 1 ] <- .99
-    a1 <- pnorm( xi )
+    a1 <- stats::pnorm( xi )
 
     itempairs$p1.item1 <- a1[ itempairs$item1 ]
     itempairs$p1.item2 <- a1[ itempairs$item2 ]
-	itempairs$p11 <- pbivnorm( x = xi1 , y = xi2 , rho = cor.Sigma )
+	itempairs$p11 <- pbivnorm::pbivnorm( x = xi1 , y = xi2 , rho = cor.Sigma )
     itempairs$p10 <- itempairs$p1.item1 - itempairs$p11
     itempairs$p01 <- itempairs$p1.item2 - itempairs$p11
     itempairs$p00 <- 1 - itempairs$p11 - itempairs$p01 - itempairs$p10
@@ -75,17 +75,11 @@
 #    cor.Sigma <- ( a1*a2*sigma^2 + eps.corr ) / ( 1 + a1*a2*sigma^2 ) 
 #	    Sigma.ii <- matrix( c(1,0,0,1) , ncol=2 )
 #    Sigma.ii[1,2] <- Sigma.ii[2,1] <- cor.Sigma[1] 
-    a1 <- pnorm( xi )
+    a1 <- stats::pnorm( xi )
     itempairs$p1.item1 <- a1[ itempairs$item1 ]
     itempairs$p1.item2 <- a1[ itempairs$item2 ]
     ind10 <- which( b != respml$b )
     ind10 <- c( which( itempairs$item1 %in% ind10  ) , which( itempairs$item2 %in% ind10  )  )
-#    itempairs[ ind10 , "p11" ] <- sapply( ind10 , FUN = function(ii){
-#           Sigma.ii[1,2] <- Sigma.ii[2,1] <- cor.Sigma[ii] 
-#           pmvnorm( lower = c(-Inf,-Inf) , 
-#                upper=c(xi1[ii] , xi2[ii] ) ,
-#                mean = c(0,0) , sigma = Sigma.ii )
-#                    } )   
 	itempairs[ind10,"p11"] <- pbivnorm( x = xi1[ind10] , y = xi2[ind10] , 
 			rho = cor.Sigma[ind10] )
     itempairs$p10 <- itempairs$p1.item1 - itempairs$p11
@@ -119,7 +113,7 @@
 		xi1[,kk] <- xi[ itempairs[,"item1"] , kk ] 
 		xi2[,kk] <- xi[ itempairs[,"item2"] , kk ] 
 			}
-    a1 <- pnorm( xi )
+    a1 <- stats::pnorm( xi )
 	PKI <- outer( rep(1,I) , p.ki )
 	a1 <- rowSums( a1 * PKI )
     itempairs$p1.item1 <- a1[ itempairs$item1 ]
@@ -137,7 +131,7 @@
 				index2 <- 3*(kk2 - 1) + kk1
 				cor.kk <- S.ki[kk1] * S.ki[kk2] * sigma^2 / sqrt( ( 1 + sigma^2 * S.ki[kk1]^2 ) *
 									( 1 + sigma^2 * S.ki[kk2]^2 ) ) 
-				phi.matrix[ii,index1] <- pmvnorm(lower = c(-Inf,-Inf),upper=c(xi1[ii,kk1],xi2[ii,kk2] ),
+				phi.matrix[ii,index1] <- mvtnorm::pmvnorm(lower = c(-Inf,-Inf),upper=c(xi1[ii,kk1],xi2[ii,kk2] ),
 						mean=c(0,0),
 						sigma = matrix( c(1,cor.kk,cor.kk,1) , 2 , 2 ) 
 									)
@@ -185,7 +179,7 @@
 		xi1[,kk] <- xi[ itempairs[,"item1"] , kk ] 
 		xi2[,kk] <- xi[ itempairs[,"item2"] , kk ] 
 			}
-    a1 <- pnorm( xi )
+    a1 <- stats::pnorm( xi )
 	PKI <- outer( rep(1,I) , p.ki )
 	a1 <- rowSums( a1 * PKI )
     itempairs$p1.item1 <- a1[ itempairs$item1 ]
@@ -203,7 +197,7 @@
 				index2 <- 3*(kk2 - 1) + kk1
 				cor.kk <- S.ki[kk1] * S.ki[kk2] * sigma^2 / sqrt( ( 1 + sigma^2 * S.ki[kk1]^2 ) *
 									( 1 + sigma^2 * S.ki[kk2]^2 ) ) 
-				phi.matrix[ii,index1] <- pmvnorm(lower = c(-Inf,-Inf),upper=c(xi1[ii,kk1],xi2[ii,kk2] ),
+				phi.matrix[ii,index1] <- mvtnorm::pmvnorm(lower = c(-Inf,-Inf),upper=c(xi1[ii,kk1],xi2[ii,kk2] ),
 						mean=c(0,0),
 						sigma = matrix( c(1,cor.kk,cor.kk,1) , 2 , 2 ) 
 									)

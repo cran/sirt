@@ -66,7 +66,7 @@ align.newton.raphson <- function( ll0 , ll1 , ll2 , max.increment , h ){
 # auxiliary function for calculation of correlations
 ai.calc.corr <- function(parsM){
 	# parsM <- t(lambda.aligned)
-	cM <- cor( parsM)
+	cM <- stats::cor( parsM)
 	I <- ncol(cM)
 	rbar <- ( sum(cM) - I )/ ( I^2 - I)
 	return(rbar)

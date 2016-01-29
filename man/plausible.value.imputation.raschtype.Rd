@@ -140,9 +140,9 @@ b <- seq(-2,2, len=I)   # item difficulties
 n <- 2000       # number of students
 
 # simulate theta and covariates
-theta <- rnorm( n )
-x <- .7 * theta + rnorm( n , .5 )
-y <- .2 * x+ .3*theta + rnorm( n , .4 )
+theta <- stats::rnorm( n )
+x <- .7 * theta + stats::rnorm( n , .5 )
+y <- .2 * x+ .3*theta + stats::rnorm( n , .4 )
 dfr <- data.frame( theta , 1 , x , y )
 
 # simulate Rasch model
@@ -152,7 +152,7 @@ dat1 <- sim.raschtype( theta = theta , b = b )
 pv1 <- plausible.value.imputation.raschtype(data=dat1 , X=dfr[,-1] , b = b ,
             nplausible=3 , iter=10 , burnin=5)
 # estimate linear regression based on first plausible value
-mod1 <- lm( pv1$pvdraws[,1] ~ x+y )
+mod1 <- stats::lm( pv1$pvdraws[,1] ~ x+y )
 summary(mod1)
   ##               Estimate Std. Error t value Pr(>|t|)    
   ##   (Intercept) -0.27755    0.02121  -13.09   <2e-16 ***
@@ -160,7 +160,7 @@ summary(mod1)
   ##   y            0.20307    0.01822   11.15   <2e-16 ***
 
 # true regression estimate
-summary( lm( theta ~ x + y ) )
+summary( stats::lm( theta ~ x + y ) )
   ## Coefficients:
   ##             Estimate Std. Error t value Pr(>|t|)    
   ## (Intercept) -0.27821    0.01984  -14.02   <2e-16 ***
@@ -174,18 +174,18 @@ summary( lm( theta ~ x + y ) )
 
 set.seed(899)
 n <- 3000       # number of students
-x <- round( runif( n , 0 ,1 ) )
-y <- rnorm(n)
+x <- round( stats::runif( n , 0 ,1 ) )
+y <- stats::rnorm(n)
 # simulate true score theta
-theta <- .4*x + .5 * y + rnorm(n)
+theta <- .4*x + .5 * y + stats::rnorm(n)
 # simulate observed score by adding measurement error
 sig.e <- rep( sqrt(.40) , n )
-theta_obs <- theta + rnorm( n , sd=sig.e)
+theta_obs <- theta + stats::rnorm( n , sd=sig.e)
 
 # define theta grid for evaluation of density
-theta.list <- mean(theta_obs) + sd(theta_obs) * seq( - 5 , 5 , length=21)
+theta.list <- mean(theta_obs) + stats::sd(theta_obs) * seq( - 5 , 5 , length=21)
 # compute individual likelihood
-f.yi.qk <- dnorm( outer( theta_obs , theta.list , "-" ) / sig.e )
+f.yi.qk <- stats::dnorm( outer( theta_obs , theta.list , "-" ) / sig.e )
 f.yi.qk <- f.yi.qk / rowSums(f.yi.qk)
 # define covariates
 X <- cbind( 1 , x , y )
@@ -194,7 +194,7 @@ mod2 <- plausible.value.imputation.raschtype( f.yi.qk =f.yi.qk ,
                   theta.list=theta.list , X=X , iter=10 , burnin=5)
 
 # linear regression
-mod1 <- lm( mod2$pvdraws[,1] ~ x+y )
+mod1 <- stats::lm( mod2$pvdraws[,1] ~ x+y )
 summary(mod1)
   ##             Estimate Std. Error t value Pr(>|t|)    
   ## (Intercept) -0.01393    0.02655  -0.525      0.6    
@@ -202,7 +202,7 @@ summary(mod1)
   ## y            0.53759    0.01872  28.718   <2e-16 ***
 
 # true regression model
-summary( lm( theta ~ x + y ) )
+summary( stats::lm( theta ~ x + y ) )
   ##             Estimate Std. Error t value Pr(>|t|)    
   ## (Intercept) 0.002931   0.026171   0.112    0.911    
   ## x           0.359954   0.036864   9.764   <2e-16 ***
@@ -214,18 +214,18 @@ summary( lm( theta ~ x + y ) )
 
 set.seed(899)
 n <- 5000       # number of students
-x <- round( runif( n , 0 ,1 ) )
-y <- rnorm(n)
+x <- round( stats::runif( n , 0 ,1 ) )
+y <- stats::rnorm(n)
 # simulate true score theta
-theta <- .4*x + .5 * y + rnorm(n) * ( 1 - .4 * x )
+theta <- .4*x + .5 * y + stats::rnorm(n) * ( 1 - .4 * x )
 # simulate observed score by adding measurement error
 sig.e <- rep( sqrt(.40) , n )
-theta_obs <- theta + rnorm( n , sd=sig.e)
+theta_obs <- theta + stats::rnorm( n , sd=sig.e)
 
 # define theta grid for evaluation of density
-theta.list <- mean(theta_obs) + sd(theta_obs) * seq( - 5 , 5 , length=21)
+theta.list <- mean(theta_obs) + stats::sd(theta_obs) * seq( - 5 , 5 , length=21)
 # compute individual likelihood
-f.yi.qk <- dnorm( outer( theta_obs , theta.list , "-" ) / sig.e )
+f.yi.qk <- stats::dnorm( outer( theta_obs , theta.list , "-" ) / sig.e )
 f.yi.qk <- f.yi.qk / rowSums(f.yi.qk)
 # define covariates
 X <- cbind( 1 , x , y )
@@ -239,8 +239,8 @@ mod3b <- plausible.value.imputation.raschtype( f.yi.qk =f.yi.qk ,
 
 # investigate variance of theta conditional on x
 res3 <- sapply( 0:1 , FUN = function(vv){
-        c( var(theta[x==vv]), var(mod3b$pvdraw[x==vv,1]),
-              var(mod3a$pvdraw[x==vv,1]))})
+        c( stats::var(theta[x==vv]), stats::var(mod3b$pvdraw[x==vv,1]),
+              stats::var(mod3a$pvdraw[x==vv,1]))})
 rownames(res3) <- c("true" , "pv(hetero)" , "pv(homog)" )
 colnames(res3) <- c("x=0","x=1")     
   ## > round( res3 , 2 )

@@ -10,10 +10,11 @@ pf.logist.regression <- function( data , itemdiff , perc = seq(5,100,5) ){
     for (pp in 1:P){
         # pp <- 40
         y1 <-  t(data[pp,])[,1]
-        mod.pp <- glm( y1 ~ itemdiff , family = "binomial")
-        fits[pp] <- coef(mod.pp)[2]
+        mod.pp <- stats::glm( y1 ~ itemdiff , family = "binomial")
+        fits[pp] <- stats::coef(mod.pp)[2]
         ind.pp <- which( convdis[,1] %in% pp )
-        if (length(ind.pp) > 0){ cat("\n" ,paste(convdis[ind.pp,2], "%" , sep="") ) ; flush.console()} 
+        if (length(ind.pp) > 0){ cat("\n" ,paste(convdis[ind.pp,2], "%" , sep="") ) ; 
+		utils::flush.console()} 
             }
         cat("\n")
     return( fits)
@@ -50,13 +51,13 @@ pf.l0 <- function( data , wle , itemdiff ){
 	dat1[ is.na(dat1) ] <- 0		
     # I <- ncol(dat1)
 	Iresp <- rowSums( dat1.resp )
-    pmatrix <- plogis( outer( wle , itemdiff , "-" ) )
+    pmatrix <- stats::plogis( outer( wle , itemdiff , "-" ) )
     # l0
     l0 <- rowSums( ( dat1 * log( pmatrix ) + ( 1 - dat1) * log( 1 - pmatrix ) )*dat1.resp / 
 				Iresp )
     # standardized l0
     E.l0 <- rowSums( dat1.resp*( pmatrix * log( pmatrix ) + ( 1 - pmatrix) * log( 1 - pmatrix ) )  )
-    Var.l0 <- rowSums( dat1.resp*( pmatrix * ( 1 - pmatrix ) * ( qlogis( pmatrix ) )^2 )  )
+    Var.l0 <- rowSums( dat1.resp*( pmatrix * ( 1 - pmatrix ) * ( stats::qlogis( pmatrix ) )^2 )  )
     # lz <- ( I*l0 - E.l0 ) / sqrt( Var.l0 )
 	lz <- ( Iresp*l0 - E.l0 ) / sqrt( Var.l0 )
     list( "l0" = l0 , "lz" = lz )
@@ -67,7 +68,7 @@ pf.l0 <- function( data , wle , itemdiff ){
 pf.outfit.infit <- function( data , wle , itemdiff ){ 
     dat1 <- data 
     # I <- ncol(dat1)
-    pmatrix <- plogis( outer( wle , itemdiff , "-" ) )
+    pmatrix <- stats::plogis( outer( wle , itemdiff , "-" ) )
 	
 	dat1.resp <- 1 - is.na(dat1)
 	dat1[ is.na(dat1) ] <- 0
@@ -164,7 +165,7 @@ pf.eci <- function( data , pval , wle , itemdiff){
     P <- nrow(dat1)
     I <- ncol(dat1)
     # calculate matrices
-    P.matr <- plogis( outer( wle , itemdiff2 , "-")  )
+    P.matr <- stats::plogis( outer( wle , itemdiff2 , "-")  )
     X.matr <- data.proc$data 
     n.matr <- outer( rep( 1 , P) , data.proc$pval )
     G.matr <- outer( rep(1,P) , colMeans( P.matr )  )

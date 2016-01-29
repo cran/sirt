@@ -206,21 +206,23 @@ I <- 4      # number of items per testlet
 TT <- 3     # number of testlets
 
 ITT <- I*TT
-b <- round( rnorm( ITT , mean=0 , sd = 1 ) , 2 )
+b <- round( stats::rnorm( ITT , mean=0 , sd = 1 ) , 2 )
 sd0 <- 1 # sd trait
 sdt <- seq( 0 , 2 , len=TT ) # sd testlets
 sdt <- sdt
 
 # simulate theta
-theta <- rnorm( N , sd = sd0 )
+theta <- stats::rnorm( N , sd = sd0 )
 # simulate testlets
 ut <- matrix(0,nrow=N , ncol=TT )
-for (tt in 1:TT){ ut[,tt] <- rnorm( N , sd = sdt[tt] ) }
+for (tt in 1:TT){ 
+    ut[,tt] <- stats::rnorm( N , sd = sdt[tt] ) 
+                }
 ut <- ut[ , rep(1:TT,each=I) ]
 # calculate response probability
-prob <- matrix( pnorm( theta + ut + matrix( b , nrow=N , ncol=ITT , 
-		byrow=TRUE ) ) , N, ITT)
-Y <- (matrix( runif(N*ITT) , N , ITT) < prob )*1
+prob <- matrix( stats::pnorm( theta + ut + matrix( b , nrow=N , ncol=ITT , 
+		    byrow=TRUE ) ) , N, ITT)
+Y <- (matrix( stats::runif(N*ITT) , N , ITT) < prob )*1
 colMeans(Y)
 
 # define testlets
@@ -265,22 +267,24 @@ I <- 3      # number of items per testlet
 TT <- 5    # number of testlets
 
 ITT <- I*TT
-b <- round( rnorm( ITT , mean=0 , sd = 1 ) , 2 )
-a <- round( runif( ITT , 0.5 , 2 ) ,2)
+b <- round( stats::rnorm( ITT , mean=0 , sd = 1 ) , 2 )
+a <- round( stats::runif( ITT , 0.5 , 2 ) ,2)
 sdt <- seq( 0 , 2 , len=TT ) # sd testlets
 sdt <- sdt
 
 # simulate theta
-theta <- rnorm( N , sd = sd0 )
+theta <- stats::rnorm( N , sd = sd0 )
 # simulate testlets
 ut <- matrix(0,nrow=N , ncol=TT )
-for (tt in 1:TT){ ut[,tt] <- rnorm( N , sd = sdt[tt] ) }
+for (tt in 1:TT){ 
+   ut[,tt] <- stats::rnorm( N , sd = sdt[tt] ) 
+                 }
 ut <- ut[ , rep(1:TT,each=I) ]
 # calculate response probability
 bM <- matrix( b , nrow=N , ncol=ITT , byrow=TRUE )
 aM <- matrix( a , nrow=N , ncol=ITT , byrow=TRUE )
-prob <- matrix( pnorm( aM*theta + ut + bM ) , N, ITT)
-Y <- (matrix( runif(N*ITT) , N , ITT) < prob )*1
+prob <- matrix( stats::pnorm( aM*theta + ut + bM ) , N, ITT)
+Y <- (matrix( stats::runif(N*ITT) , N , ITT) < prob )*1
 colMeans(Y)
 
 # define testlets

@@ -114,7 +114,7 @@ N <- 1000
 I <- 10
 b <- seq( -1.5 , 1.5 , len=I )
 a <- rep( c(1,2) , I/2 )
-theta1 <- rnorm(N)
+theta1 <- stats::rnorm(N)
 dat <- sim.raschtype( theta=theta1 , fixed.a =a , b=b )
 
 #***

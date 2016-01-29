@@ -3,7 +3,7 @@
 summary.rasch.copula3 <- function( object , ... ){
     # object      ... object from rasch.copula                #
         cat("-----------------------------------------------------------------\n")
-		d1 <- packageDescription("sirt")
+		d1 <- utils::packageDescription("sirt")
 #		cat( paste( d1$Package , d1$Version ,d1$Date ) , "\n" )
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
 		cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
@@ -52,7 +52,7 @@ summary.rasch.copula3 <- function( object , ... ){
 summary.rasch.copula2 <- function( object , ... ){
     # object      ... object from rasch.copula                #
         cat("-----------------------------------------------------------------\n")
-		d1 <- packageDescription("sirt")
+		d1 <- utils::packageDescription("sirt")
 #		cat( paste( d1$Package , d1$Version ,d1$Date ) , "\n" )
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
 		cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )

@@ -168,8 +168,11 @@ BEGIN_RCPP
      // OUTPUT              
                    
      return Rcpp::List::create(    
-         _["rho"] = rho  , _["thresh"]=thresh ,  
-         _["maxcat"] = maxcat , _["Nobs"]=Nobs , _["Ntot_used"] = Ntot_used  
+         Rcpp::_["rho"] = rho  , 
+         Rcpp::_["thresh"]=thresh ,  
+         Rcpp::_["maxcat"] = maxcat , 
+         Rcpp::_["Nobs"]=Nobs , 
+         Rcpp::_["Ntot_used"] = Ntot_used  
          ) ;    
        
      // Rcout << "prob1 " << prob1 << std::endl;

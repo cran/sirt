@@ -155,7 +155,7 @@ In the extreme case of a very small \eqn{\xi_p = \varepsilon > 0} and
         \frac{ \exp( \theta_0 - b_i ) }{ 1 + \exp( \theta_0 - b_i ) }
                 }
 
-See Erosheva et al. (2002), Erosheva (2005, 2006) or Galyart (in press)
+See Erosheva et al. (2002), Erosheva (2005, 2006) or Galyart (2015)
 for a comparison of grade of membership models with latent trait models 
 and latent class models.
 
@@ -217,10 +217,10 @@ Describing disability through individual-level mixture models
 for multivariate binary data. \emph{Annals of Applied Statistics},
 \bold{1}, 502-537.
 
-Galyardt, A. (in press). 
+Galyardt, A. (2015). 
 Interpreting mixed membership models: Implications of Erosheva's representation 
-theorem. In E. M. Airoldi, D. Blei, E. A. Erosheva, & S. E. Fienberg:
-\emph{Handbook of Mixed Membership Models}. Chapman & Hall.
+theorem. In E. M. Airoldi, D. Blei, E. A. Erosheva, & S. E. Fienberg (Eds.).
+\emph{Handbook of Mixed Membership Models} (pp. 39-65). Chapman & Hall.
 }
 \author{
 Alexander Robitzsch
@@ -320,8 +320,8 @@ summary(mod4)
 # define an ordinary 2 latent class model
 set.seed(8765)
 I <- 10
-prob.class1 <- runif( I , 0 , .35 )
-prob.class2 <- runif( I , .70 , .95 )
+prob.class1 <- stats::runif( I , 0 , .35 )
+prob.class2 <- stats::runif( I , .70 , .95 )
 probs <- cbind( prob.class1 , prob.class2 )
 
 # define classes 
@@ -332,7 +332,7 @@ latent.class <- c( rep( 1 , 1/4*N ) , rep( 2,3/4*N ) )
 dat <- matrix( NA , nrow=N , ncol=I )
 for (ii in 1:I){    
     dat[,ii] <- probs[ ii , latent.class ]
-    dat[,ii] <- 1 * ( runif(N) < dat[,ii] )
+    dat[,ii] <- 1 * ( stats::runif(N) < dat[,ii] )
         }
 colnames(dat) <- paste0( "I" , 1:I) 
 
@@ -353,8 +353,8 @@ cbind( mod2$theta.k , mod2$pi.k )
 # define a 2-class model with graded membership
 set.seed(8765)
 I <- 10
-prob.class1 <- runif( I , 0 , .35 )
-prob.class2 <- runif( I , .70 , .95 )
+prob.class1 <- stats::runif( I , 0 , .35 )
+prob.class2 <- stats::runif( I , .70 , .95 )
 prob.class3 <- .5*prob.class1+.5*prob.class2  # probabilities for 'fuzzy class'
 probs <- cbind( prob.class1 , prob.class2 , prob.class3)
 # define classes 
@@ -364,7 +364,7 @@ latent.class <- c( rep(1,round(1/3*N)),rep(2,round(1/2*N)),rep(3,round(1/6*N)))
 dat <- matrix( NA , nrow=N , ncol=I )
 for (ii in 1:I){
     dat[,ii] <- probs[ ii , latent.class ]
-    dat[,ii] <- 1 * ( runif(N) < dat[,ii] )
+    dat[,ii] <- 1 * ( stats::runif(N) < dat[,ii] )
         }
 colnames(dat) <- paste0( "I" , 1:I) 
 
@@ -396,8 +396,8 @@ par <- c("a1" = -1 , "a2" = 1 )
 est <- c(TRUE, TRUE)
 P.gom <- function(par,Theta,ncat){
     # GOM for two extremal classes
-    pext1 <- plogis(par[1])
-    pext2 <- plogis(par[2]) 
+    pext1 <- stats::plogis(par[1])
+    pext2 <- stats::plogis(par[2]) 
     P1 <- Theta[,1]*pext1 + Theta[,2]*pext2     
     cbind(1-P1, P1)
 }
@@ -436,7 +436,7 @@ round( cbind( "sirt"  = mod2$pi.k , "mirt" = mod2m@Prior[[1]] ) , 5 )
   ##   [3,] 0.48542 0.48584
 # compare estimated item parameters
 dfr <- data.frame( "sirt" = mod2$item[,4:5] )
-dfr$mirt <- apply(cmod2m$coef[ , c("a1" , "a2") ] , 2 , plogis )
+dfr$mirt <- apply(cmod2m$coef[ , c("a1" , "a2") ] , 2 , stats::plogis )
 round(dfr,4)
   ##      sirt.lam.Cl1 sirt.lam.Cl2 mirt.a1 mirt.a2
   ##   1        0.1157       0.8935  0.1177  0.8934

@@ -41,7 +41,7 @@ rm.facets.mle <- function( data , a , b , theta , WLE=FALSE ,
 		if (progress){
 			cat("* Iteration" , iter , ":" , "maximum parameter change" ,
 				round( conv, 5 ) , "\n") 
-			flush.console();
+			utils::flush.console();
 					}	
 		iter <- iter + 1					
 			}

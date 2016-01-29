@@ -258,7 +258,7 @@ set.seed(5698)
 I <- 11                             # number of items
 n <- 3000                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
-theta <- rnorm( n , sd = 1 )        # person abilities
+theta <- stats::rnorm( n , sd = 1 ) # person abilities
 # define item clusters
 itemcluster <- rep(0,I)
 itemcluster[ c(3,5 )] <- 1
@@ -300,7 +300,7 @@ I <- 12                             # number of items
 n <- 450                            # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
 b <- sample(b)                      # sample item difficulties
-theta <- rnorm( n , sd = 1 )        # person abilities
+theta <- stats::rnorm( n , sd = 1 ) # person abilities
 # itemcluster
 itemcluster <- rep(0,I)
 itemcluster[ 1:4 ] <- 1
@@ -334,10 +334,10 @@ set.seed(5698)
 I <- 9
 n <- 1500                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
-theta0 <- rnorm( n , sd = sqrt( .6 ) )
+theta0 <- stats::rnorm( n , sd = sqrt( .6 ) )
 
 #*** Dimension 1
-theta <- theta0 + rnorm( n , sd = sqrt( .4 ) )        # person abilities
+theta <- theta0 + stats::rnorm( n , sd = sqrt( .4 ) )   # person abilities
 # itemcluster
 itemcluster <- rep(0,I)
 itemcluster[ c(3,5 )] <- 1
@@ -354,7 +354,7 @@ mod0a <- rasch.copula2( dat1 , itemcluster = itemcluster1)
 summary(mod0a)
 
 #*** Dimension 2
-theta <- theta0 + rnorm( n , sd = sqrt( .8 ) )        # person abilities
+theta <- theta0 + stats::rnorm( n , sd = sqrt( .8 ) )        # person abilities
 # itemcluster
 itemcluster <- rep(0,I)
 itemcluster[ c(3,7,8 )] <- 1
@@ -389,7 +389,7 @@ set.seed(5698)
 I <- 11                             # number of items
 n <- 3000                           # number of persons
 b <- seq(-2,2, len=I)               # item difficulties
-theta <- rnorm( n , sd = 1.3 )        # person abilities
+theta <- stats::rnorm( n, sd=1.3 )  # person abilities
 # define item clusters
 itemcluster <- rep(0,I)
 itemcluster[ c(3,5)] <- 1
@@ -433,8 +433,8 @@ P.copula2 <- function(par,Theta, ncat){
      b2 <- par[2]
      a1 <- par[3]
      ldelta <- par[4]
-     P1 <- plogis( a1*(Theta - b1 ) )
-     P2 <- plogis( a1*(Theta - b2 ) )
+     P1 <- stats::plogis( a1*(Theta - b1 ) )
+     P2 <- stats::plogis( a1*(Theta - b2 ) )
      Q1 <- 1-P1
      Q2 <- 1-P2
      # define vector-wise minimum function
@@ -454,7 +454,7 @@ P.copula2 <- function(par,Theta, ncat){
      F11 <- 1+0*Q1          # = minf2(1,1)
      F_dep <- c(F00,F10,F01,F11)
      # compute mixture distribution
-     delta <- plogis(ldelta)     
+     delta <- stats::plogis(ldelta)     
      F_tot <- (1-delta)*F_ind + delta * F_dep
      # recalculate probabilities of mixture distribution
      L1 <- length(Q1)
@@ -492,7 +492,7 @@ round( c("sirt"=mod1a$item$a[1] , "mirt"=cmod$a1[1] ) , 4 )
   ##     sirt   mirt 
   ##   1.2845 1.2862 
 # compare delta parameter
-round( c("sirt"=mod1a$item$delta[7] , "mirt"= plogis( cmod$ldelta[7] ) ) , 4 )
+round( c("sirt"=mod1a$item$delta[7] , "mirt"= stats::plogis( cmod$ldelta[7] ) ) , 4 )
   ##     sirt   mirt 
   ##   0.6298 0.6297 
 # compare thresholds a*b

@@ -203,9 +203,9 @@ b <- seq(-2,2, len=I)   # item difficulties
 n <- 2000       # number of students
 
 # simulate theta and covariates
-theta <- rnorm( n )
-x <- .7 * theta + rnorm( n , .5 )
-y <- .2 * x+ .3*theta + rnorm( n , .4 )
+theta <- stats::rnorm( n )
+x <- .7 * theta + stats::rnorm( n , .5 )
+y <- .2 * x+ .3*theta + stats::rnorm( n , .4 )
 dfr <- data.frame( theta , 1 , x , y )
 
 # simulate Rasch model
@@ -226,7 +226,7 @@ mod <- latent.regression.em.raschtype( data = dat1 , X  = dfr[,-1] , b = b )
   ##                 R2 = 0.3469 
 
 # compare with linear model (based on true scores)
-summary( lm( theta  ~ x + y , data = dfr ) )
+summary( stats::lm( theta  ~ x + y , data = dfr ) )
   ## Coefficients:
   ##             Estimate Std. Error t value Pr(>|t|)    
   ## (Intercept) -0.27821    0.01984  -14.02   <2e-16 ***
@@ -266,19 +266,19 @@ mod1 <- latent.regression.em.raschtype( data = dat1 , X  = dfr[,-1] ,
 
 set.seed(8766)
 N <- 4000       # number of persons
-X <- rnorm(N)           # independent variable
-Z <- rnorm(N)           # independent variable
-y <- .45 * X + .25 * Z + rnorm(N)   # dependent variable true score
-sig.e <- runif( N , .5 , .6 )       # measurement error standard deviation
-yast <- y + rnorm( N , sd = sig.e ) # dependent variable measured with error 
+X <- stats::rnorm(N)           # independent variable
+Z <- stats::rnorm(N)           # independent variable
+y <- .45 * X + .25 * Z + stats::rnorm(N)   # dependent variable true score
+sig.e <- stats::runif( N , .5 , .6 )       # measurement error standard deviation
+yast <- y + stats::rnorm( N , sd = sig.e ) # dependent variable measured with error 
 
 #****
 # Model 1: Estimation with latent.regression.em.raschtype using 
 #          individual likelihood
 # define theta grid for evaluation of density
-theta.list <- mean(yast) + sd(yast) * seq( - 5 , 5 , length=21)
+theta.list <- mean(yast) + stats::sd(yast) * seq( - 5 , 5 , length=21)
 # compute individual likelihood
-f.yi.qk <- dnorm( outer( yast , theta.list , "-" ) / sig.e )
+f.yi.qk <- stats::dnorm( outer( yast , theta.list , "-" ) / sig.e )
 f.yi.qk <- f.yi.qk / rowSums(f.yi.qk)
 # define predictor matrix
 X1 <- as.matrix(data.frame( "intercept"=1 , "X"=X , "Z"=Z ))
@@ -318,7 +318,7 @@ res2 <- latent.regression.em.normal( y = yast , sig.e = sig.e , X = X1)
 
 #***
 # Model 3: Regression model based on true scores y
-mod3 <- lm( y ~ X + Z )
+mod3 <- stats::lm( y ~ X + Z )
 summary(mod3)
   ##   Coefficients:
   ##               Estimate Std. Error t value Pr(>|t|)    
@@ -331,7 +331,7 @@ summary(mod3)
 
 #***
 # Model 4: Regression model based on observed scores yast
-mod4 <- lm( yast ~ X + Z )
+mod4 <- stats::lm( yast ~ X + Z )
 summary(mod4)
   ##   Coefficients:
   ##               Estimate Std. Error t value Pr(>|t|)    

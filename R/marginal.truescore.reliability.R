@@ -4,7 +4,7 @@ function(  b , a=1+0*b , c =0*b , d=1+0*b ,
 
     TT <- length(theta.k)
     I <- length(b)
-    phi.k <- dnorm( theta.k , mean=mean.trait , sd= sd.trait )
+    phi.k <- stats::dnorm( theta.k , mean=mean.trait , sd= sd.trait )
     phi.k <- phi.k / sum( phi.k )
     phi.kM <- matrix( phi.k , nrow=TT , ncol=I )
     
@@ -15,7 +15,7 @@ function(  b , a=1+0*b , c =0*b , d=1+0*b ,
     
     # item response functions
     theta.kM <- matrix( theta.k , nrow=TT , ncol=I )
-    icc.theta <- cM + (dM-cM)*plogis( aM*(theta.kM - bM ) )
+    icc.theta <- cM + (dM-cM)* stats::plogis( aM*(theta.kM - bM ) )
     
     # calculate pi_i (predicted probabilities)
     pi.i <- colSums( icc.theta * phi.kM )

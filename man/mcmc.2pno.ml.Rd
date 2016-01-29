@@ -208,7 +208,7 @@ S3 methods: \code{\link{summary.mcmc.sirt}}, \code{\link{plot.mcmc.sirt}}
 For MCMC estimation of three-parameter (testlet) models see 
 \code{\link{mcmc.3pno.testlet}}.	
 
-See also the \pkg{MLIRT} package (\url{http://www.jean-paulfox.com}).
+See also the \pkg{MLIRT} package (http://www.jean-paulfox.com).
 
 For more flexible estimation of multilevel IRT models see the
 \pkg{MCMCglmm} and \pkg{lme4} packages.
@@ -305,8 +305,8 @@ G <- 100            # number of groups
 n <- 20             # number of persons within a group
 I <- 12             # number of items
 #*** simuate theta
-theta2 <- rnorm( G , sd = sqrt(sig2.lev2) )
-theta1 <- rnorm( n*G , sd =  sqrt(sig2.lev1) )
+theta2 <- stats::rnorm( G , sd = sqrt(sig2.lev2) )
+theta1 <- stats::rnorm( n*G , sd =  sqrt(sig2.lev1) )
 theta  <- theta1 + rep( theta2 , each=n )
 #*** item difficulties
 b <- seq( -2 , 2 , len=I )
@@ -316,12 +316,12 @@ group <- 1000 + rep(1:G , each=n )
 sigma.item <- rep(0,I)
 sigma.item[c(3,5)] <- 1
 #*** simulate group specific item difficulties
-b.class <- sapply( sigma.item , FUN = function(sii){ rnorm( G , sd = sii ) } )
+b.class <- sapply( sigma.item , FUN = function(sii){ stats::rnorm( G , sd = sii ) } )
 b.class <- b.class[ rep( 1:G ,each=n ) , ]
 b <- matrix( b , n*G , I , byrow=TRUE ) + b.class
 #*** simulate item responses
-m1 <- pnorm( theta - b ) 
-dat <- 1 * ( m1 > matrix( runif( n*G*I ) , n*G , I ) )
+m1 <- stats::pnorm( theta - b ) 
+dat <- 1 * ( m1 > matrix( stats::runif( n*G*I ) , n*G , I ) )
 
 #*** estimate model
 mod <- mcmc.2pno.ml( dat , group=group , burnin=burnin , iter=iter , 

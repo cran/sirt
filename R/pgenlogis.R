@@ -21,7 +21,7 @@ pgenlogis <- function( x , alpha1 = 0 , alpha2 = 0 ){
     if ( length(indp) >  0 ){ w[ indp ] <- y }
     if ( length(indn) >  0 ){ w[ indn ] <- y1    }
     # transform to inverse logistic probability
-    y <- plogis(w)
+    y <- stats::plogis(w)
     return(y)
         }
 #............................................................

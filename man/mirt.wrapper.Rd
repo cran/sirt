@@ -288,9 +288,9 @@ post1 <- mirt.wrapper.posterior(mod1)
 
 #*** simulate data (copy from the multipleGroup manual site in mirt package)
 set.seed(1234)
-a <- matrix(c(abs(rnorm(5,1,.3)), rep(0,15),abs(rnorm(5,1,.3)),
-          rep(0,15),abs(rnorm(5,1,.3))), 15, 3)
-d <- matrix(rnorm(15,0,.7),ncol=1)
+a <- matrix(c(abs( stats::rnorm(5,1,.3)), rep(0,15),abs( stats::rnorm(5,1,.3)),
+          rep(0,15),abs( stats::rnorm(5,1,.3))), 15, 3)
+d <- matrix( stats::rnorm(15,0,.7),ncol=1)
 mu <- c(-.4, -.7, .1)
 sigma <- matrix(c(1.21,.297,1.232,.297,.81,.252,1.232,.252,1.96),3,3)
 itemtype <- rep("dich", nrow(a))

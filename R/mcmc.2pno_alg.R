@@ -6,13 +6,13 @@
     # calculate means
     mij <- aM * theta - bM
     # simulate uniform data
-    rij <- matrix( runif( N*I ) , nrow=N , ncol=I )
+    rij <- matrix( stats::runif( N*I ) , nrow=N , ncol=I )
     # calculate corresponding value
-    pl <- pnorm( threshlow , mean=mij) 
-    pu <- pnorm( threshupp , mean=mij)
+    pl <- stats::pnorm( threshlow , mean=mij) 
+    pu <- stats::pnorm( threshupp , mean=mij)
     pij <- pl + (pu-pl)*rij
     # simulate Z
-    Zij <- qnorm( pij , mean = mij )
+    Zij <- stats::qnorm( pij , mean = mij )
     return(Zij)
         }
 		
@@ -21,7 +21,7 @@
 .draw.theta.2pl <- function( aM , bM , N , I , Z ){
     vtheta <- 1 / ( rowSums( aM^2 ) + 1  )
     mtheta <- rowSums( aM * ( Z + bM ) ) * vtheta
-    theta <- rnorm( N , mean=mtheta , sd = sqrt( vtheta ) )
+    theta <- stats::rnorm( N , mean=mtheta , sd = sqrt( vtheta ) )
 #	v1 <- var(mtheta)
 #	EAP.rel <- v1 / ( mean(vtheta) + v1 )	
 #	res <- list("theta" = theta , "EAP.rel" = EAP.rel )
@@ -63,7 +63,7 @@
 			}		
     #--------------							
     # draw item parameters
-    ipars <- rmvnorm( I , sigma=Sigma ) + mj
+    ipars <- mvtnorm::rmvnorm( I , sigma=Sigma ) + mj
     a <- ipars[,1]
     b <- ipars[,2]
     return( list( "a"=a , "b"=b) )
@@ -74,7 +74,7 @@
 # compute deviance
 .mcmc.deviance.2pl <- function( aM , bM , theta , dat , dat.resp , 
 				weights , eps ){
-	pij <- pnorm( aM * theta - bM )
+	pij <- stats::pnorm( aM * theta - bM )
 	llij <- log( dat.resp * ( dat*pij + ( 1-dat )*(1-pij) ) + eps )
 	if ( is.null( weights ) ){ deviance <- -2*sum( llij ) }
 	if ( ! is.null( weights ) ){ 
@@ -109,7 +109,7 @@
 .mcmc.person.2pno <- function( theta.chain , weights ){	
 	###################
 	# EAP reliability
-		v1 <- var( colMeans( theta.chain ) )
+		v1 <- stats::var( colMeans( theta.chain ) )
 		if ( is.null(weights) ){ EAP.rel <- v1 / 1 }
 		if ( ! is.null(weights) ){ 
 				w1 <- weights / sum(weights )

@@ -57,10 +57,10 @@ rasch.evm.pcm <- function( dat , jackunits=20 , weights=NULL ,
 		desc <- data.frame( "Nobs" = as.numeric(table(group)) , "G"=G )
 		desc$N.items <- ncol(dat)
 		desc$N.pars <- nrow(dfr)
-		desc$sum.weights <- aggregate( weights , list( group) , sum)[,2]
+		desc$sum.weights <- stats::aggregate( weights , list( group) , sum)[,2]
 		m1 <- rowSums( dat.resp )
 		desc$M.Nitems <- mean(m1)
-		desc$SD.Nitems <- sd(m1)		
+		desc$SD.Nitems <- stats::sd(m1)		
 		desc$min.Nitems <- min(m1)		
 		desc$max.Nitems <- max(m1)				
 		}	

@@ -46,7 +46,7 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
 		dat1 <- data.frame( 1+0*y[,1] , 1 )
 					}
 	LT <- length( theta.list )
-	pi.k <- dnorm( theta.list )
+	pi.k <- stats::dnorm( theta.list )
 	theta.kM <- matrix( theta.list , nrow= nrow(X) ,
 					ncol=length(theta.list)  , byrow=TRUE )
 	theta.kM2 <- theta.kM^2
@@ -66,15 +66,15 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
 		EAP <- rowSums( theta.kM * post )
 		SE.EAP <- sqrt( rowSums( theta.kM2 * post ) - EAP^2	 )
 		# estimate latent regression model (linear model)
-        mod <- lm( EAP ~ 0 + X , weights = weights)
-        cmod <- coef(mod)
+        mod <- stats::lm( EAP ~ 0 + X , weights = weights)
+        cmod <- stats::coef(mod)
         # Calculation of SD
-        sigma <- sqrt( mean( weights* ( SE.EAP^2 + resid(mod)^2 ) ) )
+        sigma <- sqrt( mean( weights* ( SE.EAP^2 + stats::resid(mod)^2 ) ) )
 		# fitted values
-		fmod <- fitted(mod)
-		sigma.res <- sd(resid(mod))		
+		fmod <- stats::fitted(mod)
+		sigma.res <- stats::sd( stats::resid(mod) )		
 		h1 <- theta.kM - matrix( fmod ,  nrow=n , ncol=LT )
-		prior <- dnorm( h1 , sd = sigma )
+		prior <- stats::dnorm( h1 , sd = sigma )
 		prior <- prior / rowSums( prior )
 		post <- f.yi.qk * prior
 		post <- post / rowSums( post )
@@ -113,16 +113,16 @@ latent.regression.em.raschtype <- function( data=NULL , f.yi.qk=NULL , X ,
 	scoefs[, "se.simple"] <- sqrt( diag( vcov.simple) )
 	scoefs[, "se"] <- sqrt( diag( vcov.latent) )
 	# explained variance
-	explvar <- var( fmod )
+	explvar <- stats::var( fmod )
 #	totalvar <- explvar + sigma^2
 	totalvar <- explvar + sigma^2
 	rsquared <- explvar / totalvar
-	scoefs$beta <- scoefs$est / sqrt( totalvar ) * apply( X , 2 , sd )
+	scoefs$beta <- scoefs$est / sqrt( totalvar ) * apply( X , 2 , stats::sd )
 	scoefs$fmi <- 1 -  scoefs$se.simple^2 / scoefs$se^2
 	scoefs[,"N.simple" ] <- nrow(X)
 	scoefs[,"pseudoN.latent"] <- sum( error.weights )  
     scoefs$t <- scoefs$est / scoefs$se
-    scoefs$p <- 2 * ( 1 - pnorm( abs( scoefs$t ) ) )
+    scoefs$p <- 2 * ( 1 - stats::pnorm( abs( scoefs$t ) ) )
     if ( ! is.null( colnames(X) ) ){ rownames(scoefs) <- colnames(X) } # use column names of X
 	if (progress){
 		cat("\nRegression Parameters\n\n")

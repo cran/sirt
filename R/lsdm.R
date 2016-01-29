@@ -60,20 +60,21 @@ lsdm <- function( data , Qmatrix , theta = qnorm(seq(.0005,.9995,len=100)) , qua
 		# fit function for every L (for every theta point)
         log.arc0 <- sapply( 1:L , FUN = function(tt){
             # unrestricted linear model
-            mod1.tt <- lm( logdata[, tt ] ~ 0 + as.matrix(Qmatrix ) )
+            mod1.tt <- stats::lm( logdata[, tt ] ~ 0 + as.matrix(Qmatrix ) )
 			# include disjunctive version here
 			# P = A1 * A2
 			# log(P) = log(A1) + log(A2) for every tt
 			# including weights leads to
 			# log(P) = w1 * log(A1) + w2 * log(A2)
             # restricted linear model
-            mod2.tt <- ic.infer::orlm( mod1.tt , index = 1:K , ui )
+#            mod2.tt <- ic.infer::orlm( mod1.tt , index = 1:K , ui )
+			mod2.tt <- ic.infer::orlm.lm( mod1.tt , index = 1:K , ui )			
 			mod2.tt$b.restr
                 } )	
 		#*******************************************
 		# estimate "ordinary" LLTM
 #        lltm.res1 <- lm( as.numeric(icc.pars$b.1PL) ~ as.matrix(Qmatrix ) )
-        lltm.res1 <- lm( as.numeric(icc.pars$b.1PL) ~ 0 + as.matrix(Qmatrix ) )
+        lltm.res1 <- stats::lm( as.numeric(icc.pars$b.1PL) ~ 0 + as.matrix(Qmatrix ) )
         slltm.res1 <- summary(lltm.res1)
         cat( display.separate , "\n" )
         # exponentiate attribute response curve
@@ -103,7 +104,7 @@ lsdm <- function( data , Qmatrix , theta = qnorm(seq(.0005,.9995,len=100)) , qua
 #			x.ii <- x.ii * m1		
 #            if (nrow(x.ii) == 1 ){ x.ii <- x.ii[1,] } else { x.ii <- rowSums( x.ii ) }
             y.ii <- as.numeric(logdata[ii,])
-            mod1.ii <- lm( y.ii ~ 0 + x.ii )	
+            mod1.ii <- stats::lm( y.ii ~ 0 + x.ii )	
 #            ui <- diag( c( - 1 ,  -1 ) )
 #            ci <-  c( 0 , -1 )
 #            mod2.ii <- orlm( mod1.ii , index = 1:2 , ui , ci)
@@ -151,7 +152,7 @@ lsdm <- function( data , Qmatrix , theta = qnorm(seq(.0005,.9995,len=100)) , qua
         class(res) <- "lsdm"
         return( res )
         }
-##NS S3method(summary,lsdm)
+
 #.............................
 # summary for LSDM function   
 summary.lsdm <- function( object , ... ){

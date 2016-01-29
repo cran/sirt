@@ -1,9 +1,9 @@
-#######################################
-# attach all elements in an environment   
+##################################################
+# attach all elements of an object in an environment   
 .attach.environment.sirt <- function( res , envir ){
-#	e1 <- environment()
-	CC <- length(res)
+	CC <- base::length(res)
 	for (cc in 1:CC){
-		assign( names(res)[cc] , res[[cc]] , envir=envir )		
+		base::assign( base::names(res)[cc] , res[[cc]] , envir=envir )		
 					}
 			}
+##################################################

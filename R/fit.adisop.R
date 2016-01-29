@@ -23,7 +23,7 @@ fit.adisop <- function( freq.correct , wgt , conv = .0001 ,
 	dfr0$studPitem.p <- dfr0$stud.p + dfr0$item.p                    
 	dfr0 <- dfr0[ order( dfr0$p0) , ]
 #	dfr0$psort.index <- seq(1 , nrow(dfr0)) #  / nrow(dfr0) 
-	dfr0$psort.index <- rank( dfr0$p0 )
+	dfr0$psort.index <- base::rank( dfr0$p0 )
 	# define matrix I
 	I.matrix <- 0*M1
 	I.matrix[ as.matrix(dfr0[ , c("stud.index" , "item.index" ) ] ) ] <- 
@@ -69,7 +69,7 @@ fit.adisop <- function( freq.correct , wgt , conv = .0001 ,
 		iter <- iter + 1
 		if (progress){ 
 				cat( "Iteration" , iter , "- Deviation =" ,  round( deviation , 6 ) , "\n")
-				flush.console()
+				utils::flush.console()
 					}					
 				}  # end algorithm 
     #########################				

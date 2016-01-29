@@ -2,7 +2,7 @@
 summary.fuzcluster <- function( object,... ){
     # object      ... object from rasch.mml                #
     cat("---------------------------------------------------------------------------------------------------------- \n")
-    d1 <- packageDescription("sirt")
+    d1 <- utils::packageDescription("sirt")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 	cat( "Date of Analysis:" , paste( object$s2 ) , "\n" )
     cat( "Random starts = " , object$nstarts , "\n" )    

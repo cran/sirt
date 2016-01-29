@@ -95,7 +95,7 @@ rasch.pml2 <- function( dat , est.b = seq( 1 , ncol(dat) ) ,
     #*******
     # evaluate pairwise likelihood
 	if ( is.null(b.init)){ 
-		b <- b0 <- - qnorm( colMeans( dat0 , na.rm=T) )
+		b <- b0 <- - stats::qnorm( colMeans( dat0 , na.rm=T) )
      if ( sum( est.b != 	seq( 1 , ncol(dat) ))>0 ){
 		b <- 0*b
 				}

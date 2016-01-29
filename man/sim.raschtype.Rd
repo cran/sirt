@@ -84,7 +84,7 @@ Alexander Robitzsch
 N <- 500    # number of persons
 I <- 11     # number of items
 b <- seq( -2 , 2 , length=I )
-dat <- sim.raschtype( rnorm( N ) , b )
+dat <- sim.raschtype( stats::rnorm( N ) , b )
 colnames(dat) <- paste( "I" , 1:I , sep="")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

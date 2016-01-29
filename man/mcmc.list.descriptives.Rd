@@ -58,26 +58,26 @@ miceadds::library_install("R2WinBUGS")
 # (1) simulate data
 set.seed(8765)
 N <- 500
-x1 <- rnorm(N)
-x2 <- rnorm(N)
-y <- 1*( plogis( -.6 + .7*x1 + 1.1 *x2 ) > runif(N) )
+x1 <- stats::rnorm(N)
+x2 <- stats::rnorm(N)
+y <- 1*( stats::plogis( -.6 + .7*x1 + 1.1 *x2 ) > stats::runif(N) )
 
 #***************************************
 # (2) estimate logistic regression with glm
-mod <- glm( y ~ x1 + x2 , family="binomial" )
+mod <- stats::glm( y ~ x1 + x2 , family="binomial" )
 summary(mod)
 
 #***************************************
 # (3) estimate model with rcppbugs package
-b <- rcppbugs::mcmc.normal(rnorm(3),mu=0,tau=0.0001)
-y.hat <- rcppbugs::deterministic(function(x1,x2,b) { plogis( b[1] + b[2]*x1 + b[3]*x2 ) }, 
-             x1 , x2 , b)
+b <- rcppbugs::mcmc.normal( stats::rnorm(3),mu=0,tau=0.0001)
+y.hat <- rcppbugs::deterministic(function(x1,x2,b) { 
+             stats::plogis( b[1] + b[2]*x1 + b[3]*x2 ) }, x1 , x2 , b)
 y.lik <- rcppbugs::mcmc.bernoulli( y , p = y.hat, observed = TRUE)
 m <- rcppbugs::create.model(b, y.hat, y.lik)
 
 #*** estimate model in rcppbugs; 5000 iterations, 1000 burnin iterations
 ans <- rcppbugs::run.model(m, iterations=5000, burn=1000, adapt=1000, thin=5)
-print(rcppbugs::get.ar(ans))   # get acceptance rate
+print(rcppbugs::get.ar(ans))     # get acceptance rate
 print(apply(ans[["b"]],2,mean))  # get means of posterior
 
 #*** convert rcppbugs into mcmclist object
@@ -86,7 +86,7 @@ colnames(mcmcobj) <- paste0("b",1:3)
 mcmcobj <- as.matrix(mcmcobj)
 class(mcmcobj) <- "mcmc"
 attr(mcmcobj, "mcpar") <- c( 1 , nrow(mcmcobj) , 1 )
-mcmcobj <- as.mcmc.list( mcmcobj )
+mcmcobj <- coda::as.mcmc.list( mcmcobj )
 
 # plot results
 plot(mcmcobj)

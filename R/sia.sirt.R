@@ -37,7 +37,7 @@ sia.sirt <- function(dat , significance=.85 ){
 	# implicative intensity t value
 	impl_int_t <- sqrt( ntot ) * impl_int_es
 	# significance value: implicative intensity
-	impl_int <- 1 - pnorm( impl_int_t )
+	impl_int <- 1 - stats::pnorm( impl_int_t )
 	# look at significant implications
 	impl_significance <- 1 * ( impl_int > significance )
 	conf_loev <- p11 / outer( p1 , rep(1,I) )

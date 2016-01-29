@@ -138,7 +138,7 @@ boxplot( msc$person$mpsc ~ msc$person$score )
 
 library("CDM")
 data( data.Students , package="CDM")
-dat <- na.omit(data.Students[ , -c(1:2) ])
+dat <- stats::na.omit(data.Students[ , -c(1:2) ])
 
 # Scoring according to the ISOP model
 msc <- isop.scoring( dat )

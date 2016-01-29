@@ -108,7 +108,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 				npformula0 <- npformula
 				npformula <- list( 1:I) 							
 				for (ii in 1:I){ 
-					npformula[[ii]] <- as.formula( npformula0[ii] ) 
+					npformula[[ii]] <- stats::as.formula( npformula0[ii] ) 
 								}
 								}
 				npmodel <- list(1:I)
@@ -179,7 +179,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
             t1 <- table(sort(group) )
 			group.orig <- group
 			group <- match( group.orig , sort(unique( group.orig)) )	
-			ag1 <- aggregate( group , list( group.orig) , mean )
+			ag1 <- stats::aggregate( group , list( group.orig) , mean )
 			colnames(ag1) <- c("group" , "groupindex" )
                             }
     # center trait: if there exists constraints, then do not center
@@ -314,11 +314,11 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					}	
         # probability weights at theta.k
         if (D==1){
-			pi.k <- dnorm( theta.k ) 
+			pi.k <- stats::dnorm( theta.k ) 
 			pi.k <- pi.k / sum( pi.k )
 				}
 		if (D > 1){
-			pi.k <- dmvnorm( theta.k , mean = rep(0,D) , sigma = Sigma.cov )	
+			pi.k <- mvtnorm::dmvnorm( theta.k , mean = rep(0,D) , sigma = Sigma.cov )	
 			pi.k <- pi.k / sum( pi.k )
 				}		
 		G <- 1
@@ -335,7 +335,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		sd.trait <- mean.trait <- rep(0,G)					
         # initial estimates for item difficulties
         if ( is.null(b.init) & is.null(est.b) ){   
-			b <- - qlogis( colMeans( dat , na.rm=T ) )
+			b <- - stats::qlogis( colMeans( dat , na.rm=T ) )
 				if ( FALSE ){ 			
 #				if ( ramsay.qm ){ 			
 						b <-   - log( ( fixed.K * colSums( dat , na.rm=T ) ) / 
@@ -386,7 +386,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					dfr0 <- data.frame( "theta" = theta.k , "y" = 0 , "wgt" = NA )
 					dafr <- data.frame( rbind( dfr0 , dfr1 ) )
 					theta <- dafr$theta.k
-					ICC_model_matrix[[ii]] <- model.matrix( npformula[[ii]] , dafr )	
+					ICC_model_matrix[[ii]] <- stats::model.matrix( npformula[[ii]] , dafr )	
 						}
 				}
 		# inits theta.k
@@ -413,9 +413,12 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		#***** module missing1
 		# if ( ! is.null( est.delta ) ){
 		est_delta <- sum( 1-is.na(est.delta) ) > 0
-		
-								
-								
+															
+		if ( center.b & is.null(Qmatrix) ){
+				Qmatrix <- matrix( 1 , nrow=I , ncol=1)
+				theta.k <- matrix( theta.k , ncol=1 )
+				center.trait <- FALSE
+					}
 								
 		#################################################	
         #--------------------------------#
@@ -426,7 +429,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		  cat("Iteration" , iter+1 , "   " , paste( Sys.time() ) , "\n" )
           flush.console()
 					}
-# zz0 <- Sys.time()		
+ zz0 <- Sys.time()		
 	
 
 				b0 <- b
@@ -456,7 +459,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 									 }									 								 									 
 				if (npirt ){
 					if (iter == 0){	
-							pjk <- plogis( outer( theta.k , b , "-" ) ) 
+							pjk <- stats::plogis( outer( theta.k , b , "-" ) ) 
 								}
 					e1 <- .e.step.ramsay( dat1 , dat2 , dat2.resp , theta.k , pi.k , I , n , b ,
 									fixed.K , group , pow.qm = pow.qm , ind.ii.list ,
@@ -604,7 +607,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 						d.change <- .est.mean( dat1.gg , f.yi.qk.gg , X1 , pi.k , pi.k0 , gg ,
 								mean.trait , sd.trait , theta.k , h)
 						mean.trait[gg] <- mean.trait[gg] + d.change		
-                        pi.k[,gg] <- dnorm( theta.k , mean = mean.trait[gg] , sd = sd.trait[gg] )
+                        pi.k[,gg] <- stats::dnorm( theta.k , mean = mean.trait[gg] , sd = sd.trait[gg] )
                         pi.k[,gg] <- pi.k[,gg] / sum( pi.k[,gg] )
 													}
 						if (center.trait){ mean.trait[1] <- 0 }			
@@ -618,7 +621,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					if ( ( ! is.null(est.a) ) | ( irtmodel == "npirt" )  ){ 
 							sd.trait[1] <- 1 
 									}
-                        pi.k[,gg] <- dnorm( theta.k , mean = mean.trait[gg] , sd = sd.trait[gg] )
+                        pi.k[,gg] <- stats::dnorm( theta.k , mean = mean.trait[gg] , sd = sd.trait[gg] )
                         pi.k[,gg] <- pi.k[,gg] / sum( pi.k[,gg] )
 								}
 						}  # end normal distribution
@@ -638,8 +641,8 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					if ( distribution.trait=="smooth4"){ 
 							formula1 <- lpik1 ~ tk + I(tk^2) + I(tk^3)+I(tk^4)
 											}
-					mod <- lm( formula1 , weights = pik1 )
-					pik2 <- exp( fitted(mod))
+					mod <- stats::lm( formula1 , weights = pik1 )
+					pik2 <- exp( stats::fitted(mod))
 					pi.k[,gg] <- pik2 / sum(pik2)
 					if (center.trait & gg==1){
 						mmm1 <- weighted.mean( theta.k , pik2 )	
@@ -1043,6 +1046,9 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 			trait.distr <- data.frame( "theta.k" = theta.k , "pi.k" = pi.k )
         # item response pattern
 		if ( D==1 ){
+		    if ( is.matrix(theta.k) ){
+				theta.k <- as.vector( theta.k)
+						}				
 			ability.est <- data.frame( dat1 , theta.k[ whichrowMaxs( f.qk.yi )$arg ] )
 			colnames(ability.est) <- c("pattern" , "AbsFreq" , "mean" , "MAP" )
 					}
@@ -1051,7 +1057,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 			colnames(ability.est) <- c("pattern" , "AbsFreq" , "mean" , 
 					paste("MAP.Dim",1:D,sep="") )		
 				}
-		if (D==1){
+		if (D==1){		  
 			ability.est$EAP <- rowSums( f.qk.yi * outer( rep(1,nrow(ability.est)) , theta.k  )  )
 			ability.est$SE.EAP <- sqrt( rowSums( f.qk.yi * outer( rep(1,nrow(ability.est)) , 
 							theta.k^2  )  ) - ability.est$EAP^2 )
@@ -1092,7 +1098,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 			for (dd in 1:D){
 			r1[dd] <- 1 - mean(ability.est2[,paste("SE.EAP.Dim",dd,sep="")]^2) / 
 								( mean(ability.est2[,paste("SE.EAP.Dim",dd,sep="")]^2) + 
-									var(ability.est2[,paste("EAP.Dim",dd,sep="")]) )
+									stats::var(ability.est2[,paste("EAP.Dim",dd,sep="")]) )
 							}
 		  if ( is.null( colnames(Qmatrix) ) ){
 			dimnamesPars <- paste( "Dim",1:D , sep="")

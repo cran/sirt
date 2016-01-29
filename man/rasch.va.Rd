@@ -63,7 +63,7 @@ Alexander Robitzsch
 set.seed(8706)
 N <- 5000
 I <- 20
-dat <- sim.raschtype( rnorm(N,sd=1.3) , b= seq(-2,2,len=I) )
+dat <- sim.raschtype( stats::rnorm(N,sd=1.3) , b= seq(-2,2,len=I) )
 
 # estimation via variational approximation
 mod1 <- rasch.va(dat)

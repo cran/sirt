@@ -33,8 +33,8 @@ pbivnorm2 <- function( x , y , rho ){
 		b1[ ind ] <- a1[ind]
 		a1[ind] <- t1[ind]
 			}
-    t1 <- pnorm( - a1 )
-    mu <- dnorm( a1 ) / pnorm( - a1 )
+    t1 <- stats::pnorm( - a1 )
+    mu <- stats::dnorm( a1 ) / stats::pnorm( - a1 )
     xi <-  ( rho * mu - b1 ) / sqrt( 1 - rho^2 ) 
     # see Hong (1999)
     # sig2 <- 1 + mu - mu^2 # => formula in Cox & Wermuth (1991)
@@ -42,15 +42,16 @@ pbivnorm2 <- function( x , y , rho ){
     #  Formula (3)
     # t1 * pnorm( xi )
     # Formula (4): correction in Hong (1999)
-    prob1 <- t1 * ( pnorm(  xi ) - 1/2 * rho^2 / ( 1 - rho^2 ) * xi * dnorm( xi ) * sig2  )
+    prob1 <- t1 * ( stats::pnorm(  xi ) - 1/2 * rho^2 / ( 1 - rho^2 ) * xi * 
+				stats::dnorm( xi ) * sig2  )
 	# adjust formula in case of APPROX. (ii)
 	if ( length(ind2) > 0 ){
 		# CW. Formula in (ii), p. 264
-		prob1[ind2] <- 1 - pnorm( -a1[ind2] ) - pnorm( -b1[ind2] ) + prob1[ind2] 
+		prob1[ind2] <- 1 - stats::pnorm( -a1[ind2] ) - stats::pnorm( -b1[ind2] ) + prob1[ind2] 
 			}
 #	# negative correlations
 	if ( length(ind.neg) > 0 ){
-		prob1[ind.neg] <- pnorm( - a11[ind.neg] ) - prob1[ ind.neg]
+		prob1[ind.neg] <- stats::pnorm( - a11[ind.neg] ) - prob1[ ind.neg]
 					}	
     return( prob1 )
         }

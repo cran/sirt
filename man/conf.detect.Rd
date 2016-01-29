@@ -166,8 +166,8 @@ detect4 <- conf.detect( data = dat , score = wle1 ,
 detect5 <- expl.detect( data = dat , score = wle1  , 
                 nclusters = 10 , N.est = nrow(dat)  )
 # Plot cluster solution
-pl <- plot( detect5$clusterfit , main = "Cluster solution" )
-rect.hclust(detect5$clusterfit, k=4, border="red")
+pl <- graphics::plot( detect5$clusterfit , main = "Cluster solution" )
+stats::rect.hclust(detect5$clusterfit, k=4, border="red")
 
 \dontrun{
 #############################################################################
@@ -182,7 +182,7 @@ dat <- data.big5
 dat <- dat[, 1:30]
 
 # estimate person score by simply using a transformed sum score
-score <- qnorm( ( rowMeans( dat )+.5 )  / ( 30 + 1 ) )
+score <- stats::qnorm( ( rowMeans( dat )+.5 )  / ( 30 + 1 ) )
 
 # extract item cluster (Big 5 dimensions)
 itemcluster <- substring( colnames(dat) , 1 , 1 )
@@ -210,8 +210,8 @@ detect5 <- expl.detect( data = dat , score = score  ,
   ## 8         9      30   500     0 6-3-3-2-3-5-3-3-2      1.522    0.444     0.724
 
 # Plot Cluster solution
-pl <- plot( detect5$clusterfit , main = "Cluster solution" )
-rect.hclust(detect5$clusterfit, k=6, border="red")
+pl <- graphics::plot( detect5$clusterfit , main = "Cluster solution" )
+stats::rect.hclust(detect5$clusterfit, k=6, border="red")
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
