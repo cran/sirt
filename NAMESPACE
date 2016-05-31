@@ -6,9 +6,11 @@ useDynLib(sirt)
 
 ####################################################
 ################## IMPORTS #########################
+####################################################
 
 #***************************************************
 #*************** R Basics / Linking To *************
+#***************************************************
 
 importFrom(graphics, abline)
 importFrom(graphics, dotchart)
@@ -28,6 +30,7 @@ importFrom(stats, anova)
 importFrom(stats, as.dist)
 importFrom(stats, as.formula)
 importFrom(stats, coef)
+importFrom(stats, confint)
 importFrom(stats, cor)
 importFrom(stats, cov)
 importFrom(stats, cov2cor)
@@ -76,6 +79,7 @@ importFrom(utils, write.table)
 
 #***************************************************
 #************** Depends ****************************
+#***************************************************
 
 import(CDM)
 import(TAM)
@@ -84,10 +88,11 @@ import(TAM)
 
 #***************************************************
 #************** Imports ****************************
-
+#***************************************************
 
 importFrom(coda, as.mcmc.list)
 importFrom(coda, effectiveSize)
+importFrom(coda , mcmc)
 importFrom(combinat, combn)
 importFrom(gtools, permutations)
 importFrom(ic.infer, orlm.lm)
@@ -101,6 +106,8 @@ importFrom(lavaan, sem)
 importFrom(lavaan.survey, lavaan.survey)
 importFrom(Matrix, bdiag)
 importFrom(MASS, mvrnorm)
+importFrom(MCMCpack, dinvgamma)
+importFrom(MCMCpack, rinvgamma)
 importFrom(mirt, extract.item)
 importFrom(mirt, mirt)
 importFrom(mirt, itemplot)
@@ -130,8 +137,10 @@ importFrom(survey, svydesign)
 
 ####################################################
 ################## EXPORTS #########################
+####################################################
 
 export(   
+   amh,
    automatic.recode,
    brm.irf,
    brm.sim,
@@ -147,6 +156,7 @@ export(
    dif.logistic.regression,
    dif.strata.variance,
    dif.variance,
+   dinvgamma2,
    dirichlet.mle,
    dirichlet.simul,
    eigenvalues.manymatrices,
@@ -186,6 +196,13 @@ export(
    mcmc.2pnoh,
    mcmc.3pno.testlet,
    mcmc.list.descriptives,
+   mcmc_coef,
+   mcmc_confint,
+   mcmc_derivedPars,
+   mcmc_plot,
+   mcmc_summary,
+   mcmc_vcov,  
+   mcmc_WaldTest,
    mcmclist2coda,
    md.pattern.sirt,
    mirt.specify.partable,
@@ -242,6 +259,7 @@ export(
    read.show.regression,
    read.show.term,
    reliability.nonlinearSEM,
+   rinvgamma2, 
    rm.facets,
    rm.sdt,
    rowCumsums.sirt,
@@ -265,6 +283,12 @@ export(
    unidim.test.csn,
    wle.rasch,
    wle.rasch.jackknife,
+   xxirt,
+   xxirt_createDiscItem,
+   xxirt_createParTable,
+   xxirt_createThetaDistribution,
+   xxirt_hessian,
+   xxirt_modifyParTable,
    yen.q3
 )    
     
@@ -275,6 +299,7 @@ export(
 
 ################################################
 ################ S3 methods ####################
+################################################
 
 S3method(anova, gom)
 S3method(anova, prob.guttman)
@@ -285,9 +310,16 @@ S3method(anova, rasch.mml)
 S3method(anova, rm.facets)
 S3method(anova, rm.sdt)
 S3method(anova, smirt)
-S3method(coef, rasch.evm.pcm )
+S3method(anova, xxirt)
+S3method(coef, rasch.evm.pcm)
+S3method(coef, amh)
+S3method(coef, xxirt)
+S3method(confint, amh)
+S3method(confint, xxirt)
+S3method(IRT.expectedCounts, xxirt)
 S3method(IRT.factor.scores, rm.facets)
 S3method(IRT.factor.scores, rm.sdt)
+S3method(IRT.factor.scores, xxirt)
 S3method(IRT.irfprob, gom)
 S3method(IRT.irfprob, prob.guttman)
 S3method(IRT.irfprob, rasch.mirtlc)
@@ -296,6 +328,7 @@ S3method(IRT.irfprob, rm.facets)
 S3method(IRT.irfprob, rm.sdt)
 S3method(IRT.irfprob, SingleGroupClass)
 S3method(IRT.irfprob, smirt)
+S3method(IRT.irfprob, xxirt)
 S3method(IRT.likelihood, gom)
 S3method(IRT.likelihood, rasch.copula2)
 S3method(IRT.likelihood, rasch.copula3)
@@ -304,12 +337,14 @@ S3method(IRT.likelihood, rasch.mml)
 S3method(IRT.likelihood, rm.facets)
 S3method(IRT.likelihood, SingleGroupClass)
 S3method(IRT.likelihood, smirt)
+S3method(IRT.likelihood, xxirt)
 S3method(IRT.modelfit, gom)
 S3method(IRT.modelfit, rasch.mirtlc)
 S3method(IRT.modelfit, rasch.mml)
 S3method(IRT.modelfit, rm.facets)
 S3method(IRT.modelfit, rm.sdt)
 S3method(IRT.modelfit, smirt)
+S3method(IRT.modelfit, xxirt)
 S3method(IRT.posterior, gom)
 S3method(IRT.posterior, prob.guttman)
 S3method(IRT.posterior, rasch.copula2)
@@ -320,6 +355,9 @@ S3method(IRT.posterior, rm.facets)
 S3method(IRT.posterior, rm.sdt)
 S3method(IRT.posterior, SingleGroupClass)
 S3method(IRT.posterior, smirt)
+S3method(IRT.posterior, xxirt)
+S3method(IRT.se, xxirt)
+S3method(logLik, amh)
 S3method(logLik, gom)
 S3method(logLik, prob.guttman)
 S3method(logLik, rasch.copula2)
@@ -329,6 +367,8 @@ S3method(logLik, rasch.mml)
 S3method(logLik, rm.facets)
 S3method(logLik, rm.sdt)
 S3method(logLik, smirt)
+S3method(logLik, xxirt)
+S3method(plot, amh)
 S3method(plot, isop)
 S3method(plot, linking.robust)
 S3method(plot, lsem)
@@ -337,6 +377,7 @@ S3method(plot, mcmc.sirt)
 S3method(plot, np.dich)
 S3method(plot, rasch.mml)
 S3method(plot, rm.sdt)
+S3method(summary, amh)
 S3method(summary, btm)
 S3method(summary, fuzcluster)
 S3method(summary, gom)
@@ -357,6 +398,7 @@ S3method(summary, lsdm)
 S3method(summary, lsem)
 S3method(summary, lsem.permutationTest)
 S3method(summary, mcmc.sirt)
+S3method(summary, mcmc_WaldTest)
 S3method(summary, modelfit.sirt)
 S3method(summary, noharm.sirt)
 S3method(summary, prob.guttman)
@@ -376,4 +418,7 @@ S3method(summary, rasch.pml)
 S3method(summary, rm.facets)
 S3method(summary, rm.sdt)
 S3method(summary, smirt)
-S3method(vcov, rasch.evm.pcm )
+S3method(summary, xxirt)
+S3method(vcov, amh)
+S3method(vcov, rasch.evm.pcm)
+S3method(vcov, xxirt)

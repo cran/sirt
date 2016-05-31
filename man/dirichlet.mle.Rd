@@ -68,7 +68,7 @@ see the \pkg{DirichletReg} package.
 
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1: Simulate and estimate Dirichlet distribution
+# EXAMPLE 1: Simulate and estimate Dirichlet distribution
 #############################################################################	
 	
 # (1) simulate data
@@ -91,7 +91,7 @@ dirichlet.mle(x)
 
 \dontrun{  
 #############################################################################
-# SIMULATED EXAMPLE 2: Fitting Dirichlet distribution with frequency weights
+# EXAMPLE 2: Fitting Dirichlet distribution with frequency weights
 #############################################################################
 
 # define observed data

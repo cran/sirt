@@ -7,5 +7,7 @@ osink <- function( file , prefix){
 				}
 				
 csink <- function( file){
-	if ( ! is.null( file ) ){  sink()	}	
+	if ( ! is.null( file ) ){  
+	   base::sink()	
+				}	
 					}

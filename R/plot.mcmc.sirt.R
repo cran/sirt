@@ -21,6 +21,7 @@ plot.mcmc.sirt <- function( x , layout=1 , conflevel=.90 ,
 		# index vector
 		a1 <- attr(mcmcobj,"mcpar")
 		iterindex <- seq(a1[1] , a1[2] , a1[3] )
+		
 		smcmcobj <- object$summary.mcmcobj
 		VV <- ncol(mcmcobj)		
 		ci.quant <- - stats::qnorm( (1-conflevel)/2 )
@@ -124,8 +125,7 @@ format.numb <- function( x , digits ){
     y <- rep(NA,N)
     i <- seq(B+1 , N-B)
     xdiff <- x1[ -seq(1,B) ] - x1[ -seq(N-B+1,N) ] 
-    xdiff <- xdiff[ - seq(1,B) ] 
-
+    xdiff <- xdiff[ - seq(1,B) ] 	
     y[i]  <- ( x1[i] + xdiff - c(0,x1[ -seq(N-2*B,N) ]) ) / (2*B+1)
 
   # fill NAs at beginning and end of time series

@@ -313,7 +313,7 @@ summary(mod4)
 
 \dontrun{
 #############################################################################
-# SIMULATED EXAMPLE 2: Grade of membership model with 2 classes
+# EXAMPLE 2: Grade of membership model with 2 classes
 #############################################################################
 
 #********* DATASET 1 *************

@@ -33,6 +33,26 @@ CHANGELOG sirt
 
 
 ------------------------------------------------------------------------
+Versions 1.11 -- 2016-05-30  --  CRAN sirt 1.11-0
+------------------------------------------------------------------------
+
+FIXED  * fixed a bug in 'mirt.wrapper.coef' which occured due to
+         changes in output structures of mirt package
+ADDED  * added user defined item response model estimation 'xxirt' with
+         corresponding S3 methods
+ADDED  * added experimental adaptive Metropolis-Hastings routine 'amh'
+         with corresponding S3 methods
+ADDED  * added utility functions for objects of class 'mcmc.list' (from
+         coda package): 'mcmc_coef', 'mcmc_vcov', ..., 'mcmc_WaldTest'
+NOTE   * included inverse gamma distribution ('rinvgamma2') with 
+         parametrization in prior sample size and prior variance
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: rasch.jml (1), xxirt (1,2),
+        xxirt_createParTable (1), xxirt_createThetaDistribution (1),
+        amh (1,2), mcmc_coef (1), rinvgamma2 (1)
+
+------------------------------------------------------------------------
 Versions 1.10 -- 2016-01-29  --  CRAN sirt 1.10-0
 ------------------------------------------------------------------------
 

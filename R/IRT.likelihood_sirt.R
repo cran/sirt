@@ -66,3 +66,12 @@ IRT.likelihood.rasch.mirtlc <- function( object , ... ){
     return(ll)
         }
 ##########################################################		
+# likelihood xxirt
+IRT.likelihood.xxirt <- function( object , ... ){    
+    ll <- object$p.xi.aj
+    attr(ll,"theta") <- object$Theta
+	attr(ll,"prob.theta") <- object$probs_Theta
+	attr(ll,"G") <- object$G	
+    return(ll)
+        }
+##########################################################		

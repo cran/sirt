@@ -263,7 +263,7 @@ mod1 <- rasch.evm.pcm( dat[,items] , weights= dat$weight , group= dat$group )
 summary(mod1)
 
 #############################################################################
-# SIMULATED EXAMPLE 6: Differential item functioning for Rasch model
+# EXAMPLE 6: Differential item functioning for Rasch model
 #############################################################################
 
 # simulate some data

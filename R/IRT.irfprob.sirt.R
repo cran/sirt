@@ -62,3 +62,13 @@ IRT.irfprob.rm.sdt <- IRT.irfprob.gom
 # irfprob prob.guttman
 IRT.irfprob.prob.guttman <- IRT.irfprob.gom
 ########################################################
+# irfprob xxirt
+IRT.irfprob.xxirt <- function( object , ... ){    
+    ll <- object$probs_items
+    attr(ll,"theta") <- object$Theta
+	attr(ll,"prob.theta") <- object$probs_Theta
+	attr(ll,"G") <- object$G			
+    return(ll)	
+        }
+########################################################
+

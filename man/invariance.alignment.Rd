@@ -402,7 +402,7 @@ round( rowMeans( mod2$nu.resid )[1:8] , 2 )
   ##   [1] -0.02 -0.11 -0.06 -0.14 -0.01 -0.06  0.13  0.09
 
 #############################################################################
-# SIMULATED EXAMPLE 4: Linking with item parameters containing outliers 
+# EXAMPLE 4: Linking with item parameters containing outliers 
 #############################################################################
     
 # see Help file in linking.robust

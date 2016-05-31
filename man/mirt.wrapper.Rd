@@ -41,7 +41,7 @@ mirt.wrapper.itemplot( mirt.obj , ask=TRUE , ...)
 A fitted model in \pkg{mirt} package
 }
 \item{object}{A fitted object in \pkg{mirt} package of class
-	\code{ConfirmatoryClass} or \code{ExploratoryClass}.
+	\code{SingleGroupClass} or \code{MultipleGroupClass}.
 }
 \item{weights}{Optional vector of student weights}
 \item{ask}{Optional logical indicating whether each new plot should be
@@ -282,8 +282,7 @@ mirt.wrapper.coef(mod1)$coef
 post1 <- mirt.wrapper.posterior(mod1)
 
 #############################################################################
-# SIMULATED EXAMPLE 3: Multiple group model; simulated dataset from
-#        mirt package
+# EXAMPLE 3: Multiple group model; simulated dataset from mirt package
 #############################################################################
 
 #*** simulate data (copy from the multipleGroup manual site in mirt package)
@@ -308,22 +307,22 @@ model <- mirt::mirt.model("
       ")
 
 # separate analysis
-mod_configural <- multipleGroup(dat, model, group = group , verbose=TRUE)
+mod_configural <- mirt::multipleGroup(dat, model, group = group , verbose=TRUE)
 mirt.wrapper.coef(mod_configural)
 
 # equal slopes (metric invariance)
-mod_metric <- multipleGroup(dat, model, group = group, invariance=c("slopes") , 
+mod_metric <- mirt::multipleGroup(dat, model, group = group, invariance=c("slopes") , 
                 verbose=TRUE)
 mirt.wrapper.coef(mod_metric)
                   
 # equal slopes and intercepts (scalar invariance)
-mod_scalar <- multipleGroup(dat, model, group = group,  
-    invariance=c("slopes","intercepts","free_means","free_varcov"), verbose=TRUE)
+mod_scalar <- mirt::multipleGroup(dat, model, group = group,  
+          invariance=c("slopes","intercepts","free_means","free_varcov"), verbose=TRUE)
 mirt.wrapper.coef(mod_scalar)
 
 # full constraint
-mod_fullconstrain <- multipleGroup(dat, model, group = group,  
-    invariance=c("slopes", "intercepts") , verbose=TRUE )
+mod_fullconstrain <- mirt::multipleGroup(dat, model, group = group,  
+             invariance=c("slopes", "intercepts") , verbose=TRUE )
 mirt.wrapper.coef(mod_fullconstrain)
 
 #############################################################################

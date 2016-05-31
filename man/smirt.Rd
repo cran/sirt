@@ -113,7 +113,7 @@ Number of integration nodes for quasi Monte Carlo integration (see Pan &
 Thompson, 2007; Gonzales et al., 2006). Integration points are obtained by using 
 the function \code{\link{qmc.nodes}}. Note that when using quasi Monte Carlo nodes, 
 no theta design matrix \code{theta.kDES} can be specified. 
-See Simulated Example 1, Model 11.
+See Example 1, Model 11.
 }
   \item{mu.fixed}{
 Matrix with fixed entries in the mean vector. By default, all means
@@ -139,7 +139,7 @@ increment of item parameters in every iteration. The maximum increment in iterat
 \code{iter} is defined as \code{max.increment*increment.factor^(-iter)}
 where \code{max.increment=1}. Using a value larger than 1 helps
 to reach convergence in some non-converging analyses (use values of 1.01, 1.02
-or even 1.05). See also Simulated Example 1 Model 2a.
+or even 1.05). See also Example 1 Model 2a.
 }
   \item{numdiff.parm}{
 Numerical differentiation parameter
@@ -285,7 +285,7 @@ compensatory multidimensional item response models.
 }
 \examples{
 #############################################################################
-## SIMULATED EXAMPLE 1: Noncompensatory and compensatory IRT models
+## EXAMPLE 1: Noncompensatory and compensatory IRT models
 #############################################################################
 set.seed(997)
 
@@ -492,7 +492,7 @@ mod4 <- smirt( dat , Qmatrix=Qmatrix1 , irtmodel="comp" , est.a="2PL" ,
 summary(mod4)
 
 #############################################################################
-## SIMULATED EXAMPLE 3: Partially compensatory model
+## EXAMPLE 3: Partially compensatory model
 #############################################################################
 
 #**** simulate data

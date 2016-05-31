@@ -294,7 +294,7 @@ mod3 <- mcmc.2pno.ml( dat=dat , group=group ,
 summary(mod3)
 
 #############################################################################
-# SIMULATED EXAMPLE 3: Simulated random effects model | dichotomous items
+# EXAMPLE 3: Simulated random effects model | dichotomous items
 #############################################################################
 set.seed(7698)
 

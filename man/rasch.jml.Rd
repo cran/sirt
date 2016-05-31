@@ -143,14 +143,21 @@ See \code{\link{rasch.prox}} for the PROX algorithm as initial iterations.
 
 For a bias correction of the JML method try \code{\link{rasch.jml.jackknife1}}.
 
+JML estimation can also be conduceted with the \pkg{TAM} 
+(\code{\link[TAM:tam.jml2]{TAM::tam.jml2}})
+and \pkg{mixRasch} (\code{mixRasch::mixRasch})
+packages.
+
 See also marginal maximum likelihood estimation with \code{\link{rasch.mml2}} 
 or the \R package \pkg{ltm}.
 }
 
+% (\code{\link[mixRasch:mixRasch]{mixRasch::mixRasch}})
+
 
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1: Simulated data from the Rasch model
+# EXAMPLE 1: Simulated data from the Rasch model
 #############################################################################
 set.seed(789)
 N <- 500    # number of persons
@@ -172,8 +179,15 @@ mod3 <- rasch.pairwise( dat )
 summary(mod3)
 
 # JML estimation in TAM
+\dontrun{
 library(TAM)
 mod4 <- TAM::tam.jml2( resp=dat )
+
+# JML estimation in mixRasch package
+library(mixRasch)
+mod5 <- mixRasch::mixRasch( dat, steps=1, n.c=1, max.iter=50)
+print(mod5)
+mod5$item.par	   # extract item parameters
 
 #******
 # item parameter constraints in JML estimation
@@ -181,10 +195,11 @@ mod4 <- TAM::tam.jml2( resp=dat )
 constraints <- matrix( cbind( 4 , -.76 ,
                               6 , .10 ) , 
                   ncol=2 , byrow=TRUE )
-mod4 <- rasch.jml( dat , constraints = constraints )
-summary(mod4)
-# For constrained item parameters, it this not obvious
-# how to calculate a 'right correction' of item parameter bias
+mod6 <- rasch.jml( dat , constraints = constraints )
+summary(mod6)
+  # For constrained item parameters, it this not obvious
+  # how to calculate a 'right correction' of item parameter bias
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

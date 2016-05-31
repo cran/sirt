@@ -88,7 +88,7 @@ pmod1 <- person.parameter.rasch.copula(raschcopula.object = mod1 )
 
 \dontrun{
 #############################################################################
-# SIMULATED EXAMPLE 2: 12 items nested within 3 item clusters (testlets)
+# EXAMPLE 2: 12 items nested within 3 item clusters (testlets)
 #   Cluster 1 -> Items 1-4; Cluster 2 -> Items 6-9;  Cluster 3 -> Items 10-12
 #############################################################################
 

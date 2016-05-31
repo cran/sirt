@@ -104,7 +104,7 @@ res <- unidim.test.csn( dat )
 
 \dontrun{
 #############################################################################
-# SIMULATED EXAMPLE 2: CSN statistic for two-dimensional simulated data
+# EXAMPLE 2: CSN statistic for two-dimensional simulated data
 #############################################################################
 	
 set.seed(775)

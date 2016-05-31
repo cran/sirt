@@ -367,7 +367,7 @@ mod33 <- rasch.mirtlc( dat, dimensions=dimensions, theta.k= theta.k, modeltype="
 summary(mod33)
 
 #############################################################################
-# SIMULATED EXAMPLE 2: Skew trait distribution
+# EXAMPLE 2: Skew trait distribution
 #############################################################################
 set.seed(789)
 N <- 1000   # number of persons
@@ -423,7 +423,7 @@ summary(mod4)
 }
 
 #############################################################################
-# SIMULATED EXAMPLE 4: 5 classes, 3 dimensions and 27 items
+# EXAMPLE 4: 5 classes, 3 dimensions and 27 items
 #############################################################################
 
 set.seed(979)

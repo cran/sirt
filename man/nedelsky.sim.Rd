@@ -120,14 +120,14 @@ Alexander Robitzsch
 \examples{
 \dontrun{	
 #############################################################################
-# SIMULATED EXAMPLE 1: Simulated data according to the Nedelsky model
+# EXAMPLE 1: Simulated data according to the Nedelsky model
 #############################################################################
 
 #*** simulate data
 set.seed(123)
 I <- 20          # number of items
 b <- matrix(NA,I,ncol=3)
-b[,1] <- -.5 + stats::runif( I , -.75 , .75 )
+b[,1] <- -0.5 + stats::runif( I , -.75 , .75 )
 b[,2] <- -1.5 + stats::runif( I , -.75 , .75 )
 b[,3] <- -2.5 + stats::runif( I , -.75 , .75 )
 K <- 3           # number of distractors
@@ -139,7 +139,7 @@ dat <- nedelsky.sim( theta = stats::rnorm(N,sd=1.2) , b=b )
 K <- 3
 combis <- nedelsky.latresp(K=3)
 
-#*** defining the Nedelky item response function for estimation in mirt
+#*** defining the Nedelsky item response function for estimation in mirt
 par <- c( 3  , rep(-1,K) , 1 , rep(1,K+1) ,1)
 names(par) <- c("K" , paste0("b",1:K) , "a" , paste0("tau" , 0:K) ,"thdim")
 est <- c( FALSE , rep(TRUE,K) , rep(FALSE , K+1 + 2 ) )

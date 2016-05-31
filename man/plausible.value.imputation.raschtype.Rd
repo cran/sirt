@@ -131,7 +131,7 @@ For estimating the latent regression model see
 }
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1: Rasch model with covariates
+# EXAMPLE 1: Rasch model with covariates
 #############################################################################
 
 set.seed(899)
@@ -169,7 +169,7 @@ summary( stats::lm( theta ~ x + y ) )
 
 \dontrun{
 #############################################################################
-# SIMULATED EXAMPLE 2: Classical test theory, homogeneous regression variance
+# EXAMPLE 2: Classical test theory, homogeneous regression variance
 #############################################################################
 
 set.seed(899)
@@ -209,7 +209,7 @@ summary( stats::lm( theta ~ x + y ) )
   ## y           0.509073   0.018456  27.584   <2e-16 ***
 
 #############################################################################
-# SIMULATED EXAMPLE 3: Classical test theory, heterogeneous regression variance
+# EXAMPLE 3: Classical test theory, heterogeneous regression variance
 #############################################################################
 
 set.seed(899)

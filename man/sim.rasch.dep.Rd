@@ -63,7 +63,7 @@ estimated with \code{\link{rasch.copula2}}, \code{\link{rasch.pairwise}} or
 }
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1: 11 Items: 2 itemclusters with 2 resp. 3 dependent items
+# EXAMPLE 1: 11 Items: 2 itemclusters with 2 resp. 3 dependent items
 #             and 6 independent items
 #############################################################################	
 
@@ -99,7 +99,7 @@ summary(mod3)
 
 \dontrun{
 #############################################################################
-# SIMULATED EXAMPLE 2: 12 Items: Cluster 1 -> Items 1,...,4; 
+# EXAMPLE 2: 12 Items: Cluster 1 -> Items 1,...,4; 
 #       Cluster 2 -> Items 6,...,9; Cluster 3 -> Items 10,11,12
 #############################################################################
 

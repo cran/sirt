@@ -108,7 +108,7 @@ For simulation of locally dependent data see \code{\link{sim.rasch.dep}}.
 
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1: Example with locally dependent items
+# EXAMPLE 1: Example with locally dependent items
 #      12 Items: Cluster 1 -> Items 1,...,4
 #                Cluster 2 -> Items 6,...,9
 #                Cluster 3 -> Items 10,11,12

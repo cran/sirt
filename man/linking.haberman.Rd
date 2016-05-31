@@ -8,7 +8,7 @@ Linking in the 2PL/Generalized Partial Credit Model
 This function does the linking of serval studies which are calibrated
 using the 2PL or the generalized item response model according to
 Haberman (2009). This method is a generalization of log-mean-mean
-linking from to to several studies.
+linking from one study to several studies.
 }
 \usage{
 linking.haberman(itempars, personpars, conv = 1e-05, maxiter = 1000, 
@@ -212,7 +212,7 @@ itempartable[,2] <- substring( itempartable[,2] , 1, 2 )
 mod2 <- linking.haberman( itempars= itempartable )
 
 #############################################################################
-# SIMULATED EXAMPLE 3: 2 Studies - 1PL and 2PL linking 
+# EXAMPLE 3: 2 Studies - 1PL and 2PL linking 
 #############################################################################
 set.seed(789)
 I <- 20		# number of items
@@ -296,7 +296,7 @@ linkhab2 <- linking.haberman(itempars=itempars)
   ## sqrtU2 0.0397     0.0443
 
 #############################################################################
-# SIMULATED EXAMPLE 4: 3 Studies - 1PL and 2PL linking 
+# EXAMPLE 4: 3 Studies - 1PL and 2PL linking 
 #############################################################################
 set.seed(789)
 I <- 20         # number of items

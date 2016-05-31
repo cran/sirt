@@ -58,7 +58,7 @@ See also the \code{md.pattern} function in the \pkg{mice} package.
 
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1
+# EXAMPLE 1: Response patterns
 #############################################################################
 set.seed(7654)
 N <- 21         # number of rows

@@ -37,3 +37,6 @@ logLik.rm.sdt <- logLik.rasch.copula2
 # prob.guttman
 logLik.prob.guttman <- logLik.rasch.copula2
 #####################################################
+# xxirt
+logLik.xxirt <- logLik.rasch.copula2
+#####################################################

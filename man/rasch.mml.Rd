@@ -337,7 +337,7 @@ values
 Where \eqn{Y_\theta} is a design matrix of \eqn{\theta} and
 \eqn{\beta} are item parameters to be estimated. 
 The formula \eqn{Y_\theta \beta} can be specified in the \R formula
-framework (see Simulated Example 3, Model 3c).
+framework (see Example 3, Model 3c).
 
 Pseudo-likelihood estimation can be conducted for fractional item response data 
 as input (i.e. some item response \eqn{x_{pi}} do have values 
@@ -626,8 +626,7 @@ plot(mod1)
 }
 
 #############################################################################
-# SIMULATED EXAMPLE 3
-#  one group, estimation of alpha parameter in the generalized logistic model
+# EXAMPLE 3: One group, estimation of alpha parameter in the generalized logistic model
 #############################################################################
 
 # simulate theta values
@@ -703,8 +702,7 @@ mod4 <- rasch.mml2( dat ,  est.a=1:15)
 summary(mod4)
 
 #############################################################################
-# SIMULATED EXAMPLE 4
-#  two groups, estimation of generalized logistic model
+# EXAMPLE 4: Two groups, estimation of generalized logistic model
 #############################################################################
 
 # simulate generalized logistic Rasch model in two groups
@@ -722,7 +720,7 @@ mod1 <-  rasch.mml2( dat1 , parm.conv=.0001 , group=group , est.alpha = TRUE )
 summary(mod1)
 
 #############################################################################
-# SIMULATED EXAMPLE 5: Multidimensional model
+# EXAMPLE 5: Multidimensional model
 #############################################################################
 
 #***
@@ -775,7 +773,7 @@ mod4 <- rasch.mml2( dat, Qmatrix=Qmatrix, est.b = est.b , mu.fixed = mu.fixed )
 summary(mod4) 
 
 #############################################################################
-# SIMULATED EXAMPLE 6: Two booklets with same items but with item context effects. 
+# EXAMPLE 6: Two booklets with same items but with item context effects. 
 # Therefore, item slopes and item difficulties are assumed to be shifted in the 
 # second design group.
 #############################################################################

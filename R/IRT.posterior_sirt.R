@@ -51,3 +51,14 @@ IRT.posterior.rasch.mirtlc <- function( object , ... ){
     return(ll)
         }
 ##########################################################	
+
+##########################################################		
+# posterior xxirt
+IRT.posterior.xxirt <- function( object , ... ){    
+    ll <- object$p.aj.xi
+    attr(ll,"theta") <- object$Theta
+	attr(ll,"prob.theta") <- object$probs_Theta
+	attr(ll,"G") <- object$G	
+    return(ll)
+        }
+##########################################################	

@@ -197,7 +197,7 @@ summary(mod4)
 plot(mod4, ask=TRUE, layout=2)
 
 #############################################################################
-# SIMULATED EXAMPLE 2: Simulated data according to the Rasch testlet model
+# EXAMPLE 2: Simulated data according to the Rasch testlet model
 #############################################################################
 set.seed(678)
 
@@ -258,7 +258,7 @@ cbind( sd0 , summ2[ grep("a\\[" , summ2$parameter ) , "Mean" ] )
 cbind( sdt , summ2[ grep("sigma\\.testlet" , summ2$parameter ) , "Mean" ] )
 
 #############################################################################
-# SIMULATED EXAMPLE 3: Simulated data according to the 2PNO testlet model
+# EXAMPLE 3: Simulated data according to the 2PNO testlet model
 #############################################################################
 set.seed(678)
 

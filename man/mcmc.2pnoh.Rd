@@ -135,7 +135,7 @@ The two-parameter normal ogive model can be estimated with
 \examples{
 \dontrun{
 #############################################################################
-# SIMULATED EXAMPLE 1: Simulated data according to Janssen et al. (2000, Table 2)
+# EXAMPLE 1: Simulated data according to Janssen et al. (2000, Table 2)
 #############################################################################
 
 N <- 1000

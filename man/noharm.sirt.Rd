@@ -221,7 +221,7 @@ is available as freeware (\url{http://noharm.niagararesearch.ca/}).
 
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1: Two-dimensional IRT model with 10 items
+# EXAMPLE 1: Two-dimensional IRT model with 10 items
 #############################################################################
 		
 #**** data simulation

@@ -31,7 +31,9 @@ anova.rm.sdt <- anova.rasch.mml
 # anova prob.guttman
 anova.prob.guttman <- anova.rasch.mml
 ##############################################################
-
+# anova xxirt
+anova.xxirt <- anova.rasch.mml
+##############################################################
 
 
 ##################################################################

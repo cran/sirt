@@ -250,7 +250,7 @@ summary(mod2)
 
 \dontrun{
 #############################################################################
-# SIMULATED EXAMPLE 2: 11 items nested within 2 item clusters (testlets)
+# EXAMPLE 2: 11 items nested within 2 item clusters (testlets)
 #    with 2 resp. 3 dependent and 6 independent items
 #############################################################################
 
@@ -291,7 +291,7 @@ mod2 <- rasch.copula2( dat , itemcluster = itemcluster , delta = c(0,0) ,
 summary(mod2)
 
 #############################################################################
-# SIMULATED EXAMPLE 3: 12 items nested within 3 item clusters (testlets)
+# EXAMPLE 3: 12 items nested within 3 item clusters (testlets)
 #   Cluster 1 -> Items 1-4; Cluster 2 -> Items 6-9;  Cluster 3 -> Items 10-12
 #############################################################################
 
@@ -327,7 +327,7 @@ summary(mod1)
 summary(mod2) 
 
 #############################################################################
-# SIMULATED EXAMPLE 4: Two-dimensional copula model
+# EXAMPLE 4: Two-dimensional copula model
 #############################################################################
 
 set.seed(5698)
@@ -382,7 +382,7 @@ mod1 <- rasch.copula3( dat , itemcluster=itemcluster , dims=dims , est.a=dims ,
 summary(mod1)
 
 #############################################################################
-# SIMULATED EXAMPLE 5: Subset of data Simulated Example 2 
+# EXAMPLE 5: Subset of data Example 2 
 #############################################################################
 
 set.seed(5698)

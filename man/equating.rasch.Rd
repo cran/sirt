@@ -97,7 +97,7 @@ mod <- equating.rasch(x=pars[,c("item","study1")], y=pars[,c("item","study2")])
 #*** linking using the plink package	
 library(plink)	
 I <- nrow(pars)
-pm <- as.poly.mod(I)
+pm <- plink::as.poly.mod(I)
 # linking parameters
 plink.pars1 <- list( "study1" = data.frame( 1 , pars$study1 , 0 ) ,
                      "study2" = data.frame( 1 , pars$study2 , 0 ) )

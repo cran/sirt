@@ -68,7 +68,7 @@ the generalized logistic item response model.
 
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1: Estimate Ramsay Quotient Model with rasch.mml2
+# EXAMPLE 1: Estimate Ramsay Quotient Model with rasch.mml2
 #############################################################################
 		
 set.seed(657)

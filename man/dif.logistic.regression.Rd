@@ -146,7 +146,7 @@ summary(lrres)
 eRm::plotGOF(lrres) 
 
 #############################################################################
-# SIMULATED EXAMPLE 2: Comparison with Mantel-Haenszel test
+# EXAMPLE 2: Comparison with Mantel-Haenszel test
 #############################################################################
 
 library(TAM)

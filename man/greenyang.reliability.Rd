@@ -91,6 +91,9 @@ See \code{\link{f1d.irt}} for estimating the functional unidimensional
 item response model.
 
 This function uses \code{\link{reliability.nonlinearSEM}}.
+
+See also the \code{MBESS::ci.reliability} function for estimating
+reliability for polytomous item responses.
 }
 
 \examples{

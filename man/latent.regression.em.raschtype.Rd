@@ -194,7 +194,7 @@ lm3 <- latent.regression.em.raschtype( f.yi.qk=mod3$f.yi.qk ,
                 X = X , theta.list=mod3$theta.k) 
 
 #############################################################################
-# SIMULATED EXAMPLE 2: Simulated data according to the Rasch model
+# EXAMPLE 2: Simulated data according to the Rasch model
 #############################################################################
 
 set.seed(899)
@@ -261,7 +261,7 @@ mod1 <- latent.regression.em.raschtype( data = dat1 , X  = dfr[,-1] ,
   ##                 R2 = 0.3701
 
 #############################################################################
-# SIMULATED EXAMPLE 3: Measurement error in dependent variable
+# EXAMPLE 3: Measurement error in dependent variable
 #############################################################################
 
 set.seed(8766)

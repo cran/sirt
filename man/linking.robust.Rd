@@ -108,7 +108,7 @@ summary(res2)
 plot(res2)
 
 #############################################################################
-# SIMULATED EXAMPLE 3: Linking with simulated item parameters containing outliers 
+# EXAMPLE 3: Linking with simulated item parameters containing outliers 
 #############################################################################
 	
 # simulate some parameters

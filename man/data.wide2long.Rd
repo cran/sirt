@@ -86,7 +86,7 @@ mod3 <- lme4::glmer(resp ~ (1|idstud) + as.factor(ItemFormat) + as.factor(TextTy
 summary(mod3)
 
 #############################################################################
-# SIMULATED EXAMPLE 2: Rasch model in lme4
+# EXAMPLE 2: Rasch model in lme4
 #############################################################################
 
 set.seed(765)

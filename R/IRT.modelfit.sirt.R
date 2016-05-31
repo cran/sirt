@@ -68,3 +68,22 @@ summary.IRT.modelfit.rm.facets <- summary.IRT.modelfit.sirt2
 IRT.modelfit.rm.sdt <- IRT.modelfit.rm.facets
 summary.IRT.modelfit.rm.sdt <- summary.IRT.modelfit.sirt2		
 ##########################################################
+
+
+
+###########################################################
+# modelfit xxirt
+IRT.modelfit.xxirt <- function(object, ... ){
+	mod <- paste(match.call())[2]
+	data <- as.matrix( object$dat )
+	probs <- object$probs_items
+	theta.k <- as.matrix(object$Theta)
+	f.qk.yi <- as.matrix(object$p.aj.xi)
+	res <- modelfit.cor.poly( data , probs, theta.k , f.qk.yi )
+	res$IRT.IC <- CDM::IRT.IC(object)
+	res$objname <- mod
+	class(res) <- paste0("IRT.modelfit." , class(object) )
+	return(res)		
+		}
+summary.IRT.modelfit.xxirt <- summary.IRT.modelfit.sirt2		
+############################################################
