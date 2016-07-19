@@ -57,6 +57,7 @@ importFrom(stats, predict)
 importFrom(stats, promax)
 importFrom(stats, qlogis)
 importFrom(stats, qnorm)
+importFrom(stats, qt)
 importFrom(stats, quantile)
 importFrom(stats, rbeta)
 importFrom(stats, rect.hclust)
@@ -139,158 +140,168 @@ importFrom(survey, svydesign)
 ################## EXPORTS #########################
 ####################################################
 
-export(   
-   amh,
-   automatic.recode,
-   brm.irf,
-   brm.sim,
-   btm,
-   categorize,
-   ccov.np,
-   class.accuracy.rasch,
-   colCumsums.sirt,
-   conf.detect,
-   data.wide2long,
-   decategorize,
-   detect.index,
-   dif.logistic.regression,
-   dif.strata.variance,
-   dif.variance,
-   dinvgamma2,
-   dirichlet.mle,
-   dirichlet.simul,
-   eigenvalues.manymatrices,
-   eigenvalues.sirt,
-   equating.rasch,
-   equating.rasch.jackknife,
-   expl.detect,
-   f1d.irt,
-   fit.adisop,
-   fit.isop,
-   fuzcluster,
-   fuzdiscr,
-   genlogis.moments,
-   gom.em,
-   gom.jml,
-   greenyang.reliability,
-   invariance.alignment,
-   IRT.mle,
-   isop.dich,
-   isop.poly,
-   isop.scoring,
-   isop.test,
-   latent.regression.em.normal,
-   latent.regression.em.raschtype,
-   lavaan2mirt,
-   lc.2raters,
-   likelihood.adjustment,
-   linking.haberman,
-   linking.robust,
-   lsdm,
-   lsem.estimate,
-   lsem.MGM.stepfunctions,
-   lsem.permutationTest,
-   marginal.truescore.reliability,
-   mcmc.2pno,
-   mcmc.2pno.ml,
-   mcmc.2pnoh,
-   mcmc.3pno.testlet,
-   mcmc.list.descriptives,
-   mcmc_coef,
-   mcmc_confint,
-   mcmc_derivedPars,
-   mcmc_plot,
-   mcmc_summary,
-   mcmc_vcov,  
-   mcmc_WaldTest,
-   mcmclist2coda,
-   md.pattern.sirt,
-   mirt.specify.partable,
-   mirt.wrapper.coef,
-   mirt.wrapper.fscores,
-   mirt.wrapper.itemplot,
-   mirt.wrapper.posterior,
-   mle.pcm.group,
-   modelfit.cor.poly,
-   modelfit.sirt,
-   monoreg.colwise,
-   monoreg.rowwise,
-   nedelsky.irf,
-   nedelsky.latresp,
-   nedelsky.sim,
-   noharm.sirt,
-   np.dich,
-   pbivnorm2,
-   pcm.conversion,
-   pcm.fit,
-   person.parameter.rasch.copula,
-   personfit.stat,
-   pgenlogis,
-   plausible.value.imputation.raschtype,
-   polychoric2,
-   prmse.subscores.scales,
-   prob.guttman,
-   Q3,
-   Q3.testlet,
-   qmc.nodes,
-   R2conquest,
-   R2noharm,
-   R2noharm.EAP,
-   R2noharm.jackknife,
-   rasch.conquest,
-   rasch.copula2,
-   rasch.copula3,
-   rasch.evm.pcm,
-   rasch.jml,
-   rasch.jml.biascorr,
-   rasch.jml.jackknife1,
-   rasch.mirtlc,
-   rasch.mml2,
-   rasch.pairwise,
-   rasch.pairwise.itemcluster,
-   rasch.pml2,
-   rasch.pml3,
-   rasch.prox,
-   rasch.va,
-   read.multidimpv,
-   read.pimap,
-   read.pv,
-   read.show,
-   read.show.regression,
-   read.show.term,
-   reliability.nonlinearSEM,
-   rinvgamma2, 
-   rm.facets,
-   rm.sdt,
-   rowCumsums.sirt,
-   rowIntervalIndex.sirt,
-   rowKSmallest.sirt,
-   rowKSmallest2.sirt,
-   rowMaxs.sirt,
-   rowMins.sirt,
-   sia.sirt,
-   sim.qm.ramsay,
-   sim.rasch.dep,
-   sim.raschtype,
-   smirt,
-   stratified.cronbach.alpha,
-   summary.R2noharm,
-   tam2mirt,
-   testlet.marginalized,
-   testlet.yen.q3,
-   tetrachoric2,
-   truescore.irt,
-   unidim.test.csn,
-   wle.rasch,
-   wle.rasch.jackknife,
-   xxirt,
-   xxirt_createDiscItem,
-   xxirt_createParTable,
-   xxirt_createThetaDistribution,
-   xxirt_hessian,
-   xxirt_modifyParTable,
-   yen.q3
-)    
+export(amh)
+export(automatic.recode)
+export(bounds_parameters)
+export(brm.irf)
+export(brm.sim)
+export(btm)
+export(CallSwitch)
+export(categorize)
+export(ccov.np)
+export(class.accuracy.rasch)
+export(colCumsums.sirt)
+export(conf.detect)
+export(data.wide2long)
+export(decategorize)
+export(detect.index)
+export(dif.logistic.regression)
+export(dif.strata.variance)
+export(dif.variance)
+export(dimproper)
+export(dinvgamma2)
+export(dirichlet.mle)
+export(dirichlet.simul)
+export(eigenvalues.manymatrices)
+export(eigenvalues.sirt)
+export(equating.rasch)
+export(equating.rasch.jackknife)
+export(expl.detect)
+export(f1d.irt)
+export(fit.adisop)
+export(fit.isop)
+export(fuzcluster)
+export(fuzdiscr)
+export(genlogis.moments)
+export(ginverse_sym)
+export(gom.em)
+export(gom.jml)
+export(greenyang.reliability)
+export(hard_thresholding)
+export(invariance.alignment)
+export(IRT.mle)
+export(isop.dich)
+export(isop.poly)
+export(isop.scoring)
+export(isop.test)
+export(latent.regression.em.normal)
+export(latent.regression.em.raschtype)
+export(lavaan2mirt)
+export(lc.2raters)
+export(likelihood.adjustment)
+export(linking.haberman)
+export(linking.robust)
+export(loglike_mvnorm)
+export(lsdm)
+export(lsem.estimate)
+export(lsem.MGM.stepfunctions)
+export(lsem.permutationTest)
+export(marginal.truescore.reliability)
+export(mcmc.2pno)
+export(mcmc.2pno.ml)
+export(mcmc.2pnoh)
+export(mcmc.3pno.testlet)
+export(mcmc.list.descriptives)
+export(mcmc_coef)
+export(mcmc_confint)
+export(mcmc_derivedPars)
+export(mcmc_plot)
+export(mcmc_summary)
+export(mcmc_vcov)
+export(mcmc_WaldTest)
+export(mcmclist2coda)
+export(md.pattern.sirt)
+export(mirt.specify.partable)
+export(mirt.wrapper.coef)
+export(mirt.wrapper.fscores)
+export(mirt.wrapper.itemplot)
+export(mirt.wrapper.posterior)
+export(mle.pcm.group)
+export(modelfit.cor.poly)
+export(modelfit.sirt)
+export(monoreg.colwise)
+export(monoreg.rowwise)
+export(nedelsky.irf)
+export(nedelsky.latresp)
+export(nedelsky.sim)
+export(noharm.sirt)
+export(np.dich)
+export(parmsummary_extend)
+export(pbivnorm2)
+export(pcm.conversion)
+export(pcm.fit)
+export(person.parameter.rasch.copula)
+export(personfit.stat)
+export(pgenlogis)
+export(plausible.value.imputation.raschtype)
+export(polychoric2)
+export(pmle)
+export(pow)
+export(prior_model_parse)
+export(prmse.subscores.scales)
+export(prob.guttman)
+export(Q3)
+export(Q3.testlet)
+export(qmc.nodes)
+export(R2conquest)
+export(R2noharm)
+export(R2noharm.EAP)
+export(R2noharm.jackknife)
+export(rasch.conquest)		# defunct
+export(rasch.copula2)
+export(rasch.copula3)
+export(rasch.evm.pcm)
+export(rasch.jml)
+export(rasch.jml.biascorr)
+export(rasch.jml.jackknife1)
+export(rasch.mirtlc)
+export(rasch.mml2)
+export(rasch.pairwise)
+export(rasch.pairwise.itemcluster)
+export(rasch.pml2)		# defunct
+export(rasch.pml3)
+export(rasch.prox)
+export(rasch.va)
+export(read.multidimpv)
+export(read.pimap)
+export(read.pv)
+export(read.show)
+export(read.show.regression)
+export(read.show.term)
+export(reliability.nonlinearSEM)
+export(rinvgamma2)
+export(rm.facets)
+export(rm.sdt)
+export(rowCumsums.sirt)
+export(rowIntervalIndex.sirt)
+export(rowKSmallest.sirt)
+export(rowKSmallest2.sirt)
+export(rowMaxs.sirt)
+export(rowMins.sirt)
+export(soft_thresholding)
+export(sia.sirt)
+export(sim.qm.ramsay)
+export(sim.rasch.dep)
+export(sim.raschtype)
+export(smirt)
+export(stratified.cronbach.alpha)
+export(summary.R2noharm)
+export(tam2mirt)
+export(testlet.marginalized)
+export(testlet.yen.q3)		# defunct
+export(tetrachoric2)
+export(tracemat)
+export(truescore.irt)
+export(unidim.test.csn)
+export(wle.rasch)
+export(wle.rasch.jackknife)
+export(xxirt)
+export(xxirt_createDiscItem)
+export(xxirt_createParTable)
+export(xxirt_createThetaDistribution)
+export(xxirt_hessian)
+export(xxirt_modifyParTable)
+export(yen.q3)		# defunct
     
 
 
@@ -311,10 +322,14 @@ S3method(anova, rm.facets)
 S3method(anova, rm.sdt)
 S3method(anova, smirt)
 S3method(anova, xxirt)
-S3method(coef, rasch.evm.pcm)
 S3method(coef, amh)
+S3method(coef, mlnormal)
+S3method(coef, pmle)
+S3method(coef, rasch.evm.pcm)
 S3method(coef, xxirt)
 S3method(confint, amh)
+S3method(confint, mlnormal)
+S3method(confint, pmle)
 S3method(confint, xxirt)
 S3method(IRT.expectedCounts, xxirt)
 S3method(IRT.factor.scores, rm.facets)
@@ -359,6 +374,8 @@ S3method(IRT.posterior, xxirt)
 S3method(IRT.se, xxirt)
 S3method(logLik, amh)
 S3method(logLik, gom)
+S3method(logLik, mlnormal)
+S3method(logLik, pmle)
 S3method(logLik, prob.guttman)
 S3method(logLik, rasch.copula2)
 S3method(logLik, rasch.copula3)
@@ -399,13 +416,14 @@ S3method(summary, lsem)
 S3method(summary, lsem.permutationTest)
 S3method(summary, mcmc.sirt)
 S3method(summary, mcmc_WaldTest)
+S3method(summary, mlnormal)
 S3method(summary, modelfit.sirt)
 S3method(summary, noharm.sirt)
+S3method(summary, pmle)
 S3method(summary, prob.guttman)
 S3method(summary, R2conquest)
 S3method(summary, R2noharm)
 S3method(summary, R2noharm.jackknife)
-S3method(summary, rasch.conquest)
 S3method(summary, rasch.copula)
 S3method(summary, rasch.copula2)
 S3method(summary, rasch.copula3)
@@ -420,5 +438,7 @@ S3method(summary, rm.sdt)
 S3method(summary, smirt)
 S3method(summary, xxirt)
 S3method(vcov, amh)
+S3method(vcov, mlnormal)
+S3method(vcov, pmle)
 S3method(vcov, rasch.evm.pcm)
 S3method(vcov, xxirt)

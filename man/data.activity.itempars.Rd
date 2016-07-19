@@ -18,7 +18,7 @@ The format is a list with number of students per group
 item intercepts (\code{nu}):
 
 \code{List of 3} \cr
-\code{ $ N     : 'table' int [1:9(1d)] 2580 5279 15131 14692 5525 11005 7080 4112 14274} \cr
+\code{ $ N     : 'table' int [1:9(1d)] 2580 5279 15131 14692 5525 11005 7080 ...} \cr
 \code{  ..- attr(*, "dimnames")=List of 1} \cr
 \code{  .. ..$ : chr [1:9] "1" "2" "3" "4" ...} \cr
 \code{ $ lambda: num [1:9, 1:5] 0.423 0.485 0.455 0.437 0.502 ...} \cr

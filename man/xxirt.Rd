@@ -217,11 +217,10 @@ P_2PL <- function( par, Theta , ncat){
     P[,1] <- 1
     for (cc in 2:ncat){
         P[,cc] <- exp( (cc-1) * a * Theta[,1] - b )
-                        }
+    }
     P <- P / rowSums(P)    
     return(P)
-        }
-
+}
 
 #*** IRF 1PL
 P_1PL <- function( par, Theta , ncat){
@@ -231,11 +230,10 @@ P_1PL <- function( par, Theta , ncat){
     P[,1] <- 1
     for (cc in 2:ncat){
         P[,cc] <- exp( (cc-1) * Theta[,1] - b )
-                        }
+    }
     P <- P / rowSums(P)    
     return(P)
-        }
-
+}
 
 #** created item classes of 1PL and 2PL models
 par <- c( "a"= 1 , "b" = 0 )
@@ -260,7 +258,7 @@ P_Theta1 <- function( par , Theta , G){
     pi1 <- pi1 / sum(pi1)
     pi_Theta[,1] <- pi1
     return(pi_Theta)
-                }
+}
 #** create distribution class
 par_Theta <- c( "mu"=0, "sigma" = 1 )  
 customTheta  <- xxirt_createThetaDistribution( par=par_Theta , est=c(FALSE,TRUE) , P=P_Theta1 )
@@ -315,7 +313,7 @@ summary(mod2)
 #****************************************************************************
 #******* Model 3: Cloglog link function
 
-#*** IRF 1PL probit
+#*** IRF cloglog
 P_1N <- function( par, Theta , ncat){
     b <- par
     TP <- nrow(Theta)
@@ -323,17 +321,17 @@ P_1N <- function( par, Theta , ncat){
     P[,2] <- 1 - exp( - exp( Theta - b ) )
     P[,1] <- 1 - P[,2]
     return(P)
-        }
+}
 par <- c("b"=0)
 item_1N <- xxirt_createDiscItem( name = "1N" , par = par , est = c(TRUE) , P = P_1N )
 customItems <- list( item_1N )
 itemtype <- rep( "1N" , I )
 partable <- xxirt_createParTable( dat[,items] , itemtype = itemtype , customItems = customItems )
 partable <- xxirt_modifyParTable( partable=partable , parname = "b" , 
-                 value = - stats::qnorm( colMeans(dat[,items] )))
+                 value = - stats::qnorm( colMeans(dat[,items] )) )
 
 #*** estimate model
-mod3 <- xxirt( dat = dat , Theta=Theta , partable = partable , customItems = customItems ,
+mod3 <- xxirt( dat=dat, Theta=Theta, partable = partable, customItems = customItems,
                 customTheta= customTheta  )                               
 summary(mod3)    
 IRT.compareModels(mod1,mod3)
@@ -350,7 +348,7 @@ P_Theta1 <- function( par , Theta , G  ){
     l1 <- exp( c( logitprobs , 0 ) )    
     probs <- matrix( l1/sum(l1) , ncol=1)    
     return(probs)
-                }
+}
                
 par_Theta <- stats::qlogis( rep( 1/K , K-1 ) )
 names(par_Theta) <- paste0("pi",1:(K-1) )
@@ -364,10 +362,10 @@ P_lc <- function( par, Theta , ncat){
     P[,1] <- 1
     for (cc in 2:ncat){
         P[,cc] <- exp( Theta %*% b )
-                        }
+    }
     P <- P / rowSums(P)    
     return(P)
-        }
+}
 par <- seq( -1.5 , 1.5 , length=K )
 names(par) <- paste0("b",1:K)
 item_lc <- xxirt_createDiscItem( name = "LC" , par = par , est = rep(TRUE,K) , P = P_lc )
@@ -401,7 +399,7 @@ P_Theta1 <- function( par , Theta , G  ){
     l1 <- exp( c( logitprobs , 0 ) )    
     probs <- matrix( l1/sum(l1) , ncol=1)    
     return(probs)
-                }              
+}              
 par_Theta <- stats::qlogis( rep( 1/K , K-1 ) )
 names(par_Theta) <- paste0("pi",1:(K-1) )
 customTheta  <- xxirt_createThetaDistribution( par=par_Theta , 
@@ -415,10 +413,10 @@ P_olc <- function( par, Theta , ncat){
     P[,1] <- 1
     for (cc in 2:ncat){
         P[,cc] <- exp( Theta %*% b )
-                        }
+    }
     P <- P / rowSums(P)    
     return(P)
-        }
+}
 
 par <- c( -1 , rep( .5 , , length=K-1 ) )
 names(par) <- paste0("b",1:K)
@@ -430,7 +428,7 @@ partable <- xxirt_createParTable( dat , itemtype = itemtype , customItems = cust
 partable
 
 #*** estimate model
-mod5 <- xxirt( dat = dat , Theta=Theta , partable = partable , customItems = customItems ,
+mod5 <- xxirt( dat=dat , Theta=Theta , partable = partable , customItems = customItems ,
                 customTheta= customTheta  )
 summary(mod5)                
 # estimated item response functions
@@ -459,7 +457,7 @@ P_Theta1 <- function( par , Theta , G  ){
     p1 <- p1 / sum(p1)          
     probs <- matrix( p1 , ncol=1)    
     return(probs)
-                }
+}
                
 par_Theta <- c(0,1)
 names(par_Theta) <- c("mu","sigma")
@@ -475,7 +473,7 @@ P_1PL <- function( par, Theta , ncat){
     P[,2] <- plogis( Theta - b )
     P[,1] <- 1 - P[,2]
     return(P)
-        }
+}
 par <- c("b"=0)
 item_1PL <- xxirt_createDiscItem( name = "1PL" , par = par , est = c(TRUE) , P = P_1PL )
 customItems <- list( item_1PL )
@@ -506,7 +504,7 @@ P_Theta2 <- function( par , Theta , G  ){
     p1 <- dnorm( Theta[,1] , mean = mu2 , sd = sigma2)
     probs[,2] <- p1 / sum(p1)                  
     return(probs)
-                }              
+}              
 par_Theta <- c(0,0,1,1)
 names(par_Theta) <- c("mu1","mu2","sigma1","sigma2")
 customTheta2  <- xxirt_createThetaDistribution( par=par_Theta , 

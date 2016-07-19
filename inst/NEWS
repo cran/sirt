@@ -33,6 +33,52 @@ CHANGELOG sirt
 
 
 ------------------------------------------------------------------------
+Versions 1.12 -- 2016-07-19  --  CRAN sirt 1.12-2
+------------------------------------------------------------------------
+
+NOTE  * included utility function 'prior_model_parse' for convenient
+        specifications of priors for the 'amh' function
+NOTE  * included utility function 'loglike_mvnorm' for calculation 
+        of log-likelihood for a multivariate normal distribution based 
+        on sufficient statistics
+ADDED * added deterministic optimization for Bayesian model estimation 
+        in the function 'pmle' (penalized maximum likelihood estimation).
+        See the 'amh' help page.
+NOTE  * fixed a bug in LSEM plot function for subsets of parameters
+        (thanks to Johanna Hartung) 
+NOTE  * corrected a bug in Example 1 in 'equating.rasch' 
+        (thanks to Kelvin Gregory)
+NOTE  * changed labelling of response pattern in 'md.pattern.sirt'
+        to integers
+NOTE  * included example in 'nedelsky-methods' for fitting the Nedelsky 
+        model with xxirt function
+NOTE  * added history of adaptive proposal standard deviations in
+        'amh' function in output
+NOTE  * added sampled parameter vector with highest value of posterior
+        distribution in 'amh' for comparison with 'pmle' function
+NOTE  * added comparison of MAP, multivariate MAP and mean estimator
+        in 'amh' in value 'comp_estimators'. Now also included in
+        'summary.amh'.
+NOTE  * Defunct functions: 'rasch.conquest', 'rasch.pml2' , 'yen.q3',
+        'testlet.yen.q3'
+NOTE  * included utility functions 'CallSwitch' and 'parmsummary_extend'
+NOTE  * included utility functions 'pow', 'tracemat', 'soft_thresholding',
+        'hard_thresholding', 'bounds_parameters', 'dimproper',
+        'ginverse_sym' (see '?sirt-utilities')
+ADDED * included estimation routine 'mlnormal' for (restricted) maximum 
+        likelihood estimation for mean and covariance structures for a
+        multivariate normal distribution (e.g. multilevel models, factor
+        analysis, structural equation models, multilevel structural equation
+        models, social relations model, ...). Prior distribution and lasso
+        penalities are also accomodated.
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: prior_model_parse (1),
+        loglike_mvnorm (1), amh (1), equating.rasch (1), amh (1),
+        nedelsky-methods (1), sirt-utilities (1,2,3,4), 
+        parmsummary_extend (1), mlnormal (1,2)
+
+------------------------------------------------------------------------
 Versions 1.11 -- 2016-05-30  --  CRAN sirt 1.11-0
 ------------------------------------------------------------------------
 

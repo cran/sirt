@@ -80,12 +80,16 @@ Alexander Robitzsch
 }
 
 \examples{
-# Simulation of data from a Rasch model (alpha_1 = alpha_2 = 0)
+#############################################################################
+## EXAMPLE 1: Simulation of data from a Rasch model (alpha_1 = alpha_2 = 0)
+#############################################################################	
+
+base::set.seed(9765)	
 N <- 500    # number of persons
 I <- 11     # number of items
-b <- seq( -2 , 2 , length=I )
+b <- base::seq( -2 , 2 , length=I )
 dat <- sim.raschtype( stats::rnorm( N ) , b )
-colnames(dat) <- paste( "I" , 1:I , sep="")
+base::colnames(dat) <- base::paste0( "I" , 1:I )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

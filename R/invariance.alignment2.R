@@ -51,7 +51,7 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 	fopt.history <- matrix(NA , nrow=maxiter , ncol=2)
 	psi0b <- psi0
 	iter <- 1
-	minval <- fopt <- 10^300
+	minval <- fopt <- 1E300
 	fopt_change <- 10000
 	Niter <- rep(NA , 2 )
 	miniter0 <- fopt0 <- minval0 <- rep(NA,2)
@@ -65,11 +65,11 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 	eps2 <- 1E-10
 	lambda_constant <- FALSE
 	if( stats::sd( lambda ) < 1E-10 ){
-			I <- ncol(lambda)
-			G <- nrow(lambda)
-			lambda <- lambda + matrix( stats::runif( I*G , -eps2 , eps2 ) , nrow=G , ncol=I)
-			lambda_constant <- TRUE
-							}
+		I <- ncol(lambda)
+		G <- nrow(lambda)
+		lambda <- lambda + matrix( stats::runif( I*G , -eps2 , eps2 ) , nrow=G , ncol=I)
+		lambda_constant <- TRUE
+	}
 	
 	
 	
@@ -85,7 +85,7 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 	    cat("* OPTIMIZATION LAMBDA\n")
 	    cat( paste0( "|" , paste0( rep("*" , GP ) , collapse="") , "|\n|") )
 		utils::flush.console()
-				}
+	}
 	psi0_init <- psi0	
 	for (gp in 1:GP){	
 		res0 <- inv.alignment2.lambda.alg( lambda , psi0_init , nu , align.scale ,
@@ -93,14 +93,13 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 		          group_combis , fopt , h , max.increment , 
 				  fac.oldpar = gridp[gp,2] , maxiter ,
 				  alpha0 , group.combis , G , increment.factor=gridp[gp,1])    
-	
-	psi0 <- res0$psi0			
-	if ( res0$fopt < fopt[1] ){
-		psi0.min <- psi0	
-		fopt[1] <- res0$fopt
-					}
+		psi0 <- res0$psi0			
+		if ( res0$fopt < fopt[1] ){
+			psi0.min <- psi0	
+			fopt[1] <- res0$fopt
+		}
 		if (progress){ cat("-") ; utils::flush.console() }
-					}
+	}
 		if (progress){ cat("|\n") ; utils::flush.console() }	
 
 	#**************************************************

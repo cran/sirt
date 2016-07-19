@@ -7,9 +7,9 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 				globconv = 1E-6 , conv = 1E-4 , maxit = 200, mstep_iter = 4 , 
 				mstep_reltol = 1E-6 , h = 1E-4 , use_grad = TRUE , 
 				verbose = TRUE ){
-		#*** prelimaries	
-		CALL <- match.call()
-		s1 <- Sys.time()
+		#*** preliminaries	
+		CALL <- base::match.call()
+		s1 <- base::Sys.time()
 		#*** some data processing of dat		
 		res <- xxirt_data_proc(dat=dat , group = group )
 		    N <- res$N ; G <- res$G ; group <- res$group ; items <- res$items 
@@ -20,8 +20,8 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 		
 		#*** default Theta
 		if ( is.null(Theta) ){
-			Theta <- matrix( seq(-6,6,length=21) , ncol=1 )
-							 }
+			Theta <- base::matrix( base::seq(-6,6,length=21) , ncol=1 )
+		}
 		TP <- nrow(Theta)
 		
 		#*** eps - numerical instabilities
@@ -30,7 +30,7 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 		# create partable if not provided
 		if ( is.null(partable) ){				
 			partable <- xxirt_createParTable( dat=dat , itemtype=itemtype , customItems=customItems )				
-								}
+		}
 									
 		# process partable and itemtype				
 		res <- xxirt_proc_ParTable( itemtype=itemtype , partable=partable , items=items )
@@ -62,10 +62,10 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 
 
  # zz0 <- Sys.time()						
-          if ( verbose){
-		       cat(disp)	
-		       cat("Iteration" , iter , "   " , paste( Sys.time() ) , "\n" )	
-						}			   		
+			if ( verbose){
+		       base::cat(disp)	
+		       base::cat("Iteration" , iter , "   " , base::paste( Sys.time() ) , "\n" )	
+			}			   		
 			dev0 <- dev
 
 			#*** item probabilities
@@ -88,8 +88,8 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 			res <- xxirt_compute_posterior( prior_Theta=prior_Theta , p.xi.aj=p.xi.aj , 
 						group=group ,G=G , weights=weights , dat1=dat1 , 
 						dat_resp=dat_resp , maxK=maxK ,group_index = group_index )		
-				n.ik <- res$n.ik ; p.aj.xi <- res$p.aj.xi ; N.ik <- res$N.ik ;
-				N.k <- res$N.k ; post_unnorm <- res$post_unnorm
+			n.ik <- res$n.ik ; p.aj.xi <- res$p.aj.xi ; N.ik <- res$N.ik ;
+			N.k <- res$N.k ; post_unnorm <- res$post_unnorm
 # cat("posterior ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 				
 			#*** M-step item parameters	    			
@@ -109,40 +109,40 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 			res <- xxirt_mstep_ThetaParameters( customTheta=customTheta, G=G, eps=eps,
 					  mstep_iter=mstep_iter  , N.k=N.k , par1=par1 ,
 					  mstep_reltol=mstep_reltol , Theta = Theta )		
-				ll2 <- res$ll2 ; customTheta <- res$customTheta ; par1 <- res$par1	  			
+			ll2 <- res$ll2 ; customTheta <- res$customTheta ; par1 <- res$par1	  			
 # cat("mstep theta ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1				
 
 			
 			#*** compute deviance
 			#    ll <- sum( dat1[,2] * log( rowSums( f.yi.qk * outer( rep(1,nrow(f.yi.qk)) , pi.k ) ) ) )			
-			dev <- - 2 * sum( weights * log( rowSums( post_unnorm ) ) )									
+			dev <- - 2 * base::sum( weights * base::log( rowSums( post_unnorm ) ) )									
 			globconv_temp <- abs( ( - dev + dev0	) / dev0 )					
 			
 			conv0 <- 0
 			
-			if ( length(par0) > 0){
-				conv0 <- max(abs(par0-par00))
-								}			
+			if ( base::length(par0) > 0){
+				conv0 <- base::max( base::abs(par0-par00))
+			}			
 			conv1 <- 0
 			if ( !is.null(par1) ){		
-				conv1 <- max(abs(par10-par1))	
-							}
-			conv_temp <- max( conv0 , conv1) 			
+				conv1 <- base::max( base::abs(par10-par1))	
+			}
+			conv_temp <- base::max( conv0 , conv1) 			
             converged <- ( globconv_temp < globconv ) & ( conv_temp < conv )
 						
 			# print progress	
             if (verbose){			
-				cat( paste( "   Deviance = "  , round( dev , 4 ) , 
+				base::cat( base::paste( "   Deviance = "  , base::round( dev , 4 ) , 
 					if (iter > 1 ){ " | Deviance change = " } else {""} ,
-					if( iter > 1){round( - dev + dev0 , 6 )} else { ""}	,"\n",sep="") )
-				cat( paste( "    Maximum item parameter change = " , 
-						paste( round( conv0  ,6) , collapse=" " ) , "\n" , sep=""))
-				cat( paste( "    Maximum theta distribution parameter change = " , 
-						paste( round( conv1  ,6) , collapse=" " ) , "\n" , sep=""))				
-				flush.console()						
-						}
+					if( iter > 1){ base::round( - dev + dev0 , 6 )} else { ""}	,"\n",sep="") )
+				base::cat( base::paste( "    Maximum item parameter change = " , 
+						base::paste( base::round( conv0  ,6) , collapse=" " ) , "\n" , sep=""))
+				base::cat( base::paste( "    Maximum theta distribution parameter change = " , 
+						base::paste( base::round( conv1  ,6) , collapse=" " ) , "\n" , sep=""))				
+				utils::flush.console()						
+			}
 			iter <- iter + 1
-				}
+		}
 		################### end EM algorithm ####################		
 				
 		#**** post processing		
@@ -155,7 +155,7 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 			par_items_bounds <- res$par_items_bounds
 			
 		#-- information criteria
-		ic <- xxirt_ic( dev=dev , N= sum(weights), par_items=par_items , 
+		ic <- xxirt_ic( dev=dev , N= base::sum(weights), par_items=par_items , 
 		           par_Theta=par_Theta , I = I , par_items_bounds = par_items_bounds )
 		
 		#-- compute EAP
@@ -164,8 +164,8 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 		
 		#*********************************************#
 		# output	
-	    s2 <- Sys.time()		
-		res <- list( partable = partable , par_items = par_items ,
+	    s2 <- base::Sys.time()		
+		res <- base::list( partable = partable , par_items = par_items ,
 		   			   par_items_summary = par_items_summary , 
 					   par_items_bounds = par_items_bounds , 
 		               par_Theta = par_Theta , 
@@ -186,7 +186,7 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 					   converged = converged , iter = iter-1 , 
 					   CALL = CALL , s1 = s1 , s2 = s2
 								)								
-		class(res) <- "xxirt"
-		return(res)		
-				}
+		base::class(res) <- "xxirt"
+		base::return(res)		
+}
 #########################################################################				

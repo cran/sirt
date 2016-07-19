@@ -1,6 +1,6 @@
 \name{Q3.testlet}
 \alias{Q3.testlet}
-\alias{testlet.yen.q3}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 \eqn{Q_3} Statistic of Yen (1984) for Testlets
@@ -11,8 +11,6 @@ between testlets.
 }
 \usage{
 Q3.testlet(q3.res, testlet.matrix)
-
-testlet.yen.q3(q3.res, testlet.matrix)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

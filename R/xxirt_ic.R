@@ -4,20 +4,20 @@
 xxirt_ic <- function( dev , N , par_items , par_Theta , I ,
        par_items_bounds ){
 	# Information criteria
-	ic <- list( "deviance" = dev , "n" = N , "I" = I )
-		
+	ic <- base::list( "deviance" = dev , "n" = N , "I" = I )
 	# ic$np.item <- length(par_items)
-	ic$np.items <- sum(par_items_bounds$active)
-	ic$np.Theta <- length(par_Theta)
+	ic$np.items <- base::sum(par_items_bounds$active)
+	ic$np.Theta <- base::length(par_Theta)
 	ic$np <- ic$np.item + ic$np.Theta
     # AIC
     ic$AIC <- dev + 2*ic$np
     # BIC
-    ic$BIC <- dev + ( log(ic$n) )*ic$np
+	log_n <- base::log(ic$n)
+    ic$BIC <- dev + log_n * ic$np
     # CAIC (consistent AIC)
-    ic$CAIC <- dev + ( log(ic$n) + 1 )*ic$np
+    ic$CAIC <- dev + ( log_n + 1 )*ic$np
 	# corrected AIC
     ic$AICc <- ic$AIC + 2*ic$np * ( ic$np + 1 ) / ( ic$n - ic$np - 1 )		
-	return(ic)	
-		}	
+	base::return(ic)	
+}	
 ###################################################################		

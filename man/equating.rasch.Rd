@@ -94,7 +94,10 @@ mod <- equating.rasch(x=pars[,c("item","study1")], y=pars[,c("item","study2")])
   ## 1   0.08828 0.08896269    0.09292838
 
 \dontrun{
-#*** linking using the plink package	
+#*** linking using the plink package
+# The plink package is not available on CRAN anymore.
+# You can download the package with
+# utils::install.packages("plink", repos = "http://www2.uaem.mx/r-mirror")
 library(plink)	
 I <- nrow(pars)
 pm <- plink::as.poly.mod(I)
@@ -108,7 +111,7 @@ common.items <- cbind("study1"=1:I,"study2"=1:I)
 # number of categories per item
 cats.item <- list( "study1"=rep(2,I), "study2"=rep(2,I))
 # convert into plink object
-x <- plink::as.irt.pars( plink.pars, common.items , cat= cats.item, 
+x <- plink::as.irt.pars( plink.pars1, common.items , cat= cats.item, 
           poly.mod=list(pm,pm))
 # linking using plink: first group is reference group
 out <- plink::plink(x, rescale="MS", base.grp=1, D=1.7)

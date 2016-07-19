@@ -11,7 +11,7 @@ anova.rasch.mml <- function( object , ... ){
 	res$Model <- cl[ind]
     print(res)	
 	invisible(res)
-				}
+}
 ##############################################################
 # anova smirt
 anova.smirt <- anova.rasch.mml
@@ -116,9 +116,11 @@ anova.rasch.copula2 <- function( object , ... ){
     dfr[1,"Chisq"] <- dfr[1,"Deviance"] - dfr[2,"Deviance"]
     dfr[1,"df"] <- abs( dfr[1,"Npars"] - dfr[2,"Npars"] )
     dfr[ 1, "p" ] <- round( 1 - stats::pchisq( dfr[1,"Chisq"] , df= dfr[1,"df"] ) , 5 )
-    for ( vv in 2:( ncol(dfr))){ dfr[,vv] <- round( dfr[,vv] , 5 ) }
+    for ( vv in 2:( ncol(dfr))){
+		dfr[,vv] <- round( dfr[,vv] , 5 ) 
+	}
     print( dfr )
     invisible(dfr)
-            }
+}
 anova.rasch.copula3 <- anova.rasch.copula2			
 ##############################################################

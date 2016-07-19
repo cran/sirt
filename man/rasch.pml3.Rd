@@ -1,7 +1,6 @@
 
 
-\name{rasch.pml2}
-\alias{rasch.pml2}
+\name{rasch.pml3}
 \alias{rasch.pml3}
 \alias{summary.rasch.pml}
 
@@ -27,14 +26,6 @@ rasch.pml3(dat, est.b = seq(1, ncol(dat)), est.a=rep(0,ncol(dat)) ,
     err.constraintM=NULL , err.constraintV=NULL ,
     glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE,
     use.maxincrement=TRUE )  
-    
-rasch.pml2(dat, est.b = seq(1, ncol(dat)), est.a=rep(0,ncol(dat)) ,
-    est.sigma = TRUE, itemcluster = NULL, 
-    weight = rep(1, nrow(dat)), numdiff.parm = 0.001, 
-    b.init = NULL, a.init=NULL ,  sigma.init = NULL, 
-    error.corr = 0*diag( 1 , ncol(dat) ) ,
-    err.constraintM=NULL , err.constraintV=NULL ,
-    glob.conv = 10^(-6), conv1 = 10^(-4), pmliter = 300, progress = TRUE)  
     
 \method{summary}{rasch.pml}(object,...)	    
 }
@@ -202,11 +193,6 @@ Alexander Robitzsch
 }
 \note{
 This function needs the \pkg{combinat} library.
-
-\code{rasch.pml2} uses the \code{\link[pbivnorm:pbivnorm]{pbivnorm::pbivnorm}}
-function from the \pkg{pbivnorm} package, 
-but \code{rasch.pml3} uses the \code{\link{pbivnorm2}} from this package (\pkg{sirt}) 
-and is somewhat faster.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -342,7 +328,7 @@ mod1 <- rasch.pml3( dat )
 summary(mod1)
 
 # estimation with rasch.mml2 function
-mod2 <- rasch.mml3( dat )
+mod2 <- rasch.mml2( dat )
 
 # estimate item parameters for groups with five item parameters each
 est.b <- rep( 1:(I/2) , each=2 )

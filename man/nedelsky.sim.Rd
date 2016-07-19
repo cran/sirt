@@ -181,6 +181,48 @@ summary(mod1)
 mirt.wrapper.coef( mod1 )$coef
 mirt.wrapper.itemplot(mod1 ,ask=TRUE)
 
+#******************************************************
+# fit Nedelsky model with xxirt function in sirt
+
+# define item class for xxirt
+item_nedelsky <- xxirt_createDiscItem( name = "nedelsky" , par = par , 
+                est = est , P = nedelsky.icc ,
+                prior = c( b1="dnorm" , b2 = "dnorm" , b3 = "dnorm" ) , 
+                prior_par1 = c( b1 = -1 , b2=-1 , b3=-1) , 
+                prior_par2 = c(b1=2, b2=2 , b3=2) )
+customItems <- list( item_nedelsky )
+
+#---- definition theta distribution
+#** theta grid
+Theta <- matrix( seq(-6,6,length=21) , ncol=1 )
+#** theta distribution
+P_Theta1 <- function( par , Theta , G){
+    mu <- par[1]
+    sigma <- max( par[2] , .01 )
+    TP <- nrow(Theta)
+    pi_Theta <- matrix( 0 , nrow=TP , ncol=G)
+    pi1 <- dnorm( Theta[,1] , mean = mu , sd = sigma )
+    pi1 <- pi1 / sum(pi1)
+    pi_Theta[,1] <- pi1
+    return(pi_Theta)
+                }
+#** create distribution class
+par_Theta <- c( "mu"=0, "sigma" = 1 )  
+customTheta <- xxirt_createThetaDistribution( par=par_Theta, est=c(FALSE,TRUE), 
+                   P=P_Theta1 )
+
+#-- create parameter table
+itemtype <- rep( "nedelsky" , I )
+partable <- xxirt_createParTable( dat , itemtype = itemtype , customItems = customItems )
+
+# estimate model
+mod2 <- xxirt( dat = dat , Theta=Theta , partable = partable , customItems = customItems ,
+                    customTheta = customTheta)
+summary(mod2)
+# compare sirt::xxirt and mirt::mirt
+logLik(mod2)
+mod1@Fit$logLik
+
 #############################################################################
 # EXAMPLE 2: Multiple choice dataset data.si06
 #############################################################################

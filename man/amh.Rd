@@ -6,19 +6,34 @@
 \alias{coef.amh}
 \alias{vcov.amh}
 \alias{confint.amh}
+\alias{pmle}
+\alias{summary.pmle}
+\alias{plot.pmle}
+\alias{logLik.pmle}
+\alias{coef.pmle}
+\alias{vcov.pmle}
+\alias{confint.pmle}
+
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Bayesian Estimation with Adaptive Metropolis Hastings Sampling
+Bayesian Model Estimation with Adaptive Metropolis Hastings Sampling
+(\code{amh}) or Penalized Maximum Likelihood Estimation (\code{pmle})
 }
 
 \description{
-Conducts a Bayesian statistical analysis using the adaptive Metropolis-Hastings
+The function \code{amh} conducts a Bayesian statistical analysis using 
+the adaptive Metropolis-Hastings
 as the estimation procedure (Hoff, 2009). Only univariate prior 
 distributions are allowed.
 Note that this function is intended just for experimental purpose, not to
 replace general purpose packages like \pkg{WinBUGS}, \pkg{JAGS},
-\pkg{Stan} or \pkg{MHadaptive}.
+\pkg{Stan} or \pkg{MHadaptive}. \cr \cr
+
+The function \code{pmle} optimizes the penalized likelihood which means that
+the posterior is maximized and the maximum a posterior estimate is
+obtained. The optimization function \link[stats:optim]{stats::optim}
+is used.
 }
 
 
@@ -27,6 +42,9 @@ amh(data , nobs , pars , model ,  prior , proposal_sd ,  pars_lower = NULL ,
       pars_upper = NULL , derivedPars = NULL , n.iter = 5000 , n.burnin = 1000 , 
       n.sims=3000, acceptance_bounds = c(.45,.55), proposal_refresh = 50, 
       print_iter = 50 ) 
+      
+pmle( data , nobs , pars , model ,  prior, pars_lower = NULL , pars_upper = NULL ,
+       method = "L-BFGS-B" ,control=list() , verbose = TRUE , hessian = TRUE , ... )      
       
 \method{summary}{amh}(object, digits = 3, file = NULL, ...)
 
@@ -41,6 +59,16 @@ amh(data , nobs , pars , model ,  prior , proposal_sd ,  pars_lower = NULL ,
 \method{vcov}{amh}(object, ...)
 
 \method{confint}{amh}(object , parm , level = .95, ... )
+
+\method{summary}{pmle}(object, digits = 3, file = NULL, ...)
+
+\method{coef}{pmle}(object, ...)
+
+\method{logLik}{pmle}(object, ...)
+
+\method{vcov}{pmle}(object, ...)
+
+\method{confint}{pmle}(object , parm , level = .95, ... )
 }
 
 %- maybe also 'usage' for other objects documented here.
@@ -50,13 +78,15 @@ Object which contains data
 }
 \item{nobs}{Number of observations}
   \item{pars}{
-named vector of initial values for parameters
+Named vector of initial values for parameters
 }
   \item{model}{
 Function defining the log-likelihood of the model
 }
   \item{prior}{
-List with prior distributions for the parameters to be sampled (see Examples)
+List with prior distributions for the parameters to be sampled (see Examples).
+See \code{\link{prior_model_parse}} for more convenient 
+specifications of the prior distributions.
 }
   \item{proposal_sd}{
 Vector with initial standard deviations for proposal distribution
@@ -85,6 +115,11 @@ standard deviation
   \item{print_iter}{
 Display progress every \code{print_iter}th iteration
 }
+\item{method}{Optimization in \code{\link[stats:optim]{stats::optim}}}
+\item{control}{Control parameters \code{\link[stats:optim]{stats::optim}}}
+\item{verbose}{Logical indicating whether progress should be displayed.}
+\item{hessian}{Logical indicating whether the Hessian matrix
+should be computed}
 \item{object}{Object of class \code{amh}}
 \item{digits}{Number of digits used for rounding}
 \item{file}{File name}
@@ -117,8 +152,17 @@ List of class \code{amh} including entries
 \item{pars_chain}{Data frame with sampled parameters}
 \item{acceptance_parameters}{Acceptance probabilities}
 \item{amh_summary}{Summary of parameters}
+\item{coef}{Coefficient obtained from marginal MAP estimation}
+\item{pmle_pars}{Object of parameters and posterior values corresponding
+to multivariate maximum of posterior distribution.}
+\item{comp_estimators}{Estimates for univariate MAP, multivariate MAP
+and mean estimator and corresponding posterior estimates.}
 \item{ic}{Information criteria}
 \item{mcmcobj}{Object of class \code{mcmc} for \pkg{coda} package}
+\item{proposal_sd}{Used proposal standard deviations}
+\item{proposal_sd_history}{History of proposal standard
+deviations during burn-in iterations}
+\item{\dots}{More values} \cr \cr
 }
 
 
@@ -143,6 +187,8 @@ Alexander Robitzsch
 \seealso{
 See the Bayesian CRAN Task View for lot of information about
 alternative \R packages.
+
+\code{\link{prior_model_parse}}
 }
 
 \examples{
@@ -152,35 +198,38 @@ alternative \R packages.
 #############################################################################	
 
 #--- simulate data
-Sigma <- scan(nlines=3)
-   1 .55 .5
-   .55 1 .5
-   .5 .5 1
-Sigma <- matrix( Sigma , 3 , 3 )
+Sigma <- matrix( c( 
+	1 , .55 , .5 , 
+	.55 , 1 , .45 , 
+	.5 , .45 , 1 ) , nrow=3 , ncol=3 , byrow=TRUE ) 
 mu <- c(0,1,1.2)
 N <- 400
 set.seed(9875)
 dat <- MASS::mvrnorm( N , mu , Sigma )
 colnames(dat) <- paste0("Y",1:3)
-S <- cov(dat)
-M <- colMeans(dat)
+S <- stats::cov(dat)
+M <- base::colMeans(dat)
 
 #-- define maximum likelihood function for normal distribution
 fit_ml <- function( S , Sigma , M , mu , n , log=TRUE){
-    Sigma1 <- solve(Sigma)
-    p <- ncol(Sigma)
-    det_Sigma <- det( Sigma )
+    Sigma1 <- base::solve(Sigma)
+    p <- base::ncol(Sigma)
+    det_Sigma <- base::det( Sigma )
     eps <- 1E-30
     if ( det_Sigma < eps ){
             det_Sigma <- eps
-                        }
-    l1 <- - p * log( 2*pi) - t( M - mu ) %*% Sigma1 %*% ( M - mu ) - 
-                 log( det_Sigma )  - sum( diag( Sigma1 %*% S ) )
+    }
+    l1 <- - p * base::log( 2*base::pi ) - base::t( M - mu ) \%*\% Sigma1 \%*\% ( M - mu ) - 
+                  base::log( det_Sigma )  - base::sum( base::diag( Sigma1 \%*\% S ) )
     l1 <- n/2 * l1
-    if (! log){ l1 <- exp(l1) }
+    if (! log){ 
+    	l1 <- base::exp(l1) 
+    }
     l1 <- l1[1,1]
-    return(l1)
-        }
+    base::return(l1)
+}
+# This likelihood function can be directly accessed by the
+# sirt::loglike_mvnorm function in this package.
         
 #--- define data input
 data <- list( "S" = S , "M" = M , "n" = N )
@@ -192,18 +241,30 @@ prior[["mu2"]] <- list( "dnorm" , list( x=NA , mean=0 , sd=5 ) )
 prior[["sig1"]] <- list( "dunif" , list( x=NA , 0 , 10 ) )
 prior[["rho"]] <- list( "dunif" , list( x=NA ,-1 , 1  ) )
 
+#** alternatively, one can specify the prior as a string and uses
+#   the 'prior_model_parse' function 
+prior_model2 <- "
+   mu1 ~ dnorm(x=NA, mean=0, sd=1)
+   mu2 ~ dnorm(x=NA, mean=0, sd=5)   
+   sig1 ~ dunif(x=NA, 0,10)
+   rho ~ dunif(x=NA,-1,1)
+   "
+# convert string  
+prior2 <- prior_model_parse( prior_model2 )
+prior2  # should be equal to prior
+
 #--- define log likelihood function for model to be fitted
 model <- function( pars , data ){ 
     # mean vector
-    mu <- pars[ c("mu1", rep("mu2",2) ) ] 
+    mu <- pars[ base::c("mu1", rep("mu2",2) ) ] 
     # covariance matrix
-    m1 <- matrix( pars["rho"] * pars["sig1"]^2 , 3 , 3 )
-    diag(m1) <- rep( pars["sig1"]^2 , 3 )
+    m1 <- base::matrix( pars["rho"] * pars["sig1"]^2 , 3 , 3 )
+    base::diag(m1) <- base::rep( pars["sig1"]^2 , 3 )
     Sigma <- m1
     # evaluate log-likelihood
     ll <- fit_ml( S = data$S , Sigma = Sigma , M = data$M , mu = mu , n = data$n)
-    return(ll)
-      }
+    base::return(ll)
+}
 
 #--- initial parameter values
 pars <- c(1,2,2,0) 
@@ -219,9 +280,10 @@ pars_upper <- c( 10 , 10 , 1E100 , .999 )
 derivedPars <- list( "var1" = ~ I( sig1^2 ) , "d1" = ~ I( ( mu2 - mu1 ) / sig1 ) )
 
 #*** start Metropolis-Hastings sampling
-mod <- amh( data , nobs = data$n , pars , model ,  prior , proposal_sd ,
-        n.iter = 1000 , n.burnin = 300 , derivedPars = derivedPars , 
-        pars_lower = pars_lower , pars_upper = pars_upper )
+mod <- amh( data , nobs = data$n , pars=pars , model=model , 
+          prior=prior , proposal_sd = proposal_sd ,
+          n.iter = 1000 , n.burnin = 300 , derivedPars = derivedPars , 
+          pars_lower = pars_lower , pars_upper = pars_upper )
 
 # some S3 methods
 summary(mod)
@@ -229,6 +291,16 @@ plot(mod, ask=TRUE)
 coef(mod)
 vcov(mod)
 logLik(mod)
+
+#--- compare Bayesian credibility intervals and HPD intervals
+ci <- cbind( confint(mod) , coda::HPDinterval(mod$mcmcobj)[-1, ] )
+ci
+# interval lengths
+cbind( ci[,2]-ci[,1] , ci[,4] - ci[,3] )
+
+#--- plot update history of proposal standard deviations
+graphics::matplot( x = rownames(mod$proposal_sd_history) ,
+          y = mod$proposal_sd_history , type="o" , pch=1:6)
 
 #**** compare results with lavaan package
 library(lavaan)
@@ -243,11 +315,61 @@ lavmodel <- "
     Y3 ~ mu2 * 1        
     # total standard deviation
     sig1 := sqrt( rho + v1 )     
-        "
+    "
 # estimate model
 mod2 <- lavaan::sem( data = as.data.frame(dat) , lavmodel )
 summary(mod2)
 logLik(mod2)
+
+#*** compare results with penalized maximum likelihood estimation
+mod3 <- pmle( data=data , nobs= data$n , pars=pars , model = model ,  prior=prior , 
+            pars_lower = pars_lower , pars_upper = pars_upper , method = "L-BFGS-B" ,
+            control=list( trace=TRUE )  )
+# model summaries
+summary(res2)
+confint(res2)
+vcov(res2)
+
+#--- lavaan with covariance and mean vector input
+mod2a <- lavaan::sem( sample.cov = data$S , sample.mean = data$M , sample.nobs = data$n , 
+                model = lavmodel )
+coef(mod2)
+coef(mod2a)
+
+#--- fit covariance and mean structure by fitting a transformed
+#    covariance structure
+#* create an expanded covariance matrix
+p <- ncol(S)
+S1 <- matrix( NA , nrow= p+1 , ncol=p+1 )
+S1[1:p,1:p] <- S + base::outer( M , M )
+S1[p+1,1:p] <- S1[1:p , p+1] <- M
+S1[p+1,p+1] <- 1
+vars <- c( colnames(S) , "MY" )
+rownames(S1) <- colnames(S1) <- vars
+#* lavaan model 
+lavmodel <- "
+    # indicators
+    F=~ 1*Y1 + 1*Y2 + 1*Y3
+    # pseudo-indicator representing mean structure
+    FM =~ 1*MY
+    MY ~~ 0*MY
+    FM ~~ 1*FM
+    F ~~ 0*FM
+    # mean structure
+    FM =~ mu1*Y1 + mu2*Y2 + mu2*Y3
+    # variance structure
+    F ~~ rho*F
+    Y1 ~~ v1*Y1
+    Y2 ~~ v1*Y2
+    Y3 ~~ v1*Y3   
+    sig1 := sqrt( rho + v1 )     
+    "
+    
+# estimate model
+mod2b <- lavaan::sem( sample.cov = S1 ,sample.nobs = data$n , 
+                model = lavmodel )
+summary(mod2b)
+summary(mod2)
 
 #############################################################################
 # EXAMPLE 2: Estimation of a linear model with Box-Cox transformation of response
@@ -271,10 +393,10 @@ yl <- ifelse( yl < eps  , eps , yl )
 y <- ( lambda * yl + 1 ) ^(1/lambda )
 
 #-- display distributions of transformed and untransformed data
-  graphics::par(mfrow=c(1,2))
+   graphics::par(mfrow=c(1,2))
 graphics::hist(yl, breaks=20)
 graphics::hist(y, breaks=20)
-  graphics::par(mfrow=c(1,1))
+   graphics::par(mfrow=c(1,1))
 
 #*** define vector of parameters
 pars <- c( 0  , 0 ,  1 , -.2 )
@@ -287,16 +409,16 @@ model <- function( pars , data ){
     b0 <- pars["b0"]
     b1 <- pars["b1"]    
     lambda <- pars["lambda"]
-    if ( abs(lambda) < .01){ lambda <- .01 * sign(lambda) }
+    if ( base::abs(lambda) < .01){ lambda <- .01 * base::sign(lambda) }
     y <- data$y
     x <- data$x
-    n <- length(y)
+    n <- base::length(y)
     y_lambda <- ( y^lambda - 1 ) / lambda 
-    ll <- -n/2 * log(2*pi) - n * log( sigma ) - 
-            1/(2*sigma^2)*sum( (y_lambda - b0 - b1*x)^2 ) +
-            ( lambda - 1 ) * sum( log( y ) )
-    return(ll)
-    }    
+    ll <- - n/2 * base::log(2*base::pi) - n * base::log( sigma ) - 
+            1/(2*sigma^2)* base::sum( (y_lambda - b0 - b1*x)^2 ) +
+            ( lambda - 1 ) * base::sum( base::log( y ) )
+    base::return(ll)
+}    
 #-- test model function    
 model( pars , data )
 
@@ -331,7 +453,7 @@ library(car)
 mod3 <- car::powerTransform( y ~ x )
 summary(mod3)  
 # fit linear model with transformed response
-mod3a <- lm( car::bcPower( y, mod3$roundlam) ~ x )
+mod3a <- stats::lm( car::bcPower( y, mod3$roundlam) ~ x )
 summary(mod3a)
 }
 }

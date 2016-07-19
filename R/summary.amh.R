@@ -24,8 +24,15 @@ summary.amh <- function( object , digits=3 , file=NULL ,... ){
 	cat( "Number of saved iterations =" , object$n.saved , "\n\n" )			
 
     cat("-----------------------------------------------------------------\n")
-    cat( "Deviance = " , round( object$deviance , 2 ) , " | " )
+	cat("Marginal MAP Estimation\n")
+#    cat( "Deviance = " , round( object$deviance , 2 ) , " | " )
+#    cat( "Log Likelihood = " , round( -object$deviance/2 , 2 ) , "\n" )	
+	
+    cat( "Deviance = " , round( object$deviance , 2 ) , "\n" )
     cat( "Log Likelihood = " , round( -object$deviance/2 , 2 ) , "\n" )	
+    cat( "Log Prior = " , round( object$ic$logprior , 2 ) , "\n" )	
+    cat( "Log Posterior = " , round( object$ic$logpost , 2 ) , "\n\n" )	
+			
     cat( "Number of persons = " , object$ic$n , "\n" )    
     cat( "Number of estimated parameters = " , object$ic$np , "\n\n" )    
 												
@@ -43,7 +50,13 @@ summary.amh <- function( object , digits=3 , file=NULL ,... ){
 	
 	
 	cat("-----------------------------------------------------------------\n")
-	cat("Parameter Summary \n")	
+	cat("Prior Summary \n")	
+
+	obji <- object$prior_summary	
+	print(obji)
+	
+	cat("-----------------------------------------------------------------\n")
+	cat("Parameter Summary (Marginal MAP estimation) \n")	
 
 	obji <- object$amh_summary
 	vars <- c("parameter","MAP","SD", "Q2.5", "Q97.5" , "Rhat","SERatio",
@@ -54,7 +67,28 @@ summary.amh <- function( object , digits=3 , file=NULL ,... ){
 		obji[,vv] <- round( obji[,vv] , digits )
 		}
 	obji[,NO] <- round( obji[,NO] )	
+	rownames(obji) <- NULL
 	print(obji)
+	
+    cat("-----------------------------------------------------------------\n")
+	cat("Comparison of Different Estimators\n\n")	
+	
+	cat("MAP: Univariate marginal MAP estimation\n")
+	cat("mMAP: Multivariate MAP estimation (penalized likelihood estimate)\n")
+	cat("Mean: Mean of posterior distributions\n\n")
+	
+	cat("Comparison Posterior:\n")	
+	obji <- object$comp_estimators[1:3,]
+	obji[,-1] <- round( obji[,-1] , 2 )
+	rownames(obji) <- NULL
+	print(obji)	
+	
+	cat("\nParameter Summary:\n")	
+	obji <- object$comp_estimators[-c(1:3),] 
+	obji[,-1] <- round( obji[,-1]  , digits )
+	rownames(obji) <- NULL
+	print(obji)	
+	
 	invisible(obji)
 
 	# close sink

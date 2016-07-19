@@ -5,13 +5,28 @@
 plot.lsem <- function( x , parindex=NULL , ask=TRUE , ci = TRUE , 
 			lintrend = TRUE , parsummary = TRUE , 
 			ylim=NULL , xlab=NULL , ylab=NULL , main=NULL , digits=3, ... ){
-
 #	oldpar <- par()		
-			
-	if ( is.null(parindex) ){
-		NP <- max( x$parameters$parindex )
-		parindex <- 1:NP
-							}
+#	if ( is.null(parindex) ){
+#		NP <- max( x$parameters$parindex )
+#		parindex <- 1:NP
+#							}
+
+	#*******************************************
+	# change by Johanna Hartung 2016-06-20
+    if (is.null(parindex)) {
+	    NP <- max(x$parameters$parindex)
+	    parindex <- 1:NP
+			} else {
+        NP <- parindex
+			}
+#    if ( ! is.null(parindex)){
+#        NP <- parindex
+#      }
+	  
+	NP <- max( parindex )  
+	#*******************************************
+							
+							
 	ylim0 <- ylim
 	if ( ! is.null(ylim) ){
 		if ( ! is.list(ylim) ){	

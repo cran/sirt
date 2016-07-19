@@ -1,6 +1,6 @@
 \name{Q3}
 \alias{Q3}
-\alias{yen.q3}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Estimation of the \eqn{Q_3} Statistic (Yen, 1984)
@@ -12,8 +12,6 @@ which is the correlation between item residuals after fitting the Rasch model.
 }
 \usage{
 Q3(dat, theta, b, progress=TRUE)
-
-yen.q3(dat, theta, b, progress=TRUE)
 }
 \arguments{
   \item{dat}{

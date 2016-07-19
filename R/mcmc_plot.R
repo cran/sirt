@@ -3,8 +3,8 @@
 ######################################################
 # mcmc plot
 mcmc_plot <- function(mcmcobj , ...){	
-	x <- list( "mcmcobj" = mcmcobj )
+	x <- base::list( "mcmcobj" = mcmcobj )
 	x$amh_summary <- mcmc_summary(mcmcobj)
-	class(x) <- "amh"
+	base::class(x) <- "amh"
 	plot.amh(x, ... )
 		}

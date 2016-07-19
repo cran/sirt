@@ -2,14 +2,14 @@
 ##################################################
 # create parameter table
 xxirt_createParTable <- function( dat , itemtype , customItems=NULL ){
-	I <- ncol(dat)
-	ncat1 <- apply( dat , 2 , max , na.rm=TRUE ) + 1
-	items <- colnames(dat)
-	if ( length(itemtype) == 1 ){
-		itemtype <- rep( itemtype , I )
-								}
+	I <- base::ncol(dat)
+	ncat1 <- base::apply( dat , 2 , base::max , na.rm=TRUE ) + 1
+	items <- base::colnames(dat)
+	if ( base::length(itemtype) == 1 ){
+		itemtype <- base::rep( itemtype , I )
+	}
 	dfr <- NULL
-	CI <- length(customItems)	
+	CI <- base::length(customItems)	
 	for (ii in 1:I){	
 		# ii <- 1
 		type_ii <- itemtype[ii]
@@ -18,18 +18,18 @@ xxirt_createParTable <- function( dat , itemtype , customItems=NULL ){
 			ci_ii <- customItems[[vv]]
 			if ( ci_ii$name == type_ii ){
 				item_ii <- ci_ii
-							}
-						}
-		if ( is.null(item_ii) ){
-				stop( paste0( "Item type " , type_ii , " not found!") )
-								}
-		NP <- length( item_ii$par )
-		dfr1 <- data.frame( "item" = rep( items[ii] , NP ) )		
+			}
+		}
+		if ( base::is.null(item_ii) ){
+				base::stop( paste0( "Item type " , type_ii , " not found!") )
+		}
+		NP <- base::length( item_ii$par )
+		dfr1 <- base::data.frame( "item" = base::rep( items[ii] , NP ) )		
 		dfr1$itemnr <- ii
 		dfr1$ncat <- ncat1[ii]		
-		dfr1$class <- class(item_ii) 
+		dfr1$class <- base::class(item_ii) 
 		dfr1$type <- item_ii$name
-		dfr1$parname <- names(item_ii$par)
+		dfr1$parname <- base::names(item_ii$par)
 		dfr1$value <- item_ii$par
 		dfr1$est <- item_ii$est
 		dfr1$lower <- item_ii$lower
@@ -37,24 +37,34 @@ xxirt_createParTable <- function( dat , itemtype , customItems=NULL ){
 		dfr1$prior <- NA
 		dfr1$prior_par1 <- NA
 		dfr1$prior_par2 <- NA
-		if ( ! is.null( item_ii$prior ) ){
-			dfr1[ match( names(item_ii$prior) , dfr1$parname ) , "prior" ] <- item_ii$prior
-			dfr1[ match( names(item_ii$prior) , dfr1$parname ) , "prior_par1" ] <- item_ii$prior_par1
-			dfr1[ match( names(item_ii$prior) , dfr1$parname ) , "prior_par2" ] <- item_ii$prior_par2			
-								}
-								
-								
-		dfr <- rbind( dfr , dfr1 )
-				}
+		if ( ! base::is.null( item_ii$prior ) ){
+			item_ii_prior <- base::names(item_ii$prior)
+			ind_ii <- base::match( item_ii_prior , dfr1$parname )
+			dfr1[ ind_ii , "prior" ] <- item_ii$prior
+			dfr1[ ind_ii , "prior_par1" ] <- item_ii$prior_par1
+			dfr1[ ind_ii , "prior_par2" ] <- 	item_ii$prior_par2
+		}			
+		dfr <- base::rbind( dfr , dfr1 )
+	}
 	#**** create parameter indices
-	NP <- nrow(dfr)
+	NP <- base::nrow(dfr)
 	dfr$rowindex <- 1:NP
 	# parameter index
-	dfr$parindex <- cumsum( dfr$est )
+	dfr$parindex <- base::cumsum( dfr$est )
 	#*** parameter label
-	dfr$parlabel <- paste0( dfr$item , "_" , dfr$parname )	
-	attr(dfr , "ncat" ) <- ncat1
-	attr(dfr , "items" ) <- items
-	return(dfr)	
-		}
+	dfr$parlabel <- base::paste0( dfr$item , "_" , dfr$parname )	
+	base::attr(dfr , "ncat" ) <- ncat1
+	base::attr(dfr , "items" ) <- items
+	base::return(dfr)	
+}
 ##################################################		
+
+	#**** create parameter indices
+#	NP <- nrow(dfr)
+#	dfr$rowindex <- 1:NP
+#	# parameter index
+#	dfr$parindex <- cumsum( dfr$est )
+#	#*** parameter label
+#	dfr$parlabel <- paste0( dfr$item , "_" , dfr$parname )	
+#	attr(dfr , "ncat" ) <- ncat1
+#	attr(dfr , "items" ) <- items

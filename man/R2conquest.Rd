@@ -1,8 +1,6 @@
 \name{R2conquest}
 \alias{R2conquest}
-\alias{rasch.conquest}
 \alias{summary.R2conquest}
-\alias{summary.rasch.conquest}
 \alias{read.show}
 \alias{read.show.term}
 \alias{read.show.regression}
@@ -10,10 +8,13 @@
 \alias{read.multidimpv}
 \alias{read.pimap}
 
+
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Running ConQuest From Within \R
 }
+
 \description{
 The function \code{R2conquest} runs the IRT software ConQuest 
 (Wu, Adams, Wilson & Haldane, 2007) from within \R.
@@ -31,20 +32,9 @@ R2conquest(dat, path.conquest, conquest.name="console", converge=0.001,
     anchor.covariance=NULL, pv=TRUE, designmatrix=NULL, only.calibration=FALSE, 
     init_parameters=NULL, n_plausible=10,  persons.elim=TRUE, est.wle=TRUE, 
     save.bat=TRUE , use.bat=FALSE , read.output=TRUE , ignore.pid=FALSE)
-    
-rasch.conquest(dat, path.conquest, conquest.name="console", converge=0.001, 
-    deviancechange=1e-04, iter=800, nodes=20, minnode=-6 , maxnode=6,
-    show.conquestoutput=FALSE, name="rasch", pid=1:(nrow(dat)), wgt=NULL, X=NULL, 
-    set.constraints=NULL, model="item", regression=NULL, 
-    itemcodes=seq(0,max(dat,na.rm=TRUE)), constraints=NULL, digits=5, onlysyntax=FALSE, 
-    qmatrix=NULL, import.regression=NULL, anchor.regression=NULL, 
-    anchor.covariance=NULL, pv=TRUE, designmatrix=NULL, only.calibration=FALSE, 
-    init_parameters=NULL, n_plausible=10,  persons.elim=TRUE, est.wle=TRUE, 
-    save.bat=TRUE , use.bat=FALSE , read.output=TRUE , ignore.pid=FALSE)
 
 \method{summary}{R2conquest}(object, \dots)    
-\method{summary}{rasch.conquest}(object, \dots)    
-
+ 
 # read all terms in a show file or only some terms 
 read.show(showfile)
 read.show.term(showfile, term)

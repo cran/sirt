@@ -3,8 +3,8 @@
 ###########################################
 # variance covariance matrix
 mcmc_vcov <- function( mcmcobj , exclude = "deviance" ){	
-	mcmcobj <- mcmcobj[ , ! ( colnames(mcmcobj) %in% exclude ) ]
-	res <- var(mcmcobj)
-	colnames(mcmcobj) -> colnames(res) -> rownames(res)
-	return(res)
+	mcmcobj <- mcmcobj[ , ! ( base::colnames(mcmcobj) %in% exclude ) ]
+	res <- stats::var(mcmcobj)
+	base::colnames(mcmcobj) -> base::colnames(res) -> base::rownames(res)
+	base::return(res)
 		}

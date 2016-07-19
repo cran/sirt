@@ -4,20 +4,20 @@
 lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 			verbose = TRUE ){
 
-		s1 <- Sys.time()	
-		CALL <- match.call()		
+		s1 <- base::Sys.time()	
+		CALL <- base::match.call()		
 		
 		lavaan.args <- lsem.object$lavaan.args
 		entr <- c( "lavmodel" , "data" , "h" , "moderator.grid" , "moderator" , "eps" ,
               "fit_measures")
 		object <- lsem.object
-		arglist <- list()
-		EE <- length(entr)
+		arglist <- base::list()
+		EE <- base::length(entr)
 		for (ee in 1:EE){
 			arglist[[ entr[ee] ]] <- object[[ entr[ee] ]]
 						}
 		arglist2 <- lsem.object$lavaan.args
-		NL <- length(arglist2)
+		NL <- base::length(arglist2)
 		if (NL > 0){
 		for (ll in 1:NL){
 			arglist[[ names(arglist2)[ll] ]] <- arglist2[[ names(arglist2)[ll] ]]
@@ -36,25 +36,25 @@ lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 		#******************************************
 		# start permutation test
 		
-		parameters_permutation <- matrix( NA , nrow(parameters) , ncol=B)
-		parameters_summary_M <- matrix( NA , nrow(parameters_summary) , ncol=B)
+		parameters_permutation <- base::matrix( NA , nrow(parameters) , ncol=B)
+		parameters_summary_M <- base::matrix( NA , nrow(parameters_summary) , ncol=B)
 		rownames(parameters_summary_M) <- parameters_summary$par
 		parameters_summary_MAD <- parameters_summary_SD <- parameters_summary_M
 		parameters_summary_lin_slo <- parameters_summary_M
 		
 				
 		if ( verbose ){ 
-			cat("Permutation test LSEM \n")
+			base::cat("Permutation test LSEM \n")
 						}
 		
 		for (bb in 1:B){
 			# bb <- 1
 			if (verbose){ 
-				cat( bb , " ")
+				base::cat( bb , " ")
 				if ( bb %% 20 == 0 ){ cat("\n") }
-				flush.console();
+				utils::flush.console();
 						}
-			data1[ , moderator ] <- sample( data0[ , moderator ] )
+			data1[ , moderator ] <- base::sample( data0[ , moderator ] )
             arglist$data <- data1			
 			res0 <- base::do.call( lsem.estimate , arglist )
 			parameters_permutation[, bb] <- res0$parameters$est
@@ -63,11 +63,11 @@ lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 			parameters_summary_MAD[,bb] <- res0$parameters_summary$MAD
 			parameters_summary_lin_slo[,bb] <- res0$parameters_summary$lin_slo
 							}
-		if (verbose){ cat("\n") }					
+		if (verbose){ base::cat("\n") }					
 					
 		#*****************
 		# create global test statistics
-		teststat <- data.frame( "par" = parameters_summary$par )
+		teststat <- base::data.frame( "par" = parameters_summary$par )
 		teststat$M <- parameters_summary$M
 		teststat$SD <- parameters_summary$SD
 		teststat$SD_p <- rowMeans( parameters_summary_SD >= parameters_summary$SD )
@@ -76,8 +76,8 @@ lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 		teststat$lin_slo <- parameters_summary$lin_slo
 		p1 <- rowMeans( parameters_summary_lin_slo >= parameters_summary$lin_slo )
 		p2 <- rowMeans( parameters_summary_lin_slo <= parameters_summary$lin_slo )		
-		teststat$lin_slo_p <- 2*ifelse( p1 < p2 , p1 , p2 )
-		teststat$lin_slo_p <- ifelse( teststat$lin_slo_p > 1 , 
+		teststat$lin_slo_p <- 2*base::ifelse( p1 < p2 , p1 , p2 )
+		teststat$lin_slo_p <- base::ifelse( teststat$lin_slo_p > 1 , 
 									       1 , teststat$lin_slo_p )				
 		#********************
 		# pointwise statistics
@@ -91,14 +91,14 @@ lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 
 		p1 <- rowMeans( parameters_pointwise_test$est >= par_pointwise_perm )
 		p2 <- rowMeans( parameters_pointwise_test$est <= par_pointwise_perm )		
-		parameters_pointwise_test$p <- 2*ifelse( p1 < p2 , p1 , p2 )
-		parameters_pointwise_test$p <- ifelse( parameters_pointwise_test$p > 1 , 
+		parameters_pointwise_test$p <- 2*base::ifelse( p1 < p2 , p1 , p2 )
+		parameters_pointwise_test$p <- base::ifelse( parameters_pointwise_test$p > 1 , 
 									       1 , parameters_pointwise_test$p )
 		
 		
-		s2 <- Sys.time()
+		s2 <- base::Sys.time()
 		
-		res <- list( "teststat" = teststat , 
+		res <- base::list( "teststat" = teststat , 
 					"parameters_pointwise_test" = parameters_pointwise_test ,
 					 "parameters" = parameters ,
 					 "parameters_permutation" = parameters_permutation ,
@@ -115,7 +115,7 @@ lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 					 "B"= B , "s1"=s1 , "s2"=s2 ,
 					 "lavmodel" = object$lavmodel , CALL = CALL
 							)
-		class(res) <- "lsem.permutationTest"							
-		return(res)
+		base::class(res) <- "lsem.permutationTest"							
+		base::return(res)
 					}
 ################################################################					

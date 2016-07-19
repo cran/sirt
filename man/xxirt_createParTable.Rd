@@ -104,24 +104,19 @@ P_2PL <- function( par, Theta , ncat){
     P[,1] <- 1
     for (cc in 2:ncat){
         P[,cc] <- exp( (cc-1) * a * Theta[,1] - b )
-                        }
+    }
     P <- P / rowSums(P)    
     return(P)
-        }
-
+}
 
 #*** IRF 1PL
 P_1PL <- function( par, Theta , ncat){
     b <- par[1]    
     TP <- nrow(Theta)
-    P <- matrix( NA , nrow=TP , ncol=ncat)
-    P[,1] <- 1
-    for (cc in 2:ncat){
-        P[,cc] <- exp( (cc-1) * Theta[,1] - b )
-                        }
-    P <- P / rowSums(P)    
+    par0 <- c(1,b)
+    P <- P_2PL( par = par0 , Theta = Theta , ncat=ncat)   
     return(P)
-        }
+}
 
 #** created item classes of 1PL and 2PL models
 par <- c( "a"= 1 , "b" = 0 )

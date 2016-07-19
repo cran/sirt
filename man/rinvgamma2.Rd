@@ -32,13 +32,17 @@ Prior variance
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
 %}
-%\value{
+\value{
+A vector containing random draws or density values	
+}
+
+
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
-%}
+
 
 \references{
 Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., 
@@ -57,7 +61,10 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link[MCMCpack:rinvgamma]{MCMCpack::rinvgamma}}
+\code{\link[MCMCpack:rinvgamma]{MCMCpack::rinvgamma}},
+\code{\link[stats:GammaDist]{stats::rgamma}},
+\code{\link[MCMCpack:dinvgamma]{MCMCpack::dinvgamma}},
+\code{\link[stats:GammaDist]{stats::dgamma}}
 }
 \examples{
 #############################################################################
@@ -73,9 +80,10 @@ y1 <- rinvgamma2( n=100 , n0 , var0 )
 summary(y1)
 graphics::hist(y1)
 
-# density
-x <- seq( 0 , 2 , len=100 )
-plot( x , dinvgamma2( x , n0 , var0 ) , type="l")
+# density y at grid x
+x <- base::seq( 0 , 2 , len=100 )
+y <- dinvgamma2( x , n0 , var0 )
+graphics::plot( x , y , type="l")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

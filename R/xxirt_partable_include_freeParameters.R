@@ -3,8 +3,9 @@
 
 xxirt_partable_include_freeParameters <- function( partable , x ){
 		vals <- x[ partable$parindex ]
-		vals[ is.na(vals) ] <- partable$value[ is.na(vals) ]
+		ind <- base::is.na(vals)
+		vals[ ind ] <- partable$value[ ind ]
 		partable$value <- vals
-		return(partable)
-			}
+		base::return(partable)
+}
 		
