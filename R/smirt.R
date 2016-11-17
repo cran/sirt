@@ -6,6 +6,8 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 	est.b=NULL , est.a= NULL , 
 	est.c=NULL , est.d=NULL , est.mu.i =NULL , b.init=NULL , a.init=NULL ,
 	c.init=NULL , d.init=NULL , mu.i.init=NULL , Sigma.init =NULL , 
+	b.lower=-Inf , b.upper = Inf , a.lower= -Inf , a.upper=Inf ,
+	c.lower=-Inf , c.upper = Inf , d.lower= -Inf , d.upper=Inf ,
 	theta.k=seq(-6,6,len=20) , 	theta.kDES = NULL , qmcnodes= 0 ,  
 	mu.fixed=NULL , variance.fixed=NULL , 
 	est.corr=FALSE , max.increment=1 , increment.factor=1 , 
@@ -190,8 +192,10 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 				n.ik , I , K , TP , D ,  numdiff.parm=numdiff.parm , 
 				max.increment=max.increment,
 				msteps ,  mstepconv , irtmodel , increment.factor )		
-		b <- res2$b
+		b <- res2$b		
 		se.b <- res2$se.b
+		b <- smirt_squeeze( b , b.lower , b.upper, est.b )
+		
 #		ll <- res2$ll
 # cat("smirt est.b") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
 
@@ -204,6 +208,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 				msteps ,  mstepconv , irtmodel , increment.factor )		
 			a <- res2$a
 			se.a <- res2$se.a
+			a <- smirt_squeeze( a , a.lower , a.upper, est.a )			
 							}	
 
 						
@@ -216,6 +221,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 				msteps ,  mstepconv, irtmodel , increment.factor)		
 			c <- res2$c
 			se.c <- res2$se.c
+			c <- smirt_squeeze( c , c.lower , c.upper, est.c )			
 							}								
 
 		# estimate d parameters
@@ -227,6 +233,7 @@ smirt <- function( dat , Qmatrix , irtmodel="noncomp" ,
 				msteps ,  mstepconv , irtmodel , increment.factor )		
 			d <- res2$d
 			se.d <- res2$se.d
+			d <- smirt_squeeze( d , d.lower , d.upper, est.d )			
 							}								
 							
 		# estimate mu.i parameters

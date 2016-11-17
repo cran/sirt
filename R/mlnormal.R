@@ -26,7 +26,7 @@ zz0 <- Sys.time()
 				REML_shortcut = REML_shortcut , method=method ,
 				Z_list = Z_list , Z_index = Z_index , 
 				variance_shortcut=variance_shortcut , use_Rcpp = use_Rcpp )
-# cat("* proc mlnormal ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+ cat("* proc mlnormal ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
  
 	id_list <- res$id_list 
 	G <- res$G
@@ -51,7 +51,7 @@ zz0 <- Sys.time()
 	do_compute <- res$do_compute
 	rcpp_args <- res$rcpp_args
 	use_Rcpp <- res$use_Rcpp
-	# reorder_obs <- res$reorder_obs
+	# reorder_obs <- res$reorder_obs																							
 												
 	#*** control arguments
 	res <- mlnormal_proc_control( control_beta = control_beta , 
@@ -129,7 +129,7 @@ zz0 <- Sys.time()
 		XVX <- res$XVX 
 		XVY <- res$XVY
 		P <- res$P
-# cat("* update beta ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1					
+#		cat("* update beta ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1					
 						
 		# update theta
 		res <- mlnormal_update_theta_ml( y=y , X=X , beta=beta , 

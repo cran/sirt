@@ -53,8 +53,11 @@ Alexander Robitzsch
 \seealso{
 See \code{\link{rasch.jml.jackknife1}} for bias correction based on
 Jackknife.
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+
+See also the \pkg{bife} \R package for analytical bias corrections.
 }
+
+
 \examples{
 #############################################################################
 # EXAMPLE 1: Dataset Reading

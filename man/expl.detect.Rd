@@ -21,7 +21,7 @@ An \eqn{N \times I} data frame of dichotomous responses.
 Missing responses are allowed.
 }
   \item{score}{
-An ability estimate, e.g. the WLE
+An ability estimate, e.g. the WLE, sum score or mean score
 }
   \item{nclusters}{
 Number of clusters in the analysis

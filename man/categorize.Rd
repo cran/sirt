@@ -88,7 +88,6 @@ dat <- data.smallscale
 # (0) select dataset
 dat <- dat[ , 9:20 ]
 summary(dat)
-categorical <- colnames(dat)
 categorical <- colnames(dat)[2:6]
 
 # (1) categorize data

@@ -12,16 +12,16 @@ zz0 <- Sys.time()
 	if ( base::sum( base::diff(id) < 0 ) > 0 ){ 
 			base::stop("id vector must be ordered!") 
 	}
-
+	
 	#**** reorder identifiers for faster computation		
 	reorder_obs <- freq_id <- NULL	
 	do_compute <- base::rep( TRUE , G )
-#cat("-- before variance_shortcut") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+# cat("-- before variance_shortcut") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 
 	rcpp_args <- NULL									
 	if (variance_shortcut){
 		res <- mlnormal_proc_variance_shortcut( id=id , y=y , X=X , Z_list=Z_list ,
-				   Z_index=Z_index , use_Rcpp = use_Rcpp  )
+				   Z_index=Z_index , use_Rcpp = use_Rcpp , G=G  )
 		id <- res$id
 		y <- res$y
 		X <- res$X
@@ -29,10 +29,11 @@ zz0 <- Sys.time()
 		Z_index <- res$Z_index
 		freq_id <- res$freq_id	
 		do_compute <- res$do_compute
-		rcpp_args <- res$rcpp_args
+		rcpp_args <- res$rcpp_args	
 		# reorder_obs <- res$reorder_obs
 	}
-#cat("-- after variance_shortcut") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1										
+
+# cat("-- after variance_shortcut") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1										
  
     #*** create id_list
     id_list <- base::as.list(1:G)

@@ -131,7 +131,7 @@ Psychological questionnaires: \url{http://personality-testing.info/_rawdata/} \c
 PISA 2012: {http://pisa2012.acer.edu.au/downloads.php} \cr
 PIAAC: \url{http://www.oecd.org/site/piaac/publicdataandanalysis.htm} \cr
 TIMSS 2011: \url{http://timssandpirls.bc.edu/timss2011/international-database.html} \cr
-ALLBUS: \url{http://www.gesis.org/allbus/datenzugang/}
+ALLBUS: \url{http://www.gesis.org/allbus/allbus-home/}
 }
 
 %\source{

@@ -1,7 +1,6 @@
 
 
 mlnormal_proc_variance_shortcut_Z_Rcpp <- function( Z_list , Z_index , G , freq_id){
-
 	#-- create list with arguments for Rcpp functions
 	rcpp_args <- base::list( 
 					"Z_index" = base::as.vector(Z_index) ,

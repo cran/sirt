@@ -88,6 +88,8 @@ Alexander Robitzsch
 \seealso{
 See \code{\link{fuzdiscr}} for estimating discrete distributions for
 fuzzy data.
+
+See the \pkg{fclust} package for fuzzy clustering.
 }
 
 

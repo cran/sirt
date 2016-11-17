@@ -113,14 +113,14 @@ b <- mod1$ipars.dat2$b
 theta0 <- mod1$person$EAP
 # define item response function for item ii
 calc.pcm <- function( theta , a , b , ii ){
-    K <- ncol(b)
-    N <- length(theta)
-    matrK <- matrix( 0:K , nrow=N , ncol=K+1 , byrow=TRUE)
-    eta <- a[ii] * theta * matrK - matrix( c(0,b[ii,]), nrow=N, ncol=K+1, byrow=TRUE)
-    eta <- exp(eta)
-    probs <- eta / rowSums(eta, na.rm=TRUE)    
-    return(probs)
-            }
+    K <- base::ncol(b)
+    N <- base::length(theta)
+    matrK <- base::matrix( 0:K , nrow=N , ncol=K+1 , byrow=TRUE)
+    eta <- a[ii] * theta * matrK - base::matrix( c(0,b[ii,]), nrow=N, ncol=K+1, byrow=TRUE)
+    eta <- base::exp(eta)
+    probs <- eta / base::rowSums(eta, na.rm=TRUE)    
+    base::return(probs)
+}
 arg.list <- list("a"=a , "b"=b )
 
 # MLE
@@ -152,13 +152,12 @@ irffct <- function( theta, b , ii){
     probs <- eta / ( 1 + eta )
     probs <- cbind( 1 - probs , probs )
     return(probs)
-        }
+}
 # initial person parameters and item parameters
 theta0 <- mod1$person$EAP
 arg.list <- list( "b" = mod1$item$b  )
 
 # estimate WLE
-source.all(pfsirt)
 abil <- IRT.mle( data = dat , irffct=irffct , arg.list=arg.list , 
             theta=theta0, type="WLE")
 # compare with wle.rasch function
@@ -182,7 +181,7 @@ irffct <- function( theta, b , K , ii){
     probs <- eta / ( K[ii] + eta )
     probs <- cbind( 1 - probs , probs )
     return(probs)
-        }
+}
 # initial person parameters and item parameters
 theta0 <- exp( mod1$person$EAP )
 arg.list <- list( "b" = mod1$item2$b , "K"=mod1$item2$K )

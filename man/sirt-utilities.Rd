@@ -26,12 +26,12 @@ ginverse_sym(A, eps= 1E-8)
 
 # hard thresholding function
 hard_thresholding(x, lambda)	
-	
-# power function x^a, like in Cpp
-pow(x, a)
 
 # soft thresholding function
 soft_thresholding(x, lambda)
+	
+# power function x^a, like in Cpp
+pow(x, a)
 
 # trace of a matrix
 tracemat(A)

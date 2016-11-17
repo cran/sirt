@@ -24,6 +24,7 @@ mlnormal_proc_variance_shortcut_Z_R <- function( Z_list , Z_index , G , freq_id)
 			Z_index_gg0 <- Z_index_gg
 			gg0 <- gg1
 		}
+		
 	#--- output
 	res <- base::list( "freq_id" = freq_id , "rcpp_args" = NULL)
 	base::return(res)

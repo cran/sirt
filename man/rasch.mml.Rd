@@ -512,6 +512,7 @@ statistics.
 # EXAMPLE 1: Reading dataset
 #############################################################################
 
+library(CDM)
 data(data.read)
 dat <- data.read
 I <- ncol(dat) # number of items

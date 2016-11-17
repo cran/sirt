@@ -11,7 +11,7 @@ This function estimates conditional covariances of itempairs
 }
 \usage{
 ccov.np(data, score, bwscale = 1.1, thetagrid = seq(-3, 3, len = 200), 
-    progress = TRUE)
+    progress = TRUE, scale_score = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,6 +33,9 @@ covariances are evaluated.
   \item{progress}{
 Display progress?
 }
+\item{scale_score}{Logical indicating whether \code{score}
+should be z standardized in advance of the calculation of
+conditional covariances}
 }
 
 \references{

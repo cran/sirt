@@ -43,15 +43,17 @@ categorize <- function( dat , categorical=NULL , quant=NULL ,
 			quant.vv[1] <- quant.vv[1] - 1
 			quant.vv[q1+1] <- quant.vv[q1+1] + 1		
 			quant.vv <- base::unique( quant.vv )
-
 			m1 <- base::cut( dat[,vars.vv]  , breaks = quant.vv )
-			m2 <- base::sort( unique(m1) )
-
+			m2 <- base::sort( base::unique(m1) )
 			dfr2.vv <- base::data.frame( "index" = vv , "variable" = vars.vv ,
 						"column" = base::which( colnames(dat) == vars.vv ) ,
 						"orig" = m2 , 
+						"min" = quant.vv[ - base::length(quant.vv) ] ,
+						"max" = quant.vv[ - 1 ] ,						
 						"recode" = base::seq( 0 , base::length(m2) -1 + lowest)
 									)  				
+			# The minimum is not included in the interval
+			# while the maximum value is included in the interval.
 			dfr2 <- base::rbind( dfr2 , dfr2.vv )							
 			dat2[ , vars.vv ] <- base::match( m1 , m2 ) - 1 + lowest		
 		}

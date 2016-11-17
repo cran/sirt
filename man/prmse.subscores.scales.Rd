@@ -50,9 +50,12 @@ Alexander Robitzsch
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%}
+\seealso{
+See the \pkg{subscore} package for computing subscores and the PRMSE measures,
+especially \code{subscore::CTTsub}.
+}
+%% \code{\link[subscore:CTTsub]{subscore::CTTsub}}
+
 \examples{
 #############################################################################
 # EXAMPLE 1: PRMSE Reading data data.read
@@ -83,7 +86,7 @@ print( p1 , digits= 3 )
   ## prmse.X     0.545   0.381   0.640
   ## prmse.Z     0.638   0.697   0.468
   ## prmse.XZ    0.674   0.697   0.677
-#-> Scales A and B do not have lower RMSEA,
+#-> Scales A and B do not have lower RMSE,
 #   but for scale C the RMSE is smaller than the RMSE of a
 #   prediction based on a whole scale.
 }

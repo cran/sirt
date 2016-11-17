@@ -233,7 +233,8 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-See \pkg{lavaan}, \pkg{sem}, \pkg{lava} or \pkg{openMx} for estimation of
+See \pkg{lavaan}, \pkg{sem}, \pkg{lava}, \pkg{OpenMx} or \pkg{nlsem} 
+packages for estimation of
 (single level) structural equation models. 
 
 See the \pkg{regsem}
@@ -245,8 +246,8 @@ models.
 See the \pkg{lmmlasso} and \pkg{glmmLasso} packages for regularized
 mixed effects models.
 
-See the \pkg{xxM} package (\emph{http://xxm.times.uh.edu/}) for 
-N-level structural equation models.
+See \pkg{OpenMx} and \pkg{xxM} packages (\emph{http://xxm.times.uh.edu/}) for 
+estimation of multilevel structural equation models.
 }
 
 
@@ -541,6 +542,190 @@ for (gg in 1:G){
 mod2a <- mlnormal( y=Y, X=X , id=id , Z_list=Z_list , Z_index=Z_index, 
             beta=beta  , theta=theta, method="ML" )
 summary(mod2a)
+
+#############################################################################
+# EXAMPLE 3: Simple linear regression, single level
+#############################################################################
+
+#--------------------------------------------------------------
+# Simulate data
+#--------------------------------------------------------------
+
+set.seed(875)
+N <- 300
+x <- stats::rnorm( N , sd = 1.3 )
+y <- .4 + .7 * x + stats::rnorm( N , sd = .5 )
+dat <- data.frame( x , y )
+
+#--------------------------------------------------------------
+# Model 1: Linear regression modelled with residual covariance structure
+#--------------------------------------------------------------
+
+# matrix of predictros
+X <- cbind( 1 , x )
+# list with design matrices
+Z <- as.list(1:N)
+for (nn in 1:N){
+    Z[[nn]] <- as.list( 1 )
+    Z[[nn]][[1]] <- matrix( 1 , nrow=1, ncol=1 )  # residual variance
+}
+#* loading matrix
+Z_index <- array( 0 , dim=c(N,1,1) )
+Z_index[ 1:N , 1 , 1] <- 2  # parametrize residual standard deviation
+#** starting values and parameter names
+beta <- c( 0 , 0 )
+names(beta) <- c("int" , "x")
+theta <- c(1)   
+names(theta) <- c("sig2" )
+# id vector
+id <- 1:N
+
+#** sirt::mlnormal function
+mod1a <- mlnormal( y =y, X=X , id=id , Z_list=Z , Z_index =Z_index, 
+            beta = beta  , theta = theta, method= "ML" )
+summary(mod1a)
+
+# estimate linear regression with stats::lm
+mod1b <- stats::lm( y ~ x )
+summary(mod1b)
+
+#--------------------------------------------------------------
+# Model 2: Linear regression modelled with bivariate covariance structure
+#--------------------------------------------------------------
+
+#** define design matrix referring to mean structure
+X <- matrix( 0 , nrow=2*N , ncol=2 )
+X[ seq(1,2*N,2) , 1 ] <- X[ seq(2,2*N,2) , 2 ] <- 1
+
+#** create outcome vector
+y1 <- dat[ cbind( rep(1:N, each=2) , rep(1:2, N ) ) ]
+#** list with design matrices
+Z <- as.list(1:N)
+Z0 <- 0*matrix( 0 , nrow=2,ncol=2)
+ZXY <- ZY <- ZX <- Z0
+# design matrix Var(X)
+ZX[1,1] <- 1
+# design matrix Var(Y)
+ZY[2,2] <- 1
+# design matrix covariance
+ZXY[1,2] <- ZXY[2,1] <- 1
+# Var(X) = sigx^2
+# Cov(X,Y) = beta * sigx^2
+# Var(Y) = beta^2 * sigx^2 + sige^2
+Z_list0 <- list( ZY , ZY , ZXY , ZX )
+for (nn in 1:N){
+    Z[[nn]] <- Z_list0
+}
+#* parameter list containing the powers of parameters
+theta <- c(1,0.3,1)   
+names(theta) <- c("sigx", "beta" , "sige" )
+Z_index <- array( 0 , dim=c(N,4,3) )
+for (nn in 1:N){
+    # Var(X)
+    Z_index[nn, 4 , ] <- c(2,0,0)
+    # Cov(X,Y)
+    Z_index[nn, 3, ] <- c(2,1,0)
+    # Var(Y)
+    Z_index[nn,1,] <- c(2,2,0)
+    Z_index[nn,2,] <- c(0,0,2)
+}
+#** starting values and parameter names
+beta <- c( 0 , 0 )
+names(beta) <- c("Mx" , "My")
+# id vector
+id <- rep( 1:N , each=2 )
+
+#** sirt::mlnormal function
+mod2a <- mlnormal( y =y1, X=X , id=id , Z_list=Z , Z_index =Z_index, 
+            beta = beta  , theta = theta, method= "ML" )
+summary(mod2a)
+
+#--------------------------------------------------------------
+# Model 3: Bivariate normal distribution in (sigma_X, sigma_Y, sigma_XY) parameters
+#--------------------------------------------------------------
+
+# list with design matrices
+Z <- as.list(1:N)
+Z0 <- 0*matrix( 0 , nrow=2,ncol=2)
+ZXY <- ZY <- ZX <- Z0
+# design matrix Var(X)
+ZX[1,1] <- 1
+# design matrix Var(Y)
+ZY[2,2] <- 1
+# design matrix covariance
+ZXY[1,2] <- ZXY[2,1] <- 1
+Z_list0 <- list( ZX , ZY , ZXY  )
+for (nn in 1:N){
+    Z[[nn]] <- Z_list0
+}
+
+#* parameter list
+theta <- c(1,1,.3)   
+names(theta) <- c("sigx", "sigy" , "sigxy" )
+Z_index <- array( 0 , dim=c(N,3,3) )
+for (nn in 1:N){
+    # Var(X)
+    Z_index[nn, 1 , ] <- c(2,0,0)
+    # Var(Y)
+    Z_index[nn, 2 , ] <- c(0,2,0)    
+    # Cov(X,Y)
+    Z_index[nn, 3, ] <- c(0,0,1)
+}
+
+#** starting values and parameter names
+beta <- c( 0 , 0 )
+names(beta) <- c("Mx" , "My")
+
+#** sirt::mlnormal function
+mod3a <- mlnormal( y =y1, X=X , id=id , Z_list=Z , Z_index =Z_index, 
+            beta = beta  , theta = theta, method= "ML" )
+summary(mod3a)
+
+#--------------------------------------------------------------
+# Model 4: Bivariate normal distribution in parameters of Cholesky decomposition 
+#--------------------------------------------------------------
+
+# list with design matrices
+Z <- as.list(1:N)
+Z0 <- 0*matrix( 0 , nrow=2,ncol=2)
+ZXY <- ZY <- ZX <- Z0
+# design matrix Var(X)
+ZX[1,1] <- 1
+# design matrix Var(Y)
+ZY[2,2] <- 1
+# design matrix covariance
+ZXY[1,2] <- ZXY[2,1] <- 1
+Z_list0 <- list( ZX , ZXY , ZY , ZY  )
+for (nn in 1:N){
+    Z[[nn]] <- Z_list0
+}
+
+#* parameter list containing the powers of parameters
+theta <- c(1,0.3,1)   
+names(theta) <- c("L11", "L21" , "L22" )
+Z_index <- array( 0 , dim=c(N,4,3) )
+for (nn in 1:N){
+    Z_index[nn,1,] <- c(2,0,0)
+    Z_index[nn,2,] <- c(1,1,0)    
+    Z_index[nn,3,] <- c(0,2,0)
+    Z_index[nn,4,] <- c(0,0,2)    
+}
+#** starting values and parameter names
+beta <- c( 0 , 0 )
+names(beta) <- c("Mx" , "My")
+# id vector
+id <- rep( 1:N , each=2 )
+#** sirt::mlnormal function
+mod4a <- mlnormal( y =y1, X=X , id=id , Z_list=Z , Z_index =Z_index, 
+            beta = beta  , theta = theta, method= "ML" )
+# parameter with lower diagonal entries of Cholesky matrix 
+mod4a$theta
+# fill-in parameters for Cholesky matrix
+L <- matrix(0,2,2)
+L[ ! upper.tri(L) ] <- mod4a$theta
+#** reconstruct covariance matrix
+L %*% t(L)   # = base::tcrossprod(L))
+stats::cov.wt(dat, method="ML")$cov
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

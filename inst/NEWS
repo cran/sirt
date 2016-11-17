@@ -33,6 +33,28 @@ CHANGELOG sirt
 
 
 ------------------------------------------------------------------------
+Versions 1.13 -- 2016-11-17  --  CRAN sirt 1.13-1
+------------------------------------------------------------------------
+
+FIXED * fixed a bug in 'conf.detect' and 'expl.detect' with too few 
+        items (routine crashed, thanks to Berend Terluin)
+FIXED * fixed a bug in data preprocessing in 'mlnormal' function
+NOTE  * included reference to subscore package in 'prmse.subscores.scales'
+NOTE  * extended output values in 'categorize' function
+NOTE  * added arguments for boundary values of a, b, c and d parameters
+        in noncompensatory IRT model function 'smirt'
+        (requested by Chia-Ling Hsu)
+ADDED * added robust linking method for multiple studies based on bisquare
+        robust regression estimation in 'linking.haberman'.
+        In addition, a summary method has been added.
+NOTE  * included functions 'starts_cov' and 'starts_sim1dim' for the 
+        STARTS model of Kenny and Zautra
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: mlnormal (3), linking.haberman (5),
+        starts_cov (1)
+
+------------------------------------------------------------------------
 Versions 1.12 -- 2016-07-19  --  CRAN sirt 1.12-2
 ------------------------------------------------------------------------
 

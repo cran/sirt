@@ -1,8 +1,8 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 1.12-2
-Date: 2016-07-19
+Version: 1.13-1
+Date: 2016-11-17
 Author: Alexander Robitzsch [aut,cre]
 Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 Description: 
@@ -14,14 +14,15 @@ Description:
     DETECT statistic, local structural equation modeling (LSEM),
     mean and covariance structure modelling for multivariate normally
     distributed data.
-Depends: R (>= 2.15.0), CDM (>= 5.0), TAM (>= 1.99)
-Imports: coda, combinat, graphics, gtools, ic.infer, igraph, lavaan,
-        lavaan.survey, MASS, MCMCpack, Matrix, methods, mirt, mvtnorm,
-        pbivnorm, plyr, psych, Rcpp, sfsmisc, sm, stats, survey, utils
-Suggests: miceadds
+Depends: R (>= 2.15.0)
+Imports: CDM (>= 5.0), coda, combinat, graphics, gtools, ic.infer,
+        igraph, lavaan, lavaan.survey, MASS, MCMCpack, Matrix, methods,
+        mirt, mvtnorm, pbivnorm, plyr, psych, Rcpp, sfsmisc, sm, stats,
+        survey, TAM (>= 1.99), utils
+Suggests: LSAmitR, miceadds
 LinkingTo: Rcpp, RcppArmadillo
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2016-07-19 14:17:55 UTC; sunpn563
+Packaged: 2016-11-17 13:03:01 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2016-07-19 18:29:40
+Date/Publication: 2016-11-17 18:33:57

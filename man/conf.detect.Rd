@@ -9,8 +9,9 @@ This function computes the DETECT statistics for dichotomous item responses
 and the polyDETECT statistic for polytomous item responses
 under a confirmatory specification of item clusters 
 (Stout, Habing, Douglas & Kim, 1996; Zhang & Stout,
-1999a, 1999b; Zhang, 2007). Item responses in a multi-matrix design
-are allowed (Zhang, 2013).
+1999a, 1999b; Zhang, 2007; Bonifay, Reise, Scheines, & Meijer, 2015). 
+
+Item responses in a multi-matrix design are allowed (Zhang, 2013).
 }
 \usage{
 conf.detect(data, score, itemcluster, bwscale = 1.1, progress = TRUE, 
@@ -23,7 +24,7 @@ An \eqn{N \times I} data frame of dichotomous or polytomous responses.
 Missing responses are allowed.
 }
   \item{score}{
-An ability estimate, e.g. the WLE
+An ability estimate, e.g. the WLE, sum score or mean score
 }
   \item{itemcluster}{
 Item cluster for each item. The order of entries must correspond
@@ -76,6 +77,11 @@ A list with following entries:
 \item{ccov.matrix}{Evaluated conditional covariance}
 }
 \references{
+Bonifay, W. E., Reise, S. P., Scheines, R., & Meijer, R. R. (2015). 
+When are multidimensional data unidimensional enough for structural 
+equation modeling? An evaluation of the DETECT multidimensionality index. 
+\emph{Structural Equation Modeling}, \bold{22}, 504-516.	
+	
 Jang, E. E., & Roussos, L. (2007). An investigation into the dimensionality
 of TOEFL using conditional covariance-based nonparametric approach.
 \emph{Journal of Educational Measurement}, \bold{44}, 1-21.

@@ -104,6 +104,7 @@ Alexander Robitzsch
 # EXAMPLE 1: Adjustment of the likelihood | data.read
 #############################################################################	
 
+library(CDM)
 library(TAM)
 data(data.read)
 dat <- data.read

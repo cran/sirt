@@ -2,7 +2,7 @@
 ##########################################################################
 # process data for shortcuts in variance estimation
 mlnormal_proc_variance_shortcut <- function( id , y , X , Z_list ,
-		Z_index , use_Rcpp ){
+		Z_index , use_Rcpp , G ){
 zz0 <- Sys.time()		
 		#*** group sizes
 		freq_id <- base::rowsum( 1+0*id , id )
@@ -14,7 +14,7 @@ zz0 <- Sys.time()
 								base::cumsum( freq_id[1:(G-1) , "dim_id"] ) )
 		freq_id$end_orig <-  base::cumsum( freq_id[1:G , "dim_id"] )		
 		freq_id <- freq_id[ base::order( freq_id[,2] ) , ]
-
+		
 		G <- base::nrow(freq_id)
 		freq_id$id <- 1:G
 		freq_id$update_dim <- base::c( 1,1 * ( base::diff(freq_id$dim_id) > 0 ) )
@@ -30,6 +30,8 @@ zz0 <- Sys.time()
 		} else {
 			mlnormal_proc_vs_Z <- mlnormal_proc_variance_shortcut_Z_Rcpp
 		}			
+# cat("**** vor mlnormal_proc_vs_Z")	
+
 		res <- mlnormal_proc_vs_Z( Z_list=Z_list , Z_index = Z_index , G = G , 
 		            freq_id = freq_id )
 		freq_id <- res$freq_id
@@ -45,7 +47,7 @@ zz0 <- Sys.time()
 		
 		#---------------------------------------
 		#---- rearrange Z_index and Z_list
-		Z_index <- Z_index[ freq_id[,1] , , ]
+		Z_index <- Z_index[ freq_id[,1] , , , drop=FALSE]
 		Z_list0 <- Z_list
 		for (gg in 1:G){
 			Z_list[[gg]] <- Z_list0[[  freq_id[gg,1] ]]

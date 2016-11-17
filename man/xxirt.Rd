@@ -361,7 +361,7 @@ P_lc <- function( par, Theta , ncat){
     P <- matrix( NA , nrow=TP , ncol=ncat)
     P[,1] <- 1
     for (cc in 2:ncat){
-        P[,cc] <- exp( Theta %*% b )
+        P[,cc] <- exp( Theta \%*\% b )
     }
     P <- P / rowSums(P)    
     return(P)
@@ -412,7 +412,7 @@ P_olc <- function( par, Theta , ncat){
     P <- matrix( NA , nrow=TP , ncol=ncat)
     P[,1] <- 1
     for (cc in 2:ncat){
-        P[,cc] <- exp( Theta %*% b )
+        P[,cc] <- exp( Theta \%*\% b )
     }
     P <- P / rowSums(P)    
     return(P)
@@ -453,7 +453,7 @@ Theta <- matrix( seq(-8,8,len=31) , ncol=1 )
 P_Theta1 <- function( par , Theta , G  ){
     mu <- par[1]
     sigma <- max( par[2] , .01 )
-    p1 <- dnorm( Theta[,1] , mean = mu , sd = sigma)
+    p1 <- stats::dnorm( Theta[,1] , mean = mu , sd = sigma)
     p1 <- p1 / sum(p1)          
     probs <- matrix( p1 , ncol=1)    
     return(probs)
@@ -462,7 +462,7 @@ P_Theta1 <- function( par , Theta , G  ){
 par_Theta <- c(0,1)
 names(par_Theta) <- c("mu","sigma")
 customTheta  <- xxirt_createThetaDistribution( par=par_Theta , 
-                est= c(FALSE,TRUE) , P=P_Theta1  )
+                   est= c(FALSE,TRUE) , P=P_Theta1  )
 customTheta
 
 #*** IRF 1PL logit
@@ -499,16 +499,16 @@ P_Theta2 <- function( par , Theta , G  ){
     sigma2 <- max( par[4] , .01 )    
     TP <- nrow(Theta)
     probs <- matrix( NA , nrow=TP , ncol=G)    
-    p1 <- dnorm( Theta[,1] , mean = mu1 , sd = sigma1)
+    p1 <- stats::dnorm( Theta[,1] , mean = mu1 , sd = sigma1)
     probs[,1] <- p1 / sum(p1)          
-    p1 <- dnorm( Theta[,1] , mean = mu2 , sd = sigma2)
+    p1 <- stats::dnorm( Theta[,1] , mean = mu2 , sd = sigma2)
     probs[,2] <- p1 / sum(p1)                  
     return(probs)
 }              
 par_Theta <- c(0,0,1,1)
 names(par_Theta) <- c("mu1","mu2","sigma1","sigma2")
 customTheta2  <- xxirt_createThetaDistribution( par=par_Theta , 
-                est= c(FALSE,TRUE,TRUE,TRUE) , P=P_Theta2  )
+                    est= c(FALSE,TRUE,TRUE,TRUE) , P=P_Theta2  )
 customTheta2
 
 #*** estimate model

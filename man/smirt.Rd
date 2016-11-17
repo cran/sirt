@@ -24,6 +24,8 @@ for dichotomous data.
 smirt(dat, Qmatrix, irtmodel="noncomp" , est.b = NULL, est.a = NULL, 
      est.c = NULL, est.d = NULL, est.mu.i=NULL , b.init = NULL, a.init = NULL, 
      c.init = NULL, d.init=NULL, mu.i.init=NULL , Sigma.init=NULL , 
+     b.lower=-Inf, b.upper = Inf, a.lower= -Inf, a.upper=Inf, 
+     c.lower=-Inf, c.upper = Inf, d.lower= -Inf, d.upper=Inf,     
      theta.k=seq(-6,6,len=20), theta.kDES=NULL, 
      qmcnodes=0 , mu.fixed = NULL, variance.fixed = NULL,  est.corr = FALSE, 
      max.increment = 1, increment.factor=1, numdiff.parm = 0.0001, 
@@ -97,6 +99,14 @@ Initial \eqn{d} coefficients
 \item{Sigma.init}{
 Initial covariance matrix \eqn{\Sigma}
 }
+\item{b.lower}{Lower bound for \eqn{b} parameter}
+\item{b.upper}{Upper bound for \eqn{b} parameter}
+\item{a.lower}{Lower bound for \eqn{a} parameter}
+\item{a.upper}{Upper bound for \eqn{a} parameter}
+\item{c.lower}{Lower bound for \eqn{c} parameter}
+\item{c.upper}{Upper bound for \eqn{c} parameter}
+\item{d.lower}{Lower bound for \eqn{d} parameter}
+\item{d.upper}{Upper bound for \eqn{d} parameter}
   \item{theta.k}{
 Vector of discretized trait distribution. This vector is expanded in all
 dimensions by using the \code{\link[base:expand.grid]{base::expand.grid}}  

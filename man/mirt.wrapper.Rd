@@ -110,7 +110,7 @@ Alexander Robitzsch
 
 \seealso{
 See the \pkg{mirt} package on CRAN
-\url{http://cran.r-project.org/package=mirt}
+\url{https://CRAN.R-project.org/package=mirt}
 and on GitHub \url{https://github.com/philchalmers/mirt}.
 % \href{https://github.com/philchalmers/mirt}{GitHub}
 

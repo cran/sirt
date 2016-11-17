@@ -142,7 +142,7 @@ competing factor analytic approaches for the investigation of measurement invari
 
 
 \author{
-Alexander Robitzsch, Oliver Luedtke, Andrea Hildebrand
+Alexander Robitzsch, Oliver Luedtke, Andrea Hildebrandt
 }
 
 %\note{
