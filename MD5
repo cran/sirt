@@ -1,6 +1,5 @@
-0bc2d6cffeb1e342658a06ca759685a7 *DESCRIPTION
-1e813674d2c746d0e714bfa31de7d4bd *NAMESPACE
-e6339f3acda2979f015dc7dd2198f684 *R/ARb_utils.R
+6db35e549bc22ec4ecf120c11c03e03b *DESCRIPTION
+8f2a110a2070ba54e2be2db486a43cfd *NAMESPACE
 033d5326f0922728353f197496b1e9a7 *R/CallSwitch.R
 8d499ecbbeff7da5fe27a881821faca5 *R/IRT.expectedCounts_sirt.R
 b5a6894df423039bcbce81e97b204457 *R/IRT.factor.scores.sirt.R
@@ -17,6 +16,7 @@ c8017e4c156e36e90b34a16ce43a390f *R/Q3.testlet.R
 9874a4271ecaf4ff6703f385bc231bcd *R/R2noharm.EAP.R
 460605b8e6093d8828782211691a5e82 *R/R2noharm.R
 0380053b6c4261ec766d3bd4d7ee969a *R/R2noharm.jackknife.R
+c9907385c59ceee351cc662f1ffe1765 *R/Rhat_sirt.R
 6713b6cd1ab412c1c5785ff89eba0cc3 *R/amh.R
 0fcc00991e77520b39c6d614090cbcef *R/amh_compare_estimators.R
 75bf64e70b213be51bd3e556f5d7d347 *R/amh_eval_prior.R
@@ -31,7 +31,7 @@ beb0c9f1e49d577061ab7805fb6658ee *R/automatic.recode.R
 cfd9054b645a58a62eb4dcd2b6168ba0 *R/bounds_parameters.R
 d755c9f80ee2d0e4a90bbd2e8517a145 *R/brm.irf.R
 8a81f2dbf5021944e12423ecc387c072 *R/brm.sim.R
-454c8a504b021fbb0760cf2dc6d2221e *R/btm.R
+ebace8115ec0701e6b64c247aa00eacf *R/btm.R
 258322c8246987be9890c488e8d19b34 *R/btm_fit.R
 59c56204f982e828f1c485f9bf6fdb70 *R/categorize.R
 88fecf1b1bae80b2f0d847c2b1b4e388 *R/ccov.np.R
@@ -39,15 +39,16 @@ d755c9f80ee2d0e4a90bbd2e8517a145 *R/brm.irf.R
 f5329ac9dd3a70eb05d1c4230ee334a3 *R/coef.amh.R
 f6aa2115f37622b11d7648b0ce62ee92 *R/coef.mlnormal.R
 bc256ab0ffcdb828f09fc39427841913 *R/coef.pmle.R
-9d4abca0d7bf57470c0c04bbd2ccc196 *R/conf.detect.R
+674ab7215b37ed9b203a3caaa2d66f11 *R/conf.detect.R
 782c8a50a842fae4c136833868d9a062 *R/confint.amh.R
 89d80e1c5ae7f5ca43df3aa94f145265 *R/confint.mlnormal.R
 3282a2ad09b7acdfe6ad76eeed28bada *R/confint.pmle.R
 d81d1cf6071cdfa8b9ec9a0559150315 *R/confint.xxirt.R
+2281ce94776a8be44f39a43c40dbab5e *R/create.ccov.R
 d1b751e069242c7331acbadf46f5d6f7 *R/data.prep.R
 0ef7e4ecf35feed8b6f53f265a355436 *R/data.wide2long.R
 c0e10a996da757fec6216c9b43563456 *R/decategorize.R
-775f637bc2fdca159e5c619e7f805458 *R/detect.R
+a87c3d880c5c2e2365297b90af3e9613 *R/detect.index.R
 5d9a1578803e96077a193e99e2db0953 *R/diag2.R
 75169274721a47aeb5c216dda3ba8ca1 *R/dif.logisticregression.R
 4ae61fd69a6eba5cfbb37d5b5866256d *R/dif.variance.R
@@ -56,7 +57,7 @@ bdc69f463119f5ca836104334715d671 *R/dimproper.R
 d57a28caa9b95057bc0bcdc978cfa1b0 *R/eigenvalues.manymatrices.R
 6fd764479d7d46803438aa43fa898ebe *R/eigenvalues.sirt.R
 c26362f82dff63245dd03f4c16b47bc3 *R/equating.rasch.R
-5c4f325a564b0e3710ef4537651dd096 *R/expl.detect.R
+96cefcec647c90e90f3c42eab32b4c3a *R/expl.detect.R
 beb665f830b191973c66e1bb1263b85c *R/f1d.irt.R
 6ba293303ac89e36382f84427c1d50c5 *R/fit.adisop.R
 e4166ef8cb1d3de3712fcc8d45f1633c *R/fit.gradedresponse.R
@@ -106,8 +107,8 @@ e7382522437aabd9aa1bd5eea8e388d3 *R/loglike_mvnorm.R
 7e02d3d3c06d756e702e25a187e973ba *R/lsdm.R
 e415e17c341d71e3eb9d6ede1e66be72 *R/lsdm_aux.R
 bb74c2dac9e69681e3cd3d9bb30efa3c *R/lsem.MGM.stepfunctions.R
-c81ddf1e5f19df574732799c85054083 *R/lsem.estimate.R
-90f10c6d7a057a758ed86956af82851e *R/lsem.fitsem.R
+0aa4f29728a92dcf2e0c0f16069c1166 *R/lsem.estimate.R
+407a161db1e96f27262385f642f0b576 *R/lsem.fitsem.R
 79a94986856841eb875f3b605f56173f *R/lsem.group.moderator.R
 d40dfea06a1196d3dda7d064df1acecf *R/lsem.helper.R
 1daa99667d322a7592f31afa07625472 *R/lsem.parameter.summary.R
@@ -128,6 +129,7 @@ e82056775fa0c12fe492b713e9d1b8d8 *R/mcmc.3pno.testlet_alg.R
 05e3e7633e51dae780fcecf69a32884d *R/mcmc.3pno.testlet_output.R
 8d71069baa197dcf807dc22c909da42e *R/mcmc.aux.R
 9944696acc5ee4494189bfff2d5ee534 *R/mcmc.list.descriptives.R
+10b3bbf429da8ba66b2a7048c4cdebe7 *R/mcmc_Rhat.R
 0436b86f700af196c5b3bbff0567a947 *R/mcmc_WaldTest.R
 a69f4c6e85ab91738d5355dbc18d68cc *R/mcmc_coef.R
 c06b9c836aa4b811b522469c6b7e91c9 *R/mcmc_confint.R
@@ -208,7 +210,6 @@ f9262685852aa7728f69b2c34fb6b5f2 *R/noharm.sirt.est.aux.R
 82f35c9e17d716f91928c8f83e850adb *R/normal2.cw.R
 585fc0c73e4a6511030a1bb111dc3c24 *R/np.dich.R
 ef3d12ddeef2c3ef50fe52aea6333364 *R/nr.numdiff.R
-fbf5eb4ebf61e718d06cf7d6b8221038 *R/osink.R
 d66be8331f0e743ecadbe42002790800 *R/parmsummary_extend.R
 4335ac7b7db879cdc222b9789783c0d1 *R/pbivnorm2.R
 547c8cd8437a3829fa8935aa8b987b8b *R/pcm.conversion.R
@@ -257,7 +258,7 @@ d3575053e9bca00f082577b52c8088b5 *R/rasch.mirtlc.R
 834aafdaf26b1d654706ca84eafe266f *R/rasch.mml.R
 49d660022cf7ccba990bfb179258a660 *R/rasch.mml.npirt.R
 79e214a5b7d76c06fd0fe6403880a946 *R/rasch.mml.ramsay.R
-6c02e6364dd927b20d15871b79c329c3 *R/rasch.mml.raschtype.R
+242dc73bdc1893de8f84dae64f0c5b03 *R/rasch.mml.raschtype.R
 bbab6cb803107949ec611a3082d4a765 *R/rasch.mml2.R
 4b93fa0bdf66523060dac08419902078 *R/rasch.mml2.missing1.R
 6fcc0575c2c1dcc9092c2a3a48b208c4 *R/rasch.pairwise.R
@@ -270,6 +271,7 @@ a5d95f94c58eabc3d936f50e63592ee0 *R/rasch.pml3.R
 1578b8d0199e81476089e4777a911b21 *R/rasch.pml_aux.R
 1adc37ee930bef09e3979e254c9818a0 *R/rasch.prox.R
 10eb6c9fbf27012776ed72f1042894b5 *R/rasch.va.R
+b2e102975403996e46791cf34063928c *R/read.fwf2.R
 674a6fc859ffd110ec2ea45f0988d52b *R/reliability.nonlinear.sem.R
 1a7f67016691975170dff0f6721b1af4 *R/rm.facets.R
 9ca1fffd8b4e8dee9ae8aa7b61e544b9 *R/rm.facets_IC.R
@@ -283,6 +285,7 @@ a5d95f94c58eabc3d936f50e63592ee0 *R/rasch.pml3.R
 7f648b06be24bf4672c63a6e270f095f *R/rm_proc.R
 f4fd6a1d1488cf886e5b194dcaebafaa *R/sia.sirt.R
 d2e023cecb4553a1c5ed26a1e2064237 *R/sim.rasch.dep.R
+d6008f8c313c154ced925c4cc818ed79 *R/sim.raschtype.R
 46b8b8e73b7949b394c9ad01888018b1 *R/sirtcat.R
 5c1d37a237bbb5324ab92ecb7b318638 *R/smirt.R
 ee1fe5f4a64c6694959e05a9be82cdc6 *R/smirt_alg_comp.R
@@ -299,14 +302,15 @@ c37eca17cfe64e9fffbb91631b0eb938 *R/soft_thresholding.R
 d7308451cade19a5fd8bc49ded08b4ce *R/summary.R2noharm.jackknife.R
 c96f46a826b370d8113b112b681611a7 *R/summary.amh.R
 62ea76db959e503d7bb6d0794dcec955 *R/summary.btm.R
+deb164aac4e8c618ebbdcce81afb4612 *R/summary.conf.detect.R
 cf3ea96319502328f9d14edaa3c685d9 *R/summary.fuzcluster.R
 37ec0444f9933657bb3b876af208176d *R/summary.gom.em.R
 fa258efc840ff9e71e7d47649f3e5b17 *R/summary.invariance.alignment.R
 fb5832f904d484dbf046b4eae46c00b5 *R/summary.isop.R
 d89333ea746742c2bbaf7f1370227c97 *R/summary.latent.regression.R
 1775dd5092b0e8776ddb26699940562b *R/summary.linking.haberman.R
-7d157c11a5f99c73eb8639dc7aa6a24c *R/summary.lsem.R
-8e1e3c1da57729fdf8cad88f870af4a9 *R/summary.lsem.permutationTest.R
+79a2a05e92fe15c6cd1ead7053b0aa74 *R/summary.lsem.R
+f510c99e51c4c7c982ffe55f3cee482b *R/summary.lsem.permutationTest.R
 47ba63d58906eee8a7611d244ae25275 *R/summary.mcmc.sirt.R
 2a76b6cf655a7c059a9154fe433c2ffe *R/summary.mlnormal.R
 47404eabba7ccbd491886256a0def2b1 *R/summary.noharm.sirt.R
@@ -338,6 +342,8 @@ a43eaf642176688fbe5856a0a26ac392 *R/weighted_rowMeans.R
 44962be47d23f0207ea9fb44d2c1d7cf *R/weighted_rowSums.R
 cf50254d2e005e309521f8c5b1f53103 *R/weighted_stats_extend_wgt.R
 71fb240758716ba648b9deda91956dbe *R/wle.rasch.R
+49b75a8cb807f634b685cb9baa11bf0d *R/write.format2.R
+6e55b0cee1073d401f0ba9d6de4facb5 *R/write.fwf2.R
 1b0c3847c3e28054a6b939742163f0e7 *R/xxirt.R
 8f0371b1371417f83333e7ce0d471861 *R/xxirt_EAP.R
 2e2775d24279cc2a6d380d6c8dc8b690 *R/xxirt_IRT.se.R
@@ -414,7 +420,8 @@ f22fe765b0c81e582dec7b8e0d7c2dc1 *data/data.si05.rda
 7a883cdac40d4d980b2e2ef320824f79 *data/data.si06.rda
 7c35b74ed95918b83903d21d579cd986 *data/data.timss.rda
 c16b76c1dd4523120c7160e323cdc998 *data/data.timss07.G8.RUS.rda
-6c334c2cf08814c6462f4eda7270d156 *inst/NEWS
+d1ffd9f3507fea86868e63d8a22caf7d *inst/CITATION
+6c9d125724651e69efb9affa3912a21e *inst/NEWS
 723c5c4ffeb4e2c9ff04c16b301423ec *man/CallSwitch.Rd
 1bd77372e0b179c83b7db0d44725d22e *man/IRT.mle.Rd
 406275182fd92a38ab9813c5fb913acb *man/Q3.Rd
@@ -430,7 +437,7 @@ e9a27f784013c4fe5afc60cff1035bf1 *man/btm.Rd
 a9a67f6c8109d9c6f76001e8494031ed *man/categorize.Rd
 4344034634e2258ac8be90fcf359ea76 *man/ccov.np.Rd
 7f1137f266aacd955dfbdd3bf87ea759 *man/class.accuracy.rasch.Rd
-e52b44ecb201a6cea19b83e8e4557a75 *man/conf.detect.Rd
+af9198cee30d3f2198acacb41bd56e15 *man/conf.detect.Rd
 d77829b062d5acc57d393e5b6fa1c485 *man/data.activity.itempars.Rd
 9961bea2ae81273f55abb810a5895efc *man/data.big5.Rd
 daa06224160a56d547a99a7c6a1839e2 *man/data.bs.Rd
@@ -470,7 +477,7 @@ e68102ffe5a0116bca02788757873070 *man/eigenvalues.manymatrices.Rd
 03f61ac292de31efe76235112c7f7a99 *man/eigenvalues.sirt.Rd
 a5a4860e367a25905e8955e36875f1d2 *man/equating.rasch.Rd
 d651feacc022a25bbe9766223ef31fd2 *man/equating.rasch.jackknife.Rd
-5f54240e0131ddd4071d1838ac9f45e3 *man/expl.detect.Rd
+7b808bce98371f048ea223f1664f563e *man/expl.detect.Rd
 fd22e3cd5d2f549d91adc6a17e479ec6 *man/f1d.irt.Rd
 c8848080d3643d083e34d3cea015814d *man/fit.isop.Rd
 cd0f652292ef14cb15803e53abb39495 *man/fuzcluster.Rd
@@ -490,7 +497,7 @@ d08778f4fe05b2d221cd501e0858db54 *man/latent.regression.em.raschtype.Rd
 b4a634538ab04001f24b003ceab2d46d *man/linking.robust.Rd
 7251c75476bc95641be27df17fa5047d *man/loglike_mvnorm.Rd
 32da9f17790b170da2a66201a5bc0ef3 *man/lsdm.Rd
-78545c20383740ffa9d06b5fb7f8b210 *man/lsem.estimate.Rd
+371a8754336eca2a80ced0c32c4d96d7 *man/lsem.estimate.Rd
 710df2ffab033a308f67774edbdcb726 *man/lsem.permutationTest.Rd
 4195b69f87ac7e432b60045ae2016a8b *man/marginal.truescore.reliability.Rd
 ef36d565cd8565b9455b3aff15d38368 *man/matrixfunctions.sirt.Rd
@@ -499,6 +506,7 @@ ef36d565cd8565b9455b3aff15d38368 *man/matrixfunctions.sirt.Rd
 2851f63023e8a744c632ddd0dfb5fcf0 *man/mcmc.2pnoh.Rd
 4ee943e5392700be1c28e27e5d1265fa *man/mcmc.3pno.testlet.Rd
 4eb8e11b03c061f037eb9d3de9cf2db5 *man/mcmc.list.descriptives.Rd
+f45857f54355171f8c6f887bad69236a *man/mcmc_Rhat.Rd
 2b22ad5c8ef7b48d13eef8fb96ef90c1 *man/mcmc_coef.Rd
 d3ab1ac7df66e610af34c7115647d0ef *man/mcmclist2coda.Rd
 065ee44bbd8f9e0de119caf9ac938c64 *man/md.pattern.sirt.Rd
@@ -547,7 +555,7 @@ c30d4b28d788f6aea588789056a318f0 *man/rm.sdt.Rd
 c3b080afed071dbe519f1102742b8704 *man/sim.rasch.dep.Rd
 df1d9365ff5a5284f3c3fb5fd5ff27a6 *man/sim.raschtype.Rd
 2037f35084618a0bc821a0f5b8cb1db8 *man/sirt-defunct.Rd
-eb61afe3f1f9902f1da88306a56a617e *man/sirt-package.Rd
+ad4a384f8435c13af4cb816ea39c240d *man/sirt-package.Rd
 31ae6adcd95c043578c3eee937fe2bda *man/sirt-utilities.Rd
 0776ab2c3838abe0e9c0b43a90e1228d *man/smirt.Rd
 adbf3af37137ac53eed403ff13d37289 *man/starts_cov.Rd

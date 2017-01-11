@@ -58,7 +58,10 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 		propscore <- score / maxscore
 
 		# initial ability for each team
-		theta <- stats::qlogis( propscore )
+		theta <- .8*stats::qlogis( propscore )
+		if (center.theta){
+			theta <- theta - mean(theta)
+		}
 		# eliminate individuals with extreme scores
 		elim_persons <- FALSE
 		if ( base::sum( propscore %in% c(0,1) ) > 0 ){
@@ -125,7 +128,7 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 				se.delta <- base::sqrt( 1 / d2 )			
 							}
 			#***********************************
-			# derivatives with respect to eta		
+			# derivatives with respect to eta
 			if ( est.eta ){
 				d1 <- base::sum(r1[,1]+r1[,2]/2) - base::sum( M1[,1] + M1[,3]/2 )						
 				d2 <- base::sum( M1[,1] * ( 1 - M1[,1] - M1[,3]/2 ) +
@@ -133,10 +136,9 @@ btm <- function( data ,	ignore.ties = FALSE  , fix.eta=NULL , fix.delta=NULL ,
 				incr <-  d1 / d2
 				incr <- base::ifelse( base::abs(incr) > maxincr , 
 								maxincr*base::sign(incr) , incr )
-				eta <- eta + incr
+				eta <- eta + incr			
 				se.eta <- base::sqrt( 1 / d2 )			
 						}
-			
 			#******************
 			# derivatives with respect to theta
 			# first derivative

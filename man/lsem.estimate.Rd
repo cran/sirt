@@ -11,7 +11,7 @@ Local Structural Equation Models (LSEM)
 \description{
 Local structural equation models (LSEM) are structural equation models (SEM)
 which are evaluated for each value of a pre-defined moderator variable
-(Hildebrandt, Wilhelm, & Robitzsch, 2009; Hildebrandt et al., in press).
+(Hildebrandt, Wilhelm, & Robitzsch, 2009; Hildebrandt et al., 2016).
 Like in nonparametric regression models, observations near a focal point - at
 which the model is evaluated - obtain higher weights, far distant obervations
 obtain lower weights. The LSEM can be specified by making use of \pkg{lavaan} syntax.
@@ -131,9 +131,9 @@ residualization.}
 
 \references{
 Hildebrandt, A., Luedtke, O., Robitzsch, A., Sommer, C., &
-Wilhelm, O. (in press). Exploring factor model parameters across continuous variables 
+Wilhelm, O. (2016). Exploring factor model parameters across continuous variables 
 with local structural equation models. 
-\emph{Multivariate Behavioral Research}, \bold{xx}, xxx-xxx.	
+\emph{Multivariate Behavioral Research}, \bold{51}, 257-278.	
 	
 Hildebrandt, A., Wilhelm, O., & Robitzsch, A. (2009). Complementary and 
 competing factor analytic approaches for the investigation of measurement invariance. 
@@ -145,9 +145,10 @@ competing factor analytic approaches for the investigation of measurement invari
 Alexander Robitzsch, Oliver Luedtke, Andrea Hildebrandt
 }
 
-%\note{
-%%  ~~further notes~~
-%}
+\note{
+Note that the specified model in \code{lavaan} syntax should be explicitly saved as
+the object \code{lavmodel} in the global envirnoment as it is done in the examples.
+}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 

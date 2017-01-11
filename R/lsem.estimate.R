@@ -8,16 +8,17 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 		standardized = FALSE , 
 		standardized_type = "std.all" ,
 		eps=1E-8 , verbose=TRUE , ... ){
-	
+
+		
 	CALL <- base::match.call()
 	s1 <- base::Sys.time()	
-	
+		
 	lavaan.args <- base::list(...)	
 	if (standardized){
 		if ( type == "MGM"){
 			base::stop("standardized=TRUE cannot be applied for type='MGM'")
-						}
-				}
+		}
+	}
 	# group moderator if type="MGM"
 	out <- lsem.group.moderator( data , type , moderator.grid , moderator ,
 				residualize , h)
@@ -26,7 +27,7 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 	h <- out$h
 	residualize <- out$residualize
 	moderator.grid <- out$moderator.grid
-
+	
 	# residualize input data	
 	out <- lsem.residualize( data , moderator , moderator.grid ,
 				lavmodel , h , residualize , eps , verbose )		
@@ -35,12 +36,11 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 	weights <- out$weights
     data$index <- base::seq(1,nrow(data))	
 	residualized_interceps <- out$residualized_interceps
-	
 	# unweighted fit of lavaan model
 	dat <- data
-	lavfit <- lavaan::sem(lavmodel, data=dat,  ... )
+	lavfit <- lavaan::sem(model = lavmodel, data=dat,  ... )
 	fM <- lavaan::fitMeasures( lavfit )
-	fit_measures <- base::intersect( fit_measures , names(fM) )
+	fit_measures <- base::intersect( fit_measures , base::names(fM) )
 	NF <- base::length(fit_measures)
 	pars <- lavaan::parameterEstimates(lavfit)
  	if (standardized){			
@@ -48,10 +48,9 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 		colnames(sol)[ base::which( colnames(sol) == "est.std" ) ] <- "est"
 		sol$lhs <- base::paste0( "std__" , sol$lhs)
 		pars <- plyr::rbind.fill( pars , sol )	
-					} 
+	} 
 	pars <- base::apply( pars[ , c("lhs" , "op" , "rhs" ) ] , 1 , FUN = function(ll){
 				base::paste0( ll[1] , ll[2] , ll[3] ) } )
-				
 	# fit LSEM for all moderator groups
 	out2 <- lsem.fitsem( dat , weights , lavfit ,
 			  fit_measures , NF , G , moderator.grid , verbose , pars ,
@@ -61,7 +60,7 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 			
 	rownames(parameters) <- base::paste0( parameters$par ,
 						"__" , parameters$grid_index )			
-	
+		
 	#****************************
 	# parameter and fit statistics summary
 	parameters_summary <-  lsem.parameter.summary( parameters , 
@@ -108,4 +107,4 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 	base::class(res) <- "lsem"	
 	base::return(res)	
 		
-				}
+}

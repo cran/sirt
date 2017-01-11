@@ -12,7 +12,7 @@ matrix such that items are clustered by the hierarchical Ward
 algorithm (Roussos, Stout & Marden, 1998).
 }
 \usage{
-expl.detect(data, score, nclusters, N.est = NULL, seed = 897, bwscale = 1.1)
+expl.detect(data, score, nclusters, N.est = NULL, seed = NULL, bwscale = 1.1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

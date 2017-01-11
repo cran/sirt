@@ -1,5 +1,6 @@
 \name{conf.detect}
 \alias{conf.detect}
+\alias{summary.conf.detect}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Confirmatory DETECT and polyDETECT Analysis
@@ -16,6 +17,8 @@ Item responses in a multi-matrix design are allowed (Zhang, 2013).
 \usage{
 conf.detect(data, score, itemcluster, bwscale = 1.1, progress = TRUE, 
         thetagrid = seq(-3, 3, len = 200))
+
+\method{summary}{conf.detect}(object, digits = 3, file = NULL, ...)        
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -41,6 +44,10 @@ Display progress?
 A vector which contains theta values where conditional 
 covariances are evaluated.
 }
+\item{object}{Object of class \code{conf.detect}}
+\item{digits}{Number of digits for rounding in \code{summary}}
+\item{file}{Optional file name to be sinked for \code{summary}}
+\item{\dots}{Further arguments to be passed}
 }
 \details{
 The result of DETECT are the indices \code{DETECT}, \code{ASSI}
@@ -69,10 +76,17 @@ Essential unidimensionality \tab  ASSI < .25 \tab
 RATIO < .36 \cr
     }    
     
+    
+Note that the expected value of a conditional covariance for an item pair
+is negative when a unidimensional model holds. In consequence,
+the DETECT index can become negative for unidimensional data
+(see Example 3). This can be also seen in the statistic
+\code{MCOV100} in the value \code{detect}.   
 }
 \value{
 A list with following entries:
-\item{detect}{Data frame with statistics DETECT, ASSI and RATIO}
+\item{detect}{Data frame with statistics DETECT, ASSI, RATIO, MADCOV100
+and MCOV100}
 \item{ccovtable}{Individual contributions to conditional covariance}
 \item{ccov.matrix}{Evaluated conditional covariance}
 }
@@ -218,6 +232,32 @@ detect5 <- expl.detect( data = dat , score = score  ,
 # Plot Cluster solution
 pl <- graphics::plot( detect5$clusterfit , main = "Cluster solution" )
 stats::rect.hclust(detect5$clusterfit, k=6, border="red")
+
+#############################################################################
+# EXAMPLE 3: DETECT index for unidimensional data
+#############################################################################
+
+set.seed(976)
+N <- 1000
+I <- 20
+b <- base::sample( seq( -2 , 2 , len=I) )
+dat <- sim.raschtype( rnorm(N) , b = b )
+
+# estimate Rasch model and corresponding WLEs
+mod1 <- TAM::tam.mml( dat )
+wmod1 <- TAM::tam.wle(mod1)$theta
+# define item cluster
+ 
+itemcluster <- c( rep(1,5) , rep(2,I-5) )
+
+# compute DETECT statistic 
+detect1 <- conf.detect( data = dat, score = wmod1, itemcluster = itemcluster )
+  ##            unweighted weighted
+  ##  DETECT        -0.184   -0.184
+  ##  ASSI          -0.147   -0.147
+  ##  RATIO         -0.226   -0.226
+  ##  MADCOV100      0.816    0.816
+  ##  MCOV100       -0.786   -0.786
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

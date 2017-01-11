@@ -2,7 +2,7 @@
 summary.lsem.permutationTest <- function( object , file=NULL , digits=3 , ... ){
 
 	# open sink for a file
-	osink( file=file , prefix="__SUMMARY.Rout" )
+	CDM::osink( file=file , suffix="__SUMMARY.Rout" )
 
 	cat("-----------------------------------------------------------------\n")
 	cat("Permutation Test for Local Structural Equation Model \n\n")
@@ -52,7 +52,7 @@ summary.lsem.permutationTest <- function( object , file=NULL , digits=3 , ... ){
 	print(obji)	
 
 	# close file
-	csink(file)
+	CDM::csink(file)
 	
-			}
+}
 ######################################################			

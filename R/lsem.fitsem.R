@@ -16,24 +16,24 @@ lsem.fitsem <- function( dat , weights , lavfit ,
 		base::cat( base::paste0( base::rep("*",G1) , collapse="") )
 		base::cat("|\n")
 		base::cat("|")
-				}
-			
+	}
 
 	for (gg in 1:G){
 		# gg <- 1			
 		dat$weight <- weights[,gg]
 		datsvy <- survey::svydesign(id=~index,   weights=~weight ,    data=dat)
 		# fit the model using weighted data
-		survey.fit <- lavaan.survey::lavaan.survey(lavfit, datsvy )
+		survey.fit <- lavaan.survey::lavaan.survey(lavaan.fit=lavfit, 
+							survey.design=datsvy )
 		dfr.gg <- pars <- lavaan::parameterEstimates(survey.fit) 		
+		
 		if (standardized){			
 			sol <- lavaan::standardizedSolution( survey.fit )
 			colnames(sol)[ base::which( colnames(sol) == "est.std" ) ] <- "est"
 			sol$lhs <- paste0( "std__" , sol$lhs)
 			pars <- plyr::rbind.fill( pars , sol )	
 			dfr.gg <- pars
-						} 
-						
+		} 							
 		pars <- base::paste0( pars$lhs , pars$op , pars$rhs )					
 		NP <- base::length(pars0)
 		ind <- base::match( pars0 , pars )
@@ -53,14 +53,13 @@ lsem.fitsem <- function( dat , weights , lavfit ,
 			if ( gg %in% pr ){
 				base::cat("-")
 				utils::flush.console()
-					}
-					}
-				}
+			}
+		}
+	}
 	if (verbose){
 		base::cat("|\n")
 		utils::flush.console()
-				}
-
+	}
 
 	parameters <- parameters[ base::order(parameters$parindex) , ]	
 #	fits <- fits[ order(fits$fitindex) , ]	

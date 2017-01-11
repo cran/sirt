@@ -2,8 +2,11 @@
 
 ###############################################################################
 # Exploratory DETECT analysis
-expl.detect <- function( data , score , nclusters , N.est = NULL , seed=897 , bwscale = 1.1 ){
-	set.seed( seed )
+expl.detect <- function( data , score , nclusters , N.est = NULL , seed=NULL , 
+		bwscale = 1.1 ){
+	if ( ! base::is.null(seed) ){
+		base::set.seed(seed)
+	}
     # number of items
     I <- ncol(data)
     # sample for estimation
@@ -22,7 +25,7 @@ expl.detect <- function( data , score , nclusters , N.est = NULL , seed=897 , bw
     cc1 <- max(ccov.matrix) - ccov.matrix
     # Ward Hierarchical Clustering
     d <- stats::as.dist(cc1)
-    fit <- stats::hclust(d, method="ward")         # hierarchical cluster analysis
+    fit <- stats::hclust(d, method="ward.D")         # hierarchical cluster analysis
     clusterfit <- fit
     itemcluster <- data.frame( matrix( 0 , I , nclusters ) )
     itemcluster[,1] <- colnames(data)
@@ -33,9 +36,10 @@ expl.detect <- function( data , score , nclusters , N.est = NULL , seed=897 , bw
         h1 <- detect.index( ccovtable=cc , itemcluster = itemcluster[,k] )
         detect.unweighted <- rbind( detect.unweighted , h1$unweighted )
         detect.weighted <- rbind( detect.weighted , h1$weighted )    
-                }
-    colnames(detect.unweighted) <- paste( c( "DETECT" , "ASSI" , "RATIO" ) , ".est" , sep="")
-    colnames(detect.weighted) <- paste( c( "DETECT" , "ASSI" , "RATIO" ) , ".est" , sep="")
+    }
+	parnames <- c( "DETECT" , "ASSI" , "RATIO" , "MADCOV100" , "MCOV100")
+    colnames(detect.unweighted) <- paste( parnames , ".est" , sep="")
+    colnames(detect.weighted) <- paste( parnames , ".est" , sep="")
     dfr1 <- data.frame( "N.Cluster" = 2:nclusters )
     dfr1$N.items <- I
     dfr1$N.est <- N.est
@@ -47,18 +51,21 @@ expl.detect <- function( data , score , nclusters , N.est = NULL , seed=897 , bw
     # Validating DETECT index
     #************************************
 	if ( length(valsample) > 0 ){
-		cc <- ccov.np( data = data[ valsample,] , score = score[valsample] , bwscale = bwscale )
+		cc <- ccov.np( data = data[ valsample,] , score = score[valsample] , 
+					bwscale = bwscale )
 		detect.unweighted <- detect.weighted <- NULL
 		for (k in 2:nclusters){ 
 			h1 <- detect.index( ccovtable=cc , itemcluster = itemcluster[,k] )
 			detect.unweighted <- rbind( detect.unweighted , h1$unweighted )
 			detect.weighted <- rbind( detect.weighted , h1$weighted )    
 					}
-		colnames(detect.unweighted) <- paste( c( "DETECT" , "ASSI" , "RATIO" ) , ".val" , sep="")
-		colnames(detect.weighted) <- paste( c( "DETECT" , "ASSI" , "RATIO" ) , ".val" , sep="")
+		colnames(detect.unweighted) <- paste( parnames , ".val" , sep="")
+		colnames(detect.weighted) <- paste( parnames , ".val" , sep="")
 		detu <- data.frame( detu , detect.unweighted )
 		detw <- data.frame( detw , detect.weighted )
 			}
+	rownames(detect.unweighted) <- paste0("Cl" , 2:nclusters)
+	rownames(detect.weighted) <- rownames(detect.unweighted)
 	cat("\n\nDETECT (unweighted)\n\n")
 	clopt <- which.max( detu$DETECT.est ) + 1 
 	cat("Optimal Cluster Size is " , clopt , " (Maximum of DETECT Index)\n\n" )
@@ -72,6 +79,7 @@ expl.detect <- function( data , score , nclusters , N.est = NULL , seed=897 , bw
 			main = paste( "Cluster Dendogram with " , clopt , " Clusters" , sep="")
 					)
     stats::rect.hclust(res$clusterfit, k=clopt, border="red")
+	class(res) <- "expl.detect"
 	return(res)
-    }
+}
 ###############################################################################

@@ -4,18 +4,20 @@
 summary.lsem <- function( object , file=NULL , digits=3 , ... ){
 
 	# open sink for a file
-	osink( file=file , prefix="__SUMMARY.Rout" )
+	CDM::osink( file=file , suffix="__SUMMARY.Rout" )
 
 	cat("-----------------------------------------------------------------\n")
 	cat("Local Structural Equation Model \n\n")
 		
     d1 <- utils::packageDescription("sirt")
-	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , " | " )	
+	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
     d1 <- utils::packageDescription("lavaan")
+	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
+    d1 <- utils::packageDescription("lavaan.survey")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
 	
 	
-	cat(paste0("Function 'lsem.estimate', type='" , object$type,"'") , "\n\n")
+	cat(paste0("\nFunction 'lsem.estimate', type='" , object$type,"'") , "\n\n")
 	
 	
 	cat("Call:\n", paste(deparse(object$CALL), sep = "\n", collapse = "\n"), 
@@ -70,7 +72,7 @@ summary.lsem <- function( object , file=NULL , digits=3 , ... ){
 	print(obji)	
 	
 	# close file
-	csink(file)
+	CDM::csink(file)
 	
 	}
 #############################################

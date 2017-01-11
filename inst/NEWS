@@ -32,6 +32,29 @@ CHANGELOG sirt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+
+
+------------------------------------------------------------------------
+Versions 1.14 -- 2017-01-11  --  CRAN sirt 1.14-0
+------------------------------------------------------------------------
+
+NOTE  * changed output of 'sim.raschtype' which is now of class data frame
+NOTE  * added a not in 'lsem.estimate' that the model syntax should be
+        always specified in an object lavmodel 
+        (thanks to a communicated problem of Jenny Wagner)
+NOTE  * included utility function 'mcmc_Rhat' for computation of the 
+        Rhat statistic from a single chain
+NOTE  * added statistics of average conditional covariances and MADCOV
+        in 'conf.detect' and 'expl.detect'. An example for DETECT analysis
+        for simulated unidimensional data has been included (Example 3)
+        which shows that DETECT can become negative (motivated by discussions
+        with Berend Terluin, Weiyi Cheng, Yifan Liu and Yunfei Chang)
+NOTE  * added summary method for 'conf.detect'
+NOTE  * disabled default fixed seed in 'expl.detect'
+        
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: mcmc_Rhat (1), conf.detect (3)
+
 ------------------------------------------------------------------------
 Versions 1.13 -- 2016-11-17  --  CRAN sirt 1.13-1
 ------------------------------------------------------------------------
