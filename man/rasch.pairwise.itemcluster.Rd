@@ -129,24 +129,24 @@ itemcluster[ 10:12 ] <- 3
 rho <- c( .55 , .25 , .45 )
 
 # simulate data
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
 
 # estimation with pairwise Rasch model
-mod3 <- rasch.pairwise( dat )
+mod3 <- sirt::rasch.pairwise( dat )
 summary(mod3)
 
 # use item cluster in rasch pairwise estimation
-mod <- rasch.pairwise.itemcluster( dat = dat , itemcluster = itemcluster )
+mod <- sirt::rasch.pairwise.itemcluster( dat = dat , itemcluster = itemcluster )
 summary(mod)
 
 \dontrun{
 # Rasch MML estimation
-mod4 <- rasch.mml2( dat )
+mod4 <- sirt::rasch.mml2( dat )
 summary(mod4)
 
 # Rasch Copula estimation
-mod5 <- rasch.copula2( dat , itemcluster = itemcluster )
+mod5 <- sirt::rasch.copula2( dat , itemcluster = itemcluster )
 summary(mod5)
 
 # compare different item parameter estimates
@@ -187,7 +187,7 @@ round( apply( M1 , 2 , stats::sd ) , 3 )
 
 # set item parameters of first item to 0 and of second item to -0.7
 b.fixed <- cbind( c(1,2) , c(0,-.7) )
-mod5 <- rasch.pairwise.itemcluster( dat = dat , b.fixed=b.fixed, 
+mod5 <- sirt::rasch.pairwise.itemcluster( dat = dat , b.fixed=b.fixed, 
              itemcluster = itemcluster )
 # difference between estimations 'mod' and 'mod5'
 dfr <- cbind( mod5$item$b , mod$item$b )

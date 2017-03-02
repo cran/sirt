@@ -366,8 +366,9 @@ of the incompletely observed item \eqn{X_{pi}} which is an
 item response model with nonignorable missings (Holman & Glas, 2005;
 see also Pohl, Graefe & Rose, 2014).
 If \eqn{\delta _i} is a large negative number (e.g. \eqn{\delta=-100}), then
-it follows \eqn{P( R_{pi} = 1 | X_{pi} = 1 , \theta_p , \xi_p ) =1} and as a consequence it holds 
-that \eqn{P(X_{pi}=1 | R_{pi} = 0 , \theta_p , \xi_p) = 0}, which is equivalent to treating
+it follows \eqn{P( R_{pi} = 1 | X_{pi} = 1 , \theta_p , \xi_p ) =1} 
+and as a consequence it holds that \eqn{P(X_{pi}=1 | R_{pi} = 0 , \theta_p , \xi_p) = 0}, 
+which is equivalent to treating
 all missing item responses as incorrect. The missingness parameter
 \eqn{\delta} can be specified
 by the user and studied as a sensitivity analysis under different
@@ -518,7 +519,7 @@ dat <- data.read
 I <- ncol(dat) # number of items
 
 # Rasch model
-mod1 <- rasch.mml2( dat )
+mod1 <- sirt::rasch.mml2( dat )
 summary(mod1)
 plot( mod1 )    # plot all items
 # title 'Rasch model', display curves from -3 to 3 only for items 1, 5 and 8
@@ -527,21 +528,21 @@ plot(mod1, main="Rasch model Items 1, 5 and 8", xlim=c(-3,3) , items=c(1,5,8) )
 # Rasch model with constraints on item difficulties
 # set item parameters of A1 and C3 equal to -2
 constraints <- data.frame( c("A1","C3") , c(-2,-2) )
-mod1a <- rasch.mml2( dat , constraints=constraints)
+mod1a <- sirt::rasch.mml2( dat , constraints=constraints)
 summary(mod1a)
 
 # estimate equal item parameters for 1st and 11th item
 est.b <- 1:I
 est.b[11] <- 1
-mod1b <- rasch.mml2( dat , est.b = est.b )
+mod1b <- sirt::rasch.mml2( dat , est.b = est.b )
 summary(mod1b)
 
 # estimate Rasch model with skew trait distribution
-mod1c <- rasch.mml2( dat , distribution.trait="smooth3")
+mod1c <- sirt::rasch.mml2( dat , distribution.trait="smooth3")
 summary(mod1c)
 
 # 2PL model
-mod2 <- rasch.mml2( dat , est.a = 1:I )
+mod2 <- sirt::rasch.mml2( dat , est.a = 1:I )
 summary(mod2)
 plot(mod2)	# plot 2PL item response curves
 
@@ -561,43 +562,43 @@ smod2 <- IRT.modelfit(mod2)
 IRT.compareModels(smod1, smod2)	
 
 # set some bounds for a and b parameters 
-mod2a <- rasch.mml2( dat , est.a=1:I , min.a = .7 , max.a=2 , min.b = -2 )
+mod2a <- sirt::rasch.mml2( dat , est.a=1:I , min.a = .7 , max.a=2 , min.b = -2 )
 summary(mod2a)
 
 # 3PL model
-mod3 <- rasch.mml2( dat , est.a = 1:I , est.c = 1:I , 
+mod3 <- sirt::rasch.mml2( dat , est.a = 1:I , est.c = 1:I , 
               mmliter = 400 # maximal 400 iterations
                  )
 summary(mod3)
 
 # 3PL model with fixed guessing paramters of .25 and equal slopes
-mod4 <- rasch.mml2( dat , fixed.c = rep( .25 , I )   )
+mod4 <- sirt::rasch.mml2( dat , fixed.c = rep( .25 , I )   )
 summary(mod4)
 
 # 3PL model with equal guessing paramters for all items
-mod5 <- rasch.mml2( dat , est.c = rep(1, I )   )
+mod5 <- sirt::rasch.mml2( dat , est.c = rep(1, I )   )
 summary(mod5)
 
 # difficulty + guessing model
-mod6 <- rasch.mml2( dat , est.c = 1:I   )
+mod6 <- sirt::rasch.mml2( dat , est.c = 1:I   )
 summary(mod6)
 
 # 4PL model
-mod7 <- rasch.mml2( dat , est.a = 1:I , est.c=1:I , est.d = 1:I  ,
+mod7 <- sirt::rasch.mml2( dat , est.a = 1:I , est.c=1:I , est.d = 1:I  ,
             min.d = .95 , max.c = .25)  
         # set minimal d and maximal c parameter to .95 and .25
 summary(mod7)
 
 # constrained 4PL model
 # equal slope, guessing and slipping parameters
-mod8 <- rasch.mml2( dat ,est.c=rep(1,I) , est.d = rep(1,I) )
+mod8 <- sirt::rasch.mml2( dat ,est.c=rep(1,I) , est.d = rep(1,I) )
 summary(mod8)
 
 # estimation of an item response model with an
 # uniform theta distribution
 theta.k <- seq( 0.01 , .99 , len=20 )
 trait.weights <- rep( 1/length(theta.k) , length(theta.k) )
-mod9 <- rasch.mml2( dat , theta.k=theta.k , trait.weights = trait.weights ,
+mod9 <- sirt::rasch.mml2( dat , theta.k=theta.k , trait.weights = trait.weights ,
               normal.trait=FALSE , est.a = 1:12  )
 summary(mod9)
 
@@ -619,7 +620,7 @@ mu.fixed <- cbind(1,0)
     # set first mean to 0 for identification reasons
 
 # Model 1: 2-dimensional Rasch model
-mod1 <- rasch.mml2( dat , Qmatrix=Qmatrix , miterstep=4,
+mod1 <- sirt::rasch.mml2( dat , Qmatrix=Qmatrix , miterstep=4,
             est.b = est.b   ,  mu.fixed = mu.fixed , mmliter=30 )
 summary(mod1)
 plot(mod1)
@@ -637,35 +638,35 @@ theta <- stats::rnorm( N , sd =1.5 ) # N persons with SD 1.5
 b <- seq( -2 , 2 , len=15)
 
 # simulate data
-dat <- sim.raschtype( theta = theta , b = b , alpha1 = 0 , alpha2 = -0.3 )
+dat <- sirt::sim.raschtype( theta = theta , b = b , alpha1 = 0 , alpha2 = -0.3 )
 
 #  estimating alpha parameters
-mod1 <- rasch.mml2( dat , est.alpha = TRUE , mmliter=30 )
+mod1 <- sirt::rasch.mml2( dat , est.alpha = TRUE , mmliter=30 )
 summary(mod1)
 plot(mod1)
 
 \dontrun{
 # fixed alpha parameters
-mod1b <- rasch.mml2( dat , est.alpha = FALSE , alpha1=0 , alpha2=-.3 )
+mod1b <- sirt::rasch.mml2( dat , est.alpha = FALSE , alpha1=0 , alpha2=-.3 )
 summary(mod1b)
 
 # estimation with equal alpha parameters
-mod1c <- rasch.mml2( dat , est.alpha = TRUE , equal.alpha=TRUE )
+mod1c <- sirt::rasch.mml2( dat , est.alpha = TRUE , equal.alpha=TRUE )
 summary(mod1c)
 
 # Ramsay QM
-mod2a <- rasch.mml2( dat , irtmodel ="ramsay.qm" )
+mod2a <- sirt::rasch.mml2( dat , irtmodel ="ramsay.qm" )
 summary(mod2a)
 }
 
 # Ramsay QM with estimated K parameters
-mod2b <- rasch.mml2( dat , irtmodel ="ramsay.qm" , est.K=1:15 , mmliter=30)
+mod2b <- sirt::rasch.mml2( dat , irtmodel ="ramsay.qm" , est.K=1:15 , mmliter=30)
 summary(mod2b)
 plot(mod2b)
 
 \dontrun{
 # nonparametric estimation of monotone item response curves
-mod3a <- rasch.mml2( dat , irtmodel ="npirt" , mmliter =100 ,
+mod3a <- sirt::rasch.mml2( dat , irtmodel ="npirt" , mmliter =100 ,
             theta.k = seq( -3 , 3 , len=10) ) # evaluations at 10 theta grid points
 # nonparametric ICC of first 4 items
 round( t(mod3a$pjk)[1:4,] , 3 ) 
@@ -673,33 +674,33 @@ summary(mod3a)
 plot(mod3a)
 
 # nonparametric IRT estimation without monotonicity assumption
-mod3b <- rasch.mml2( dat , irtmodel ="npirt" , mmliter =10 ,
+mod3b <- sirt::rasch.mml2( dat , irtmodel ="npirt" , mmliter =10 ,
             theta.k = seq( -3 , 3 , len=10) , npirt.monotone=FALSE) 
 plot(mod3b)
             
 # B-Spline estimation of ICCs
 library(splines)
-mod3c <- rasch.mml2( dat , irtmodel ="npirt" , 
+mod3c <- sirt::rasch.mml2( dat , irtmodel ="npirt" , 
              npformula = "y~bs(theta,df=3)" , theta.k = seq(-3,3,len=15) )
 summary(mod3c)
 round( t(mod3c$pjk)[1:6,] , 3 )
 plot(mod3c)
 
 # estimation of quadratic item response functions: ~ theta + I( theta^2) 
-mod3d <- rasch.mml2( dat , irtmodel ="npirt" , 
+mod3d <- sirt::rasch.mml2( dat , irtmodel ="npirt" , 
              npformula = "y~theta + I(theta^2)" )
 summary(mod3d)
 plot(mod3d)
 
 # estimation of a stepwise ICC function
 # ICCs are constant on the theta domains: [-Inf,-1], [-1,1], [1,Inf]
-mod3e <- rasch.mml2( dat , irtmodel ="npirt" , 
+mod3e <- sirt::rasch.mml2( dat , irtmodel ="npirt" , 
              npformula = "y~I(theta>-1 )+I(theta>1)" )
 summary(mod3e)
 plot(mod3e , xlim=c(-2.5,2.5) )
 
 # 2PL model
-mod4 <- rasch.mml2( dat ,  est.a=1:15)
+mod4 <- sirt::rasch.mml2( dat ,  est.a=1:15)
 summary(mod4)
 
 #############################################################################
@@ -710,14 +711,14 @@ summary(mod4)
 set.seed(8765)
 N1 <- 1000     # N1=1000 persons in group 1
 N2 <- 500      # N2= 500 persons in group 2
-dat1 <- sim.raschtype( theta = stats::rnorm( N1 , sd = 1.5 )  , b = b , 
+dat1 <- sirt::sim.raschtype( theta = stats::rnorm( N1 , sd = 1.5 )  , b = b , 
 			alpha1 = -0.3 , alpha2=0)
-dat2 <- sim.raschtype( theta = stats::rnorm( N2 , mean=-.5 , sd =.75)  , 
+dat2 <- sirt::sim.raschtype( theta = stats::rnorm( N2 , mean=-.5 , sd =.75)  , 
 			b = b , alpha1 = -0.3 , alpha2=0)
 dat1 <- rbind( dat1 , dat2 )
 group <- c( rep(1,N1) , rep(2,N2))
 
-mod1 <-  rasch.mml2( dat1 , parm.conv=.0001 , group=group , est.alpha = TRUE )
+mod1 <-  sirt::rasch.mml2( dat1 , parm.conv=.0001 , group=group , est.alpha = TRUE )
 summary(mod1)
 
 #############################################################################
@@ -750,11 +751,11 @@ Qmatrix[1:I+I,2] <- 1
 #***
 # (2) estimation of models
 # 2-dimensional Rasch model
-mod1 <- rasch.mml2( dat , Qmatrix=Qmatrix )
+mod1 <- sirt::rasch.mml2( dat , Qmatrix=Qmatrix )
 summary(mod1)
 
 # 2-dimensional 2PL model
-mod2 <- rasch.mml2( dat , Qmatrix=Qmatrix , est.a = 1:(2*I) )               
+mod2 <- sirt::rasch.mml2( dat , Qmatrix=Qmatrix , est.a = 1:(2*I) )               
 summary(mod2)
 
 # estimation with some fixed variances and covariances
@@ -762,7 +763,7 @@ summary(mod2)
 #  covariance to zero
 variance.fixed <- matrix( cbind(c(1,1) , c(1,2) , c(1,0)) , 
              byrow=FALSE , ncol= 3 )
-mod3 <- rasch.mml2( dat , Qmatrix=Qmatrix , variance.fixed = variance.fixed )
+mod3 <- sirt::rasch.mml2( dat , Qmatrix=Qmatrix , variance.fixed = variance.fixed )
 summary(mod3)
 
 # constraints on item difficulties
@@ -770,7 +771,7 @@ summary(mod3)
 est.b <- c( 1:I , 1:I )     
     # equal indices correspond to equally estimated item parameters
 mu.fixed <- cbind( 1 , 0 )
-mod4 <- rasch.mml2( dat, Qmatrix=Qmatrix, est.b = est.b , mu.fixed = mu.fixed )
+mod4 <- sirt::rasch.mml2( dat, Qmatrix=Qmatrix, est.b = est.b , mu.fixed = mu.fixed )
 summary(mod4) 
 
 #############################################################################
@@ -791,7 +792,7 @@ b1 <- seq(-1.5,1.5,length=I)
 # item slopes group 1
 a1 <- rep(1, I)
 # simulate data group 1
-dat1 <- sim.raschtype( stats::rnorm(n1) , b=b1 , fixed.a=a1 )
+dat1 <- sirt::sim.raschtype( stats::rnorm(n1) , b=b1 , fixed.a=a1 )
 colnames(dat1) <- paste0("I" , 1:I , "des1" )
 # group 2
 b2 <- b1 - .15
@@ -800,7 +801,7 @@ a2 <- 1.1*a1
 # compared to the first group. This indicates possible item context effects.
 
 # simulate data group 2
-dat2 <- sim.raschtype( stats::rnorm(n2) , b=b2 , fixed.a=a2 )
+dat2 <- sirt::sim.raschtype( stats::rnorm(n2) , b=b2 , fixed.a=a2 )
 colnames(dat2) <- paste0("I" , 1:I , "des2" )
 # define joint dataset
 dat <- matrix( NA , nrow=n1+n2 , ncol=2*I)
@@ -813,7 +814,7 @@ group <- c( rep(1,n1) , rep(2,n2) )
 #***
 # Model 1: Rasch model two groups
 itemindex <- rep( 1:I , 2 )
-mod1 <- rasch.mml2( dat , group=group , est.b=itemindex )
+mod1 <- sirt::rasch.mml2( dat , group=group , est.b=itemindex )
 summary(mod1)
 
 #***
@@ -821,7 +822,7 @@ summary(mod1)
 designmatrix <- matrix( 0 , 2*I , I+1)
 designmatrix[ ( 1:I )+ I,1:I] <- designmatrix[1:I ,1:I] <- diag(I)
 designmatrix[ ( 1:I )+ I,I+1] <- 1
-mod2 <- rasch.mml2( dat , est.a=rep(1:2,each=I) , designmatrix=designmatrix )
+mod2 <- sirt::rasch.mml2( dat , est.a=rep(1:2,each=I) , designmatrix=designmatrix )
 summary(mod2)
 
 #############################################################################
@@ -840,7 +841,7 @@ dat <- data.pirlsmissing
 dat1 <- dat
 dat1[ dat1 == 9 ] <- NA
 # estimate Rasch model
-mod1 <- rasch.mml2( dat1[,items] , weights= dat$studwgt , group=dat$country )
+mod1 <- sirt::rasch.mml2( dat1[,items] , weights= dat$studwgt , group=dat$country )
 summary(mod1)
 ##   Mean= 0 0.341 -0.134 0.219 
 ##   SD= 1.142 1.166 1.197 0.959 
@@ -852,7 +853,7 @@ summary(mod1)
 dat2 <- dat
 dat2[ dat2 == 9 ] <- 0
 # estimate Rasch model
-mod2 <- rasch.mml2( dat2[,items] , weights= dat$studwgt , group=dat$country )
+mod2 <- sirt::rasch.mml2( dat2[,items] , weights= dat$studwgt , group=dat$country )
 summary(mod2)
   ##   Mean= 0 0.413 -0.172 0.446 
   ##   SD= 1.199 1.263 1.32 0.996 
@@ -876,7 +877,7 @@ for (ii in items){
                 }
 
 # estimate Rasch model
-mod3 <- rasch.mml2( dat3[,items] , weights= dat$studwgt , group=dat$country )
+mod3 <- sirt::rasch.mml2( dat3[,items] , weights= dat$studwgt , group=dat$country )
 summary(mod3)
   ##   Mean= 0 0.392 -0.153 0.38 
   ##   SD= 1.154 1.209 1.246 0.973 
@@ -899,7 +900,7 @@ for (ii in items){
                 }
 
 # estimate Rasch model
-mod4 <- rasch.mml2( dat4[,items] , weights= dat$studwgt , group=dat$country )
+mod4 <- sirt::rasch.mml2( dat4[,items] , weights= dat$studwgt , group=dat$country )
 summary(mod4)
   ##   Mean= 0 0.396 -0.156 0.382 
   ##   SD= 1.16 1.216 1.253 0.979 
@@ -923,7 +924,7 @@ for (ii in items_cr){
                 }
 
 # estimate Rasch model
-mod5 <- rasch.mml2( dat5[,items] , weights= dat$studwgt , group=dat$country )
+mod5 <- sirt::rasch.mml2( dat5[,items] , weights= dat$studwgt , group=dat$country )
 summary(mod5)
   ##   Mean= 0 0.411 -0.165 0.435 
   ##   SD= 1.19 1.245 1.293 0.995 
@@ -937,57 +938,57 @@ dat1 <- dat
 dat1[ dat1 == 9 ] <- 0
 
 #*** Model 6: estimate item difficulties assuming incorrect missing data treatment
-mod6 <- rasch.mml2( dat1[,items] , mmliter=50 )
+mod6 <- sirt::rasch.mml2( dat1[,items] , mmliter=50 )
 summary(mod6)
 
 #*** Model 7: reestimate model with constrained item difficulties
 I <- length(items)
 constraints <- cbind( 1:I , mod6$item$b )
-mod7 <- rasch.mml2( dat1[,items] , constraints=constraints , mmliter=50 )
+mod7 <- sirt::rasch.mml2( dat1[,items] , constraints=constraints , mmliter=50 )
 summary(mod7)
 
 #*** Model 8: score all missings responses as missing items
 dat2 <- dat[,items]
 dat2[ dat2 == 9 ] <- NA
-mod8 <- rasch.mml2( dat2 , constraints=constraints , mmliter=50 , mu.fixed=NULL )
+mod8 <- sirt::rasch.mml2( dat2 , constraints=constraints , mmliter=50 , mu.fixed=NULL )
 summary(mod8)
 
 #*** Model 9: estimate missing data model 'missing1' assuming a missingness
 #       parameter delta.miss of zero
 dat2 <-  dat[,items]    # note that missing item responses must be defined by 9
-mod9 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
+mod9 <- sirt::rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
             theta.k=seq(-5,5,len=10) , delta.miss= 0 , mitermax= 4 , mmliter=200 , 
             mu.fixed=NULL )        
 summary(mod9)
 
 #*** Model 10: estimate missing data model with a large negative missing delta parameter
 #       => This model is equivalent to treating missing responses as wrong
-mod10 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
+mod10 <- sirt::rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
              theta.k=seq(-5 , 5 , len=10) , delta.miss= -10 , mitermax= 4 , mmliter=200 , 
              mu.fixed=NULL )        
 summary(mod10)
 
 #*** Model 11: choose a missingness delta parameter of -1
-mod11 <- rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
+mod11 <- sirt::rasch.mml2( dat2 , constraints=constraints , irtmodel="missing1" , 
              theta.k=seq(-5 , 5 , len=10) , delta.miss= -1 , mitermax= 4 , 
              mmliter=200 , mu.fixed=NULL )        
 summary(mod11)
 
 #*** Model 12: estimate joint delta parameter
-mod12 <- rasch.mml2( dat2 , irtmodel="missing1" , mu.fixed = cbind( c(1,2) , 0 ), 
+mod12 <- sirt::rasch.mml2( dat2 , irtmodel="missing1" , mu.fixed = cbind( c(1,2) , 0 ), 
              theta.k=seq(-8 , 8 , len=10) , delta.miss= 0 , mitermax= 4 , 
              mmliter=30 , est.delta=rep(1,I)  )        
 summary(mod12)
 
 #*** Model 13: estimate delta parameter in item groups defined by item format
 est.delta <- 1 + 1 * ( substring( colnames(dat2),7,7 ) == "M" )
-mod13 <- rasch.mml2( dat2 , irtmodel="missing1" , mu.fixed = cbind( c(1,2) , 0 ),
+mod13 <- sirt::rasch.mml2( dat2 , irtmodel="missing1" , mu.fixed = cbind( c(1,2) , 0 ),
              theta.k=seq(-8 , 8 , len=10) , delta.miss= 0 , mitermax= 4 , 
              mmliter=30 , est.delta=est.delta  )        
 summary(mod13)
 
 #*** Model 14: estimate item specific delta parameter
-mod14 <- rasch.mml2( dat2 , irtmodel="missing1" , mu.fixed = cbind( c(1,2) , 0 ) ,
+mod14 <- sirt::rasch.mml2( dat2 , irtmodel="missing1" , mu.fixed = cbind( c(1,2) , 0 ) ,
              theta.k=seq(-8 , 8 , len=10) , delta.miss= 0 , mitermax= 4 ,               
              mmliter=30 , est.delta= 1:I  )        
 summary(mod14)
@@ -1009,7 +1010,7 @@ mod1a <- TAM::tam.mml( dat )
 summary(mod1a)
 
 #*** Model 1b: PCM in sirt
-mod1b <- rm.facets( dat )
+mod1b <- sirt::rm.facets( dat )
 summary(mod1b)
 
 #*** Model 1c: PCM in mirt
@@ -1024,14 +1025,14 @@ dat1 <- CDM::sequential.items(dat)
 resp <- dat1$dat.expand
 iteminfo <- dat1$iteminfo
 # fit model
-mod2a <- rasch.mml2( resp )
+mod2a <- sirt::rasch.mml2( resp )
 summary(mod2a)
 
 #**************************************************
 #*** Model 3: Sequential Model (SM): Different Loadings
 
 #*** Model 3a: SM in sirt
-mod3a <- rasch.mml2( resp , est.a= iteminfo$itemindex )
+mod3a <- sirt::rasch.mml2( resp , est.a= iteminfo$itemindex )
 summary(mod3a)
 
 #**************************************************

@@ -102,7 +102,7 @@ X <- X_alpha( alpha=.5 )
 
 # parameter estimate uncertain data
 fuzdiscr( X )
-  ##   > fuzdiscr( X )
+  ##   > sirt::fuzdiscr( X )
   ##   [1] 0.5999871 0.4000129
 
 # parameter estimate pseudo likelihood
@@ -116,7 +116,7 @@ colMeans( X )
 alpha <- seq( 0 , 1 , len=100 )
 res <- sapply( alpha , FUN = function(aa){
              X <- X_alpha( alpha=aa ) 
-             c( fuzdiscr( X )[1] , colMeans( X )[1] )
+             c( sirt::fuzdiscr( X )[1] , colMeans( X )[1] )
                     } )
 # plot
 plot( alpha , res[1,] , xlab = expression(alpha) , ylab=expression( theta[alpha] ) , type="l" ,
@@ -139,7 +139,7 @@ X <- X_alpha( alpha=.5 )
 alpha <- seq( 0 , 1 , len=100 )
 res <- sapply( alpha , FUN = function(aa){
            X <- X_alpha( alpha=aa ) 
-           c( fuzdiscr( X )[1] , colMeans( X )[1] )
+           c( sirt::fuzdiscr( X )[1] , colMeans( X )[1] )
                     } )
 # plot                    
 plot( alpha , res[1,] , xlab = expression(alpha) , ylab=expression( theta[alpha] ) , type="l" ,
@@ -167,7 +167,7 @@ X <- matrix( c( 1,0,0 , 1,0,0 ,   0,1,0 , 0,0,1 , .7 , .2 , .1 ,
 
 #*** estimation for uncertain data
 fuzdiscr( X )
-  ##   > fuzdiscr( X )
+  ##   > sirt::fuzdiscr( X )
   ##   [1] 0.5772305 0.2499931 0.1727764
 
 #*** estimation pseudo-likelihood

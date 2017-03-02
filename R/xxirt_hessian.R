@@ -21,8 +21,8 @@ xxirt_hessian <- function( object ){
 		customTheta <- object$customTheta
 		par_items <- object$par_items
 		par_Theta <- object$par_Theta
-		NPI <- base::length(par_items)
-		NPT <- base::length(par_Theta)
+		NPI <- length(par_items)
+		NPT <- length(par_Theta)
 		
 		#***********************
 		fct_irt <- function(x){ 
@@ -50,16 +50,16 @@ xxirt_hessian <- function( object ){
 							dat_resp=dat_resp , maxK=maxK ,group_index = group_index )		
 			n.ik <- res$n.ik ; p.aj.xi <- res$p.aj.xi ; N.ik <- res$N.ik ;
 			N.k <- res$N.k ; post_unnorm <- res$post_unnorm									
-			dev <- base::sum( weights * base::log( rowSums( post_unnorm ) ) )									
-			base::return(dev)
+			dev <- sum( weights * log( rowSums( post_unnorm ) ) )									
+			return(dev)
 		}
 		#*******************************
 		
 		#--- compute Hessian matrix
 		par1 <- xxirt_partable_extract_freeParameters( partable )
 		par2 <- xxirt_parTheta_extract_freeParameters( customTheta )
-		par <- base::c(par1 , par2)
+		par <- c(par1 , par2)
 		hess <- CDM::numerical_Hessian( par = par , FUN = fct_irt )
-		base::rownames(hess) <- base::colnames(hess) <- base::names(par)		
-		base::return(hess)
+		rownames(hess) <- colnames(hess) <- names(par)		
+		return(hess)
 }

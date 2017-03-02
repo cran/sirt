@@ -5,8 +5,8 @@ linking.haberman <- function( itempars , personpars=NULL ,
     a_trim = Inf , b_trim = Inf ,
 	conv = .00001 , maxiter=1000 ,progress=TRUE ){
 	
-	CALL <- base::match.call()
-	s1 <- base::Sys.time()
+	CALL <- match.call()
+	s1 <- Sys.time()
 	
 	#****
     # convert itempars to data frame
@@ -38,12 +38,12 @@ linking.haberman <- function( itempars , personpars=NULL ,
 	wgtM <- wgtM / matrix( rowSums( wgtM , na.rm=TRUE ) , nrow=NI , ncol=NS )
 	#*****
 	# estimation of A
-	logaM <- base::log( aM )	
+	logaM <- log( aM )	
 	resA <- linking_haberman_als(logaM=logaM , wgtM=wgtM , maxiter=maxiter , 
 				 conv=conv , progress = progress , est.type="A (slopes)",
 				 cutoff = a_trim )
-	aj <- base::exp( resA$logaj )
-	At <- base::exp( resA$logaAt )
+	aj <- exp( resA$logaj )
+	At <- exp( resA$logaAt )
     aj_resid <- resA$loga_resid
 	aj_wgt_adj <- resA$loga_wgt_adj
 	aj_wgtM <- resA$loga_wgt
@@ -52,18 +52,18 @@ linking.haberman <- function( itempars , personpars=NULL ,
 	aj_item_stat <- resA$item_stat	
 
 	## vcov of transformed parameters
-	# H1 <- base::diag( At[-1] )	
+	# H1 <- diag( At[-1] )	
 	H1 <- diag2( At[-1] )
 	res <- linking_haberman_vcov_transformation( H1=H1 , aj_vcov=aj_vcov )	
 	aj_vcov <- res$vcov
-	aj_se <- base::c( NA, res$se )
+	aj_se <- c( NA, res$se )
 
 	#******
 	# estimation of B
 	#	bMadj <- bM / matrix( At , NI , NS , byrow=TRUE )
 	# correction ARb 2013-10-09
 
-	bMadj <- bM * base::matrix( At , nrow=NI , ncol=NS , byrow=TRUE )
+	bMadj <- bM * matrix( At , nrow=NI , ncol=NS , byrow=TRUE )
 	resB <- linking_haberman_als(logaM=bMadj , wgtM=wgtM , maxiter=maxiter , 
 				 conv=conv , progress = progress , est.type="B (intercepts)" ,
 				 cutoff = b_trim )
@@ -78,17 +78,17 @@ linking.haberman <- function( itempars , personpars=NULL ,
 	
 	#*****
 	# transformations
-	transf.pars <- base::data.frame( "study" = studies , "At" = At , 
+	transf.pars <- data.frame( "study" = studies , "At" = At , 
 			"se_At" = aj_se , "Bt" = Bt , "se_Bt" = Bj_se )
-	base::rownames(transf.pars) <- NULL	
-	transf.itempars <- base::data.frame( "study" = studies , "At" = 1/At , 
+	rownames(transf.pars) <- NULL	
+	transf.itempars <- data.frame( "study" = studies , "At" = 1/At , 
 			"se_At" = NA , "At2"=At , "se_At2" = transf.pars$se_At ,
 			"Bt" = Bt , "se_Bt" = transf.pars$se_Bt )
-	base::rownames(transf.itempars) <- NULL
+	rownames(transf.itempars) <- NULL
 	
 	#*** transformation 1/At
    
-	# H1 <- base::diag( - 1 / At^2  )[-1,-1]
+	# H1 <- diag( - 1 / At^2  )[-1,-1]
 	H1 <- diag2( - 1 / ( At[-1] ) ^2 )
 	
 	res <- linking_haberman_vcov_transformation( H1=H1 , aj_vcov=aj_vcov )
@@ -102,20 +102,20 @@ linking.haberman <- function( itempars , personpars=NULL ,
 #	transf.personpars$Bt <-  - transf.itempars$Bt / transf.itempars$At	
 	transf.personpars$Bt <-  - transf.pars$Bt 
 #	transf.personpars <- transf.personpars
-	base::colnames(transf.personpars) <- base::c("study" , "A_theta" ,
+	colnames(transf.personpars) <- c("study" , "A_theta" ,
 				"se_A_theta" , "B_theta" , "se_B_theta" )
-	base::colnames(transf.itempars) <- base::c("study" , "A_a" , "se_A_a" ,
+	colnames(transf.itempars) <- c("study" , "A_a" , "se_A_a" ,
 				"A_b" , "se_A_b" , "B_b" , "se_B_b" )
 	# new item parameters
-	joint.itempars <- base::data.frame("item" = items , "aj"=aj , "bj"=Bj )
+	joint.itempars <- data.frame("item" = items , "aj"=aj , "bj"=Bj )
 	# transformations for item parameters
-	AtM <- base::matrix( At , nrow=NI , ncol=NS , byrow=TRUE )
-	BtM <- base::matrix( Bt , nrow=NI , ncol=NS , byrow=TRUE )
+	AtM <- matrix( At , nrow=NI , ncol=NS , byrow=TRUE )
+	BtM <- matrix( Bt , nrow=NI , ncol=NS , byrow=TRUE )
 	aM <- aM / AtM
 	bM <- bM * AtM - BtM	
 	#****
 	# transform person parameters
-	if ( ! base::is.null( personpars) ){
+	if ( ! is.null( personpars) ){
 		for (ll in 1:NS){
 			pp0 <- pp1 <- personpars[[ll]]
 			pp1 <- transf.personpars$A_theta[ll] * pp1 + transf.personpars$B_theta[ll]
@@ -177,7 +177,7 @@ linking.haberman <- function( itempars , personpars=NULL ,
 	# logical indicating whether item slopes are linked
 	linking_slopes <- stats::sd( transf.pars$At ) < 1E-10
 	
-	res <- base::list( 
+	res <- list( 
 		"transf.pars" = transf.pars , 
 		"transf.itempars" = transf.itempars , 
 	    "transf.personpars" = transf.personpars , 
@@ -199,8 +199,8 @@ linking.haberman <- function( itempars , personpars=NULL ,
 		"description" = "Linking according to Haberman (2009)" ,
 		"CALL" = CALL , "time" = s1 
 		)
-	base::class(res) <- "linking.haberman"
-	base::return(res)
+	class(res) <- "linking.haberman"
+	return(res)
 }
 #######################################################################		
 	

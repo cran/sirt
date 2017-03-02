@@ -231,7 +231,7 @@
 #		bG1 <- bG1 - mean(bG1)
 #		bG <- bG - bG1
 #		bG1 <- colMeans( bG )
-		bG <- as.matrix( base::scale( bG , scale=FALSE ) )
+		bG <- as.matrix( scale( bG , scale=FALSE ) )
 		return(bG)
 			}
 ##################################################################

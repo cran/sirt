@@ -3,12 +3,12 @@
 ###################################################################
 mlnormal_ic <- function( dev , beta , theta , N , G ,  posterior_obj  ){
 	# Information criteria
-	ic <- base::list( "deviance" = base::as.vector(dev) , N =N , G=G)
+	ic <- list( "deviance" = as.vector(dev) , N =N , G=G)
 	
 	ic$loglike <- - dev / 2 
 	
-	ic$np.beta <- base::length(beta)
-	ic$np.theta <- base::length(theta)
+	ic$np.beta <- length(beta)
+	ic$np.theta <- length(theta)
 	ic$np <- ic$np.beta + ic$np.theta
     # AIC
     ic$AIC <- dev + 2*ic$np
@@ -22,6 +22,6 @@ mlnormal_ic <- function( dev , beta , theta , N , G ,  posterior_obj  ){
 	ic$log_prior <-  posterior_obj$log_prior
 	ic$log_posterior <-  posterior_obj$log_posterior
 
-	base::return(ic)	
+	return(ic)	
 }	
 ###################################################################	

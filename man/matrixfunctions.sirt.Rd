@@ -105,7 +105,7 @@ rowCumsums.sirt(M1)   # rowwise cumulative sum
 # row index for exceeding a certain threshold value  
 matr <- M1
 matr <- matr / rowSums( matr )
-matr <- rowCumsums.sirt( matr )
+matr <- sirt::rowCumsums.sirt( matr )
 rn <- runif(N1)	# generate random numbers
 rowIntervalIndex.sirt(matr,rn)
 

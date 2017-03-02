@@ -80,21 +80,21 @@ itemcluster[c(2,4,9)] <- 2
 rho <- c( .7 , .5 )
 
 # simulate data
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
 
 # estimate Rasch copula model
-mod1 <- rasch.copula2( dat , itemcluster = itemcluster )
+mod1 <- sirt::rasch.copula2( dat , itemcluster = itemcluster )
 summary(mod1)
 
 # compare result with Rasch model estimation in rasch.copula
 # delta must be set to zero
-mod2 <- rasch.copula2( dat , itemcluster = itemcluster , delta = c(0,0) ,
+mod2 <- sirt::rasch.copula2( dat , itemcluster = itemcluster , delta = c(0,0) ,
             est.delta = c(0,0)  )
 summary(mod2)
 
 # estimate Rasch model with rasch.mml2 function
-mod3 <- rasch.mml2( dat )
+mod3 <- sirt::rasch.mml2( dat )
 summary(mod3)
 
 \dontrun{
@@ -118,20 +118,20 @@ itemcluster[ 10:12 ] <- 3
 rho <- c( .55 , .25 , .45 )
 
 # simulate data
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
 
 # estimate Rasch copula model 
-mod1 <- rasch.copula2( dat , itemcluster = itemcluster , numdiff.parm = .001 )
+mod1 <- sirt::rasch.copula2( dat , itemcluster = itemcluster , numdiff.parm = .001 )
 summary(mod1)
 
 # Rasch model estimation
-mod2 <- rasch.copula2( dat , itemcluster = itemcluster , 
+mod2 <- sirt::rasch.copula2( dat , itemcluster = itemcluster , 
             delta = rep(0,3) , est.delta = rep(0,3) )
 summary(mod2)
 
 # estimation with pairwise Rasch model
-mod3 <- rasch.pairwise( dat )
+mod3 <- sirt::rasch.pairwise( dat )
 summary(mod3) 
 }
 }

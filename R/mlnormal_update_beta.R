@@ -27,10 +27,10 @@ mlnormal_update_beta <- function( NB , Z_index , G , beta ,
 
 	#---- loop in case of REML ... compute P
 	if ( ( ! REML_shortcut ) & REML ){
-	    XVX1 <- base::solve(XVX)
+	    XVX1 <- solve(XVX)
 		V1 <- mlnormal_fill_matrix_from_list( V1=V1zero , V1_list=V1_list , 
 			      id_list=id_list , G =G )
-		H1 <- XVX1 %*% base::crossprod(X , V1 )
+		H1 <- XVX1 %*% crossprod(X , V1 )
 		P <- V1 - V1 %*% X %*% H1 
 	}						
 	#---- end REML
@@ -59,7 +59,7 @@ mlnormal_update_beta <- function( NB , Z_index , G , beta ,
 	}	
 	
 	#** convert to vector
-	beta <- mlnormal_as_vector_names(pars = beta , parnames = base::names(beta0) )
+	beta <- mlnormal_as_vector_names(pars = beta , parnames = names(beta0) )
 	
 	#*** bounds on parameters
 	beta <- bounds_parameters( pars = beta , lower = control_beta$beta_lower ,
@@ -70,10 +70,10 @@ mlnormal_update_beta <- function( NB , Z_index , G , beta ,
 	
 	#----------------------------------
 	#--- output
-	res <- base::list("beta" = beta , "beta_change" = beta_change ,
+	res <- list("beta" = beta , "beta_change" = beta_change ,
 							XVX = XVX , XVY = XVY , P = P ,
 							beta_increment = beta - beta0 )
-	base::return(res)
+	return(res)
 }
 ################################################################
 		

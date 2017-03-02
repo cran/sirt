@@ -100,7 +100,7 @@ F.init <- F.pattern
 # estimate model
 mod1a <- sirt::R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern , 
              F.init = F.init , P.pattern = P.pattern , P.init = P.init ,
-             writename = "LSAT6__1dim_2pno" , noharm.path = noharm.path , dec ="," )            
+             writename = "LSAT6__1dim_2pno" , noharm.path = noharm.path , dec ="," )
 summary(mod1a , logfile="LSAT6__1dim_2pno__SUMMARY")
 
 #++ pairwise marginal maximum likelihood estimation using the probit link
@@ -119,7 +119,7 @@ F.init <- 1+0*F.pattern
 # estimate model
 mod2a <- sirt::R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern ,
                 F.init = F.init , P.pattern = P.pattern , P.init = P.init , 
-                writename = "LSAT6__1dim_1pno" , noharm.path = noharm.path , dec ="," )            
+                writename = "LSAT6__1dim_1pno" , noharm.path = noharm.path , dec ="," )
 summary(mod2a , logfile="LSAT6__1dim_1pno__SUMMARY")
 
 # PMML estimation
@@ -139,8 +139,8 @@ F.init <- 1+0*F.pattern
 # estimate model
 mod <- sirt::R2noharm( dat = dat , model.type="CFA" ,  guesses=rep(.2,I) , 
             F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
-            P.init = P.init , writename = "LSAT6__1dim_3pno" , 
-            noharm.path = noharm.path , dec ="," )            
+            P.init = P.init , writename = "LSAT6__1dim_3pno", 
+            noharm.path = noharm.path , dec ="," )
 summary(mod , logfile="LSAT6__1dim_3pno__SUMMARY")
 
 #++ logistic link function employed in smirt function 
@@ -156,7 +156,7 @@ pm <- data.mcdonald.act15
 #************
 # Model 1: 2-dimensional exploratory factor analysis
 mod1 <- sirt::R2noharm( pm=pm , n=1000, model.type="EFA" , dimensions=2 , 
-             writename = "ACT15__efa_2dim" , noharm.path = noharm.path , dec ="," )            
+             writename = "ACT15__efa_2dim" , noharm.path = noharm.path , dec ="," )
 summary(mod1)
 
 #************
@@ -172,7 +172,7 @@ F.init <- F.pattern
 # estimate model
 mod2 <- sirt::R2noharm( pm=pm , n=1000 ,  model.type="CFA" , F.pattern = F.pattern , 
             F.init = F.init , P.pattern = P.pattern ,P.init = P.init , 
-            writename = "ACT15_indep_clusters" , noharm.path = noharm.path , dec ="," )       
+            writename = "ACT15_indep_clusters" , noharm.path = noharm.path , dec ="," )
 summary(mod2)
 
 #************
@@ -190,7 +190,7 @@ F.init <- F.pattern
 # estimate model
 mod3 <- sirt::R2noharm( pm=pm , n=1000 ,  model.type="CFA" , F.pattern = F.pattern , 
            F.init = F.init , P.pattern = P.pattern , P.init = P.init , 
-           writename = "ACT15_hierarch_model" , noharm.path = noharm.path , dec ="," )       
+           writename = "ACT15_hierarch_model" , noharm.path = noharm.path , dec ="," )
 summary(mod3)
 
 #############################################################################

@@ -87,7 +87,7 @@ P_Theta1 <- function( par , Theta , G){
                 }
 #** create distribution class
 par_Theta <- c( "mu"=0, "sigma" = 1 )  
-customTheta  <- xxirt_createThetaDistribution( par=par_Theta , 
+customTheta  <- sirt::xxirt_createThetaDistribution( par=par_Theta , 
                        est=c(FALSE,TRUE), P=P_Theta1 )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

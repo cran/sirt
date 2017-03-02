@@ -243,36 +243,36 @@ items <- colnames(dat)[ which( substring( colnames(dat) , 1 , 1)=="M" ) ]
 
 #***
 # Model 11: Rasch model
-mod11 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
+mod11 <- sirt::R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
              pid=dat$idstud , name="mod11")
 summary(mod11)
 # read show file
-shw11 <- read.show( "mod11.shw" )
+shw11 <- sirt::read.show( "mod11.shw" )
 # read person-item map
-pi11 <- read.pimap(showfile="mod11.shw")
+pi11 <- sirt::read.pimap(showfile="mod11.shw")
 
 #***
 # Model 12: Rasch model with fixed item difficulties (from Model 1)
-mod12 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
+mod12 <- sirt::R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
              pid=dat$idstud , constraints = mod11$item[ , c("item","itemdiff")] ,
              name="mod12")
 summary(mod12)
 
 #***
 # Model 13: Latent regression model with predictors female, hisei and migra
-mod13a <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
+mod13a <- sirt::R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
              pid=dat$idstud , X = dat[ , c("female" , "hisei" , "migra") ] ,
              name="mod13a")
 summary(mod13a)
 
 # latent regression with a subset of predictors
-mod13b <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
+mod13b <- sirt::R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
              pid=dat$idstud , X = dat[ , c("female" , "hisei" , "migra") ] ,
              regression= "hisei migra" , name="mod13b")
 
 #***
 # Model 14: Differential item functioning (female)
-mod14 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
+mod14 <- sirt::R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
              pid=dat$idstud , X = dat[ , c("female") , drop=FALSE] ,
              model="item+female+item*female" ,  regression="" ,  name="mod14")
 
@@ -288,12 +288,12 @@ items <- grep.vec( "act" , colnames(dat) )$x
 
 #***
 # Model 21: Partial credit model
-mod21 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
+mod21 <- sirt::R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
               model="item+item*step" ,  name="mod21")
 
 #***
 # Model 22: Rating scale model
-mod22 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
+mod22 <- sirt::R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
               model="item+step" , name="mod22")
 
 #***
@@ -302,7 +302,7 @@ items <- grep.vec( c("act" , "sc" ) , colnames(dat) ,  "OR" )$x
 qmatrix <- matrix( 0 , nrow=length(items) , 2 )
 qmatrix[1:5,1] <- 1
 qmatrix[6:9,2] <- 1
-mod23 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
+mod23 <- sirt::R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
             model="item+item*step" , qmatrix=qmatrix , name="mod23")
 
 #############################################################################
@@ -319,14 +319,14 @@ raters <- as.numeric( substring( paste( dat$rater ) , 3 ) )
 
 #***
 # Model 31: Rater model 'item+item*step+rater'
-mod31 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
+mod31 <- sirt::R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
               itemcodes= 0:3 , model="item+item*step+rater" , 
               pid=dat$idstud , X=data.frame("rater"=raters)  , 
               regression="" , name="mod31")
 
 #***
 # Model 32: Rater model 'item+item*step+rater+item*rater'
-mod32 <- R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
+mod32 <- sirt::R2conquest(dat=dat[,items] , path.conquest=path.conquest , 
               model="item+item*step+rater+item*rater" , 
               pid=dat$idstud , X=data.frame("rater"=raters)  , 
               regression="" , name="mod32")      

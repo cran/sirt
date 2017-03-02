@@ -14,10 +14,10 @@ write.fwf2 <- function( dat  , format.full , format.round , savename ){
             fff <- format.full[vv]
             matr[,vv] <- .write.format2( vec1 = dat[,vv] , ff = fff , fr = fvv )
                 }
-        matr <- base::apply( matr , 1 , FUN = function(ll){ paste( ll , 
+        matr <- apply( matr , 1 , FUN = function(ll){ paste( ll , 
 						collapse="" ) } )			
 		if ( is.vector(matr) ){
-			base::writeLines( matr , paste( savename , ".dat" , sep="") )
+			writeLines( matr , paste( savename , ".dat" , sep="") )
 					} else {
 			utils::write.table( matr , paste( savename , ".dat" , sep="") , 
 						row.names=F , col.names=F)

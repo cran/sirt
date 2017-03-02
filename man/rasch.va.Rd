@@ -63,16 +63,16 @@ Alexander Robitzsch
 set.seed(8706)
 N <- 5000
 I <- 20
-dat <- sim.raschtype( stats::rnorm(N,sd=1.3) , b= seq(-2,2,len=I) )
+dat <- sirt::sim.raschtype( stats::rnorm(N,sd=1.3) , b= seq(-2,2,len=I) )
 
 # estimation via variational approximation
-mod1 <- rasch.va(dat)
+mod1 <- sirt::rasch.va(dat)
 
 # estimation via marginal maximum likelihood
-mod2 <- rasch.mml2(dat)
+mod2 <- sirt::rasch.mml2(dat)
 
 # estmation via joint maximum likelihood
-mod3 <- rasch.jml(dat)
+mod3 <- sirt::rasch.jml(dat)
 
 # compare sigma
 round( c( mod1$sig , mod2$sd.trait ) , 3 )

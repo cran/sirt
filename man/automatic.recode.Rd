@@ -73,7 +73,7 @@ data(data.raw1)
 
 # recode data.raw1 and exclude keys 8 and 9 (missing codes) and
 # start with initially setting all categories larger than 50 % frequency to 1
-res1 <- automatic.recode( data.raw1 , exclude=c(8,9) , pstart.min=.50 )
+res1 <- sirt::automatic.recode( data.raw1 , exclude=c(8,9) , pstart.min=.50 )
 # inspect calculated keys
 res1$item.stat
 
@@ -84,7 +84,7 @@ res1$item.stat
 miceadds::library_install("TAM")
 data(data.timssAusTwn,package="TAM")
 raw.resp <- data.timssAusTwn[,1:11]
-res2 <- automatic.recode( data=raw.resp )
+res2 <- sirt::automatic.recode( data=raw.resp )
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

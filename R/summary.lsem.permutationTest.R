@@ -7,13 +7,11 @@ summary.lsem.permutationTest <- function( object , file=NULL , digits=3 , ... ){
 	cat("-----------------------------------------------------------------\n")
 	cat("Permutation Test for Local Structural Equation Model \n\n")
 		
-    d1 <- utils::packageDescription("sirt")
-	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , " | " )	
-    d1 <- utils::packageDescription("lavaan")
-	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
-		
+	cat( package_version_date("sirt") , "\n" )
+	cat( package_version_date("lavaan") , "\n" )	
+	cat( package_version_date("lavaan.survey") , "\n" )					
 	
-	cat("Function 'lsem.permutationTest' \n\n")
+	cat("\nFunction 'sirt::lsem.permutationTest' \n\n")
 	
 	cat("Call:\n", paste(deparse(object$CALL), sep = "\n", collapse = "\n"), 
 				"\n\n", sep = "")	

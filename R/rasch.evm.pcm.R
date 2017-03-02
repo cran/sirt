@@ -69,7 +69,7 @@ rasch.evm.pcm <- function( dat , jackunits=20 , weights=NULL ,
 	
 	# no group
 	if ( nogroup ){
-		res1 <- evm_comp_matrix_poly( dat , dat.resp , weights , JJ , jackunits , powD ,  progress ,
+		res1 <- evm_comp_matrix_poly_R( dat , dat.resp , weights , JJ , jackunits , powD ,  progress ,
 					row_index , col_index )
 					}  else {	
 	# groups
@@ -77,7 +77,7 @@ rasch.evm.pcm <- function( dat , jackunits=20 , weights=NULL ,
         for (gg in 1:G){	
 			if (progress){	cat("\n------- Group" , group.unique[gg] , " ------\n") }
             ind.gg <- which( group == gg )		
-			res1[[gg]] <- evm_comp_matrix_poly( dat[ind.gg,] , dat.resp[ind.gg,] , 
+			res1[[gg]] <- evm_comp_matrix_poly_R( dat[ind.gg,] , dat.resp[ind.gg,] , 
 				weights[ind.gg] , JJ , jackunits , powD ,  progress ,
 						row_index , col_index )
 						}
@@ -202,16 +202,12 @@ rasch.evm.pcm <- function( dat , jackunits=20 , weights=NULL ,
 	
 		}
 ########################################################################
-# arraymult1 <- function (A,dimA,B,dimB){ 
-# .Call("file211c19faab", A, dimA, B, dimB, PACKAGE = "sirt")
-#					}	
 # SEXP evm_comp_matrix_poly( SEXP dat_, SEXP dat_resp_, SEXP weights_, SEXP JJ_, 
 #	SEXP jackunits_, SEXP powD_, SEXP progress__, SEXP row_index_, SEXP col_index_) ;
-evm_comp_matrix_poly <- function( dat , dat.resp , weights , JJ , jackunits , powD ,  progress ,
+evm_comp_matrix_poly_R <- function( dat , dat.resp , weights , JJ , jackunits , powD ,  progress ,
 				row_index , col_index ){
-	res <- .Call( "evm_comp_matrix_poly" ,
+	res <- evm_comp_matrix_poly(
      		dat, dat.resp, weights, JJ, 
-			jackunits, powD, progress , row_index, col_index ,
-			package="sirt")				
+			jackunits, powD, progress , row_index, col_index )				
 	return(res)
 		}

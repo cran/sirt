@@ -238,9 +238,11 @@ P_1PL <- function( par, Theta , ncat){
 #** created item classes of 1PL and 2PL models
 par <- c( "a"= 1 , "b" = 0 )
 # define some slightly informative prior of 2PL
-item_2PL <- xxirt_createDiscItem( name = "2PL" , par = par , est = c(TRUE, TRUE ) , P = P_2PL ,
-               prior = c( a="dlnorm" ) , prior_par1 = c( a = 0 ) , prior_par2 = c(a=5) )
-item_1PL <- xxirt_createDiscItem( name = "1PL" , par = par[2] , est = c(TRUE ) , P = P_1PL )
+item_2PL <- sirt::xxirt_createDiscItem( name = "2PL" , par = par , est = c(TRUE,TRUE), 
+               P = P_2PL, prior = c(a = "dlnorm"), prior_par1 = c( a = 0 ), 
+               prior_par2 = c(a=5) )
+item_1PL <- sirt::xxirt_createDiscItem( name = "1PL" , par = par[2] , est = c(TRUE), 
+               P = P_1PL )
 customItems <- list( item_1PL ,  item_2PL )
 
 #---- definition theta distribution
@@ -261,26 +263,28 @@ P_Theta1 <- function( par , Theta , G){
 }
 #** create distribution class
 par_Theta <- c( "mu"=0, "sigma" = 1 )  
-customTheta  <- xxirt_createThetaDistribution( par=par_Theta , est=c(FALSE,TRUE) , P=P_Theta1 )
+customTheta  <- sirt::xxirt_createThetaDistribution( par=par_Theta , est=c(FALSE,TRUE), 
+                       P=P_Theta1 )
 
 #****************************************************************************
 #******* Model 1: Rasch model
 
 #-- create parameter table
 itemtype <- rep( "1PL" , 12 )
-partable <- xxirt_createParTable( dat , itemtype = itemtype , customItems = customItems )
+partable <- sirt::xxirt_createParTable( dat , itemtype = itemtype, 
+                        customItems = customItems )
 
 # estimate model
-mod1 <- xxirt( dat = dat , Theta=Theta , partable = partable , customItems = customItems ,
-                    customTheta = customTheta)                                    
+mod1 <- sirt::xxirt( dat = dat , Theta=Theta , partable = partable, 
+                   customItems = customItems, customTheta = customTheta)
 summary(mod1)
 
 # estimate Rasch model by providing starting values
-partable1 <- xxirt_modifyParTable( partable , parname = "b", 
+partable1 <- sirt::xxirt_modifyParTable( partable , parname = "b", 
                    value = - stats::qlogis( colMeans(dat) ) )
 # estimate model again
-mod1b <- xxirt( dat = dat , Theta=Theta , partable = partable1 , customItems = customItems ,
-                    customTheta = customTheta )                                     
+mod1b <- sirt::xxirt( dat = dat , Theta=Theta , partable = partable1, 
+                   customItems = customItems, customTheta = customTheta )
 summary(mod1b)
 
 # extract coefficients, covariance matrix and standard errors
@@ -293,21 +297,24 @@ IRT.se(mod1b)
 
 #-- create parameter table
 itemtype <- rep( "2PL" , 12 )
-partable <- xxirt_createParTable( dat , itemtype = itemtype , customItems = customItems )
+partable <- sirt::xxirt_createParTable( dat, itemtype=itemtype, customItems=customItems)
 # modify parameter table: set constraints for item groups A, B and C
-partable1 <- xxirt_modifyParTable(partable, item=paste0("A",1:4), parname="a", parindex=111)
-partable1 <- xxirt_modifyParTable(partable1, item=paste0("B",1:4), parname="a", parindex=112)
-partable1 <- xxirt_modifyParTable(partable1, item=paste0("C",1:4), parname="a", parindex=113)
+partable1 <- sirt::xxirt_modifyParTable(partable, item=paste0("A",1:4), 
+                         parname="a", parindex=111)
+partable1 <- sirt::xxirt_modifyParTable(partable1, item=paste0("B",1:4), 
+                         parname="a", parindex=112)
+partable1 <- sirt::xxirt_modifyParTable(partable1, item=paste0("C",1:4), 
+                         parname="a", parindex=113)
 # delete prior distributions
-partable1 <- xxirt_modifyParTable(partable1, parname="a", prior=NA)
+partable1 <- sirt::xxirt_modifyParTable(partable1, parname="a", prior=NA)
 
 #-- fix sigma to 1
 customTheta1 <- customTheta
 customTheta1$est <- c("mu"=FALSE,"sigma"=FALSE )
 
 # estimate model
-mod2 <- xxirt( dat = dat , Theta=Theta , partable = partable1 , customItems = customItems ,
-                    customTheta = customTheta1 )
+mod2 <- sirt::xxirt( dat = dat, Theta=Theta, partable = partable1, 
+                  customItems=customItems, customTheta = customTheta1 )
 summary(mod2)
 
 #****************************************************************************
@@ -323,16 +330,18 @@ P_1N <- function( par, Theta , ncat){
     return(P)
 }
 par <- c("b"=0)
-item_1N <- xxirt_createDiscItem( name = "1N" , par = par , est = c(TRUE) , P = P_1N )
+item_1N <- sirt::xxirt_createDiscItem( name = "1N" , par = par , est = c(TRUE), 
+                    P = P_1N )
 customItems <- list( item_1N )
 itemtype <- rep( "1N" , I )
-partable <- xxirt_createParTable( dat[,items] , itemtype = itemtype , customItems = customItems )
-partable <- xxirt_modifyParTable( partable=partable , parname = "b" , 
+partable <- sirt::xxirt_createParTable( dat[,items] , itemtype = itemtype, 
+                      customItems = customItems )
+partable <- sirt::xxirt_modifyParTable( partable=partable , parname = "b" , 
                  value = - stats::qnorm( colMeans(dat[,items] )) )
 
 #*** estimate model
-mod3 <- xxirt( dat=dat, Theta=Theta, partable = partable, customItems = customItems,
-                customTheta= customTheta  )                               
+mod3 <- sirt::xxirt( dat=dat, Theta=Theta, partable=partable, customItems=customItems,
+                customTheta= customTheta )                               
 summary(mod3)    
 IRT.compareModels(mod1,mod3)
 
@@ -352,7 +361,8 @@ P_Theta1 <- function( par , Theta , G  ){
                
 par_Theta <- stats::qlogis( rep( 1/K , K-1 ) )
 names(par_Theta) <- paste0("pi",1:(K-1) )
-customTheta  <- xxirt_createThetaDistribution( par=par_Theta, est= rep(TRUE,K-1) , P=P_Theta1)
+customTheta  <- sirt::xxirt_createThetaDistribution( par=par_Theta, 
+                     est= rep(TRUE,K-1) , P=P_Theta1)
 
 #*** IRF latent class
 P_lc <- function( par, Theta , ncat){
@@ -368,17 +378,18 @@ P_lc <- function( par, Theta , ncat){
 }
 par <- seq( -1.5 , 1.5 , length=K )
 names(par) <- paste0("b",1:K)
-item_lc <- xxirt_createDiscItem( name = "LC" , par = par , est = rep(TRUE,K) , P = P_lc )
+item_lc <- sirt::xxirt_createDiscItem( name = "LC", par=par, 
+                 est=rep(TRUE,K) , P=P_lc )
 customItems <- list( item_lc )
 
 # create parameter table
 itemtype <- rep( "LC" , 12 )
-partable <- xxirt_createParTable( dat , itemtype = itemtype , customItems = customItems )
+partable <- sirt::xxirt_createParTable( dat, itemtype=itemtype, customItems=customItems)
 partable
 
 #*** estimate model
-mod4 <- xxirt( dat = dat , Theta=Theta , partable = partable , customItems = customItems ,
-                customTheta= customTheta , maxit = 30)
+mod4 <- sirt::xxirt( dat = dat, Theta=Theta, partable = partable, customItems = customItems,
+                customTheta= customTheta)
 summary(mod4)                
 # class probabilities
 mod4$probs_Theta
@@ -402,7 +413,7 @@ P_Theta1 <- function( par , Theta , G  ){
 }              
 par_Theta <- stats::qlogis( rep( 1/K , K-1 ) )
 names(par_Theta) <- paste0("pi",1:(K-1) )
-customTheta  <- xxirt_createThetaDistribution( par=par_Theta , 
+customTheta  <- sirt::xxirt_createThetaDistribution( par=par_Theta , 
                 est= rep(TRUE,K-1) , P=P_Theta1  )
 
 #*** IRF ordered latent class
@@ -420,16 +431,16 @@ P_olc <- function( par, Theta , ncat){
 
 par <- c( -1 , rep( .5 , , length=K-1 ) )
 names(par) <- paste0("b",1:K)
-item_olc <- xxirt_createDiscItem( name = "OLC" , par = par , est = rep(TRUE,K) , 
+item_olc <- sirt::xxirt_createDiscItem( name = "OLC" , par = par , est = rep(TRUE,K) , 
                     P = P_olc , lower=c( -Inf , 0 , 0 ) )                 
 customItems <- list( item_olc )
 itemtype <- rep( "OLC" , 12 )
-partable <- xxirt_createParTable( dat , itemtype = itemtype , customItems = customItems )
+partable <- sirt::xxirt_createParTable( dat, itemtype = itemtype, customItems = customItems)
 partable
 
 #*** estimate model
-mod5 <- xxirt( dat=dat , Theta=Theta , partable = partable , customItems = customItems ,
-                customTheta= customTheta  )
+mod5 <- sirt::xxirt( dat=dat, Theta=Theta, partable = partable, customItems = customItems,
+                customTheta= customTheta )
 summary(mod5)                
 # estimated item response functions
 imod5 <- IRT.irfprob( mod5 )
@@ -461,7 +472,7 @@ P_Theta1 <- function( par , Theta , G  ){
                
 par_Theta <- c(0,1)
 names(par_Theta) <- c("mu","sigma")
-customTheta  <- xxirt_createThetaDistribution( par=par_Theta , 
+customTheta  <- sirt::xxirt_createThetaDistribution( par=par_Theta , 
                    est= c(FALSE,TRUE) , P=P_Theta1  )
 customTheta
 
@@ -475,17 +486,18 @@ P_1PL <- function( par, Theta , ncat){
     return(P)
 }
 par <- c("b"=0)
-item_1PL <- xxirt_createDiscItem( name = "1PL" , par = par , est = c(TRUE) , P = P_1PL )
+item_1PL <- sirt::xxirt_createDiscItem( name = "1PL", par = par, est = c(TRUE), P = P_1PL)
 customItems <- list( item_1PL )
 
 itemtype <- rep( "1PL" , I )
-partable <- xxirt_createParTable( dat[,items] , itemtype = itemtype , customItems = customItems )
-partable <- xxirt_modifyParTable( partable=partable , parname = "b" , 
-            value = - stats::qlogis( colMeans(dat[,items] )) )
+partable <- sirt::xxirt_createParTable( dat[,items] , itemtype = itemtype , 
+                       customItems = customItems )
+partable <- sirt::xxirt_modifyParTable( partable=partable , parname = "b" , 
+                  value = - stats::qlogis( colMeans(dat[,items] )) )
 
 #*** estimate model
-mod1 <- xxirt( dat = dat[,items] , Theta=Theta , partable = partable , customItems = customItems ,
-                customTheta= customTheta )                                
+mod1 <- sirt::xxirt( dat = dat[,items] , Theta=Theta , partable = partable, 
+                customItems = customItems, customTheta= customTheta )
 summary(mod1)                
 
 #****************************************************************************
@@ -507,13 +519,13 @@ P_Theta2 <- function( par , Theta , G  ){
 }              
 par_Theta <- c(0,0,1,1)
 names(par_Theta) <- c("mu1","mu2","sigma1","sigma2")
-customTheta2  <- xxirt_createThetaDistribution( par=par_Theta , 
+customTheta2  <- sirt::xxirt_createThetaDistribution( par=par_Theta , 
                     est= c(FALSE,TRUE,TRUE,TRUE) , P=P_Theta2  )
 customTheta2
 
 #*** estimate model
-mod2 <- xxirt( dat = dat[,items] , group= dat$female , Theta=Theta , partable = partable , 
-            customItems = customItems , customTheta= customTheta2 , maxit=40 ) 
+mod2 <- sirt::xxirt( dat=dat[,items], group=dat$female, Theta=Theta, partable=partable, 
+           customItems = customItems , customTheta= customTheta2 , maxit=40) 
 summary(mod2)
 IRT.compareModels(mod1, mod2)
 

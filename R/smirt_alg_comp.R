@@ -1,10 +1,8 @@
 
 ############################################
 # probability in compensatory model
-## extern "C" {
-## SEXP SMIRT_CALCPROB_comp( SEXP a, SEXP b, SEXP Q, SEXP thetak, SEXP cc, SEXP dd) ;
 calcprob.comp <- function (a,b,Q,thetak,cc,dd){ 
-	.Call("SMIRT_CALCPROB_COMP", a,b,Q,thetak,cc,dd, PACKAGE = "sirt")
+	SMIRT_CALCPROB_COMP( a,b,Q,thetak,cc,dd)
 					}
 
 

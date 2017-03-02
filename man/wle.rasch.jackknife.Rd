@@ -85,22 +85,22 @@ data(data.read)
 dat <- data.read
 
 # estimation of the Rasch model
-res <- rasch.mml2( dat , parm.conv = .001)
+res <- sirt::rasch.mml2( dat , parm.conv = .001)
 
 # WLE estimation
-wle1 <- wle.rasch(dat, b = res$item$thresh )
+wle1 <- sirt::wle.rasch(dat, b = res$item$thresh )
 
 # simple jackknife WLE estimation
-wle2 <- wle.rasch.jackknife(dat, b =res$item$thresh )
+wle2 <- sirt::wle.rasch.jackknife(dat, b =res$item$thresh )
   ## WLE Reliability = 0.651 
 
 # SE(WLE) for testlets A, B and C
-wle3 <- wle.rasch.jackknife(dat, b =res$item$thresh , 
+wle3 <- sirt::wle.rasch.jackknife(dat, b =res$item$thresh , 
            testlet = substring( colnames(dat),1,1) )
   ## WLE Reliability = 0.572 
 		
 # SE(WLE) for item strata A,B, C
-wle4 <- wle.rasch.jackknife(dat, b =res$item$thresh , 
+wle4 <- sirt::wle.rasch.jackknife(dat, b =res$item$thresh , 
              stratum = substring( colnames(dat),1,1) )
   ## WLE Reliability = 0.683 
 
@@ -109,7 +109,7 @@ wle4 <- wle.rasch.jackknife(dat, b =res$item$thresh ,
 # in every stratum 4 items were sampled
 size.itempop <- c(10,7,4)
 names(size.itempop) <- c("A","B","C")
-wle5 <- wle.rasch.jackknife(dat, b =res$item$thresh , 
+wle5 <- sirt::wle.rasch.jackknife(dat, b =res$item$thresh , 
              stratum = substring( colnames(dat),1,1) ,
              size.itempop = size.itempop )
   ## Stratum  A (Mean) Correction Factor 0.6 

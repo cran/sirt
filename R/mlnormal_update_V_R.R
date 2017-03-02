@@ -4,11 +4,11 @@
 mlnormal_update_V_R <- function( Z_index , G , theta ,
 		Z_list , use_ginverse , variance_shortcut , freq_id  ,
 		do_compute , rcpp_args){		
-	dimZ <- base::dim( Z_index )
+	dimZ <- dim( Z_index )
 	Z2 <- dimZ[2]
-	V_list <- base::as.list(1:G)
+	V_list <- as.list(1:G)
 	V1_list <- V_list
-	dimZ <- base::dim( Z_index )
+	dimZ <- dim( Z_index )
 	Z2 <- dimZ[2]
 	do_computation <- TRUE	
 	
@@ -22,13 +22,13 @@ mlnormal_update_V_R <- function( Z_index , G , theta ,
 			for (pp in 1:Z2){
 				# pp <- 1				
 				# theta^q
-				a1 <- base::prod( pow( theta , Z_index_gg[1,pp,]) )
+				a1 <- prod( pow( theta , Z_index_gg[1,pp,]) )
 				V_gg <- V_gg + a1 * Z_list_gg[[pp]]
 			}
 			## use generalized inverse instead of inverse if
 			## solve does not work in case of singularity
 			if ( ! use_ginverse ){
-				V_gg1 <- base::solve( V_gg ) 
+				V_gg1 <- solve( V_gg ) 
 			} else {
 				V_gg1 <- ginverse_sym( V_gg ) 
 			}
@@ -37,9 +37,9 @@ mlnormal_update_V_R <- function( Z_index , G , theta ,
 		V1_list[[gg]] <- V_gg1
 	}
 	#--- output
-	res <- base::list("V_list" = V_list , "V1_list" = V1_list,
+	res <- list("V_list" = V_list , "V1_list" = V1_list,
 					"rcpp_args" = rcpp_args )
-	base::return(res)
+	return(res)
 }
 ######################################################################
 		

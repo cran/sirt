@@ -240,10 +240,10 @@ dat <- data.read
 itemcluster <- rep( 1:3 , each=4 )
 
 # estimate Copula model
-mod1 <- rasch.copula2( dat=dat , itemcluster=itemcluster)
+mod1 <- sirt::rasch.copula2( dat=dat , itemcluster=itemcluster)
 
 # estimate Rasch model
-mod2 <- rasch.copula2( dat=dat , itemcluster=itemcluster , 
+mod2 <- sirt::rasch.copula2( dat=dat , itemcluster=itemcluster , 
         delta=rep(0,3) , est.delta=rep(0,3 ) )
 summary(mod1)
 summary(mod2)
@@ -267,26 +267,26 @@ itemcluster[c(2,4,9)] <- 2
 rho <- c( .7 , .5 )
 
 # simulate data
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
 
 # estimate Rasch copula model
-mod1 <- rasch.copula2( dat , itemcluster = itemcluster )
+mod1 <- sirt::rasch.copula2( dat , itemcluster = itemcluster )
 summary(mod1)
 
 # both item clusters have Cook-Johnson copula as dependency
-mod1c <- rasch.copula2( dat , itemcluster = itemcluster ,
+mod1c <- sirt::rasch.copula2( dat , itemcluster = itemcluster ,
 			copula.type ="cook.johnson")
 summary(mod1c)
 
 # first item boundary mixture and second item Cook-Johnson copula
-mod1d <- rasch.copula2( dat , itemcluster = itemcluster ,
+mod1d <- sirt::rasch.copula2( dat , itemcluster = itemcluster ,
 			copula.type = c( "bound.mixt" , "cook.johnson" ) )
 summary(mod1d)
 
 # compare result with Rasch model estimation in rasch.copula2
 # delta must be set to zero
-mod2 <- rasch.copula2( dat , itemcluster = itemcluster , delta = c(0,0) ,
+mod2 <- sirt::rasch.copula2( dat , itemcluster = itemcluster , delta = c(0,0) ,
             est.delta = c(0,0) )
 summary(mod2)
 
@@ -310,18 +310,18 @@ itemcluster[ 10:12 ] <- 3
 rho <- c( .35 , .25 , .30 )
 
 # simulate data
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
 
 # estimate Rasch copula model 
-mod1 <- rasch.copula2( dat , itemcluster = itemcluster )
+mod1 <- sirt::rasch.copula2( dat , itemcluster = itemcluster )
 summary(mod1)
 
 # person parameter estimation assuming the Rasch copula model
-pmod1 <- person.parameter.rasch.copula(raschcopula.object = mod1 )
+pmod1 <- sirt::person.parameter.rasch.copula(raschcopula.object = mod1 )
 
 # Rasch model estimation
-mod2 <- rasch.copula2( dat , itemcluster = itemcluster , 
+mod2 <- sirt::rasch.copula2( dat , itemcluster = itemcluster , 
              delta = rep(0,3) , est.delta = rep(0,3) )
 summary(mod1)
 summary(mod2) 
@@ -346,11 +346,11 @@ itemcluster1 <- itemcluster
 # residual correlations
 rho <- c( .7 , .5 )
 # simulate data
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("A" , seq(1,ncol(dat)) , sep="")
 dat1 <- dat
 # estimate model of dimension 1
-mod0a <- rasch.copula2( dat1 , itemcluster = itemcluster1)
+mod0a <- sirt::rasch.copula2( dat1 , itemcluster = itemcluster1)
 summary(mod0a)
 
 #*** Dimension 2
@@ -363,11 +363,11 @@ itemcluster2 <- itemcluster
 # residual correlations
 rho <- c( .2, .4 )
 # simulate data
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("B" , seq(1,ncol(dat)) , sep="")
 dat2 <- dat
 # estimate model of dimension 2
-mod0b <- rasch.copula2( dat2 , itemcluster = itemcluster2)
+mod0b <- sirt::rasch.copula2( dat2 , itemcluster = itemcluster2)
 summary(mod0b)
 
 # both dimensions
@@ -377,7 +377,7 @@ itemcluster <- c( itemcluster1 , itemcluster2 )
 dims <- rep( 1:2 , each=I)
 
 # estimate two-dimensional copula model
-mod1 <- rasch.copula3( dat , itemcluster=itemcluster , dims=dims , est.a=dims ,
+mod1 <- sirt::rasch.copula3( dat , itemcluster=itemcluster , dims=dims , est.a=dims ,
             theta.k = seq(-5,5,len=15) )
 summary(mod1)
 
@@ -397,7 +397,7 @@ itemcluster[c(2,4,9)] <- 2
 # residual correlations
 rho <- c( .7 , .5 )
 # simulate data
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
 
 # select subdataset with only one dependent item cluster
@@ -409,7 +409,7 @@ dat1 <- dat[,item.sel]
 #*** Model 1a: estimate Copula model in sirt
 itemcluster <- rep(0,8)
 itemcluster[c(7,8)] <- 1
-mod1a <- rasch.copula2( dat3 , itemcluster=itemcluster )        
+mod1a <- sirt::rasch.copula2( dat3 , itemcluster=itemcluster )        
 summary(mod1a)
 
 #******************

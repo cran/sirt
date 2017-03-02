@@ -6,7 +6,7 @@ amh_posterior <- function( pars , model , prior , data){
 	#*** compute posterior
 	posteriorval <- ll + priorval
 	#--- output
-	res <- base::list( ll = ll , priorval = priorval ,
+	res <- list( ll = ll , priorval = priorval ,
 				posteriorval = posteriorval	, pars = pars )
-	base::return(res)
+	return(res)
 }

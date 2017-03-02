@@ -91,13 +91,13 @@ data(data.read)
 dat <- data.read
 
 # estimate Rasch model
-mod <- rasch.mml2( dat )
+mod <- sirt::rasch.mml2( dat )
 # WLE
-wle1 <- wle.rasch( dat,b=mod$item$b )$theta
+wle1 <- sirt::wle.rasch( dat,b=mod$item$b )$theta
 b <- mod$item$b # item difficulty
 
 # evaluate person fit
-pf1 <- personfit.stat( dat = dat , abil=wle1 , b=b)
+pf1 <- sirt::personfit.stat( dat = dat , abil=wle1 , b=b)
 
 \dontrun{
 # dimensional analysis of person fit statistics

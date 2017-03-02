@@ -3,17 +3,17 @@
 linking_haberman_als_residual_weights <- function( logaj , logaAt ,
 		logaM , cutoff , wgtM0 , eps )
 {
-	loga_expected <- base::outer( logaj , logaAt , FUN = "+" )
+	loga_expected <- outer( logaj , logaAt , FUN = "+" )
 	loga_resid <- logaM - loga_expected
 	wgt_adj <- 1 + 0 * wgtM0
 	wgtM <- wgtM0
 	if ( cutoff < Inf ){
 		wgt_adj <- ( 1 - ( loga_resid / cutoff )^2 )^2
-		wgt_adj <- 1 * ( base::abs( loga_resid ) <= cutoff ) * wgt_adj
+		wgt_adj <- 1 * ( abs( loga_resid ) <= cutoff ) * wgt_adj
 		wgtM <- wgtM0 * wgt_adj + eps
 	}
-	res <- base::list(loga_resid = loga_resid ,
+	res <- list(loga_resid = loga_resid ,
 				wgt_adj = wgt_adj , wgtM = wgtM )
-	base::return(res)		
+	return(res)		
 }
 		

@@ -83,7 +83,7 @@ gom.em <- function( dat , K=NULL , problevels=NULL , model="GOM" ,
 		probs <- problong2probarray( probs , I , TP )
 		
 		# calculate counts
-		probsM <- matrix( base::aperm( probs , c(2,1,3) ) , nrow=I*2 , ncol=TP )	
+		probsM <- matrix( aperm( probs , c(2,1,3) ) , nrow=I*2 , ncol=TP )	
 		res1 <- calcpost( dat2 , dat2.resp , probsM , dat2.ind , pi.k , K=1 )
 		f.yi.qk <- res1$fyiqk
 		f.qk.yi <- res1$f.qk.yi

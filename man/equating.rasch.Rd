@@ -89,7 +89,7 @@ data(data.pisaPars)
 pars <- data.pisaPars
 
 # linking the two studies with the Rasch model
-mod <- equating.rasch(x=pars[,c("item","study1")], y=pars[,c("item","study2")])
+mod <- sirt::equating.rasch(x=pars[,c("item","study1")], y=pars[,c("item","study2")])
   ##   Mean.Mean    Haebara Stocking.Lord
   ## 1   0.08828 0.08896269    0.09292838
 

@@ -14,9 +14,7 @@ calcprob.partcomp <- function (a,b,Q,thetak,cc,dd,mu.i){
 	#**********
 	# SEXP SMIRT_CALCPROB_PARTCOMP( SEXP a, SEXP b, SEXP Q, SEXP thetak, SEXP cc, SEXP dd ,
 	#	SEXP mui ){
-	.Call("SMIRT_CALCPROB_PARTCOMP", 
-			a,b,Q,thetak,cc,dd, mu.i , 
-			PACKAGE = "sirt")
+	SMIRT_CALCPROB_PARTCOMP(a,b,Q,thetak,cc,dd, mu.i )
 					}
 
 

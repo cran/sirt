@@ -107,7 +107,7 @@ plot.np.dich <- function( x , b , infit = NULL , outfit = NULL , nsize = 100 ,
         if ( !is.null(infit) ){ plotname <- paste( plotname , "\n Infit=" , formatC( infit[ii],2, format="f") ) }
         if ( !is.null(infit) ){ plotname <- paste( plotname , " Outfit=" , formatC( outfit[ii],2 , format="f") ) }
         graphics::plot( thetagrid , estimate[ii,] , type="n"  , ylim = c( - .02 , 1.02 ) ,
-                    xlab = base::expression( theta ) , ylab = base::expression( P( theta )) , 
+                    xlab = expression( theta ) , ylab = expression( P( theta )) , 
                     main = plotname )
         graphics::abline( h = 0 , lty=3 )
         graphics::abline( h = 1 , lty=3 )

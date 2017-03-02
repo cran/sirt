@@ -92,7 +92,7 @@ mcmcobj <- coda::as.mcmc.list( mcmcobj )
 plot(mcmcobj)
 
 # summary
-summ1 <-  mcmc.list.descriptives( mcmcobj )
+summ1 <-  sirt::mcmc.list.descriptives( mcmcobj )
 summ1
 }
 }

@@ -9,7 +9,7 @@
         #-------------------
         # should items being excluded?
 # a0 <- Sys.time()		
-        item.means <- base::colMeans( dat , na.rm=T )
+        item.means <- colMeans( dat , na.rm=T )
         item.elim <- which( item.means %in% c(0,1))
         if ( length( item.elim ) > 0 ){
                 stop( cat( paste( "There are" , length(item.elim) , "Items with no variance!") ) ) 

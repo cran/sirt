@@ -9,13 +9,13 @@ lsem.fitsem <- function( dat , weights , lavfit ,
 	pars0 <- pars	
 	
 	if (verbose){
-		base::cat( "** Fit lavaan model\n")
-		G1 <- base::min(G,10)	
-		pr <- base::round( base::seq(1,G , len=G1) )
-		base::cat("|")
-		base::cat( base::paste0( base::rep("*",G1) , collapse="") )
-		base::cat("|\n")
-		base::cat("|")
+		cat( "** Fit lavaan model\n")
+		G1 <- min(G,10)	
+		pr <- round( seq(1,G , len=G1) )
+		cat("|")
+		cat( paste0( rep("*",G1) , collapse="") )
+		cat("|\n")
+		cat("|")
 	}
 
 	for (gg in 1:G){
@@ -29,43 +29,43 @@ lsem.fitsem <- function( dat , weights , lavfit ,
 		
 		if (standardized){			
 			sol <- lavaan::standardizedSolution( survey.fit )
-			colnames(sol)[ base::which( colnames(sol) == "est.std" ) ] <- "est"
+			colnames(sol)[ which( colnames(sol) == "est.std" ) ] <- "est"
 			sol$lhs <- paste0( "std__" , sol$lhs)
 			pars <- plyr::rbind.fill( pars , sol )	
 			dfr.gg <- pars
 		} 							
-		pars <- base::paste0( pars$lhs , pars$op , pars$rhs )					
-		NP <- base::length(pars0)
-		ind <- base::match( pars0 , pars )
+		pars <- paste0( pars$lhs , pars$op , pars$rhs )					
+		NP <- length(pars0)
+		ind <- match( pars0 , pars )
 		dfr.gg <- dfr.gg[ ind , ]
-		dfr.gg <- base::data.frame("grid_index"=gg , "moderator" = moderator.grid[gg] ,
+		dfr.gg <- data.frame("grid_index"=gg , "moderator" = moderator.grid[gg] ,
 						  "par"= pars0 , "parindex" = 1:NP , dfr.gg	)
-		dfr.gg0 <- base::data.frame("grid_index"=gg , "moderator" = moderator.grid[gg] ,
+		dfr.gg0 <- data.frame("grid_index"=gg , "moderator" = moderator.grid[gg] ,
 						  "par"= fit_measures , "parindex" = NP + 1:NF , 
 						  "est"= lavaan::fitMeasures(survey.fit , fit.measures= fit_measures ) ,
 						  "op"="fit" )
-		vars <- base::setdiff( colnames(dfr.gg) , colnames(dfr.gg0) )
+		vars <- setdiff( colnames(dfr.gg) , colnames(dfr.gg0) )
 		for (vv in vars){ dfr.gg0[,vv] <- NA }
-		dfr.gg <- base::rbind( dfr.gg , dfr.gg0[ , colnames(dfr.gg) ] )		
-		parameters <- base::rbind( parameters , dfr.gg ) 
+		dfr.gg <- rbind( dfr.gg , dfr.gg0[ , colnames(dfr.gg) ] )		
+		parameters <- rbind( parameters , dfr.gg ) 
 		# fits <- rbind( fits , dfr.gg ) 
 		if (verbose){
 			if ( gg %in% pr ){
-				base::cat("-")
+				cat("-")
 				utils::flush.console()
 			}
 		}
 	}
 	if (verbose){
-		base::cat("|\n")
+		cat("|\n")
 		utils::flush.console()
 	}
 
-	parameters <- parameters[ base::order(parameters$parindex) , ]	
+	parameters <- parameters[ order(parameters$parindex) , ]	
 #	fits <- fits[ order(fits$fitindex) , ]	
 #	rownames(fits) <- NULL
 				
-	res <- base::list( "parameters" = parameters ) #  , "fits" = fits )
-	base::return(res)	
-			}
+	res <- list( "parameters" = parameters ) #  , "fits" = fits )
+	return(res)	
+}
 #######################################################################			

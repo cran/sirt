@@ -16,12 +16,12 @@ linking_haberman_als_vcov <- function( regr_resid , regr_wgt , transf_pars ,
 	for (ss in 2:NS){
 		data[, paste0("X" , ss) ] <- 1*(data$study == ss)
 	}
-	# form <- base::paste0( "y ~ 0 + " , paste0("X" , 2:NS , collapse= " + " ) )
-	form <- base::paste0( "y ~ " , paste0("X" , 2:NS , collapse= " + " ) )
+	# form <- paste0( "y ~ 0 + " , paste0("X" , 2:NS , collapse= " + " ) )
+	form <- paste0( "y ~ " , paste0("X" , 2:NS , collapse= " + " ) )
 	mod <- stats::lm( stats::as.formula(form) , data = data , weights = data$wgt )
 	mod_vcov <- stats::vcov(mod)
 	#-- output
-	res <- base::list( vcov = mod_vcov[-1,-1] , 
-					se = base::sqrt( base::diag( mod_vcov) )[-1] )
-	base::return(res)
+	res <- list( vcov = mod_vcov[-1,-1] , 
+					se = sqrt( diag( mod_vcov) )[-1] )
+	return(res)
 }

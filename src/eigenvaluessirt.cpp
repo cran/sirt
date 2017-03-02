@@ -1,47 +1,28 @@
 
 
-// includes from the plugin
+// [[Rcpp::depends(RcppArmadillo)]]
+
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
-#include "first_eigenvalue_sirt.h"
-
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
 
 using namespace Rcpp;
 
 
+// [[packageincludes]]
+#include "first_eigenvalue_sirt.h"
+//#include "c:/Users/robitzsch/Dropbox/Eigene_Projekte/R-Routinen/IRT-Functions/sirt_package/1.15/sirt_work/src/first_eigenvalue_sirt__2.19.h"
 
-// declarations
-extern "C" {
-  // first D eigenvalues
-  SEXP eigenvaluesDsirt( SEXP X_, SEXP D_, SEXP maxit_, SEXP conv_) ;
-}
 
-//***************
-// first D eigenvalues
-SEXP eigenvaluesDsirt( SEXP X_, SEXP D_, SEXP maxit_, SEXP conv_ ){
-BEGIN_RCPP
-  
-       
-     Rcpp::NumericMatrix Xr(X_);          
-     int D = as<int>(D_);   
-     int maxit = as<int>(maxit_);   
-     double conv = as<double>(conv_) ;  
-     Rcpp::NumericVector d1(2) ;  
-       
+///********************************************************************
+///** eigenvaluesDsirt
+// [[Rcpp::export]]
+Rcpp::List eigenvaluesDsirt( Rcpp::NumericMatrix Xr, 
+	int D , int maxit , double conv ){
+ 
+     Rcpp::NumericVector d1(2) ;         
      double K=Xr.nrow() ;  
-       
-     // Rcpp::List res2 ;  
      Rcpp::NumericVector dvec(D) ;  
-     arma::mat u(K,D) ;  
-       
+     arma::mat u(K,D) ;         
      Rcpp::List res2;  
        
      //**********  
@@ -60,12 +41,12 @@ BEGIN_RCPP
      	arma::mat u1 = res2["u"] ;  
      	u.col(dd) = arma::mat( u1.col(0) ) ;  
           for (int ii1=0;ii1<K;ii1++){
-          	 X0(ii1,ii1) = X0(ii1,ii1) - dvec[dd] * u(ii1,dd)*u(ii1,dd) ;                     
-          for (int ii2=ii1+1;ii2<K;ii2++){  
-          	 X0(ii1,ii2) = X0(ii1,ii2) - dvec[dd] * u(ii1,dd)*u(ii2,dd) ;       
-             X0(ii2,ii1) = X0(ii1,ii2) ; 
-          	     			}  
-          			}  
+          	X0(ii1,ii1) = X0(ii1,ii1) - dvec[dd] * u(ii1,dd)*u(ii1,dd) ;                     
+            for (int ii2=ii1+1;ii2<K;ii2++){  
+          	  X0(ii1,ii2) = X0(ii1,ii2) - dvec[dd] * u(ii1,dd)*u(ii2,dd) ;       
+                X0(ii2,ii1) = X0(ii1,ii2) ; 
+            }  
+          }  
      	}  
                             
      ////////////////////////////////////  
@@ -74,11 +55,6 @@ BEGIN_RCPP
          Rcpp::_["d"]=dvec  ,   
          Rcpp::_["u"]= u   
             		) ;  
-       
-       
-                   
-                   
-END_RCPP
 }
 
 

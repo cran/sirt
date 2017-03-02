@@ -46,7 +46,7 @@
     rownames(matr) <- colnames(matr) <- rownames(res) 
     colnames(matr) <- gsub( "P" , "F" , colnames(matr) )
 #cat("   ***  permutations") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1	
-    matr <- .Call( "calc_copula_itemcluster_C" , D , res , package="sirt" )$matr	
+    matr <-  calc_copula_itemcluster_C( D , res )$matr	
 # cat("   ***  after outer") ; aa1 <- Sys.time(); print(aa1-aa0) ; aa0 <- aa1			
 # print(matr)
     res1 <- list( "patt" = res , "calc" = matr )
@@ -848,7 +848,7 @@ person.parameter.rasch.copula <- function( raschcopula.object , numdiff.parm = .
 ##################################################################################
 
 .rowMins2cpp.bundle <- function( m1 , v1 ){
-	m1min <- .Call( "rowmins2_bundle_C" , m1 , v1 , PACKAGE="sirt" )
+	m1min <- rowmins2_bundle_C( m1 , v1 )
 	return(m1min)
 		}
 

@@ -9,15 +9,15 @@ decategorize <- function( dat , categ_design=NULL ){
 	#****************************
 	# handle categories
 	if ( ! is.null( dfr ) ){	
-		vars <- base::sort( base::unique( base::paste( dfr$variable )))
-		VV <- base::length(vars)
+		vars <- sort( unique( paste( dfr$variable )))
+		VV <- length(vars)
 		for (vv in 1:VV){
 			# vv <- 3
-			dfr.vv <- dfr[ base::paste(dfr$variable) == vars[vv] , ]
-			dat4[, vars[vv] ] <- dfr.vv[ base::match( dat3[,vars[vv]] , dfr.vv$recode ) , "orig"] 
+			dfr.vv <- dfr[ paste(dfr$variable) == vars[vv] , ]
+			dat4[, vars[vv] ] <- dfr.vv[ match( dat3[,vars[vv]] , dfr.vv$recode ) , "orig"] 
 					}				
 			}	
 	#***************************				
-	base::return(dat4)
+	return(dat4)
 		}	
 #################################################################

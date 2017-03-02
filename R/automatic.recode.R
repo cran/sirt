@@ -4,13 +4,13 @@ automatic.recode <- function( data , exclude=NULL , pstart.min=.6 ,
 	allocate = 200 , maxiter=20 , progress=TRUE){
 	########################################################
 	# data table with frequencies and discriminations
-	item.stat <- base::data.frame( "item" = colnames(data) , 
+	item.stat <- data.frame( "item" = colnames(data) , 
 				    "old.key" = -99  , "new.key" = NA , "p" = NA , "discrim" = NA )
 	items <- colnames(data)
 	# compute frequencies
 	fstart <- TAM::tam.ctt3( data , allocate=allocate , progress=FALSE)
 	I <- ncol(data)
-	prbar <- base::floor( 10 * ( 1:I ) / (I+1) )
+	prbar <- floor( 10 * ( 1:I ) / (I+1) )
 	prbar <- c(1,which( diff(prbar) == 1 )  )
 #	if (progress){ cat( "   |") }
 	
@@ -35,7 +35,7 @@ automatic.recode <- function( data , exclude=NULL , pstart.min=.6 ,
 	# scoring data
 	data.scored <- data.recode.sirt( data.raw , keys=item.stat )
 
-	score <- base::rowMeans( data.scored , na.rm=TRUE )
+	score <- rowMeans( data.scored , na.rm=TRUE )
 	# compute frequencies in iterations
 #	if (progress){ cat( "   apply tam.ctt3\n") }	
 	fiter <- TAM::tam.ctt3( data , allocate=allocate, wlescore=score , progress=FALSE)
@@ -70,7 +70,7 @@ automatic.recode <- function( data , exclude=NULL , pstart.min=.6 ,
 data.recode.sirt <- function( data.raw , keys ){
     item.stat <- keys
 	V <- ncol(data.raw)
-	data.scored <- base::matrix( 0 , nrow(data.raw) , ncol(data.raw) )
+	data.scored <- matrix( 0 , nrow(data.raw) , ncol(data.raw) )
 	colnames(data.scored) <- colnames(data.raw )
 	for (vv in 1:V){
 	   data.scored[,vv] <- 1* ( paste(data.raw[,vv]) == 

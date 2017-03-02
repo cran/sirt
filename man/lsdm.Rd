@@ -188,7 +188,7 @@ colnames(Qmatrix) <- paste("A",1:8,sep="")
 rownames(Qmatrix) <- paste("Item",1:29,sep="")
 
 # Perform a LSDM analysis
-lsdm.res <- lsdm( b = b, Qmatrix = Qmatrix )
+lsdm.res <- sirt::lsdm( b = b, Qmatrix = Qmatrix )
 summary(lsdm.res)
   ## Model Fit
   ## Model Fit LSDM   -  Mean MAD:  0.071     Median MAD:   0.07 
@@ -222,7 +222,7 @@ colnames(Qmatrix) <- paste("A",1:5,sep="")
 rownames(Qmatrix) <- paste("Item",1:10,sep="")
 
 # LSDM analysis
-lsdm.res <- lsdm( b = b, a=a , Qmatrix = Qmatrix )
+lsdm.res <- sirt::lsdm( b = b, a=a , Qmatrix = Qmatrix )
 summary(lsdm.res)
   ## Model Fit LSDM   -  Mean MAD:  0.061     Median MAD:   0.06 
   ## Model Fit LLTM   -  Mean MAD:  0.069     Median MAD:  0.069    R^2= 0.902 
@@ -266,13 +266,13 @@ Qmatrix <- data.frame(  "A0" = 1*(pars$ItemFormat=="MC" ) ,
                   "A1" = 1*(pars$ItemFormat=="CR" ) )
 
 # start with estimating the 1PL in order to get person parameters
-mod <- rasch.mml2( dat )
-theta <- wle.rasch( dat=dat ,b = mod$item$b )$theta
+mod <- sirt::rasch.mml2( dat )
+theta <- sirt::wle.rasch( dat=dat ,b = mod$item$b )$theta
 # Nonparametric estimation of item response functions
-mod2 <- np.dich( dat=dat , theta=theta , thetagrid = seq(-3,3,len=100) )
+mod2 <- sirt::np.dich( dat=dat , theta=theta , thetagrid = seq(-3,3,len=100) )
 
 # LSDM analysis
-lsdm.res <- lsdm( data=mod2$estimate , Qmatrix=Qmatrix , theta=mod2$thetagrid)
+lsdm.res <- sirt::lsdm( data=mod2$estimate , Qmatrix=Qmatrix , theta=mod2$thetagrid)
 summary(lsdm.res)
   ## Model Fit
   ## Model Fit LSDM   -  Mean MAD:  0.215     Median MAD:  0.151 
@@ -293,10 +293,10 @@ q.matrix <- data.fraction1$q.matrix
 
 #****
 # Model 1: 2PL estimation 
-mod1 <- rasch.mml2( data , est.a=1:nrow(q.matrix) )
+mod1 <- sirt::rasch.mml2( data , est.a=1:nrow(q.matrix) )
 
 # LSDM analysis
-lsdm.res1 <- lsdm( b=mod1$item$b , a=mod1$item$a , Qmatrix=q.matrix )
+lsdm.res1 <- sirt::lsdm( b=mod1$item$b , a=mod1$item$a , Qmatrix=q.matrix )
 summary(lsdm.res1)
   ##   
   ##   Model Fit LSDM   -  Mean MAD:  0.076     Median MAD:  0.055 
@@ -312,10 +312,10 @@ summary(lsdm.res1)
 
 #****
 # Model 2: 1PL estimation  
-mod2 <- rasch.mml2( data  )
+mod2 <- sirt::rasch.mml2( data  )
 
 # LSDM analysis
-lsdm.res2 <- lsdm( b=mod1$item$b , Qmatrix=q.matrix )
+lsdm.res2 <- sirt::lsdm( b=mod1$item$b , Qmatrix=q.matrix )
 summary(lsdm.res2)
   ##   
   ##   Model Fit LSDM   -  Mean MAD:  0.046     Median MAD:   0.03 
@@ -347,7 +347,7 @@ colnames(Qmatrix) <- scan( what="character" , nlines=1)
 # divide Q-matrix entries by maximum in each column
 Qmatrix <- round(Qmatrix / matrix(apply(Qmatrix,2,max),21,12,byrow=TRUE) ,3)
 # LSDM analysis   
-res <- lsdm( b=b , Qmatrix=Qmatrix )
+res <- sirt::lsdm( b=b , Qmatrix=Qmatrix )
 summary(res)
   ##   
   ##   Model Fit LSDM   -  Mean MAD:  0.217     Median MAD:  0.178 

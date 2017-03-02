@@ -1,16 +1,8 @@
 
+// [[Rcpp::depends(RcppArmadillo)]]
 
-// includes from the plugin
-// #include <Rcpp.h>
 #include <RcppArmadillo.h>
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
+#include <Rcpp.h>
 
 using namespace Rcpp;
 
@@ -22,30 +14,15 @@ using namespace Rcpp;
 // mlnormal_proc_variance_shortcut_Z_restructure
 //**************************************************************************
 
-
-// declarations
-extern "C" {
-SEXP mlnormal_proc_variance_shortcut_Z_restructure( SEXP Z_list_, SEXP update_dim_, 
-	SEXP start_orig_, SEXP end_orig_, SEXP dim_Z_index_, SEXP Z_index_, SEXP orig_id_, 
-	SEXP dim_id_) ;
-}
-
-// definition
-SEXP mlnormal_proc_variance_shortcut_Z_restructure( SEXP Z_list_, SEXP update_dim_, 
-	SEXP start_orig_, SEXP end_orig_, SEXP dim_Z_index_, SEXP Z_index_, SEXP orig_id_, 
-	SEXP dim_id_ ){
-BEGIN_RCPP
-
-     //@@ INPUT BEGIN
-     Rcpp::List Z_list(Z_list_);  
-     Rcpp::IntegerVector update_dim(update_dim_);  
-     Rcpp::NumericVector start_orig(start_orig_);  
-     Rcpp::NumericVector end_orig(end_orig_);  
-     Rcpp::NumericVector dim_Z_index(dim_Z_index_);  
-     Rcpp::NumericVector Z_index(Z_index_);  
-     Rcpp::NumericVector orig_id(orig_id_);  
-     Rcpp::NumericVector dim_id(dim_id_);  
-     //@@ INPUT END              
+///********************************************************************
+///** mlnormal_proc_variance_shortcut_Z_restructure
+// [[Rcpp::export]]
+Rcpp::List mlnormal_proc_variance_shortcut_Z_restructure( Rcpp::List Z_list, 
+	Rcpp::IntegerVector update_dim, 
+	Rcpp::NumericVector start_orig, Rcpp::NumericVector end_orig, 
+	Rcpp::NumericVector dim_Z_index, Rcpp::NumericVector Z_index, 
+	Rcpp::NumericVector orig_id, Rcpp::NumericVector dim_id ){
+       
      
      int G = dim_Z_index[0];  
      int NM = dim_Z_index[1];  
@@ -123,34 +100,20 @@ BEGIN_RCPP
          Rcpp::Named("Z_gg") = Z_gg_mm   ,  
          Rcpp::Named("update_dim") = update_dim2      
          ) ;    
-                     	
-END_RCPP
+
 }
 
-     // Rcout << "gg=" << gg << " | orig_gg=" << orig_gg <<  " | orig_gg1=" << orig_gg1 <<  std::endl;  
-     
-     // Rcout << "term compare mm,pp " << mm+1 << " "  << pp+1 << " | terms for gg and gg1 " << Z1  
-     //  << " " << Z2 << std::endl;		
 
 //**************************************************************************
 // mlnormal_proc_variance_shortcut_XY_restructure
 //**************************************************************************
 
-// declarations
-extern "C" {
-SEXP mlnormal_proc_variance_shortcut_XY_restructure( SEXP freq_id_, SEXP y_, SEXP X_, SEXP G_) ;
-}
-
-// definition
-SEXP mlnormal_proc_variance_shortcut_XY_restructure( SEXP freq_id_, SEXP y_, SEXP X_, SEXP G_ ){
-BEGIN_RCPP
-     
-     //@@ INPUT BEGIN	
-     Rcpp::NumericMatrix freq_id(freq_id_);  
-     Rcpp::NumericVector y(y_);  
-     Rcpp::NumericMatrix X(X_);  
-     int G = Rcpp::as<int>(G_);  
-     //@@ INPUT END  
+///********************************************************************
+///** mlnormal_proc_variance_shortcut_XY_restructure
+// [[Rcpp::export]]
+Rcpp::List mlnormal_proc_variance_shortcut_XY_restructure( 
+	Rcpp::NumericMatrix freq_id, Rcpp::NumericVector y, 
+	Rcpp::NumericMatrix X, int G ){
      
      int N = X.nrow() ;  
      int V = X.ncol() ;  
@@ -182,7 +145,6 @@ BEGIN_RCPP
          Rcpp::Named("X") = X1 ,  
          Rcpp::Named("y") = y1      
          ) ;  
-END_RCPP
 }
 
 
@@ -191,33 +153,15 @@ END_RCPP
 //**************************************************************************
 
 
-// declarations
-extern "C" {
-SEXP mlnormal_update_V_rcpp_helper( SEXP Z_list_, SEXP Z_index_, SEXP dim_id_, 
-	SEXP dim_Z_index_, SEXP startIndex_, SEXP endIndex_, SEXP N_, 
-	SEXP max_dim_, SEXP do_compute_, SEXP theta_, SEXP use_ginverse_) ;
-}
-
-// definition
-
-SEXP mlnormal_update_V_rcpp_helper( SEXP Z_list_, SEXP Z_index_, SEXP dim_id_, 
-	SEXP dim_Z_index_, SEXP startIndex_, SEXP endIndex_, SEXP N_, 
-	SEXP max_dim_, SEXP do_compute_, SEXP theta_, SEXP use_ginverse_ ){
-BEGIN_RCPP
-  
-     //@@ INPUT BEGIN
-     Rcpp::List Z_list(Z_list_);  
-     Rcpp::NumericVector Z_index(Z_index_);  
-     Rcpp::NumericVector dim_id(dim_id_);  
-     Rcpp::NumericVector dim_Z_index(dim_Z_index_);  
-     Rcpp::NumericVector startIndex(startIndex_);  
-     Rcpp::NumericVector endIndex(endIndex_);  
-     int N = Rcpp::as<int>(N_);  
-     int max_dim = Rcpp::as<int>(max_dim_);  
-     Rcpp::NumericVector do_compute(do_compute_);  
-     Rcpp::NumericVector theta(theta_);  
-     int use_ginverse = Rcpp::as<int>(use_ginverse_);  
-     //@@ INPUT END        
+///********************************************************************
+///** mlnormal_update_V_rcpp_helper
+// [[Rcpp::export]]
+Rcpp::List mlnormal_update_V_rcpp_helper( Rcpp::List Z_list, 
+	Rcpp::NumericVector Z_index, Rcpp::NumericVector dim_id, 
+	Rcpp::NumericVector dim_Z_index, Rcpp::NumericVector startIndex, 
+	Rcpp::NumericVector endIndex, int N, 
+	int max_dim, Rcpp::NumericVector do_compute, 
+	Rcpp::NumericVector theta, int use_ginverse ){     
        
      int G = dim_id.size();  
      int NM = dim_Z_index[1];  
@@ -293,9 +237,8 @@ BEGIN_RCPP
          Rcpp::Named("V_list") = V_list ,  
          Rcpp::Named("V1_list") = V1_list  
          ) ;    
-       
-END_RCPP
 }
+
 
 
 //**************************************************************************
@@ -303,27 +246,13 @@ END_RCPP
 //**************************************************************************
 
 
-// declarations
-extern "C" {
-SEXP mlnormal_update_beta_rcpp_helper( SEXP dim_id_, SEXP startIndex_, SEXP endIndex_, 
-	    SEXP G_, SEXP X_, SEXP y_, SEXP V1_) ;
-}
-
-// definition
-
-SEXP mlnormal_update_beta_rcpp_helper( SEXP dim_id_, SEXP startIndex_, SEXP endIndex_, 
-	   SEXP G_, SEXP X_, SEXP y_, SEXP V1_ ){
-BEGIN_RCPP
-  
-     //@@ INPUT BEGIN  
-     Rcpp::NumericVector dim_id(dim_id_);  
-     Rcpp::NumericVector startIndex(startIndex_);  
-     Rcpp::NumericVector endIndex(endIndex_);  
-     int G = Rcpp::as<int>(G_);  
-     Rcpp::NumericMatrix X(X_);  
-     Rcpp::NumericVector y(y_);  
-     Rcpp::NumericMatrix V1(V1_);  
-     //@@ INPUT END  
+///********************************************************************
+///** mlnormal_update_beta_rcpp_helper
+// [[Rcpp::export]]
+Rcpp::List mlnormal_update_beta_rcpp_helper( Rcpp::NumericVector dim_id, 
+	Rcpp::NumericVector startIndex, Rcpp::NumericVector endIndex, 
+	int G, Rcpp::NumericMatrix X, Rcpp::NumericVector y, 
+	Rcpp::NumericMatrix V1 ){
        
      int NB = X.ncol();  
      Rcpp::NumericMatrix XVX(NB,NB);  
@@ -364,17 +293,8 @@ BEGIN_RCPP
          Rcpp::Named("XVX") = XVX ,  
          Rcpp::Named("XVY") = XVY   
          ) ;    
-       
-END_RCPP
 }
 
        
-       
-     // Rcout << "gg=" << gg << " | orig_gg=" << orig_gg <<  " | orig_gg1=" << orig_gg1 <<  std::endl;  
-       
-     // Rcout << "term compare mm,pp " << mm+1 << " "  << pp+1 << " | terms for gg and gg1 " << Z1  
-     //  << " " << Z2 << std::endl;				
-
-
 
 

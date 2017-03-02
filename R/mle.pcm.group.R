@@ -92,10 +92,9 @@ mle.pcm.group <- function( dat , b , a =rep(1,ncol(dat)) ,
 # }
 mle_pcm_group_CR <- function (dat_, dat_resp_, groupM_ , b_, 
        a_, maxK_, theta0_, conv_, maxiter_ ){ 
-	.Call("mle_pcm_group_C", dat_, dat_resp_, groupM_ , b_, 
-			a_, maxK_, theta0_, conv_, maxiter_ , 
-			PACKAGE = "sirt")
-					}
+	mle_pcm_group_C( dat_, dat_resp_, groupM_ , b_, 
+			a_, maxK_, theta0_, conv_, maxiter_ )
+}
 ########################################################
 
 
@@ -107,8 +106,7 @@ mle_pcm_group_CR <- function (dat_, dat_resp_, groupM_ , b_,
 # }
 mle_pcm_CR <- function(dat_, dat_resp_, b_, 
        a_, maxK_, theta0_, conv_, maxiter_ ){ 
-	.Call("mle_pcm_C", dat_, dat_resp_, b_, 
-			a_, maxK_, theta0_, conv_, maxiter_ , 
-			PACKAGE = "sirt")
+	mle_pcm_C( dat_, dat_resp_, b_, 
+			a_, maxK_, theta0_, conv_, maxiter_ )
 					}
 ########################################################

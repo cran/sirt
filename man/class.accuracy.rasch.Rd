@@ -78,7 +78,7 @@ data( data.read , package="sirt")
 dat <- data.read
 
 # estimate the Rasch model
-mod <- rasch.mml2( dat )
+mod <- sirt::rasch.mml2( dat )
 
 # estimate classification accuracy (3 levels)
 cutscores <- c( -1 , .3 )	# cut scores at theta=-1 and theta=.3

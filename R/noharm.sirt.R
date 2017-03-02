@@ -73,11 +73,10 @@ noharm.sirt <- function(dat,weights=NULL,Fval=NULL,Fpatt=NULL,
 #					I , D    ,  b0.jk , b1.jk , b2.jk , b3.jk , wgtm , pm ,
 #					Psival , Psipatt , maxincrement ) 
 		if (estF==1){	
-			res <- .Call("noharm_estFcpp" ,
+			res <- noharm_estFcpp(
 						Fval , Pval    , Fpatt , Ppatt ,
 						I , D    ,  b0.jk , b1.jk , b2.jk , b3.jk , wgtm , pm ,
-						Psival , Psipatt , maxincrement , modesttype ,
-						PACKAGE="sirt" ) 												
+						Psival , Psipatt , maxincrement , modesttype )
 			changeF <- res$change	
 			Fval <- res$Fval_	
 			if ( pos.loading ){	Fval[ Fval < 0 ] <- eps  }						
@@ -88,10 +87,9 @@ noharm.sirt <- function(dat,weights=NULL,Fval=NULL,Fpatt=NULL,
 #					Psival , Psipatt , maxincrement ) 
 		if (estP==1){
 #		    Pval_old <- Pval
-			res <- .Call("noharm_estPcpp", Fval , Pval    , Fpatt , Ppatt ,
+			res <- noharm_estPcpp( Fval , Pval    , Fpatt , Ppatt ,
 						I , D    ,  b0.jk , b1.jk , b2.jk , b3.jk , wgtm , pm ,
-						Psival , Psipatt , maxincrement , modesttype , 
-						PACKAGE="sirt") 					
+						Psival , Psipatt , maxincrement , modesttype )
 			changeP <- res$change
 			Pval <- res$Pval_		
 			if ( pos.variance ){	diag(Pval)[ diag(Pval) < 0 ] <- eps  }			
@@ -101,10 +99,9 @@ noharm.sirt <- function(dat,weights=NULL,Fval=NULL,Fpatt=NULL,
 #					I , D    ,  b0.jk , b1.jk , b2.jk , b3.jk , wgtm , pm ,
 #					Psival , Psipatt , maxincrement ) 
         if (estPsi==1){
-			res <- .Call("noharm_estPsicpp" , Fval , Pval    , Fpatt , Ppatt ,
+			res <- noharm_estPsicpp( Fval , Pval    , Fpatt , Ppatt ,
 						I , D    ,  b0.jk , b1.jk , b2.jk , b3.jk , wgtm , pm ,
-						Psival , Psipatt , maxincrement , modesttype , 
-						PACKAGE="sirt")					
+						Psival , Psipatt , maxincrement , modesttype )				
 			changePsi <- res$change
 			Psival <- res$Psival_	
 			if ( pos.residcorr ){	Psival[ Psival < 0 ] <- eps  }

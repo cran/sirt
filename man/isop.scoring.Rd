@@ -128,7 +128,7 @@ data( data.read )
 dat <- data.read
 
 # Scoring according to the ISOP model
-msc <- isop.scoring( dat )
+msc <- sirt::isop.scoring( dat )
 # plot student scores
 boxplot( msc$person$mpsc ~ msc$person$score )
 
@@ -141,7 +141,7 @@ data( data.Students , package="CDM")
 dat <- stats::na.omit(data.Students[ , -c(1:2) ])
 
 # Scoring according to the ISOP model
-msc <- isop.scoring( dat )
+msc <- sirt::isop.scoring( dat )
 # plot student scores
 boxplot( msc$person$mpsc ~ msc$person$score )
 
@@ -149,7 +149,7 @@ boxplot( msc$person$mpsc ~ msc$person$score )
 items <- paste0( "act" , 1:5 )
 score.itemcat <- msc$score.itemcat
 score.itemcat <- score.itemcat[ items , ]
-msc2 <- isop.scoring( dat[,items] , score.itemcat=score.itemcat )
+msc2 <- sirt::isop.scoring( dat[,items] , score.itemcat=score.itemcat )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -89,7 +89,7 @@ dat <- data.Students[ , paste0("act",1:5) ]
 dat <- dat[1:300 , ]	# select first 300 students
 
 # perform the ISOP test
-mod <- isop.test(dat)
+mod <- sirt::isop.test(dat)
 summary(mod)
   ## -> W1i statistics
   ##     parm   N     M   est    se      t

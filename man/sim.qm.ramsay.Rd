@@ -80,7 +80,7 @@ b <- exp( seq(-2,2,len=I))  # item difficulty
 K <- rep( 3 , I )           # K parameter (=> guessing)
 
 # apply simulation function
-dat <- sim.qm.ramsay( theta , b , K )
+dat <- sirt::sim.qm.ramsay( theta , b , K )
 
 #***
 # analysis
@@ -89,39 +89,39 @@ I <- ncol(dat)
 fixed.K <- rep( 3 , I ) 
 
 # Ramsay QM with fixed K parameter (K=3 in fixed.K specification)
-mod1 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm", 
+mod1 <- sirt::rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm", 
               fixed.K = fixed.K )                  
 summary(mod1)
 
 # Ramsay QM with joint estimated K parameters
-mod2 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" , 
+mod2 <- sirt::rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" , 
              est.K = rep(1,I)  )                  
 summary(mod2)
 
 \dontrun{
 # Ramsay QM with itemwise estimated K parameters
-mod3 <- rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" ,  
+mod3 <- sirt::rasch.mml2( dat , mmliter = mmliter , irtmodel = "ramsay.qm" ,  
               est.K = 1:I  )                  
 summary(mod3)
 
 # Rasch model
-mod4 <- rasch.mml2( dat )
+mod4 <- sirt::rasch.mml2( dat )
 summary(mod4)
 
 # generalized logistic model
-mod5 <- rasch.mml2( dat , est.alpha = TRUE , mmliter=mmliter)
+mod5 <- sirt::rasch.mml2( dat , est.alpha = TRUE , mmliter=mmliter)
 summary(mod5) 
 
 # 2PL model
-mod6 <- rasch.mml2( dat , est.a = rep(1,I) )
+mod6 <- sirt::rasch.mml2( dat , est.a = rep(1,I) )
 summary(mod6) 
 
 # Difficulty + Guessing (b+c) Model
-mod7 <- rasch.mml2( dat , est.c = rep(1,I) )
+mod7 <- sirt::rasch.mml2( dat , est.c = rep(1,I) )
 summary(mod7) 
 
 # estimate separate guessing (c) parameters
-mod8 <- rasch.mml2( dat , est.c = 1:I  )
+mod8 <- sirt::rasch.mml2( dat , est.c = 1:I  )
 summary(mod8)
 
 #*** estimate Model 1 with user defined function in mirt package
@@ -156,7 +156,7 @@ mod1m <- mirt::mirt(dat, 1, rep( "ramsayqm",I) , customItems=list("ramsayqm"=ram
                 )
 print(mod1m)                
 summary(mod1m)
-cmod1m <- mirt.wrapper.coef( mod1m )$coef
+cmod1m <- sirt::mirt.wrapper.coef( mod1m )$coef
 # compare simulated and estimated values
 dfr <- cbind( b , cmod1m$b , exp(mod1$item$b ) ) 
 colnames(dfr) <- c("simulated" , "mirt" , "sirt_rasch.mml2")

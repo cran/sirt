@@ -11,9 +11,9 @@ loglike_mvnorm <- function( M , S , mu , Sigma , n , log=TRUE , lambda = 0 ){
 		Sigma <- w * Sigma + (1-w)*Sigma0
 		      }
 
-    Sigma1 <- base::solve(Sigma)
+    Sigma1 <- solve(Sigma)
     p <- ncol(Sigma)
-    det_Sigma <- base::det( Sigma )
+    det_Sigma <- det( Sigma )
     eps <- 1E-30
     if ( det_Sigma < eps ){   det_Sigma <- eps  }
     l1 <- - p * log( 2*pi) - t( M - mu ) %*% Sigma1 %*% ( M - mu ) - 

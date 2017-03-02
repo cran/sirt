@@ -66,10 +66,10 @@ data(data.read)
 dat <- data( data.read )
 
 # estimate Rasch model
-mod <- rasch.jml( data.read  )
+mod <- sirt::rasch.jml( data.read  )
 
 # JML with analytical bias correction
-res1 <- rasch.jml.biascorr( jmlobj=mod  )
+res1 <- sirt::rasch.jml.biascorr( jmlobj=mod  )
 print( res1$b.biascorr , digits= 3 )
   ##        b.JML b.JMLcorr b.analytcorr1 b.analytcorr2
   ##   1  -2.0086   -1.8412        -1.908        -1.922

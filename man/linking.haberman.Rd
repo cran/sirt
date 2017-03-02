@@ -178,7 +178,7 @@ see \code{\link{invariance.alignment}}.
 
 # Model 1: Linking three studies calibrated by the Rasch model
 data(data.pars1.rasch)
-mod1 <- linking.haberman( itempars=data.pars1.rasch )
+mod1 <- sirt::linking.haberman( itempars=data.pars1.rasch )
 summary(mod1)
 
 # Model 1b: Linking these studies but weigh these studies by
@@ -189,12 +189,12 @@ itempars <- data.pars1.rasch
 itempars$wgt <- 1
 itempars[ itempars$study == "study1","wgt"] <- 3
 itempars[ itempars$study == "study2","wgt"] <- .5
-mod1b <- linking.haberman( itempars=itempars )
+mod1b <- sirt::linking.haberman( itempars=itempars )
 summary(mod1b)
 
 # Model 2: Linking three studies calibrated by the 2PL model
 data(data.pars1.2pl)
-mod2 <- linking.haberman( itempars=data.pars1.2pl )
+mod2 <- sirt::linking.haberman( itempars=data.pars1.2pl )
 summary(mod2)
 
 \dontrun{
@@ -208,35 +208,35 @@ data(data.long)
 
 # scaling at T1
 dat1 <- data.long[ , grep("T1" , colnames(data.long) ) ]
-resT1 <- rasch.mml2( dat1 )
+resT1 <- sirt::rasch.mml2( dat1 )
 itempartable1 <- data.frame( "study"="T1" , resT1$item[ , c("item" , "a" , "b" ) ] )
 # scaling at T2
 dat2 <- data.long[ , grep("T2" , colnames(data.long) ) ]
-resT2 <- rasch.mml2( dat2 )
+resT2 <- sirt::rasch.mml2( dat2 )
 summary(resT2)
 itempartable2 <- data.frame( "study"="T2" , resT2$item[ , c("item" , "a" , "b" ) ] )
 itempartable <- rbind( itempartable1 , itempartable2 )
 itempartable[,2] <- substring( itempartable[,2] , 1, 2 )
 # estimate linking parameters
-mod1 <- linking.haberman( itempars= itempartable )
+mod1 <- sirt::linking.haberman( itempars= itempartable )
 
 #******
 # Model 2: Scaling with the 2PL model
 
 # scaling at T1
 dat1 <- data.long[ , grep("T1" , colnames(data.long) ) ]
-resT1 <- rasch.mml2( dat1 , est.a=1:6)
+resT1 <- sirt::rasch.mml2( dat1 , est.a=1:6)
 itempartable1 <- data.frame( "study"="T1" , resT1$item[ , c("item" , "a" , "b" ) ] )
 
 # scaling at T2
 dat2 <- data.long[ , grep("T2" , colnames(data.long) ) ]
-resT2 <- rasch.mml2( dat2 , est.a=1:6)
+resT2 <- sirt::rasch.mml2( dat2 , est.a=1:6)
 summary(resT2)
 itempartable2 <- data.frame( "study"="T2" , resT2$item[ , c("item" , "a" , "b" ) ] )
 itempartable <- rbind( itempartable1 , itempartable2 )
 itempartable[,2] <- substring( itempartable[,2] , 1, 2 )
 # estimate linking parameters
-mod2 <- linking.haberman( itempars= itempartable )
+mod2 <- sirt::linking.haberman( itempars= itempartable )
 
 #############################################################################
 # EXAMPLE 3: 2 Studies - 1PL and 2PL linking 
@@ -247,15 +247,15 @@ N <- 2000       # number of persons
 # define item parameters
 b <- seq( -1.5 , 1.5 , length=I )
 # simulate data
-dat1 <- sim.raschtype( stats::rnorm( N , mean=0,sd=1 ) , b=b )
-dat2 <- sim.raschtype( stats::rnorm( N , mean=0.5,sd=1.50 ) , b=b )
+dat1 <- sirt::sim.raschtype( stats::rnorm( N , mean=0,sd=1 ) , b=b )
+dat2 <- sirt::sim.raschtype( stats::rnorm( N , mean=0.5,sd=1.50 ) , b=b )
 
 #*** Model 1: 1PL
 # 1PL Study 1
-mod1 <- rasch.mml2( dat1 , est.a= rep(1,I) )
+mod1 <- sirt::rasch.mml2( dat1 , est.a= rep(1,I) )
 summary(mod1)
 # 1PL Study 2
-mod2 <- rasch.mml2( dat2 , est.a= rep(1,I) )
+mod2 <- sirt::rasch.mml2( dat2 , est.a= rep(1,I) )
 summary(mod2)
 
 # collect item parameters
@@ -265,7 +265,7 @@ colnames(dfr2) <- colnames(dfr1) <- c("study" , "item" , "a" , "b" )
 itempars <- rbind( dfr1 , dfr2 )
 
 # Haberman linking
-linkhab1 <- linking.haberman(itempars=itempars)
+linkhab1 <- sirt::linking.haberman(itempars=itempars)
   ## Transformation parameters (Haberman linking)
   ##    study    At     Bt
   ## 1 study1 1.000  0.000
@@ -288,10 +288,10 @@ linkhab1 <- linking.haberman(itempars=itempars)
 
 #*** Model 2: 2PL
 # 2PL Study 1
-mod1 <- rasch.mml2( dat1 , est.a= 1:I )
+mod1 <- sirt::rasch.mml2( dat1 , est.a= 1:I )
 summary(mod1)
 # 2PL Study 2
-mod2 <- rasch.mml2( dat2 , est.a= 1:I )
+mod2 <- sirt::rasch.mml2( dat2 , est.a= 1:I )
 summary(mod2)
 
 # collect item parameters
@@ -301,7 +301,7 @@ colnames(dfr2) <- colnames(dfr1) <- c("study" , "item" , "a" , "b" )
 itempars <- rbind( dfr1 , dfr2 )
 
 # Haberman linking
-linkhab2 <- linking.haberman(itempars=itempars)
+linkhab2 <- sirt::linking.haberman(itempars=itempars)
   ## Transformation parameters (Haberman linking)
   ##    study    At     Bt
   ## 1 study1 1.000  0.000
@@ -331,22 +331,22 @@ N <- 1500       # number of persons
 # define item parameters
 b <- seq( -1.5 , 1.5 , length=I )
 # simulate data
-dat1 <- sim.raschtype( stats::rnorm( N , mean=0,sd=1 ) , b=b )
-dat2 <- sim.raschtype( stats::rnorm( N , mean=0.5,sd=1.50 ) , b=b )
-dat3 <- sim.raschtype( stats::rnorm( N , mean=-.2,sd=.8 ) , b=b )
+dat1 <- sirt::sim.raschtype( stats::rnorm( N , mean=0,sd=1 ) , b=b )
+dat2 <- sirt::sim.raschtype( stats::rnorm( N , mean=0.5,sd=1.50 ) , b=b )
+dat3 <- sirt::sim.raschtype( stats::rnorm( N , mean=-.2,sd=.8 ) , b=b )
 # set some items to non-administered
 dat3 <- dat3[ , -c(1,4) ]
 dat2 <- dat2[ , -c(1,2,3) ] 
 
 #*** Model 1: 1PL in sirt
 # 1PL Study 1
-mod1 <- rasch.mml2( dat1 , est.a= rep(1,ncol(dat1)) )
+mod1 <- sirt::rasch.mml2( dat1 , est.a= rep(1,ncol(dat1)) )
 summary(mod1)
 # 1PL Study 2
-mod2 <- rasch.mml2( dat2 , est.a= rep(1,ncol(dat2)) )
+mod2 <- sirt::rasch.mml2( dat2 , est.a= rep(1,ncol(dat2)) )
 summary(mod2)
 # 1PL Study 3
-mod3 <- rasch.mml2( dat3 , est.a= rep(1,ncol(dat3)) )
+mod3 <- sirt::rasch.mml2( dat3 , est.a= rep(1,ncol(dat3)) )
 summary(mod3)
 
 # collect item parameters
@@ -361,7 +361,7 @@ personpars <- list( mod1$person[ , c("EAP","SE.EAP") ] , mod2$person[ , c("EAP",
     mod3$person[ , c("EAP","SE.EAP") ] )
 
 # Haberman linking
-linkhab1 <- linking.haberman(itempars=itempars , personpars=personpars)
+linkhab1 <- sirt::linking.haberman(itempars=itempars , personpars=personpars)
 # compare item parameters
 round( cbind( linkhab1$joint.itempars[,-1], linkhab1$b.trans )[1:5,] , 3 )
   ##            aj     bj study1 study2 study3
@@ -408,7 +408,7 @@ itempars <- rbind( dfr1 , dfr2 , dfr3 )
 personpars <- list(  pvmod1$pv[,-1] , pvmod2$pv[,-1] , pvmod3$pv[,-1] )
 
 # Haberman linking
-linkhab2 <- linking.haberman(itempars=itempars,personpars=personpars)
+linkhab2 <- sirt::linking.haberman(itempars=itempars,personpars=personpars)
   ##   Linear transformation for person parameters theta
   ##      study A_theta B_theta
   ##   1 study1   1.000   0.000
@@ -434,11 +434,11 @@ itempars <- data.frame( "study" = paste0("study",rep(1:2, each=I)) ,
                  "b" = c( b , b + bdif  )  )
                             
 #*** Model 1: Haberman linking with least squares regression
-mod1 <- linking.haberman( itempars = itempars )
+mod1 <- sirt::linking.haberman( itempars = itempars )
 summary(mod1)
      
 #*** Model 2: Haberman linking with robust bisquare regression
-mod2 <- linking.haberman( itempars = itempars2 , b_trim = .4, maxiter=20)
+mod2 <- sirt::linking.haberman( itempars = itempars2 , b_trim = .4, maxiter=20)
 summary(mod2)
 }
 }

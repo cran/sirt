@@ -123,9 +123,9 @@ mod <- TAM::tam.mml( dat[,2:3] , irtmodel="PCM")
 # extract item difficulties
 b <- matrix( mod$xsi$xsi , nrow=2 , byrow=TRUE )
 # groupwise estimation
-res1 <- mle.pcm.group( dat[,2:3] , b=b , group=dat$idgroup )
+res1 <- sirt::mle.pcm.group( dat[,2:3] , b=b , group=dat$idgroup )
 # individual estimation
-res2 <- mle.pcm.group( dat[,2:3] , b=b  )
+res2 <- sirt::mle.pcm.group( dat[,2:3] , b=b  )
 
 #############################################################################
 # EXAMPLE 2: Data Reading data.read
@@ -133,16 +133,16 @@ res2 <- mle.pcm.group( dat[,2:3] , b=b  )
 
 data(data.read)
 # estimate Rasch model
-mod <- rasch.mml2( data.read )
+mod <- sirt::rasch.mml2( data.read )
 score <- rowSums( data.read )
 data.read <- data.read[ order(score) , ]
 score <- score[ order(score) ]
 # compare different epsilon-adjustments
-res30 <- mle.pcm.group( data.read , b = matrix( mod$item$b , 12 , 1 ) ,
+res30 <- sirt::mle.pcm.group( data.read , b = matrix( mod$item$b , 12 , 1 ) ,
                adj_eps=.3 )$person
-res10 <- mle.pcm.group( data.read , b = matrix( mod$item$b , 12 , 1 ) ,
+res10 <- sirt::mle.pcm.group( data.read , b = matrix( mod$item$b , 12 , 1 ) ,
              adj_eps=.1 )$person
-res05 <- mle.pcm.group( data.read , b = matrix( mod$item$b , 12 , 1 ) ,
+res05 <- sirt::mle.pcm.group( data.read , b = matrix( mod$item$b , 12 , 1 ) ,
               adj_eps=.05 )$person
 # plot different scorings
 plot( score , res05$theta , type="l" , xlab="Raw score" , ylab=expression(theta[epsilon]),

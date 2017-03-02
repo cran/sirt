@@ -254,16 +254,16 @@ dat <- data.read
 # latent class models
 
 # latent class model with 1 class
-mod1 <- rasch.mirtlc( dat , Nclasses = 1 )
+mod1 <- sirt::rasch.mirtlc( dat , Nclasses = 1 )
 summary(mod1)
 
 # latent class model with 2 classes
-mod2 <- rasch.mirtlc( dat , Nclasses = 2 )
+mod2 <- sirt::rasch.mirtlc( dat , Nclasses = 2 )
 summary(mod2)
 
 \dontrun{
 # latent class model with 3 classes
-mod3 <- rasch.mirtlc( dat , Nclasses = 3 , seed = - 30)  
+mod3 <- sirt::rasch.mirtlc( dat , Nclasses = 3 , seed = - 30)  
 summary(mod3)
 
 # extract individual likelihood
@@ -284,7 +284,7 @@ summary(smod2)
 IRT.compareModels(smod2,smod3)
 
 # latent class model with 4 classes and 3 starts with different seeds
-mod4 <- rasch.mirtlc( dat , Nclasses = 4 ,seed= -30 ,  nstarts=3 )   
+mod4 <- sirt::rasch.mirtlc( dat , Nclasses = 4 ,seed= -30 ,  nstarts=3 )   
 # display different solutions
 sort(mod4$devL)
 summary(mod4)
@@ -293,41 +293,41 @@ summary(mod4)
 # define group identifier
 group <- rep( 1 , nrow(dat))
 group[ 1:150 ] <- 2
-mod5 <- rasch.mirtlc( dat , Nclasses = 3 , group = group )  
+mod5 <- sirt::rasch.mirtlc( dat , Nclasses = 3 , group = group )  
 summary(mod5)
 
 #*************
 # Unidimensional IRT models with ordered trait
 
 # 1PL model with 3 classes
-mod11 <- rasch.mirtlc( dat , Nclasses = 3 , modeltype="MLC1" , mmliter=30)
+mod11 <- sirt::rasch.mirtlc( dat , Nclasses = 3 , modeltype="MLC1" , mmliter=30)
 summary(mod11)
 
 # 1PL model with 11 classes
-mod12 <- rasch.mirtlc( dat , Nclasses = 11 ,modeltype="MLC1", mmliter=30)
+mod12 <- sirt::rasch.mirtlc( dat , Nclasses = 11 ,modeltype="MLC1", mmliter=30)
 summary(mod12)
 
 # 1PL model with 11 classes and fixed specified theta values
-mod13 <- rasch.mirtlc( dat ,  modeltype="MLC1" , 
+mod13 <- sirt::rasch.mirtlc( dat ,  modeltype="MLC1" , 
              theta.k = seq( -4 , 4 , len=11 ) , mmliter=100)
 summary(mod13)
 
 # 1PL model with fixed theta values and normal distribution
-mod14 <- rasch.mirtlc( dat ,  modeltype="MLC1" , mmliter=30 , 
+mod14 <- sirt::rasch.mirtlc( dat ,  modeltype="MLC1" , mmliter=30 , 
              theta.k = seq( -4 , 4 , len=11 ) , distribution.trait="normal")
 summary(mod14)
 
 # 1PL model with a smoothed trait distribution (up to 3 moments)
-mod15 <- rasch.mirtlc( dat ,  modeltype="MLC1" , mmliter=30 , 
+mod15 <- sirt::rasch.mirtlc( dat ,  modeltype="MLC1" , mmliter=30 , 
              theta.k = seq( -4, 4 , len=11 ) ,  distribution.trait="smooth3")
 summary(mod15)
 
 # 2PL with 3 classes
-mod16 <- rasch.mirtlc( dat , Nclasses=3 , modeltype="MLC2" , mmliter=30 )
+mod16 <- sirt::rasch.mirtlc( dat , Nclasses=3 , modeltype="MLC2" , mmliter=30 )
 summary(mod16)
 
 # 2PL with fixed theta and smoothed distribution
-mod17 <- rasch.mirtlc( dat, theta.k=seq(-4,4,len=12) , mmliter=30 ,
+mod17 <- sirt::rasch.mirtlc( dat, theta.k=seq(-4,4,len=12) , mmliter=30 ,
              modeltype="MLC2" , distribution.trait="smooth4"  )
 summary(mod17)
 
@@ -335,7 +335,7 @@ summary(mod17)
 # define group identifier
 group <- rep( 1 , nrow(dat))
 group[ 1:150 ] <- 2
-mod21 <- rasch.mirtlc( dat , Nclasses = 8 , modeltype="MLC1" , group=group )
+mod21 <- sirt::rasch.mirtlc( dat , Nclasses = 8 , modeltype="MLC1" , group=group )
 summary(mod21)
 
 #***************
@@ -345,12 +345,12 @@ summary(mod21)
 dimensions <- rep( 1:3 , each = 4 )
 
 # 3-dimensional model with 8 classes and seed 145
-mod31 <- rasch.mirtlc( dat , Nclasses = 8 , mmliter=30 , 
+mod31 <- sirt::rasch.mirtlc( dat , Nclasses = 8 , mmliter=30 , 
              modeltype="MLC1" , seed = 145 , dimensions = dimensions )
 summary(mod31)
 
 # try the model above with different starting values
-mod31s <- rasch.mirtlc( dat , Nclasses = 8 ,
+mod31s <- sirt::rasch.mirtlc( dat , Nclasses = 8 ,
              modeltype="MLC1" , seed = -30 , nstarts=30 , dimensions = dimensions )
 summary(mod31s)     
 
@@ -358,12 +358,12 @@ summary(mod31s)
 # => 4^3 = 216 classes
 theta.k <- seq(-4 , 4 , len=6 )
 theta.k <- as.matrix( expand.grid( theta.k , theta.k , theta.k ) )
-mod32 <- rasch.mirtlc( dat ,  dimensions=dimensions , 
+mod32 <- sirt::rasch.mirtlc( dat ,  dimensions=dimensions , 
               theta.k= theta.k , modeltype="MLC1"  )
 summary(mod32)
 
 # 3-dimensional 2PL model
-mod33 <- rasch.mirtlc( dat, dimensions=dimensions, theta.k= theta.k, modeltype="MLC2")
+mod33 <- sirt::rasch.mirtlc( dat, dimensions=dimensions, theta.k= theta.k, modeltype="MLC2")
 summary(mod33)
 
 #############################################################################
@@ -377,18 +377,18 @@ theta <- theta - mean(theta )
 # calculate skewness of theta distribution
 mean( theta^3 ) / stats::sd(theta)^3
 # simulate item responses
-dat <- sim.raschtype( theta , b=seq(-2,2,len=I ) )
+dat <- sirt::sim.raschtype( theta , b=seq(-2,2,len=I ) )
 
 # normal distribution
-mod1 <- rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1",
+mod1 <- sirt::rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1",
                distribution.trait="normal" , mmliter=30)
 
 # allow for skew distribution with smoothed distribution
-mod2 <- rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1",
+mod2 <- sirt::rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1",
                distribution.trait="smooth3" , mmliter=30)
 
 # nonparametric distribution
-mod3 <- rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1", mmliter=30)
+mod3 <- sirt::rasch.mirtlc( dat , theta.k=seq(-4,4,len=15)  , modeltype="MLC1", mmliter=30)
 
 summary(mod1)
 summary(mod2)            
@@ -403,21 +403,21 @@ dat <- data.si02$data
 weights <- data.si02$weights   # extract weights
 
 # Model 1: 2 classes Rasch model
-mod1 <- rasch.mirtlc( dat , Nclasses=2 , modeltype="MLC1" , weights = weights , 
+mod1 <- sirt::rasch.mirtlc( dat , Nclasses=2 , modeltype="MLC1" , weights = weights , 
                  ref.item = 4 , nstarts=5)
 summary(mod1)
 
 # Model 2: 3 classes Rasch model: not all parameters are identified
-mod2 <- rasch.mirtlc( dat , Nclasses=3 , modeltype="MLC1" , weights = weights , 
+mod2 <- sirt::rasch.mirtlc( dat , Nclasses=3 , modeltype="MLC1" , weights = weights , 
                 ref.item = 4 , nstarts=5)
 summary(mod2)
 
 # Model 3: Latent class model with 2 classes
-mod3 <- rasch.mirtlc( dat , Nclasses=2 , modeltype="LC" , weights = weights , nstarts=5)
+mod3 <- sirt::rasch.mirtlc( dat , Nclasses=2 , modeltype="LC" , weights = weights , nstarts=5)
 summary(mod3)
 
 # Model 4: Rasch model with normal distribution
-mod4 <- rasch.mirtlc( dat ,  modeltype="MLC1" , weights=weights , 
+mod4 <- sirt::rasch.mirtlc( dat ,  modeltype="MLC1" , weights=weights , 
             theta.k = seq( -6 , 6 , len=21 ) , distribution.trait="normal" , ref.item=4)
 summary(mod4)
 }
@@ -443,14 +443,13 @@ dimensions <- rep( 1:3 , each=I)
 # simulate item responses
 dat <- matrix( NA , nrow=N , ncol=I*3)
 for (ii in 1:(3*I) ){   
-    dat[,ii] <- 1 * ( stats::runif(N) < 
-                 stats::plogis( theta[, dimensions[ii] ] - b[ ii] ) )
-            }
+    dat[,ii] <- 1 * ( stats::runif(N) < stats::plogis( theta[,dimensions[ii]] - b[ii]))
+}
 colnames(dat) <- paste0( rep( LETTERS[1:3] , each=I ) , 1:(3*I) )
 
 # estimate model
-mod1 <- rasch.mirtlc( dat , Nclasses=Nclasses , dimensions=dimensions ,  modeltype="MLC1" , 
-              ref.item= c(5,14,23) , glob.conv=.0005, conv1=.0005)
+mod1 <- sirt::rasch.mirtlc( dat , Nclasses=Nclasses, dimensions=dimensions,  
+             modeltype="MLC1", ref.item=c(5,14,23), glob.conv=.0005, conv1=.0005)
 
 round( cbind( mod1$theta.k , mod1$pi.k ) , 3 )
   ##          [,1]   [,2]   [,3]  [,4]
@@ -474,7 +473,7 @@ axis(1 , 1:3 ) ;  axis(2) ; axis(4)
 for (cc in 1:Nclasses){ # cc <- 1
     lines(1:3, mod1$theta.k[cc,] , col=cc , lty=cc )
     points(1:3, mod1$theta.k[cc,] , col=cc ,  pch =cc )
-            }
+}
 
 \dontrun{
 #------ 
@@ -568,7 +567,7 @@ lca_prior <- function(Theta,Etable){
   if ( is.null(Etable) ){ prior <- rep( 1/TP , TP ) }    
   if ( ! is.null(Etable) ){  
     prior <- ( rowSums(Etable[ , seq(1,2*I,2)]) + rowSums(Etable[,seq(2,2*I,2)]) )/I
-                 }
+  }
   prior <- prior / sum(prior)  
   return(prior)
 }
@@ -581,7 +580,7 @@ mod4 <- mirt::mirt(dat, mirtmodel , pars = mod.pars , verbose=TRUE ,
 mod4@nest <- as.integer(sum(mod.pars$est) + nrow(Theta)-1 ) 
 # extract coefficients
 # source.all(pfsirt)
-cmod4 <- mirt.wrapper.coef(mod4)
+cmod4 <- sirt::mirt.wrapper.coef(mod4)
 
 # estimated item difficulties
 dfr <- data.frame( "sim"=b , "mirt"=-cmod4$coef$d , "sirt"=mod1$item$thresh )
@@ -641,8 +640,9 @@ ref.item <- c(7,17,25,44,64)
 dimensions <- data.si04$itempars$dim
 
 # estimate a Rasch latent class with 9 classes
-mod1 <- rasch.mirtlc( data.si04$data , Nclasses=9 , dimensions=dimensions ,  modeltype="MLC1" , 
-        ref.item=ref.item , glob.conv=.005, conv1=.005 , nstarts=1 , mmliter=200 )
+mod1 <- sirt::rasch.mirtlc( data.si04$data , Nclasses=9, dimensions=dimensions,  
+             modeltype="MLC1", ref.item=ref.item , glob.conv=.005, conv1=.005,
+             nstarts=1 , mmliter=200 )
 
 # compare estimated distribution with simulated distribution
 round( cbind( mod1$theta.k , mod1$pi.k ) , 4 ) # estimated

@@ -98,7 +98,7 @@ A hierarchical version of this model can be estimated with
 #############################################################################
 data(data.read)
 # estimate 2PNO with MCMC with 3000 iterations and 500 burn-in iterations
-mod <- mcmc.2pno( dat=data.read , iter=3000 , burnin=500 )
+mod <- sirt::mcmc.2pno( dat=data.read , iter=3000 , burnin=500 )
 # plot MCMC chains
 plot( mod$mcmcobj , ask=TRUE )
 # write sampled chains into codafile
@@ -115,11 +115,11 @@ I <- 10
 b <- seq( -1.5 , 1.5 , len=I )
 a <- rep( c(1,2) , I/2 )
 theta1 <- stats::rnorm(N)
-dat <- sim.raschtype( theta=theta1 , fixed.a =a , b=b )
+dat <- sirt::sim.raschtype( theta=theta1 , fixed.a =a , b=b )
 
 #***
 # Model 1: estimate model without weights
-mod1 <- mcmc.2pno( dat , iter= 1500 , burnin=500)
+mod1 <- sirt::mcmc.2pno( dat , iter= 1500 , burnin=500)
 mod1$summary.mcmcobj
 plot( mod1$mcmcobj , ask=TRUE )
 
@@ -127,7 +127,7 @@ plot( mod1$mcmcobj , ask=TRUE )
 # Model 2: estimate model with weights
 # define weights
 weights <- c( rep( 5 , N/4 ) , rep( .2 , 3/4*N ) )
-mod2 <- mcmc.2pno( dat , weights=weights , iter= 1500 , burnin=500)
+mod2 <- sirt::mcmc.2pno( dat , weights=weights , iter= 1500 , burnin=500)
 mod1$summary.mcmcobj
 }
 }

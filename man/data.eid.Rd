@@ -35,7 +35,7 @@ Goettingen, Hogrefe.
 
 Hosoya, G. (2014). \emph{Einfuehrung in die Analyse testtheoretischer
 Modelle mit \R}. Available at 
-\url{http://www.hogrefe.de/buecher/lehrbuecher/psychlehrbuchplus/lehrbuecher/testtheorie-und-testkonstruktion/zusatzmaterial/}.
+\emph{http://www.hogrefe.de/buecher/lehrbuecher/psychlehrbuchplus/lehrbuecher/testtheorie-und-testkonstruktion/zusatzmaterial/}.
 }
 
 
@@ -120,7 +120,7 @@ modf1b
 #-- 1c: estimation with sirt package
 
 # estimation with rasch.mml2
-mod1c <- rasch.mml2(dat)
+mod1c <- sirt::rasch.mml2(dat)
 summary(mod1c)
 
 # person parameters (EAP)

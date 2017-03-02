@@ -131,15 +131,15 @@ See also the \pkg{irr} package for measures of rater agreement.
 data(data.si05)
 
 #*** Model 1: one item with two categories
-mod1 <- lc.2raters( data.si05$Ex1)
+mod1 <- sirt::lc.2raters( data.si05$Ex1)
 summary(mod1)
 
 #*** Model 2: one item with five categories
-mod2 <- lc.2raters( data.si05$Ex2)
+mod2 <- sirt::lc.2raters( data.si05$Ex2)
 summary(mod2)
 
 #*** Model 3: one item with eight categories
-mod3 <- lc.2raters( data.si05$Ex3)
+mod3 <- sirt::lc.2raters( data.si05$Ex3)
 summary(mod3)	
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -59,9 +59,8 @@ summary.isop.test <- function( object , ... ){
 # res <- isop_tests_cpp( dat , dat.resp , weights , jackunits , JJ )
 # SEXP isop_tests_C( SEXP dat_, SEXP dat_resp_, SEXP weights_, SEXP jackunits_, SEXP JJ_) ;
 isop_tests_cpp <- function ( dat , dat.resp , weights , jackunits , JJ ){ 
-		.Call("isop_tests_C", 
-				 dat_ = dat ,  dat_resp_ = dat.resp ,  weights_ = weights ,  
-				 jackunits_ = jackunits ,  JJ_=JJ ,
-				PACKAGE = "sirt")
-					}	
+	isop_tests_C(
+				 dat ,  dat.resp , weights ,  
+				 jackunits ,  JJ )
+}	
 #############################################################

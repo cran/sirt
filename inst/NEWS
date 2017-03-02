@@ -35,6 +35,24 @@ CHANGELOG sirt
 
 
 ------------------------------------------------------------------------
+VERSIONS sirt 1.15  |  2017-03-02  |  Last: sirt 1.15-41
+------------------------------------------------------------------------
+
+NOTE  * included option for choosing 'lavaan::lavaan' or 'lavaan::sem' as
+        estimation function in function 'lsem.estimate'. In previous
+        versions, only the 'lavaan::sem' function could be chosen 
+        (thanks to Jenny Wagner).
+NOTE  * restructured Rcpp functions
+NOTE  * removed 'CallSwitch' function from namespace and package
+NOTE  * removed minor bug in labeling items in 'sim.raschtype'
+FIXED * fixed a bug in 'smirt' with handling of parameter bounds which
+        was recently introduced in sirt 1.13 (thanks to David Armstrong)
+
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: ---
+
+------------------------------------------------------------------------
 Versions 1.14 -- 2017-01-11  --  CRAN sirt 1.14-0
 ------------------------------------------------------------------------
 

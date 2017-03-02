@@ -4,7 +4,7 @@ mlnormal_linear_regression_bayes <- function( W , beta , W2 , mu2 )
 {
 	# given OLS estimate beta with precison W and
 	# prior distribution N(mu2 , W2^-1)	
-	Wtot1 <- base::solve( W + W2 )
+	Wtot1 <- solve( W + W2 )
 	beta <- Wtot1 %*% ( W %*% beta + W2 %*% mu2 )
-	base::return(beta)
+	return(beta)
 }

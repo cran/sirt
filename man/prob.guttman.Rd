@@ -114,12 +114,12 @@ dat <- data.read
 
 #***
 # Model 1: estimate probabilistic Guttman model
-mod1 <- prob.guttman( dat )
+mod1 <- sirt::prob.guttman( dat )
 summary(mod1)
 
 #***
 # Model 2: probabilistic Guttman model with equal guessing and slipping parameters
-mod2 <- prob.guttman( dat , guess.equal=TRUE , slip.equal=TRUE)
+mod2 <- sirt::prob.guttman( dat , guess.equal=TRUE , slip.equal=TRUE)
 summary(mod2)
 
 #***
@@ -127,7 +127,7 @@ summary(mod2)
 itemlevel <- rep(1,12)
 itemlevel[ c(2,5,8,10,12) ] <- 2
 itemlevel[ c(3,4,6) ] <- 3
-mod3 <- prob.guttman( dat , itemlevel=itemlevel )
+mod3 <- sirt::prob.guttman( dat , itemlevel=itemlevel )
 summary(mod3)
 
 \dontrun{
@@ -182,7 +182,7 @@ mod3$ic
 # model fit in mirt
 mirt::M2(mod3m)
 # extract coefficients
-( cmod3m <- mirt.wrapper.coef(mod3m) )
+( cmod3m <- sirt::mirt.wrapper.coef(mod3m) )
 # compare estimated distributions
 round( cbind( "sirt"  = mod3$trait$prob , "mirt" = mod3m@Prior[[1]] ) , 5 )
   ##           sirt    mirt
@@ -236,7 +236,7 @@ mod4 <- mirt::mirt(dat, mirtmodel , pars = mod.pars , verbose=TRUE ,
 # correct number of estimated parameters
 mod4@nest <- as.integer(sum(mod.pars$est) + nrow(Theta)-1 ) 
 # extract coefficients
-cmod4 <- mirt.wrapper.coef(mod4)
+cmod4 <- sirt::mirt.wrapper.coef(mod4)
 cmod4
 # compute item response functions
 cmod4c <- cmod4$coef[ , c("d" , "a1" , "a2" , "a3" ) ]

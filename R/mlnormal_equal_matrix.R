@@ -1,10 +1,10 @@
 
 mlnormal_equal_matrix <- function( mat1  , mat2 , eps=1E-30){
-		res <- base::all( mat1 == mat2 )
-		base::return(res)
+		res <- all( mat1 == mat2 )
+		return(res)
 }
 ####################
-#			maxval <- base::max( base::abs( mat1 - mat2 ))
+#			maxval <- max( abs( mat1 - mat2 ))
 #			res <- if ( maxval < eps ){ TRUE } else { FALSE }
-#		res <- base::identical( mat1 , mat2 )		
-#		res <- base::all.equal( mat1 , mat2 )
+#		res <- identical( mat1 , mat2 )		
+#		res <- all.equal( mat1 , mat2 )

@@ -7,5 +7,5 @@ mlnormal_eval_priors_derivative <- function( pars , prior , h )
 	x0 <- mlnormal_eval_priors( pars = pars , prior = prior )
 	x1 <- mlnormal_eval_priors( pars = pars + hvec , prior = prior )
 	der <- ( x1 - x0 ) / hvec
-	base::return(der)
+	return(der)
 }

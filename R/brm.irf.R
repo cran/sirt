@@ -17,7 +17,7 @@ brm.irf <- function( Theta , delta , tau , ncat , thdim=1 , eps=1E-10 ){
 		probs[,cc] <- stats::dbeta( mp[cc] , shape1 = m1 , shape2 = m2 )
 					   }
 	probs <- probs + eps
-	probs <- probs / base::rowSums(probs)
+	probs <- probs / rowSums(probs)
 	return(probs)
 		}
 ################################################################

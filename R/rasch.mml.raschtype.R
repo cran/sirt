@@ -3,20 +3,17 @@
 # calculation of the likelihood
 mml_calc_like <- function (dat2,dat2resp,probs,pseudoll=0){ 
 	if ( pseudoll==0 ){
-		res <- .Call("MML2_CALCPOST_V1", dat2,dat2resp,probs, PACKAGE = "sirt")
+		res <- MML2_CALCPOST_V1( dat2,dat2resp,probs)
 						}
 	if ( pseudoll==1 ){
-		res <- .Call("MML2_CALCPOST_V2", dat2,dat2resp,probs, PACKAGE = "sirt")
-						}
-#	if ( pseudoll==2 ){
-#		res <- .Call("MML2_CALCPOST_V2", dat2,dat2resp,probs, PACKAGE = "sirt")
-#						}						
+		res <- MML2_CALCPOST_V2( dat2,dat2resp,probs)
+						}				
     return(res)						
 					}
 					
 # calculation of counts					
 mml_raschtype_counts <- function (dat2,dat2resp,dat1,fqkyi,pik,fyiqk){ 
-	.Call("MML2_RASCHTYPE_COUNTS", dat2,dat2resp,dat1,fqkyi,pik,fyiqk, PACKAGE = "sirt")
+	MML2_RASCHTYPE_COUNTS( dat2,dat2resp,dat1,fqkyi,pik,fyiqk)
 					}
 
 					

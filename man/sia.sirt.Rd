@@ -107,7 +107,7 @@ dichotomous item responses using the Ising model.
 data(data.read)
 dat <- data.read
 
-res <- sia.sirt(dat , significance=.85 )
+res <- sirt::sia.sirt(dat , significance=.85 )
 
 #*** plot results with igraph package
 library(igraph)

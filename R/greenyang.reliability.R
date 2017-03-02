@@ -59,7 +59,7 @@ greenyang.reliability <- function( object.tetra , nfactors){
        rel1h <- sum( rel.matrix ) / sum( rel.matrix3 )	
 	#'''''''''
 	# eigenvalue decomposition	
-	eigenval.rho <- base::svd( object.tetra$rho )$d
+	eigenval.rho <- svd( object.tetra$rho )$d
 	#'''''''''								
 #	rel1h <- rel1h$omega.rel
 	relf <- relf$omega.rel

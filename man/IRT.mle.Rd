@@ -37,8 +37,8 @@ List of arguments for \code{irffct}.
   \item{type}{Type of ability estimate. It can be \code{"MLE"} (the default),
   	  \code{"WLE"} or \code{"MAP"}. 
 }
-\item{mu}{Mean of normal prior distriubution (for \code{type="MAP"}}
-\item{sigma}{Standard deviation of normal prior distriubution (for \code{type="MAP"}}
+\item{mu}{Mean of normal prior distriubution (for \code{type="MAP"})}
+\item{sigma}{Standard deviation of normal prior distriubution (for \code{type="MAP"})}
   \item{maxiter}{
 Maximum number of iterations
 }
@@ -104,7 +104,7 @@ data(data.ratings1)
 dat <- data.ratings1
 
 # estimate model
-mod1 <- rm.facets( dat[ , paste0( "k",1:5) ], rater=dat$rater, 
+mod1 <- sirt::rm.facets( dat[ , paste0( "k",1:5) ], rater=dat$rater, 
              pid=dat$idstud  , maxiter=15)
 # extract dataset and item parameters
 data <- mod1$procdata$dat2.NA
@@ -124,13 +124,13 @@ calc.pcm <- function( theta , a , b , ii ){
 arg.list <- list("a"=a , "b"=b )
 
 # MLE
-abil1 <- IRT.mle( data, irffct=calc.pcm, theta=theta0, arg.list=arg.list )
+abil1 <- sirt::IRT.mle( data, irffct=calc.pcm, theta=theta0, arg.list=arg.list )
 str(abil1)
 # WLE
-abil2 <- IRT.mle( data, irffct=calc.pcm, theta=theta0, arg.list=arg.list, type="WLE")
+abil2 <- sirt::IRT.mle( data, irffct=calc.pcm, theta=theta0, arg.list=arg.list, type="WLE")
 str(abil2)
 # MAP with prior distribution N(.2, 1.3)
-abil3 <- IRT.mle( data, irffct=calc.pcm, theta=theta0, arg.list=arg.list, 
+abil3 <- sirt::IRT.mle( data, irffct=calc.pcm, theta=theta0, arg.list=arg.list, 
               type="MAP", mu=.2, sigma=1.3 )
 str(abil3)
 
@@ -143,7 +143,7 @@ dat <- data.read
 I <- ncol(dat)
 
 # estimate Rasch model
-mod1 <- rasch.mml2( dat )
+mod1 <- sirt::rasch.mml2( dat )
 summary(mod1)
 
 # define item response function
@@ -158,10 +158,10 @@ theta0 <- mod1$person$EAP
 arg.list <- list( "b" = mod1$item$b  )
 
 # estimate WLE
-abil <- IRT.mle( data = dat , irffct=irffct , arg.list=arg.list , 
+abil <- sirt::IRT.mle( data = dat , irffct=irffct , arg.list=arg.list , 
             theta=theta0, type="WLE")
 # compare with wle.rasch function
-theta <- wle.rasch( dat , b= mod1$item$b )
+theta <- sirt::wle.rasch( dat , b= mod1$item$b )
 cbind( abil[,1] , theta$theta , abil[,2] , theta$se.theta )
 
 #############################################################################
@@ -173,7 +173,7 @@ dat <- data.read
 I <- ncol(dat)
 
 # estimate Ramsay model
-mod1 <- rasch.mml2( dat , irtmodel ="ramsay.qm" )
+mod1 <- sirt::rasch.mml2( dat , irtmodel ="ramsay.qm" )
 summary(mod1)
 # define item response function
 irffct <- function( theta, b , K , ii){
@@ -186,7 +186,7 @@ irffct <- function( theta, b , K , ii){
 theta0 <- exp( mod1$person$EAP )
 arg.list <- list( "b" = mod1$item2$b , "K"=mod1$item2$K )
 # estimate MLE
-res <- IRT.mle( data = dat , irffct=irffct , arg.list=arg.list , theta=theta0 ,
+res <- sirt::IRT.mle( data = dat , irffct=irffct , arg.list=arg.list , theta=theta0 ,
             maxval=20 , maxiter=50)
 }	
 }

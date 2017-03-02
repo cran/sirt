@@ -1,39 +1,25 @@
 
 
-// includes from the plugin
+// [[Rcpp::depends(RcppArmadillo)]]
+
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
-
-#include "pbivnorm_rcpp_aux.h"
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
 
 using namespace Rcpp;
 
 
-// declarations
-extern "C" {
-SEXP tetrachoric2_rcpp_aux( SEXP dfr_, SEXP numdiffparm_, SEXP maxiter_) ;
-}
+// [[packageincludes]]
+#include "pbivnorm_rcpp_aux.h"
+// #include "c:/Users/robitzsch/Dropbox/Eigene_Projekte/R-Routinen/IRT-Functions/sirt_package/1.15/sirt_work/src/pbivnorm_rcpp_aux__0.52.h"
 
-// definition
 
-SEXP tetrachoric2_rcpp_aux( SEXP dfr_, SEXP numdiffparm_, SEXP maxiter_ ){
-BEGIN_RCPP
-  
-       
-     //  x , y , rho   
-       
-     Rcpp::NumericMatrix dfr(dfr_) ;  
-     double numdiffparm=as<double>(numdiffparm_) ;  
-     int maxiter =as<int>(maxiter_) ;  
-       
+
+///********************************************************************
+///** tetrachoric2_rcpp_aux
+// [[Rcpp::export]]
+Rcpp::NumericVector tetrachoric2_rcpp_aux( Rcpp::NumericMatrix dfr, 
+	double numdiffparm, int maxiter ){
+
      int ZZ = dfr.nrow() ;   
        
      Rcpp::NumericVector x(1);  
@@ -76,40 +62,19 @@ BEGIN_RCPP
      	rhores[zz] = rho[0] ;  
      }  
        
-     return wrap(rhores) ;  
-       
-     //*************************************************      
-     // OUTPUT              
-                   
-     // return Rcpp::List::create(    
-     //    _["dfr"] = dfr ,    _["t1"] = 1   
-     //    ) ;    
-       
+     return rhores ;  
+}
+
+
      // Rcout << "prob1 " << prob1 << std::endl;
-END_RCPP
-}
 
-
-
-
-
-// declarations
-extern "C" {
-SEXP polychoric2_aux_rcpp( SEXP dat_, SEXP maxK_, SEXP maxiter_) ;
-}
-
-// definition
-
-SEXP polychoric2_aux_rcpp( SEXP dat_, SEXP maxK_, SEXP maxiter_ ){
-BEGIN_RCPP
-  
-       
-     //  x , y , rho   
-       
-     Rcpp::NumericMatrix dat(dat_) ;  
-     int maxK=as<int>(maxK_) ;  
-     int maxiter=as<int>(maxiter_);  
-       
+     
+///********************************************************************
+///** polychoric2_aux_rcpp
+// [[Rcpp::export]]
+Rcpp::List polychoric2_aux_rcpp( Rcpp::NumericMatrix dat, 
+	int maxK , int maxiter ){
+      
      // int N = dat.nrow() ;  
      int I = dat.ncol() ;  
      int maxK3 = maxK + 3 ;  
@@ -124,7 +89,6 @@ BEGIN_RCPP
      Rcpp::NumericVector maxcat(I);  
      Rcpp::NumericVector tmp3;  
      Rcpp::NumericVector Ntot_used(I);  
-       
        
      for (int ii=0 ; ii < I-1;ii++){  
      for (int jj=ii+1;jj<I;jj++){  
@@ -174,9 +138,6 @@ BEGIN_RCPP
          Rcpp::_["Nobs"]=Nobs , 
          Rcpp::_["Ntot_used"] = Ntot_used  
          ) ;    
-       
-     // Rcout << "prob1 " << prob1 << std::endl;
-END_RCPP
 }
 
 

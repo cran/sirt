@@ -99,7 +99,7 @@ Alexander Robitzsch
 data(data.read)
 dat <- data.read
 set.seed(778)
-res <- unidim.test.csn( dat )
+res <- sirt::unidim.test.csn( dat )
   ##  CSN Statistic = 0.04737 , p = 0.02 
 
 \dontrun{
@@ -114,10 +114,10 @@ rho <- .60   # correlation between 2 dimensions
 t0 <- stats::rnorm(N)
 t1 <- sqrt(rho)*t0 + sqrt(1-rho)*stats::rnorm(N)
 t2 <- sqrt(rho)*t0 + sqrt(1-rho)*stats::rnorm(N)
-dat1 <- sim.raschtype(t1 , b=seq(-1.5,1.5,length=I/2) ) 
-dat2 <- sim.raschtype(t2 , b=seq(-1.5,1.5,length=I/2) ) 
+dat1 <- sirt::sim.raschtype(t1 , b=seq(-1.5,1.5,length=I/2) ) 
+dat2 <- sirt::sim.raschtype(t2 , b=seq(-1.5,1.5,length=I/2) ) 
 dat <- as.matrix(cbind( dat1 , dat2) )
-res <- unidim.test.csn( dat )
+res <- sirt::unidim.test.csn( dat )
   ##  CSN Statistic = 0.06056 , p = 0.02
 }
 }

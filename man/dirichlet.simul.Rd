@@ -52,7 +52,7 @@ probs <- c(.7 , .3)	# define (extremal) class probabilities
 alpha0 <- .2
 alpha <- alpha0*probs
 alpha <- matrix( alpha , nrow=N , ncol=length(alpha) , byrow=TRUE  )
-x <- dirichlet.simul( alpha )
+x <- sirt::dirichlet.simul( alpha )
 htitle <- expression(paste( alpha[0], "=.2, ", p[1] , "=.7"   ) )
 hist( x[,1] , breaks = seq(0,1,len=20) , main=htitle)
 
@@ -60,7 +60,7 @@ hist( x[,1] , breaks = seq(0,1,len=20) , main=htitle)
 alpha0 <- 3
 alpha <- alpha0*probs
 alpha <- matrix( alpha , nrow=N , ncol=length(alpha) , byrow=TRUE  )
-x <- dirichlet.simul( alpha )
+x <- sirt::dirichlet.simul( alpha )
 htitle <- expression(paste( alpha[0], "=3, ", p[1] , "=.7"   ) )
 hist( x[,1] , breaks = seq(0,1,len=20) , main=htitle)
 
@@ -77,7 +77,7 @@ probs <- c( .5 , .35 , .15 )
 alpha0 <- .2
 alpha <- alpha0*probs
 alpha <- matrix( alpha , nrow=N , ncol=length(alpha) , byrow=TRUE  )
-x <- dirichlet.simul( alpha )
+x <- sirt::dirichlet.simul( alpha )
 htitle <- expression(paste( alpha[0], "=.2, ", p[1] , "=.7"   ) )
 miceadds::library_install("ade4")
 ade4::triangle.plot(x, label=NULL , clabel = 1)
@@ -86,7 +86,7 @@ ade4::triangle.plot(x, label=NULL , clabel = 1)
 alpha0 <- 3
 alpha <- alpha0*probs
 alpha <- matrix( alpha , nrow=N , ncol=length(alpha) , byrow=TRUE  )
-x <- dirichlet.simul( alpha )
+x <- sirt::dirichlet.simul( alpha )
 htitle <- expression(paste( alpha[0], "=3, ", p[1] , "=.7"   ) )
 ade4::triangle.plot(x, label=NULL , clabel = 1)
 }

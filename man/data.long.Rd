@@ -212,11 +212,11 @@ dat2 <- dat[ , grep( "T2" , colnames(dat) ) ]
 colnames(dat2) <- gsub("T2","" , colnames(dat2) )
 
 # 2PL model with slope groups T1
-mod1 <- rasch.mml2( dat1 , est.a = c( rep(1,2) , rep(2,4) ) ) 
+mod1 <- sirt::rasch.mml2( dat1 , est.a = c( rep(1,2) , rep(2,4) ) ) 
 summary(mod1)
 
 # 2PL model with slope groups T2
-mod2 <- rasch.mml2( dat2 , est.a = c( rep(1,4) , rep(2,2) ) ) 
+mod2 <- sirt::rasch.mml2( dat2 , est.a = c( rep(1,4) , rep(2,2) ) ) 
 summary(mod2)
 
 #------- Link 1: Haberman Linking
@@ -226,7 +226,7 @@ dfr2 <- data.frame( "study2" , mod2$item$item , mod2$item$a , mod2$item$b )
 colnames(dfr2) <- colnames(dfr1) <- c("study" , "item" , "a" , "b" )
 itempars <- rbind( dfr1 , dfr2 )
 # Linking
-link1 <- linking.haberman(itempars=itempars)
+link1 <- sirt::linking.haberman(itempars=itempars)
 
 #------- Link 2: Invariance alignment method
 # create objects for invariance.alignment
@@ -235,7 +235,7 @@ lambda <- rbind( c(mod1$item$a,NA,NA) , c(NA,NA,mod2$item$a ) )
 colnames(lambda) <- colnames(nu) <- paste0("I",1:8)
 rownames(lambda) <- rownames(nu) <- c("T1" , "T2")
 # Linking
-link2a <- invariance.alignment( lambda , nu )
+link2a <- sirt::invariance.alignment( lambda , nu )
 summary(link2a)
 }
 }

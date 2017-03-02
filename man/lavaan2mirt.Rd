@@ -116,7 +116,7 @@ lavmodel <- "
             "
             
 # convert syntax and estimate model
-res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
 # inspect coefficients
 coef(res$mirt)
 mirt.wrapper.coef(res$mirt)
@@ -131,7 +131,7 @@ lavmodel <- "
      F ~~ 1*F     
             "
 # convert syntax and estimate model
-res <- lavaan2mirt( dat ,  lavmodel , est.mirt=FALSE)
+res <- sirt::lavaan2mirt( dat ,  lavmodel , est.mirt=FALSE)
 # converted mirt model
 cat(res$mirt.syntax)
 # mirt parameter table
@@ -152,7 +152,7 @@ lavmodel <- "
      B ~~ 1*B
      C ~~ 1*C      
             "           
-res <- lavaan2mirt( dat ,  lavmodel , est.mirt=FALSE )
+res <- sirt::lavaan2mirt( dat ,  lavmodel , est.mirt=FALSE )
 # mirt syntax and mirt model
 cat(res$mirt.syntax)
 res$mirt.model
@@ -181,7 +181,7 @@ lavmodel <- "
      # estimate mean of B
      B ~ 1
             "           
-res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
 # estimated parameters
 mirt.wrapper.coef(res$mirt)
 # generated mirt syntax
@@ -209,7 +209,7 @@ lavmodel <- "
      A ~ .5*1       # set mean of A to .5
      B ~ 1          # estimate mean of B
             "   
-res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
 mirt.wrapper.coef(res$mirt)
 
 #******************
@@ -233,7 +233,7 @@ lavmodel <- "
      F ~~ 1*F   # fix variance of F
             "
 # convert syntax and estimate model
-res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
 # coefficients
 mirt.wrapper.coef(res$mirt)
 # converted mirt model
@@ -254,7 +254,7 @@ lavmodel <- "
      F ~~ F
             "
 # convert syntax and estimate model
-res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=20) )
+res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=20) )
 # inspect coefficients
 mirt.wrapper.coef(res$mirt)
 # converted mirt model
@@ -282,7 +282,7 @@ lavmodel <- "
      F2 ~ 0*1
             "
 # convert syntax and estimate model
-res <- lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=20) )
+res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=20) )
 # inspect coefficients
 mirt.wrapper.coef(res$mirt)
 # converted mirt model
@@ -301,7 +301,7 @@ itemnr <- as.numeric( substring( colnames(dat) ,2,2) )
 # fix mean at T2 to zero
 mu.fixed <- cbind( 2,0 )
 # estimate model in smirt
-mod1 <- smirt(dat, Qmatrix=Q , irtmodel="comp" , est.b= itemnr, mu.fixed=mu.fixed )
+mod1 <- sirt::smirt(dat, Qmatrix=Q , irtmodel="comp" , est.b= itemnr, mu.fixed=mu.fixed )
 summary(mod1)
 
 #############################################################################
@@ -324,7 +324,7 @@ lavmodel <- "
       O ~~ O
          "    
 # estimate model in mirt
-res <- lavaan2mirt( dat , lavmodel , technical=list(NCYCLES=20) , verbose=TRUE)
+res <- sirt::lavaan2mirt( dat , lavmodel , technical=list(NCYCLES=20) , verbose=TRUE)
 # estimated mirt model
 mres <- res$mirt
 # mirt syntax
@@ -339,7 +339,7 @@ plot(mres)   # item information
 plot(mres,type="trace")  # item category functions
 
 # graded response model with equal slopes
-res1 <- lavaan2mirt( dat, lavmodel, poly.itemtype="graded", technical=list(NCYCLES=20),
+res1 <- sirt::lavaan2mirt( dat, lavmodel, poly.itemtype="graded", technical=list(NCYCLES=20),
               verbose=TRUE )
 mirt.wrapper.coef(res1$mirt) 
 
@@ -357,7 +357,7 @@ lavmodel <- "
       O28 | (-0.5)*t1
          "             
 # estimate model in mirt
-res <- lavaan2mirt( dat , lavmodel , technical=list(NCYCLES=5) , verbose=TRUE)
+res <- sirt::lavaan2mirt( dat , lavmodel , technical=list(NCYCLES=5) , verbose=TRUE)
 # estimated mirt model
 mres <- res$mirt
 # estimated parameters

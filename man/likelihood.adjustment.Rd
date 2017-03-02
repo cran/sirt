@@ -118,7 +118,7 @@ summary(mod1)
 
 #*** Model 2: fit Rasch copula model
 testlets <- substring( colnames(dat) , 1 , 1 )
-mod2 <- rasch.copula2( dat , itemcluster=testlets , theta.k=theta.k)
+mod2 <- sirt::rasch.copula2( dat , itemcluster=testlets , theta.k=theta.k)
 summary(mod2)
 
 # model comparison
@@ -135,7 +135,7 @@ vif <- (1-rel2) / (1-rel1)
 # extract individual likelihood
 like1 <- IRT.likelihood( mod1 )
 # adjust likelihood from Model 1 to obtain a target EAP reliability of .599
-like1b <- likelihood.adjustment( like1 , target.EAP.rel = .599 )
+like1b <- sirt::likelihood.adjustment( like1 , target.EAP.rel = .599 )
 
 # compare estimated latent regressions
 lmod1a <- TAM::tam.latreg( like1 , Y = NULL )

@@ -5,18 +5,18 @@
 mlnormal_postproc_parameters <- function( theta , theta_init ,
 		beta , beta_init , theta_infomat , XVX , level , prior_args ){ 
 	
-	theta_names <- base::names(theta_init)
-	beta_names <- base::names(beta_init)	
+	theta_names <- names(theta_init)
+	beta_names <- names(beta_init)	
 	
 	theta <- mlnormal_as_vector_names(pars = theta , parnames = theta_names	)
 	beta <- mlnormal_as_vector_names(pars = beta , parnames = beta_names )
-	NB <- base::length(beta)
-	NT <- base::length(theta)
+	NB <- length(beta)
+	NT <- length(theta)
 	
-	theta_vcov <- base::solve(theta_infomat)
-	base::rownames(theta_vcov) <- base::colnames(theta_vcov) <- theta_names
+	theta_vcov <- solve(theta_infomat)
+	rownames(theta_vcov) <- colnames(theta_vcov) <- theta_names
 													
-	theta_summary <- base::data.frame(
+	theta_summary <- data.frame(
 						"parm" = theta_names ,
 						"prior" = NA , 
 						"penalty" = NA , 
@@ -24,8 +24,8 @@ mlnormal_postproc_parameters <- function( theta , theta_init ,
 						"se" = mlnormal_sqrt_diag(matr=theta_vcov) )
     theta_summary <- parmsummary_extend( dfr = theta_summary , level = level )
 	
-	beta_vcov <- base::solve(XVX)
-	beta_summary <- base::data.frame(
+	beta_vcov <- solve(XVX)
+	beta_summary <- data.frame(
 						"parm" = beta_names ,
 						"prior" = NA , 	
 						"penalty" = NA , 						
@@ -34,7 +34,7 @@ mlnormal_postproc_parameters <- function( theta , theta_init ,
     beta_summary <- parmsummary_extend( dfr = beta_summary , level = level )
 
 	if ( prior_args$use_prior ){
-		dens <- base::paste0(prior_args$dens$prior)
+		dens <- paste0(prior_args$dens$prior)
 		beta_summary$prior <- dens[ 1:NB ]
 		theta_summary$prior <- dens[ NB + 1:NT ]
 	} else {
@@ -52,21 +52,21 @@ mlnormal_postproc_parameters <- function( theta , theta_init ,
 	}	
 	
 	#--- collect output
-	coefs <- base::c( beta , theta )
+	coefs <- c( beta , theta )
 		
 	NP <- NB + NT
-	parnames <- base::c( beta_names , theta_names )
-	base::names(coefs) <- parnames
-	vcovs <- base::matrix( 0 , nrow=NP , ncol=NP)
-	base::rownames(vcovs) <- base::colnames(vcovs) <- parnames 
+	parnames <- c( beta_names , theta_names )
+	names(coefs) <- parnames
+	vcovs <- matrix( 0 , nrow=NP , ncol=NP)
+	rownames(vcovs) <- colnames(vcovs) <- parnames 
 	vcovs[ 1:NB , 1:NB ] <- beta_vcov
 	vcovs[ NB + 1:NT , NB + 1:NT ] <- theta_vcov
 		
 	#---------------------------------
 	# OUTPUT
-	res <- base::list( beta = beta , theta = theta , beta_summary = beta_summary ,
+	res <- list( beta = beta , theta = theta , beta_summary = beta_summary ,
 				theta_summary = theta_summary , beta_vcov = beta_vcov ,
 				theta_vcov = theta_vcov , coefs = coefs , vcovs = vcovs)
-	base::return(res)	
+	return(res)	
 }
 ####################################################################

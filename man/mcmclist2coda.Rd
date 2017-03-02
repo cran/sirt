@@ -53,7 +53,7 @@ Alexander Robitzsch
 
 data(data.read)
 # estimate 2PNO with MCMC with 3000 iterations and 500 burn-in iterations
-mod <- mcmc.2pno( dat=data.read , iter=3000 , burnin=500 )
+mod <- sirt::mcmc.2pno( dat=data.read , iter=3000 , burnin=500 )
 # plot MCMC chains
 plot( mod$mcmcobj , ask=TRUE )
 # write sampled chains into codafile

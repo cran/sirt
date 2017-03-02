@@ -62,7 +62,7 @@ tracemat(A)
 set.seed(86)
 A <- matrix( stats::runif(4) , 2 ,2 )
 tracemat(A)
-sum(diag(A))	# = tracemat(A)
+sum(diag(A))	# = sirt::tracemat(A)
 
 #############################################################################
 ## EXAMPLE 2: Power function
@@ -71,17 +71,17 @@ sum(diag(A))	# = tracemat(A)
 x <- 2.3
 a <- 1.7
 pow(x=x,a=a)
-x^a			# = pow(x,a)
+x^a			# = sirt::pow(x,a)
 
 #############################################################################
 ## EXAMPLE 3: Soft and hard thresholding function (e.g. in LASSO estimation)
 #############################################################################
 
 x <- seq( -2 , 2 , length=100 )
-y <- soft_thresholding( x , lambda = .5)
+y <- sirt::soft_thresholding( x , lambda = .5)
 graphics::plot( x , y , type="l")
 
-z <- hard_thresholding( x , lambda = .5)
+z <- sirt::hard_thresholding( x , lambda = .5)
 graphics::lines( x , z , lty=2 , col=2)
 
 #############################################################################

@@ -65,7 +65,7 @@ dat1 <- dat[ , c( "idstud" , items ) ]
 X <- dat[ , c("idschool" , "hisei" , "female" , "migra") ]
 
 # create dataset in long format
-dat.long <- data.wide2long( dat=dat1 , id="idstud" , X=X , Q=Q )
+dat.long <- sirt::data.wide2long( dat=dat1 , id="idstud" , X=X , Q=Q )
 
 #***
 # Model 1: Rasch model
@@ -94,7 +94,7 @@ N <- 1000  # number of persons
 I <- 10    # number of items
 b <- seq(-2,2,length=I)
 dat <- sirt::sim.raschtype( stats::rnorm(N,sd=1.2) , b=b )
-dat.long <- data.wide2long( dat=dat )
+dat.long <- sirt::data.wide2long( dat=dat )
 #***
 # estimate Rasch model with lmer
 library(lme4)

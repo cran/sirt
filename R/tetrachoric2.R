@@ -49,17 +49,15 @@ tetrachoric2 <- function( dat , method="Ol" ,  delta=.007 , maxit = 1000000 ,
 			dfr$pmin <- ifelse( dfr$pi1 < dfr$pi2 , dfr$pi1 , dfr$pi2 )
 			dfr$c <- ( 1 - abs( dfr$pi1 - dfr$pi2 ) / 5 - ( 0.5 - dfr$pmin)^2  ) / 2
 			dfr$omega <- ( dfr$f00 * dfr$f11 ) / ( dfr$f01 * dfr$f10)
-			dfr$r0 <- base::cos( pi / ( 1 + dfr$omega^( dfr$c )  ) )
+			dfr$r0 <- cos( pi / ( 1 + dfr$omega^( dfr$c )  ) )
 						}
 		#*****
 		# method of Divgi
 		if ( method == "Di"){	
 			dfr2 <- as.matrix(dfr)
 			numdiffparm <- .000001
-			maxiter <- 100
-	#		dfr$r0 <- tetrachoric2_rcpp_aux( dfr2 , numdiffparm , maxiter )	
-			dfr$r0 <- .Call("tetrachoric2_rcpp_aux" ,
-						   dfr2 , numdiffparm , maxiter , PACKAGE="sirt" )	
+			maxiter <- 100	
+			dfr$r0 <- tetrachoric2_rcpp_aux(  dfr2 , numdiffparm , maxiter )	
 				}					
 		#******************	
 		# method of Tucker

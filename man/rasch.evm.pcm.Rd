@@ -132,7 +132,7 @@ data(data.liking.science)
 dat <- data.liking.science
 
 # estimate partial credit model using 10 Jackknife units
-mod1 <- rasch.evm.pcm( dat , jackunits=10 )
+mod1 <- sirt::rasch.evm.pcm( dat , jackunits=10 )
 summary(mod1)
 
 \dontrun{
@@ -177,7 +177,7 @@ dat <- matrix( dat , 10 , 4 , byrow=TRUE)
 colnames(dat) <- paste0("I" , 1:4 )
 
 # estimate Rasch model with no jackknifing
-mod1 <- rasch.evm.pcm( dat , jackunits=0 )
+mod1 <- sirt::rasch.evm.pcm( dat , jackunits=0 )
 
 # paired comparison matrix
 mod1$B
@@ -199,7 +199,7 @@ dat <- matrix( dat , 10 , 5 , byrow=TRUE)
 colnames(dat) <- paste0("I" , 1:5 )
 
 # estimate partial credit model with no jackknifing
-mod1 <- rasch.evm.pcm( dat , jackunits=0 , powB=3 )
+mod1 <- sirt::rasch.evm.pcm( dat , jackunits=0 , powB=3 )
 
 # paired comparison matrix
 mod1$B
@@ -224,7 +224,7 @@ data(data.mg,package="CDM")
 dat <- data.mg[ , paste0("I",1:11) ]
 
 #*** Model 1: estimate partial credit model
-mod1 <- rasch.evm.pcm( dat )
+mod1 <- sirt::rasch.evm.pcm( dat )
 # item parameters
 round( mod1$b , 3 )
   ##        Cat1   Cat2  Cat3
@@ -259,7 +259,7 @@ dat <- data.mg[ data.mg$group \%in\% c(2,3,11) , ]
 # define items
 items <- paste0("I",1:11)
 # estimate model
-mod1 <- rasch.evm.pcm( dat[,items] , weights= dat$weight , group= dat$group )
+mod1 <- sirt::rasch.evm.pcm( dat[,items] , weights= dat$weight , group= dat$group )
 summary(mod1)
 
 #############################################################################
@@ -272,15 +272,15 @@ N <- 1000	# number of persons
 I <- 10		# number of items
 # simulate data for first group
 b <- seq(-1.5,1.5,len=I)
-dat1 <- sim.raschtype( stats::rnorm(N) , b )
+dat1 <- sirt::sim.raschtype( stats::rnorm(N) , b )
 # simulate data for second group
 b1 <- b
 b1[4] <- b1[4] + .5 # introduce DIF for fourth item
-dat2 <- sim.raschtype( stats::rnorm(N,mean=.3) , b1 )
+dat2 <- sirt::sim.raschtype( stats::rnorm(N,mean=.3) , b1 )
 dat <- rbind(dat1 , dat2 )
 group <- rep( 1:2 , each=N )
 # estimate model
-mod1 <- rasch.evm.pcm( dat , group= group )
+mod1 <- sirt::rasch.evm.pcm( dat , group= group )
 summary(mod1)
 }
 }

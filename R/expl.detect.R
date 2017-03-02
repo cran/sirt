@@ -4,8 +4,8 @@
 # Exploratory DETECT analysis
 expl.detect <- function( data , score , nclusters , N.est = NULL , seed=NULL , 
 		bwscale = 1.1 ){
-	if ( ! base::is.null(seed) ){
-		base::set.seed(seed)
+	if ( ! is.null(seed) ){
+		set.seed(seed)
 	}
     # number of items
     I <- ncol(data)

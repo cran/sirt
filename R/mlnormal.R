@@ -14,8 +14,8 @@ mlnormal <- function( y , X , id , Z_list , Z_index , beta=NULL , theta ,
 {
 
 	#*** preliminaries	
-	CALL <- base::match.call()
-	s1 <- base::Sys.time()
+	CALL <- match.call()
+	s1 <- Sys.time()
 	disp <- mlnormal_create_disp( symbol="." , length=60 , line_break = TRUE )
 
 zz0 <- Sys.time()		
@@ -62,7 +62,7 @@ zz0 <- Sys.time()
 	control_theta <- res$control_theta
 	
 	#*** some information about method
-	V1zero <- if (REML){ base::matrix(0, nrow=N, ncol=N) } else {NULL}
+	V1zero <- if (REML){ matrix(0, nrow=N, ncol=N) } else {NULL}
 		
 	#*** convert prior if necessary		
 	res <- mlnormal_process_prior( prior=prior , beta=beta , theta=theta ,
@@ -162,8 +162,8 @@ zz0 <- Sys.time()
 #  cat("* compute likelihood value ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1										
 			
 		#** convergence criteria
-		conv_temp <- base::max( beta_change , theta_change )
-		globconv_temp <- base::abs( objfun - objfun0 )
+		conv_temp <- max( beta_change , theta_change )
+		globconv_temp <- abs( objfun - objfun0 )
 		
 		# print progress	
 		res <- mlnormal_verbose_f2(verbose=verbose, disp=disp, iter=iter, 
@@ -184,9 +184,9 @@ zz0 <- Sys.time()
 	# extract information matrix for restricted maximum likelihood estimation
 	if (REML_shortcut & REML & vcov ){
         if (verbose){		
-		    base::cat(disp)
-	        base::cat("Compute standard errors   " , 
-		              base::paste( base::Sys.time() ) , "\n" )
+		    cat(disp)
+	        cat("Compute standard errors   " , 
+		              paste( Sys.time() ) , "\n" )
 			utils::flush.console()						
 		}	
 		res <- mlnormal_update_beta( NB=NB , Z_index = Z_index , G=G , beta=beta , 
@@ -235,8 +235,8 @@ zz0 <- Sys.time()
 	
 	#******************************************
 	#***** OUTPUT  ****************************	
-	s2 <- base::Sys.time()
-	res <- base::list( theta = theta , beta = beta ,
+	s2 <- Sys.time()
+	res <- list( theta = theta , beta = beta ,
 				theta_summary = theta_summary , 
 				beta_summary = beta_summary , 
 				coef = coefs , vcov = vcovs , 					
@@ -250,7 +250,7 @@ zz0 <- Sys.time()
 				converged = converged , iter = iter-1 , 
 				CALL = CALL , s1 = s1 , s2 = s2	, diff_time = s2-s1	
 					)
-	base::class(res) <- "mlnormal"
-	base::return(res)
+	class(res) <- "mlnormal"
+	return(res)
 }
 #########################################################################

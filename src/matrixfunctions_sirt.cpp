@@ -1,17 +1,10 @@
 
 
-// includes from the plugin
 
+// [[Rcpp::depends(RcppArmadillo)]]
+
+#include <RcppArmadillo.h>
 #include <Rcpp.h>
-
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
 
 using namespace Rcpp;
 
@@ -24,27 +17,18 @@ using namespace Rcpp;
 ////////////////////////////////////////////////////////////////////////
 //**********************************************************************
 
-// declarations
-extern "C" {
-SEXP interval_index_C( SEXP matr, SEXP rn) ;
-}
 
-// definition
 
-SEXP interval_index_C( SEXP matr, SEXP rn ){
-BEGIN_RCPP
-  
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericMatrix MATR(matr);  
-     Rcpp::NumericVector RN(rn) ;  
-     	// rn random number for plausible value imputation  
-       
+///********************************************************************
+///** interval_index_C
+// [[Rcpp::export]]
+Rcpp::NumericVector interval_index_C( Rcpp::NumericMatrix MATR, 
+	Rcpp::NumericVector RN ){
+
      int NR=MATR.nrow();  
-     int NC=MATR.ncol();  
-       
+     int NC=MATR.ncol();         
      // create output vectors  
-     NumericVector IND (NR) ;  
+     Rcpp::NumericVector IND (NR) ;  
      IND.fill(0);  
        
      for (int nn=0;nn<NR;++nn){  
@@ -58,10 +42,7 @@ BEGIN_RCPP
          
      ///////////////////////////////////////  
      /// OUTPUT                  
-     return( wrap(IND) );  
-     // return List::create(_["maxval"] = MAXVAL , _["maxind"]=MAXIND ) ;     
-     
-END_RCPP
+     return IND ;  
 }
 
 
@@ -74,30 +55,25 @@ END_RCPP
 //**********************************************************************
 
 
-// declarations
-extern "C" {
-SEXP rowCumsums2_source( SEXP matr) ;
-}
 
-// definition
 
 //# The C code was posted by Romain Francois at
 //# http://lists.r-forge.r-project.org/pipermail/rcpp-devel/2010-October/001198.html
 
-SEXP rowCumsums2_source( SEXP matr ){
-BEGIN_RCPP
-     NumericMatrix input( matr ) ;  
-          NumericMatrix output  = clone<NumericMatrix>( input ) ;  
-       
-          int nr = input.nrow(), nc = input.ncol() ;  
-          NumericVector tmp( nr );  
+///********************************************************************
+///** rowCumsums2_source
+// [[Rcpp::export]]
+Rcpp::NumericMatrix rowCumsums2_source( Rcpp::NumericMatrix input ){
+     Rcpp::NumericMatrix output  = Rcpp::clone<Rcpp::NumericMatrix>( input ) ;  
+     int nr = input.nrow();
+     int nc = input.ncol() ;  
+     Rcpp::NumericVector tmp( nr );  
           for( int i=0; i<nc; i++){  
               tmp = tmp + input.column(i) ;  
-              NumericMatrix::Column target( output, i ) ;  
+              Rcpp::NumericMatrix::Column target( output, i ) ;  
               std::copy( tmp.begin(), tmp.end(), target.begin() ) ;  
           }  
-          return output ;
-END_RCPP
+      return output ;
 }
 
 
@@ -111,23 +87,13 @@ END_RCPP
 
 
 
-// declarations
-extern "C" {
-SEXP rowKSmallest_C( SEXP matr, SEXP K, SEXP indexmatr, SEXP rnmatr) ;
-}
-
-// definition
-
-SEXP rowKSmallest_C( SEXP matr, SEXP K, SEXP indexmatr, SEXP rnmatr ){
-BEGIN_RCPP
+///********************************************************************
+///** rowKSmallest_C
+// [[Rcpp::export]]
+Rcpp::List rowKSmallest_C( Rcpp::NumericMatrix MATR, 
+	 Rcpp::IntegerVector KK1, Rcpp::NumericMatrix INDEXMATR, 
+	 Rcpp::NumericMatrix RNMATR ){
   
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericMatrix MATR(matr);  
-     Rcpp::IntegerVector KK1(K) ;   
-     Rcpp::NumericMatrix INDEXMATR(indexmatr);  
-     Rcpp::NumericMatrix RNMATR(rnmatr);  
-       
      // define row and column numbers  
      int NR=MATR.nrow();  
      int NC=MATR.ncol();  
@@ -137,8 +103,8 @@ BEGIN_RCPP
      Rcpp::NumericMatrix MATRK = Rcpp::clone(MATR);  
        
      // create output vectors  
-     NumericMatrix SMALLVAL (NR,KK) ;  
-     NumericMatrix SMALLIND (NR,KK) ;  
+     Rcpp::NumericMatrix SMALLVAL (NR,KK) ;  
+     Rcpp::NumericMatrix SMALLIND (NR,KK) ;  
      // SMALLIND.fill(1);  
        
      // int kk=0 ;  
@@ -167,13 +133,11 @@ BEGIN_RCPP
        }  // end for kk  
          
      ///////////////////////////////////////  
-     /// OUTPUT                  
-     // return( wrap(prob) );  
-     // return List::create(_["smallval"]=SMALLVAL , _["smallind"]=SMALLIND ,  
-     //	   _["matrk"]=MATRK  , _["indexmatr"]=INDEXMATR ) ;     
-      return List::create(_["smallval"]=SMALLVAL , _["smallind"]=SMALLIND ) ;     
-     
-END_RCPP
+     /// OUTPUT                       
+     return Rcpp::List::create(
+     	      Rcpp::_["smallval"]=SMALLVAL ,
+     	      Rcpp::_["smallind"]=SMALLIND 
+     	      ) ;     
 }
 
 
@@ -182,25 +146,18 @@ END_RCPP
 /// rowMaxsCPP_source
 ////////////////////////////////////////////////////////////////////////
 //**********************************************************************
-// declarations
-extern "C" {
-SEXP rowMaxsCPP_source( SEXP matr) ;
-}
 
-// definition
-
-SEXP rowMaxsCPP_source( SEXP matr ){
-BEGIN_RCPP
-  
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericMatrix MATR(matr);  
+///********************************************************************
+///** rowMaxsCPP_source
+// [[Rcpp::export]]
+Rcpp::List rowMaxsCPP_source(Rcpp::NumericMatrix MATR ){
+   
      int NR=MATR.nrow();  
      int NC=MATR.ncol();  
        
      // create output vectors  
-     NumericVector MAXVAL (NR) ;  
-     NumericVector MAXIND (NR) ;  
+     Rcpp::NumericVector MAXVAL (NR) ;  
+     Rcpp::NumericVector MAXIND (NR) ;  
      MAXIND.fill(1);  
        
      for (int nn=0;nn<NR;++nn){  
@@ -216,32 +173,23 @@ BEGIN_RCPP
      ///////////////////////////////////////  
      /// OUTPUT                  
      // return( wrap(prob) );  
-     return List::create(_["maxval"] = MAXVAL , _["maxind"]=MAXIND ) ;     
-     
-END_RCPP
+     return Rcpp::List::create(
+     	     	Rcpp::_["maxval"] = MAXVAL , 
+     	     	Rcpp::_["maxind"] = MAXIND ) ;     
+
 }
 
 
 //*******************************************
 // auxiliary function: calculation of probabilities in Copula model
 
-// declarations
-extern "C" {
-SEXP rowmins2_bundle_C( SEXP m1_, SEXP v1_) ;
-}
 
-// definition
+///********************************************************************
+///** rowmins2_bundle_C
+// [[Rcpp::export]]
+Rcpp::NumericMatrix rowmins2_bundle_C( Rcpp::NumericMatrix m1, 
+	Rcpp::NumericVector v1 ){
 
-SEXP rowmins2_bundle_C( SEXP m1_, SEXP v1_ ){
-BEGIN_RCPP
-  
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericMatrix m1(m1_);  
-     Rcpp::NumericVector v1(v1_) ;  
-       
-       
-     //	L1 <- length(v1)  
      int L1= v1.size();  
      int N1=m1.nrow() ;  
        
@@ -260,8 +208,7 @@ BEGIN_RCPP
      		v1min(ll+1,0) = t1 + 1 ;  
      			}  
      	}  
-       
-       
+              
      //	m1min[ , which(v1==1)] <- m1[ , v1min[ v1 == 1 ] ]  
      //	for (ll in (1:L1)[ v1 > 1] ){  
      //				m1min[,ll] <- rowMins2( m1[ , v1min[ll]:v1max[ll] ] )  
@@ -291,39 +238,20 @@ BEGIN_RCPP
      	  
      } // end ll  
                
-     return( wrap( m1min ) ) ;  
-       
-     ///////////////////////////////////////  
-     /// OUTPUT                  
-       
-     // return List::create(  
-     // _["v1min"] = v1min , _["m1min"] = m1min  
-     //	) ;  
-     //	   _["matrk"]=MATRK  , _["indexmatr"]=INDEXMATR ) ;     
-     // return List::create(_["yM"]=YM , _["wM"]=WM ) ;     
-     
-END_RCPP
+     return m1min  ;  
 }
 
 
 ///************************************
 // auxiliary function Copula model
 
-// declarations
-extern "C" {
-SEXP calc_copula_itemcluster_C( SEXP D_, SEXP res_) ;
-}
 
-// definition
-
-SEXP calc_copula_itemcluster_C( SEXP D_, SEXP res_ ){
-BEGIN_RCPP
-  
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericVector DD(D_) ;  
-     Rcpp::NumericMatrix res(res_) ;  
-       
+///********************************************************************
+///** calc_copula_itemcluster_C
+// [[Rcpp::export]]
+Rcpp::List calc_copula_itemcluster_C( Rcpp::NumericVector DD , 
+	Rcpp::NumericMatrix res ){
+        
      int RR = res.nrow() ;  
      Rcpp::NumericMatrix matr(RR,RR) ;  
        
@@ -335,26 +263,20 @@ BEGIN_RCPP
      Rcpp::NumericVector rowsums_res(RR) ;  
      Rcpp::NumericVector g1_rr(RR) ;  
        
-     // pattern in res  
-       
+     // pattern in res         
      //    0 0 0 1   numerical value 2^0  
      //    0 0 1 0   numerical value 2^1  
      //    0 1 0 0   numerical value 2^2  
      //    1 0 0 0   numerical value 2^3   
      Rcpp::NumericVector res_patt(RR) ;  
-       
-       
+              
      // for (int rr1=0;rr1<RR;rr1++){  
      // res_patt[rr1] = 0 ;  
      // for (int cc=0;cc<D;cc++){  
      //	res_patt[rr1] = res_patt[rr1] + res(rr1 , cc) * pow( 2 , D - cc - 1) ;   
      //	}  
-     // }  
-     	  
+     // }       	  
      //        g1.rr <- ( (-1)^rowSums( res ))  
-       
-       
-       
      for (int ii=0;ii<RR;ii++){  
         t1 = 0 ;  
         for ( int cc=0;cc<D ; cc++){  
@@ -390,18 +312,11 @@ BEGIN_RCPP
            	      matr( rr , res_patt[zz] ) = g1_rr[zz] ;      	       
            	      		}			  
      		}  
-       
-     //        g1.rr <- ( (-1)^rowSums( res ))  
-       
       }    
-       
-               
-     // return( wrap( matr ) ) ;  
        
      ///////////////////////////////////////  
      /// OUTPUT                  
-       
-      return List::create(  
+      return Rcpp::List::create(  
       Rcpp::_["D"] = D , 
       Rcpp::_["res"] = res , 
       Rcpp::_["matr"] = matr , 
@@ -410,10 +325,6 @@ BEGIN_RCPP
       Rcpp::_["g1_rr"] = g1_rr , 
       Rcpp::_["res_patt"] = res_patt	
               ) ;  
-     //	   _["matrk"]=MATRK  , _["indexmatr"]=INDEXMATR ) ;     
-     // return List::create(_["yM"]=YM , _["wM"]=WM ) ;     
-     
-END_RCPP
 }
 //********************************************************************
 //********************************************************************
@@ -427,17 +338,13 @@ END_RCPP
 //********************************************************************
 //********************************************************************
 //********************************************************************
-// declarations
-extern "C" {
-SEXP md_pattern_csource( SEXP dat_) ;
-}
 
-// definition
 
-SEXP md_pattern_csource( SEXP dat_ ){
-BEGIN_RCPP
-         
-     Rcpp::NumericMatrix dat(dat_);                        
+///********************************************************************
+///** md_pattern_csource
+// [[Rcpp::export]]
+Rcpp::List md_pattern_csource( Rcpp::NumericMatrix dat ){
+                         
      int I = dat.ncol();   
      int N = dat.nrow();  
      Rcpp::NumericMatrix dat_ind1(N,I) ;  
@@ -496,7 +403,6 @@ BEGIN_RCPP
          Rcpp::_["freq0"] = freq0  
             		) ;  
      
-END_RCPP
 }
 //********************************************************************
 //********************************************************************
@@ -511,26 +417,19 @@ END_RCPP
 //********************************************************************
 //********************************************************************
 //********************************************************************
-// declarations
-extern "C" {
-SEXP monoreg_rowwise_Cpp( SEXP yM, SEXP wM) ;
-}
 
-// definition
 
-SEXP monoreg_rowwise_Cpp( SEXP yM, SEXP wM ){
-BEGIN_RCPP
+///********************************************************************
+///** md_pattern_csource
+// [[Rcpp::export]]
+Rcpp::NumericMatrix monoreg_rowwise_Cpp( Rcpp::NumericMatrix YM, 
+	Rcpp::NumericMatrix WM ){
   
      //********************************************  
-     // Adapted code from monoreg function  
+     // Adapted code from fdrtool::monoreg function  
      // contained in the fdrtool package  
      // original author: Korbinian Strimmer  
      //********************************************  
-       
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericMatrix YM(yM);  
-     Rcpp::NumericMatrix WM(wM) ;   
        
      // define row and column numbers  
      int NR=YM.nrow();  
@@ -538,9 +437,9 @@ BEGIN_RCPP
      int nn=NC ;  
        
      // create output ghat matrix  
-     NumericMatrix ghat (NR,NC) ;  
-     NumericMatrix k (NR,NC) ;  
-     NumericMatrix gew (NR,NC) ;  
+     Rcpp::NumericMatrix ghat (NR,NC) ;  
+     Rcpp::NumericMatrix k (NR,NC) ;  
+     Rcpp::NumericMatrix gew (NR,NC) ;  
               
      double neu ;  
      int zz ;   
@@ -583,9 +482,8 @@ BEGIN_RCPP
          
      ///////////////////////////////////////  
      /// OUTPUT                  
-     return( wrap(ghat) );  
+     return ghat ;  
                
-END_RCPP
 }
 //********************************************************************
 //********************************************************************

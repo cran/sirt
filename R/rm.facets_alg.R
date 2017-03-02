@@ -17,7 +17,7 @@ rm.facets.itempar.expanded <- function( b.item , b.rater , Qmatrix , tau.item ,
 ################################################
 # calculation of the likelihood
 rm_calclike <- function (dat2,dat2resp,probs,K){ 
-	.Call("RM_CALCPOST", dat2,dat2resp,probs,K, PACKAGE = "sirt")
+	RM_CALCPOST( dat2,dat2resp,probs,K)
 					}
 
 ########################################################
@@ -83,11 +83,10 @@ sumtau <- function(tau.item){
 #	probs <- rm_facets_calcprobs_cpp( b.item , b.rater ,Qmatrix , tau.item ,
 #         K , I , TP , a.item , a.rater , item.index-1 , rater.index -1 ,
 #         theta.k )
-	probs <- .Call("rm_facets_calcprobs_cpp", 
+	probs <- rm_facets_calcprobs_cpp(
 				b.item , b.rater ,Qmatrix , tau.item ,
 				K , I , TP , a.item , a.rater , item.index-1 , rater.index -1 ,
-				theta.k  , 
-				PACKAGE = "sirt")		 
+				theta.k  )		 
 	probs <- array( probs , dim=c(I , K+1 , TP ) )
 	return(probs)
 	  }

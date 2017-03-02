@@ -38,3 +38,7 @@ The \code{testlet.yen.q3} function has been replaced by
 The \code{yen.q3} function has been replaced by
 \code{\link{Q3}}.
 }
+
+% \examples{
+% #############################################################################
+% }

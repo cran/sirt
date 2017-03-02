@@ -1,5 +1,5 @@
 
 mlnormal_log_2pi <- function()
 {
-	base::return( base::log( 2 * base::pi ) )
+	return( log( 2 * pi ) )
 }

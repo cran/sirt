@@ -5,21 +5,21 @@ mlnormal_proc_variance_shortcut <- function( id , y , X , Z_list ,
 		Z_index , use_Rcpp , G ){
 zz0 <- Sys.time()		
 		#*** group sizes
-		freq_id <- base::rowsum( 1+0*id , id )
-		freq_id <- base::data.frame( 
-						base::as.numeric( base::rownames(freq_id ) ) , 
+		freq_id <- rowsum( 1+0*id , id )
+		freq_id <- data.frame( 
+						as.numeric( rownames(freq_id ) ) , 
 						freq_id[,1] )
-		base::colnames(freq_id) <- base::c("orig_id","dim_id")		
-		freq_id$start_orig <-  1 + base::c(0 , 
-								base::cumsum( freq_id[1:(G-1) , "dim_id"] ) )
-		freq_id$end_orig <-  base::cumsum( freq_id[1:G , "dim_id"] )		
-		freq_id <- freq_id[ base::order( freq_id[,2] ) , ]
+		colnames(freq_id) <- c("orig_id","dim_id")		
+		freq_id$start_orig <-  1 + c(0 , 
+								cumsum( freq_id[1:(G-1) , "dim_id"] ) )
+		freq_id$end_orig <-  cumsum( freq_id[1:G , "dim_id"] )		
+		freq_id <- freq_id[ order( freq_id[,2] ) , ]
 		
-		G <- base::nrow(freq_id)
+		G <- nrow(freq_id)
 		freq_id$id <- 1:G
-		freq_id$update_dim <- base::c( 1,1 * ( base::diff(freq_id$dim_id) > 0 ) )
-		freq_id$start <-  1 + base::c(0 , base::cumsum( freq_id[1:(G-1) , "dim_id"] ) )
-		freq_id$end <-  base::cumsum( freq_id[1:G , "dim_id"] )
+		freq_id$update_dim <- c( 1,1 * ( diff(freq_id$dim_id) > 0 ) )
+		freq_id$start <-  1 + c(0 , cumsum( freq_id[1:(G-1) , "dim_id"] ) )
+		freq_id$end <-  cumsum( freq_id[1:G , "dim_id"] )
 				
 # cat("##### create freq_id") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1
  
@@ -42,7 +42,7 @@ zz0 <- Sys.time()
 		#--- do compute vector
 		do_compute <- freq_id$update_dim == 1		
 		if ( use_Rcpp ){
-			rcpp_args$do_compute <- base::as.integer( do_compute )
+			rcpp_args$do_compute <- as.integer( do_compute )
 		}
 		
 		#---------------------------------------
@@ -66,13 +66,13 @@ zz0 <- Sys.time()
 		X <- res$X		
 # cat("##### rearrange X and y") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1											
  
-		id <- base::rep( 1:G , freq_id$dim_id )				
+		id <- rep( 1:G , freq_id$dim_id )				
  
 		#---------------------------------------
 		#---------- output
-		res <- base::list( id = id , y = y , X = X , Z_list = Z_list ,
+		res <- list( id = id , y = y , X = X , Z_list = Z_list ,
 					Z_index = Z_index , freq_id = freq_id , do_compute = do_compute ,
 					rcpp_args = rcpp_args )
-		base::return(res)
+		return(res)
 }
 #############################################################################

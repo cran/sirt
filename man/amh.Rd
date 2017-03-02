@@ -250,7 +250,7 @@ prior_model2 <- "
    rho ~ dunif(x=NA,-1,1)
    "
 # convert string  
-prior2 <- prior_model_parse( prior_model2 )
+prior2 <- sirt::prior_model_parse( prior_model2 )
 prior2  # should be equal to prior
 
 #--- define log likelihood function for model to be fitted
@@ -280,7 +280,7 @@ pars_upper <- c( 10 , 10 , 1E100 , .999 )
 derivedPars <- list( "var1" = ~ I( sig1^2 ) , "d1" = ~ I( ( mu2 - mu1 ) / sig1 ) )
 
 #*** start Metropolis-Hastings sampling
-mod <- amh( data , nobs = data$n , pars=pars , model=model , 
+mod <- sirt::amh( data , nobs = data$n , pars=pars , model=model , 
           prior=prior , proposal_sd = proposal_sd ,
           n.iter = 1000 , n.burnin = 300 , derivedPars = derivedPars , 
           pars_lower = pars_lower , pars_upper = pars_upper )
@@ -322,7 +322,7 @@ summary(mod2)
 logLik(mod2)
 
 #*** compare results with penalized maximum likelihood estimation
-mod3 <- pmle( data=data , nobs= data$n , pars=pars , model = model ,  prior=prior , 
+mod3 <- sirt::pmle( data=data , nobs= data$n , pars=pars , model = model ,  prior=prior , 
             pars_lower = pars_lower , pars_upper = pars_upper , method = "L-BFGS-B" ,
             control=list( trace=TRUE )  )
 # model summaries
@@ -436,7 +436,7 @@ pars_lower <- c( -100 , -100 , .01 , -2 )
 pars_upper <- c( 100 , 100 , 100 , 2 )
 
 #*** sampling routine
-mod <- amh( data , nobs = N , pars , model ,  prior , proposal_sd ,
+mod <- sirt::amh( data , nobs = N , pars , model ,  prior , proposal_sd ,
         n.iter = 10000 , n.burnin = 2000 , n.sims = 5000 ,
         pars_lower = pars_lower , pars_upper = pars_upper )
 #-- S3 methods

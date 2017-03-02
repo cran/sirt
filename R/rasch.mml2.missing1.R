@@ -35,8 +35,7 @@
 	probs_ <- as.matrix( array( pjk , dim=c(I ,CC*TP) ) )
 	#     	// probs ( ii , cc , tt , gg ) =   
 	#     	// probs_C(ii ,  cc + tt*CC + gg * CC*TP ) 
-	m1 <- .Call( "probs_pcm_groups_C" , dat2 , dat2.resp , group_ , probs_ , CC , TP , 
-				package="sirt" )
+	m1 <- probs_pcm_groups_C( dat2 , dat2.resp , group_ , probs_ , CC , TP )
 	f.yi.qk <- m1$fyiqk	
 # cat("-- likelihood") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
 # likelihood purely written in R is much slower
@@ -44,9 +43,8 @@
 	# calculate expected counts
 	# SEXP calccounts_pcm_groups_C( SEXP dat_, SEXP dat_resp_, SEXP group_, SEXP fyiqk_, 
 	# 	SEXP pik_, SEXP CC_, SEXP weights_ ){
-	e1 <- .Call( "calccounts_pcm_groups_C" , 
-					dat2 , dat2.resp , group_, f.yi.qk , pi.k , CC , weights ,
-					package="sirt" )
+	e1 <- calccounts_pcm_groups_C( 
+					dat2 , dat2.resp , group_, f.yi.qk , pi.k , CC , weights )
 # cat("-- posterior and counts") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1							
 	e1$f.yi.qk <- f.yi.qk
 	v1 <- array( e1$nik , dim=c(I,CC,TP) )

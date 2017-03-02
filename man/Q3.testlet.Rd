@@ -52,19 +52,19 @@ For estimating all \eqn{Q_3} statistics between item pairs use
 data(data.read)
 
 # estimate the Rasch model
-mod <- rasch.mml2( data.read)
+mod <- sirt::rasch.mml2( data.read)
 mod$item
 
 # estmate WLEs
-mod.wle <- wle.rasch( dat = data.read , b = mod$item$b )
+mod.wle <- sirt::wle.rasch( dat = data.read , b = mod$item$b )
 
 # Yen's Q3 statistic
-mod.q3 <- Q3( dat = data.read , theta = mod.wle$theta , b = mod$item$b )
+mod.q3 <- sirt::Q3( dat = data.read , theta = mod.wle$theta , b = mod$item$b )
 
 # Yen's Q3 statistic with testlets
 items <- colnames(data.read)
 testlet.matrix <- cbind( substring(  items,1,1) , items )
-mod.testletq3 <- Q3.testlet( q3.res=mod.q3,testlet.matrix=testlet.matrix)
+mod.testletq3 <- sirt::Q3.testlet( q3.res=mod.q3,testlet.matrix=testlet.matrix)
 mod.testletq3
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

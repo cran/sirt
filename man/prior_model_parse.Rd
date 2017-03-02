@@ -60,7 +60,7 @@ prior_model <- "
       "
 
 #*** convert priors into a list  
-res <- prior_model_parse( prior_model )
+res <- sirt::prior_model_parse( prior_model )
 str(res)
   ##  List of 3
   ##   $ mu1 :List of 2

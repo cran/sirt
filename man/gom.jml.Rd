@@ -131,12 +131,12 @@ data( data.timss)
 dat <- data.timss$data[ , grep("M" , colnames(data.timss$data) ) ] 
 
 # 2 Classes (deterministic starting values)
-m2 <- gom.jml(dat,K=2 , maxiter=10 )
+m2 <- sirt::gom.jml(dat,K=2 , maxiter=10 )
 summary(m2)
 
 \dontrun{
 # 3 Classes with fixed seed and maximum number of iterations
-m3 <- gom.jml(dat,K=3 , maxiter=50,seed=89)
+m3 <- sirt::gom.jml(dat,K=3 , maxiter=50,seed=89)
 summary(m3) 
 }
 }

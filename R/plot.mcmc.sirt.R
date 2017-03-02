@@ -134,7 +134,7 @@ format.numb <- function( x , digits ){
     ybeg <- sapply(j, function(z) sum( x[ seq(1,(2*z+1)) ]) / (2*z+1) )
     yend <- sapply(rev(j), function(z) sum( x[ seq(N-2*z,N) ] ) / (2*z+1) )
     y[j+1] <- ybeg
-    y[ base::rev(N-j) ] <- yend
+    y[ rev(N-j) ] <- yend
   }
 
   y

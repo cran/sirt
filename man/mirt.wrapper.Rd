@@ -148,7 +148,7 @@ extractor functions.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 
 
-%% https://stuff.mit.edu/afs/sipb/project/r-project/arch/i386_rhel3/lib/R/doc/manual/R-exts.html
+
 
 \section{Examples for the \pkg{mirt} Package}{
 
@@ -233,7 +233,7 @@ mirt.wrapper.coef(mod1)$coef
 # extract parameter values in mirt
 mirt::mod2values(mod1)
 # extract posterior
-post1 <- mirt.wrapper.posterior(mod1)
+post1 <- sirt::mirt.wrapper.posterior(mod1)
 # extract item response functions
 probs1 <- IRT.irfprob( mod1 )
 str(probs1)
@@ -256,7 +256,7 @@ summary(mod2)
 coef(mod2)
 mirt.wrapper.coef(mod2)$coef
 # extract posterior
-post2 <- mirt.wrapper.posterior(mod2)
+post2 <- sirt::mirt.wrapper.posterior(mod2)
 
 #############################################################################
 # EXAMPLE 2: Extracting item parameters and posterior for differering 
@@ -279,7 +279,7 @@ print(mod1)
 coef(mod1)
 mirt.wrapper.coef(mod1)$coef
 # extract posterior
-post1 <- mirt.wrapper.posterior(mod1)
+post1 <- sirt::mirt.wrapper.posterior(mod1)
 
 #############################################################################
 # EXAMPLE 3: Multiple group model; simulated dataset from mirt package
@@ -371,11 +371,11 @@ lavmodel <- "
     A ~ .5*1                      # set mean of A to .5
     B ~ 1                         # estimate mean of B
     "
-res <- lavaan2mirt( dat , lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+res <- sirt::lavaan2mirt( dat , lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
 # estimated coefficients
 mirt.wrapper.coef(res$mirt)
 # extract factor scores
-fres <- mirt.wrapper.fscores(res$mirt)
+fres <- sirt::mirt.wrapper.fscores(res$mirt)
 # look at factor scores
 head( round(fres$person,2))
   ##     case    M EAP.Var1 SE.EAP.Var1 EAP.Var2 SE.EAP.Var2 EAP.Var3 SE.EAP.Var3 MLE.Var1

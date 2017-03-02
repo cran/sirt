@@ -77,11 +77,11 @@ dat <- data.read
 
 # define item cluster
 itemcluster <- rep( 1:3 , each = 4 )
-mod1 <- rasch.copula2( dat , itemcluster = itemcluster )
+mod1 <- sirt::rasch.copula2( dat , itemcluster = itemcluster )
 summary(mod1)
 
 # person parameter estimation under the Rasch copula model
-pmod1 <- person.parameter.rasch.copula(raschcopula.object = mod1 )
+pmod1 <- sirt::person.parameter.rasch.copula(raschcopula.object = mod1 )
 ## Mean percentage standard error inflation
 ##   missing.pattern Mperc.seinflat
 ## 1               1           6.35
@@ -107,15 +107,15 @@ itemcluster[ 10:12 ] <- 3
 rho <- c( .35 , .25 , .30 )
 
 # simulate data
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
 
 # estimate Rasch copula model 
-mod1 <- rasch.copula2( dat , itemcluster = itemcluster )
+mod1 <- sirt::rasch.copula2( dat , itemcluster = itemcluster )
 summary(mod1)
 
 # person parameter estimation under the Rasch copula model
-pmod1 <- person.parameter.rasch.copula(raschcopula.object = mod1 )
+pmod1 <- sirt::person.parameter.rasch.copula(raschcopula.object = mod1 )
   ## Mean percentage standard error inflation
   ##   missing.pattern Mperc.seinflat
   ## 1               1          10.48 

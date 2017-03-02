@@ -116,10 +116,10 @@ model <- function( pars , data ){
     var_ar <- pars["va"]
     var_state <- pars["vs"]
     a <- pars["b"]
-    Sigma <- starts_cov( W=W , var_trait=vt , var_ar=va , 
+    Sigma <- sirt::starts_cov( W=W , var_trait=vt , var_ar=va , 
                 var_state=vs , a=b )
     # evaluate log-likelihood
-    ll <- loglike_mvnorm( S = data$S , Sigma = Sigma , M = data$M , mu = mu ,
+    ll <- sirt::loglike_mvnorm( S = data$S , Sigma = Sigma , M = data$M , mu = mu ,
                 n = data$n , lambda = 1E-3)
     return(ll)
 }
@@ -149,7 +149,7 @@ prior_model <- "
     b ~ dbeta(NA, 4 , 4 )
         "
 #*** estimate model with 'sirt::amh' function		
-mod <- amh( data=data, nobs=data$n, pars=pars, model=model,  
+mod <- sirt::amh( data=data, nobs=data$n, pars=pars, model=model,  
             prior=prior_model, proposal_sd=proposal_sd, n.iter=n.iter, 
             n.burnin=n.burnin, pars_lower=pars_lower, pars_upper=pars_upper)
 #*** model summary

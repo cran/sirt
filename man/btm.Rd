@@ -118,29 +118,29 @@ dat$result[ dat$result == 2 ] <- 0     # code for victory of away team
 
 #********************
 # Model 1: Estimation with ties and home advantage
-mod1 <- btm( dat)
+mod1 <- sirt::btm( dat)
 summary(mod1)
 
 \dontrun{
 #********************
 # Model 2: Estimation with ties, no epsilon adjustment
-mod2 <- btm( dat , eps=0 , fix.eta=0)
+mod2 <- sirt::btm( dat , eps=0 , fix.eta=0)
 summary(mod2)
 
 #********************
 # Model 3: Some fixed abilities
 fix.theta <- c("Anhalt Dessau" = -1 )
-mod3 <- btm( dat , eps=0, fix.theta=fix.theta)
+mod3 <- sirt::btm( dat , eps=0, fix.theta=fix.theta)
 summary(mod3)
 
 #********************
 # Model 4: Ignoring ties, no home advantage effect
-mod4 <- btm( dat , ignore.ties=TRUE , fix.eta = 0)
+mod4 <- sirt::btm( dat , ignore.ties=TRUE , fix.eta = 0)
 summary(mod4)
 
 #********************
 # Model 5: Ignoring ties, no home advantage effect (JML approach -> eps=0)
-mod5 <- btm( dat , ignore.ties=TRUE , fix.eta = 0 , eps=0)
+mod5 <- sirt::btm( dat , ignore.ties=TRUE , fix.eta = 0 , eps=0)
 summary(mod5)
 
 #############################################################################
@@ -183,11 +183,11 @@ results[ results[,3] == "D" , 3] <- 1/2
 results[,3] <- as.numeric( results[,3] )
 
 # fit model ignoring draws
-mod1 <- btm( results , ignore.ties=TRUE , fix.eta = 0 , eps=0 )
+mod1 <- sirt::btm( results , ignore.ties=TRUE , fix.eta = 0 , eps=0 )
 summary(mod1)
 
 # fit model with draws
-mod2 <- btm( results , fix.eta = 0 , eps=0 )
+mod2 <- sirt::btm( results , fix.eta = 0 , eps=0 )
 summary(mod2)
 }
 }

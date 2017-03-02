@@ -100,13 +100,13 @@ data(data.read)
 library(psych)
 t0 <- psych::tetrachoric( data.read )$rho
 # Olsson method (maximum likelihood estimation)
-t1 <- tetrachoric2( data.read )$rho
+t1 <- sirt::tetrachoric2( data.read )$rho
 # Divgi method
-t2 <- tetrachoric2( data.read , method="Di"  )$rho
+t2 <- sirt::tetrachoric2( data.read , method="Di"  )$rho
 # Tucker method
-t3 <- tetrachoric2( data.read , method="Tu" )$rho
+t3 <- sirt::tetrachoric2( data.read , method="Tu" )$rho
 # Bonett method
-t4 <- tetrachoric2( data.read , method="Bo" )$rho
+t4 <- sirt::tetrachoric2( data.read , method="Bo" )$rho
 
 # maximum absolute deviation ML method
 max( abs( t0 - t1 ) )

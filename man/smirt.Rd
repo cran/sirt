@@ -325,17 +325,17 @@ colnames(dat) <- paste0("I",1:I)
 
 #***
 # Model 1: Noncompensatory 1PL model
-mod1 <- smirt(dat, Qmatrix=Q , maxiter=10 ) # change number of iterations
+mod1 <- sirt::smirt(dat, Qmatrix=Q , maxiter=10 ) # change number of iterations
 summary(mod1)
 
 \dontrun{
 #***
 # Model 2: Noncompensatory 2PL model
-mod2 <- smirt(dat,Qmatrix=Q , est.a="2PL" , maxiter=15 )
+mod2 <- sirt::smirt(dat,Qmatrix=Q , est.a="2PL" , maxiter=15 )
 summary(mod2)
 
 # Model 2a: avoid convergence problems with increment.factor
-mod2a <- smirt(dat,Qmatrix=Q , est.a="2PL" , maxiter=30 , increment.factor=1.03)
+mod2a <- sirt::smirt(dat,Qmatrix=Q , est.a="2PL" , maxiter=30 , increment.factor=1.03)
 summary(mod2a)
 
 #***
@@ -344,7 +344,7 @@ c.init <- rep(0,I)
 c.init[ c(3,7)] <- .2
 d.init <- rep(1,I)
 d.init[c(4,8)] <- .95
-mod3 <- smirt( dat , Qmatrix=Q , c.init=c.init , d.init=d.init )
+mod3 <- sirt::smirt( dat , Qmatrix=Q , c.init=c.init , d.init=d.init )
 summary(mod3)
 
 #***
@@ -358,19 +358,19 @@ d.init <- rep(1,I)
 d.estpars <- c(6,9)
 d.init[ d.estpars ] <- .95
 est.d[ d.estpars ] <- d.estpars   # different d parameters
-mod4 <- smirt(dat,Qmatrix=Q , est.c=est.c , c.init=c.init ,
+mod4 <- sirt::smirt(dat,Qmatrix=Q , est.c=est.c , c.init=c.init ,
             est.d=est.d , d.init=d.init  )
 summary(mod4)
 
 #***
 # Model 5: Unidimensional 1PL model
 Qmatrix <- matrix( 1 , nrow=I , ncol=1 )
-mod5 <- smirt( dat , Qmatrix=Qmatrix )
+mod5 <- sirt::smirt( dat , Qmatrix=Qmatrix )
 summary(mod5)
 
 #***
 # Model 6: Unidimensional 2PL model
-mod6 <- smirt( dat , Qmatrix=Qmatrix , est.a="2PL" )
+mod6 <- sirt::smirt( dat , Qmatrix=Qmatrix , est.a="2PL" )
 summary(mod6)
 
 #***
@@ -379,7 +379,7 @@ summary(mod6)
 # Therefore Model 7 should have a worse model fit than Model 1
 Q1 <- Q
 Q1[ 6:10 , 1] <- 0
-mod7 <- smirt(dat,Qmatrix=Q1 , irtmodel="comp" , maxiter=30)
+mod7 <- sirt::smirt(dat,Qmatrix=Q1 , irtmodel="comp" , maxiter=30)
 summary(mod7)
 
 #***
@@ -387,7 +387,7 @@ summary(mod7)
 # 		assuming zero correlation between dimensions
 variance.fixed <- as.matrix( cbind( 1,2,0) )
 # set the covariance between the first and second dimension to zero
-mod8 <- smirt(dat,Qmatrix=Q , irtmodel="comp" , variance.fixed=variance.fixed ,
+mod8 <- sirt::smirt(dat,Qmatrix=Q , irtmodel="comp" , variance.fixed=variance.fixed ,
             maxiter=30)
 summary(mod8)
 
@@ -399,7 +399,7 @@ a.init <- Q       # initialize a.init with Q-matrix
 # provide starting values for slopes of first three items on Dimension 1
 a.init[1:3,1] <- c( .55 , .32 , 1.3)   
 
-mod8b <- smirt(dat,Qmatrix=Q , irtmodel="comp" , variance.fixed=variance.fixed ,
+mod8b <- sirt::smirt(dat,Qmatrix=Q , irtmodel="comp" , variance.fixed=variance.fixed ,
               b.init=b.init , a.init=a.init , maxiter=20 , est.a="2PL" )              
 summary(mod8b)
 
@@ -416,7 +416,7 @@ Qmatrix[,1] <- 1
 Qmatrix[ c(3,6,7) , 2 ] <- 1
 colnames(Qmatrix) <- c("F1" , "F1sq" )
 # estimate model
-mod9 <- smirt(dat,Qmatrix=Qmatrix , maxiter=50 , irtmodel="comp" , 
+mod9 <- sirt::smirt(dat,Qmatrix=Qmatrix , maxiter=50 , irtmodel="comp" , 
            theta.k=theta.k , theta.kDES=theta.kDES , est.a="2PL" )           
 summary(mod9)
 
@@ -433,14 +433,14 @@ Qmatrix[,1] <- 1
 Qmatrix[ 6:10 , c(2,3) ] <- 1
 colnames(Qmatrix) <- c("F1" , "F2" , "F1iF2" )
 # estimate model
-mod10 <- smirt(dat,Qmatrix=Qmatrix ,irtmodel="comp" , theta.k=theta.k , 
+mod10 <- sirt::smirt(dat,Qmatrix=Qmatrix ,irtmodel="comp" , theta.k=theta.k , 
             theta.kDES= theta.kDES , est.a="2PL" )           
 summary(mod10)
 
 #****
 # Model 11: Example Quasi Monte Carlo integration
 Qmatrix <- matrix( 1 , I , 1 )
-mod11 <- smirt( dat , irtmodel="comp" , Qmatrix=Qmatrix , qmcnodes=1000 )
+mod11 <- sirt::smirt( dat , irtmodel="comp" , Qmatrix=Qmatrix , qmcnodes=1000 )
 summary(mod11)
 
 #############################################################################
@@ -462,13 +462,13 @@ Qmatrix[5:8,2] <- 1
 Qmatrix[9:12,3] <- 1
 
 # estimate model
-mod1 <- smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , est.a="2PL" ,
+mod1 <- sirt::smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , est.a="2PL" ,
             qmcnodes=1000 , maxiter=20)
 summary(mod1)
 
 #***
 # Model 2: 3-dimensional Rasch model
-mod2 <- smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , 
+mod2 <- sirt::smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , 
               qmcnodes=1000 , maxiter=20)
 summary(mod2)
 
@@ -479,7 +479,7 @@ variance.fixed <- cbind( c(1,1,2) , c(2,3,3) , 0 )
 # set the following covariances to zero: cov[1,2]=cov[1,3]=cov[2,3]=0
 
 # estimate model
-mod3 <- smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , est.a="2PL" , 
+mod3 <- sirt::smirt( dat , Qmatrix=Qmatrix , irtmodel="comp" , est.a="2PL" , 
              variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)
 summary(mod3)
 
@@ -497,7 +497,7 @@ variance.fixed <- cbind( c(1,1,1,2,2,3) , c(2,3,4,3,4,4) , 0 )
 # Cov[1,2]=Cov[1,3]=Cov[1,4]=Cov[2,3]=Cov[2,4]=Cov[3,4]=0 
 
 # estimate model
-mod4 <- smirt( dat , Qmatrix=Qmatrix1 , irtmodel="comp" , est.a="2PL" , 
+mod4 <- sirt::smirt( dat , Qmatrix=Qmatrix1 , irtmodel="comp" , est.a="2PL" , 
              variance.fixed=variance.fixed , qmcnodes=1000 , maxiter=20)
 summary(mod4)
 
@@ -538,12 +538,12 @@ for (ii in 1:(3*I)){
 #*** Model 1: Joint mu.i parameter for all items
 est.mu.i <- rep(0,3*I)
 est.mu.i[ seq(2*I+1,3*I)] <- 1
-mod1 <- smirt( dat , Qmatrix = Q , irtmodel = "partcomp" , est.mu.i=est.mu.i)
+mod1 <- sirt::smirt( dat , Qmatrix = Q , irtmodel = "partcomp" , est.mu.i=est.mu.i)
 summary(mod1)
 
 #*** Model 2: Separate mu.i parameter for all items
 est.mu.i[ seq(2*I+1,3*I)] <- 1:I
-mod2 <- smirt( dat , Qmatrix = Q , irtmodel = "partcomp" , est.mu.i=est.mu.i)
+mod2 <- sirt::smirt( dat , Qmatrix = Q , irtmodel = "partcomp" , est.mu.i=est.mu.i)
 summary(mod2)
 }
 }

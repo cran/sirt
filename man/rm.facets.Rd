@@ -222,10 +222,10 @@ dat <- data.ratings1
 dat <- dat[ paste(dat$rater) == "db01" , ]
 
 # Model 1: Partial Credit Model
-mod1 <- rm.facets( dat[ , paste0( "k",1:5) ] , pid=dat$idstud , maxiter=15)
+mod1 <- sirt::rm.facets( dat[ , paste0( "k",1:5) ] , pid=dat$idstud , maxiter=15)
 
 # Model 2: Generalized Partial Credit Model
-mod2 <- rm.facets( dat[ , paste0( "k",1:5) ] ,  pid=dat$idstud  , 
+mod2 <- sirt::rm.facets( dat[ , paste0( "k",1:5) ] ,  pid=dat$idstud  , 
            est.a.item=TRUE , maxiter=15)
 
 summary(mod1)
@@ -241,11 +241,11 @@ dat <- data.ratings1
 maxit <- 15    # maximum number of iterations, increase it in applications!
 
 # Model 1: Partial Credit Model: no rater effects
-mod1 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod1 <- sirt::rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
              pid=dat$idstud  , est.b.rater=FALSE  , maxiter=maxit)
 
 # Model 2: Partial Credit Model: intercept rater effects
-mod2 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater  , 
+mod2 <- sirt::rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater  , 
              pid=dat$idstud  , maxiter=maxit)
 
 # extract individual likelihood
@@ -283,21 +283,21 @@ b.rater.fixed[ c(1,4,5) ] <- c(1,-.8,0)  # fixed parameters
 # fix item parameters of first and second item
 tau.item.fixed <- round( mod2$tau.item , 1 )    # use parameters from mod2
 tau.item.fixed[ 3:5 , ] <- NA    # free item parameters of items 3, 4 and 5
-mod2b <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater  , 
+mod2b <- sirt::rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater  , 
              b.rater.fixed=b.rater.fixed , tau.item.fixed=tau.item.fixed , 
              est.mean = TRUE , pid=dat$idstud  , maxiter=maxit)
 summary(mod2b)             
              
 # Model 3: estimated rater slopes
-mod3 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod3 <- sirt::rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
             est.a.rater=TRUE  , maxiter=maxit)
 
 # Model 4: estimated item slopes
-mod4 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod4 <- sirt::rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
              pid=dat$idstud  ,  est.a.item=TRUE , maxiter=maxit)
 
 # Model 5: estimated rater and item slopes
-mod5 <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod5 <- sirt::rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
              pid=dat$idstud  , est.a.rater=TRUE , est.a.item=TRUE , maxiter=maxit)
 summary(mod1)
 summary(mod2)
@@ -320,7 +320,7 @@ tau.item.fixed[ 1 , ] <- c(-2,-1.5 , 1 )
 a.item.fixed <- rep(NA,5)
 a.item.fixed[ 1:4 ] <- 1
 # estimate model
-mod5a <- rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod5a <- sirt::rm.facets( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
              pid=dat$idstud  , est.a.rater=TRUE , est.a.item=TRUE , 
              tau.item.fixed=tau.item.fixed , b.rater.fixed=b.rater.fixed , 
              a.rater.fixed=a.rater.fixed , a.item.fixed=a.item.fixed , 

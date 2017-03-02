@@ -87,9 +87,9 @@ S <- cov(dat)
 M <- colMeans(dat)
 
 #--- evaulate likelihood
-res1 <- loglike_mvnorm( M=M , S=S , mu=mu , Sigma=Sigma , n = N , lambda = 0 )
+res1 <- sirt::loglike_mvnorm( M=M , S=S , mu=mu , Sigma=Sigma , n = N , lambda = 0 )
 # compare log likelihood with slightly regularized covariance matrix
-res2 <- loglike_mvnorm( M=M , S=S , mu=mu , Sigma=Sigma , n = N , lambda = 1 )
+res2 <- sirt::loglike_mvnorm( M=M , S=S , mu=mu , Sigma=Sigma , n = N , lambda = 1 )
 res1
 res2	
 }

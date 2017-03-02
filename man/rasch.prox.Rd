@@ -67,7 +67,7 @@ Alexander Robitzsch
 #############################################################################
 
 data(data.read)
-mod <- rasch.prox( data.read )
+mod <- sirt::rasch.prox( data.read )
 mod$b       # item difficulties
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

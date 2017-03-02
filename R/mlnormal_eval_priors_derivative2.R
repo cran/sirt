@@ -10,7 +10,7 @@ mlnormal_eval_priors_derivative2 <- function( pars , prior , h )
 	#--- compute gradient and second derivative
 	der <- (x1-x2)/ (2*hvec)
 	info <- ( x1 + x2 - 2*x0) / hvec^2
-	infomat <- base::diag(info)	
-	res <- base::list( der = der , info = info ,  infomat = infomat )	
-	base::return(res)
+	infomat <- diag(info)	
+	res <- list( der = der , info = info ,  infomat = infomat )	
+	return(res)
 }

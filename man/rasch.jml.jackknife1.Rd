@@ -61,15 +61,15 @@ set.seed(7655)
 N <- 5000    # number of persons
 I <- 11      # number of items
 b <- seq( -2 , 2 , length=I )
-dat <- sim.raschtype( rnorm( N ) , b )
+dat <- sirt::sim.raschtype( rnorm( N ) , b )
 colnames(dat) <- paste( "I" , 1:I , sep="")
 
 # estimate the Rasch model with JML
-mod <- rasch.jml( dat  )
+mod <- sirt::rasch.jml( dat  )
 summary(mod)
 
 # re-estimate the Rasch model using Jackknife
-mod2 <- rasch.jml.jackknife1( mod )
+mod2 <- sirt::rasch.jml.jackknife1( mod )
   ##   
   ##   Joint Maximum Likelihood Estimation 
   ##   Jackknife Estimation

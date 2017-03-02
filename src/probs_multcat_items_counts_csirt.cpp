@@ -1,50 +1,19 @@
 
-// includes from the plugin
 
 #include <Rcpp.h>
-
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
 
 using namespace Rcpp;
 
 
-// user includes
 
-
-// declarations
-extern "C" {
-SEXP probs_pcm_groups_C( SEXP dat_, SEXP dat_resp_, SEXP group_, SEXP probs_, 
-	 SEXP CC_, SEXP TP_) ;
-SEXP probs_pcm_nogroups_C( SEXP dat_, SEXP dat_resp_, SEXP probs_, 
-	 SEXP CC_, SEXP TP_ ) ;
-SEXP calccounts_pcm_groups_C( SEXP dat_, SEXP dat_resp_, SEXP group_, SEXP fyiqk_, 
-	SEXP pik_, SEXP CC_, SEXP weights_) ;
-}
-
-//*******************************************
-// individual likelihood
-
-SEXP probs_pcm_groups_C( SEXP dat_, SEXP dat_resp_, SEXP group_, SEXP probs_, 
-	 SEXP CC_, SEXP TP_ ){
-BEGIN_RCPP
-  
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericMatrix dat(dat_);  
-     Rcpp::NumericMatrix dat_resp(dat_resp_) ;   
-     Rcpp::NumericVector group(group_) ;  
-     // int G = as<int>(G_);  // number of groups  
-     Rcpp::NumericMatrix probs(probs_) ;   
-     int CC = as<int>(CC_) ; // number of categories  
-     int TP = as<int>(TP_) ; // number of theta points  
-       
+///********************************************************************
+///** probs_pcm_groups_C
+// [[Rcpp::export]]
+Rcpp::List probs_pcm_groups_C( Rcpp::NumericMatrix dat, 
+	Rcpp::NumericMatrix dat_resp, Rcpp::NumericVector group, 
+	Rcpp::NumericMatrix probs, 
+	int CC, int TP ){
+ 
      //*** input probs  
      // probs[ items , categories , theta points , groups ]  
        
@@ -71,12 +40,9 @@ BEGIN_RCPP
      ///////////////////////////////////////  
      /// OUTPUT                  
        
-       
-     return List::create(  
+     return Rcpp::List::create(  
      		Rcpp::_["fyiqk"] = fyiqk  
      			) ;  
-     
-END_RCPP
 }
 
 
@@ -85,19 +51,14 @@ END_RCPP
 //*******************************************
 // individual likelihood (no groups)
 
-SEXP probs_pcm_nogroups_C( SEXP dat_, SEXP dat_resp_, SEXP probs_, 
-	 SEXP CC_, SEXP TP_ ){
-BEGIN_RCPP
-  
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericMatrix dat(dat_);  
-     Rcpp::NumericMatrix dat_resp(dat_resp_) ;   
-     // int G = as<int>(G_);  // number of groups  
-     Rcpp::NumericMatrix probs(probs_) ;   
-     int CC = as<int>(CC_) ; // number of categories  
-     int TP = as<int>(TP_) ; // number of theta points  
-       
+
+///********************************************************************
+///** probs_pcm_nogroups_C
+// [[Rcpp::export]]
+Rcpp::List probs_pcm_nogroups_C( Rcpp::NumericMatrix dat, 
+	Rcpp::NumericMatrix dat_resp, Rcpp::NumericMatrix probs, 
+	int CC, int TP ){
+
      //*** input probs  
      // probs[ items , categories , theta points , groups ]  
        
@@ -123,11 +84,9 @@ BEGIN_RCPP
      		  
      ///////////////////////////////////////  
      /// OUTPUT                                
-     return List::create(  
+     return Rcpp::List::create(  
      		Rcpp::_["fyiqk"] = fyiqk  
      			) ;  
-     
-END_RCPP
 }
 
 
@@ -136,29 +95,21 @@ END_RCPP
 //********************************************************
 // calculation of expected counts
 
-SEXP calccounts_pcm_groups_C( SEXP dat_, SEXP dat_resp_, SEXP group_, SEXP fyiqk_, 
-	SEXP pik_, SEXP CC_, SEXP weights_ ){
-BEGIN_RCPP
+///********************************************************************
+///** calccounts_pcm_groups_C
+// [[Rcpp::export]]
+Rcpp::List calccounts_pcm_groups_C( Rcpp::NumericMatrix dat, 
+	Rcpp::NumericMatrix dat_resp, Rcpp::NumericVector group, 
+	Rcpp::NumericMatrix fyiqk, Rcpp::NumericMatrix pik, 
+	int CC, Rcpp::NumericVector weights ){
   
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericMatrix dat(dat_);  
-     Rcpp::NumericMatrix dat_resp(dat_resp_) ;   
-     Rcpp::NumericVector group(group_) ;  
-     Rcpp::NumericMatrix fyiqk(fyiqk_) ;		  
-     Rcpp::NumericMatrix pik(pik_) ;  
-     int CC=as<int>(CC_) ;  
-     Rcpp::NumericVector weights(weights_) ;  
-       
+      
      int TP = fyiqk.ncol() ;  
      int G = pik.ncol() ;  
      int N = dat.nrow() ;  
      int I = dat.ncol() ;  
-       
-       
      Rcpp::NumericMatrix fqkyi(N,TP) ;  
      Rcpp::NumericMatrix pik1(TP,G);  
-       
      double t1 = 0 ;  
        
      //**************  
@@ -209,15 +160,12 @@ BEGIN_RCPP
            
      ///////////////////////////////////////  
      /// OUTPUT                  
-       
-     return List::create(  
+     return Rcpp::List::create(  
      		Rcpp::_["LL"] = LL ,  
      		Rcpp::_["fqkyi"] = fqkyi ,  
      		Rcpp::_["nik"] = nik ,  
                 Rcpp::_["count_pik"] = pik1  
     			) ;  
-     
-END_RCPP
 }
 
 

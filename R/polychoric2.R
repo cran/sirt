@@ -7,8 +7,8 @@ polychoric2 <- function( dat , maxiter = 100 , cor.smooth = TRUE ){
 	# maximum number of categories
 	maxK <- max(dat1 , na.rm=TRUE )
 	# perform polychoric correlation
-	res0 <- .Call("polychoric2_aux_rcpp" ,
-				dat1 , maxK , maxiter , PACKAGE="sirt")
+	res0 <- polychoric2_aux_rcpp(
+				dat1 , maxK , maxiter)
 	# include cpp Call here
 	#***
 	# output cleaning

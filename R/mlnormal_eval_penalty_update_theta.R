@@ -4,7 +4,7 @@ mlnormal_eval_penalty_update_theta <- function( theta , prior_args , iter ,
 {
 	lambda_theta <- prior_args$penalty_pars$lambda_theta
 	weights_theta <- prior_args$penalty_pars$weights_theta
-	NT <- base::length(theta)
+	NT <- length(theta)
 	theta0 <- theta
 
 	#-----------------------------------------
@@ -28,11 +28,11 @@ mlnormal_eval_penalty_update_theta <- function( theta , prior_args , iter ,
 			# tt <- 1	# parameter tt
 			eta_tt <- der[tt]
 			xsi_tt <- theta_infomat1[ tt , tt ]
-			# elim_tt <- base::c(tt)
+			# elim_tt <- c(tt)
 			# alpha_tt <- theta[ - elim_tt ]
 			# gamma_tt <- theta_infomat1[ - elim_tt , - elim_tt , drop=FALSE]
 			# create term to be panalized
-			# term_tt <- base::as.numeric( eta_tt + 2 * gamma_tt  %*% alpha_tt )
+			# term_tt <- as.numeric( eta_tt + 2 * gamma_tt  %*% alpha_tt )
 
 			term_tt <- theta[tt] + eta_tt / xsi_tt			
 			lambda_tt <- lambda[tt] / xsi_tt
@@ -49,10 +49,10 @@ mlnormal_eval_penalty_update_theta <- function( theta , prior_args , iter ,
 	
 	theta_infomat1 <-  mlnormal_covmat_add_ridge( covmat = theta_infomat1 ,
 							eps = control_theta$ridge )
-	Hinv <- base::solve( theta_infomat1 )		
+	Hinv <- solve( theta_infomat1 )		
 	
 	#--- output
-	res <- base::list( der = der , theta_infomat = theta_infomat1 , 
+	res <- list( der = der , theta_infomat = theta_infomat1 , 
 					theta = theta , Hinv = Hinv )
-	base::return(res)	
+	return(res)	
 }

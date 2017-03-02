@@ -128,14 +128,14 @@ wgt <- a1[,-1]
 
 #***
 # (2) Fit ISOP model
-res.isop <- fit.isop( freq.correct , wgt )   
+res.isop <- sirt::fit.isop( freq.correct , wgt )   
 # fitted frequency table
 res.isop$fX
 
 #***
 # (3) Fit ADISOP model
 # use monotonely smoothed frequency table from ISOP model
-res.adisop <- fit.adisop( freq.correct=res.isop$fX , wgt )   
+res.adisop <- sirt::fit.adisop( freq.correct=res.isop$fX , wgt )   
 # fitted frequency table
 res.adisop$fX
 }

@@ -75,7 +75,7 @@ invariance.alignment <- function( lambda , nu , wgt=NULL ,
 	
 	#****************************
 	# define design for optimization
-    gridp <- base::expand.grid( increment.factor , fac.oldpar )
+    gridp <- expand.grid( increment.factor , fac.oldpar )
 	GP <- nrow(gridp)
 
 	#**************************************************

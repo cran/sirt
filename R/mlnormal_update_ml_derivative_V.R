@@ -5,8 +5,8 @@ mlnormal_update_ml_derivative_V <- function( N , NT , G ,
 			Z_index , Z_list , theta , REML , V1_list ,
 			variance_shortcut , freq_id , do_compute ){
 
-	D1_V_list <- base::as.list(1:NT)
-	D1_V_pp_list <- base::as.list(1:G)
+	D1_V_list <- as.list(1:NT)
+	D1_V_pp_list <- as.list(1:G)
 	
 	V1_D1V_V1_list <- D1_V_list
 	V1_D1V_V1_pp_list <- D1_V_pp_list
@@ -17,7 +17,7 @@ mlnormal_update_ml_derivative_V <- function( N , NT , G ,
 			# gg <- 1
 			if ( do_compute[gg] ){			
 				Z_index_gg <- Z_index[ gg ,,, drop=FALSE ]
-				index_pp <- base::which( Z_index_gg[,,pp] != 0 )
+				index_pp <- which( Z_index_gg[,,pp] != 0 )
 				H0 <- 0*Z_list[[gg]][[1]]
 				#**** correct these lines!!!
 				# derivatives are allowed for powers of parameters
@@ -31,7 +31,7 @@ mlnormal_update_ml_derivative_V <- function( N , NT , G ,
 					a1 <- i1 * pow( theta[pp] , i1-1 ) 
 					#*******
 					# correction ARb 2016-07-15
-					a2 <- base::prod( pow( theta[-pp] , Z_index_gg[1,ii, - pp ] ) )			
+					a2 <- prod( pow( theta[-pp] , Z_index_gg[1,ii, - pp ] ) )			
 					a1 <- a1*a2
 					H0 <- H0 + a1 * Z_list[[gg]][[ii]]
 				}
@@ -50,6 +50,6 @@ mlnormal_update_ml_derivative_V <- function( N , NT , G ,
 		V1_D1V_V1_list[[pp]] <- V1_D1V_V1_pp_list
 	}  # end parameter pp
 	#--- output
-	res <- base::list( "D1_V_list" = D1_V_list , V1_D1V_V1_list = V1_D1V_V1_list )
-	base::return(res)
+	res <- list( "D1_V_list" = D1_V_list , V1_D1V_V1_list = V1_D1V_V1_list )
+	return(res)
 }

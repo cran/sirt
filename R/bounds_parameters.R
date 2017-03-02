@@ -2,11 +2,11 @@
 
 bounds_parameters <- function( pars , lower = NULL , upper = NULL)
 {
-	if ( ! base::is.null(lower)){
-		pars <- base::ifelse( pars < lower , lower , pars )
+	if ( ! is.null(lower)){
+		pars <- ifelse( pars < lower , lower , pars )
 	}
-	if ( ! base::is.null(upper)){
-		pars <- base::ifelse( pars > upper , upper , pars )
+	if ( ! is.null(upper)){
+		pars <- ifelse( pars > upper , upper , pars )
 	}
-	base::return(pars)	
+	return(pars)	
 }

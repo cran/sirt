@@ -96,7 +96,7 @@ a.testlet <- rep( 1 , 9 )  # item slopes testlets
 var.testlet <- c( .8 , .2 , 0 )  # testlet variances
 
 # apply function
-res <- testlet.marginalized( a1=a1 , d1=d1 , testlet=testlet , 
+res <- sirt::testlet.marginalized( a1=a1 , d1=d1 , testlet=testlet , 
             a.testlet=a.testlet , var.testlet=var.testlet )
 round( res , 2 )
   ##    item testlet a1    d1 a.testlet var.testlet a1_marg d1_marg
@@ -125,7 +125,7 @@ dims <- substring( colnames(resp),1,1 )  # define dimensions
 mod1 <- TAM::tam.fa( resp=resp , irtmodel="bifactor1" , dims=dims , 
                control=list(maxiter=maxiter) )
 # marginal item parameters
-res1 <- testlet.marginalized( mod1 )
+res1 <- sirt::testlet.marginalized( mod1 )
 
 #***
 # Model 2: estimate bifactor model but assume that items 3 and 5 do not load on
@@ -134,7 +134,7 @@ dims1 <- dims
 dims1[c(3,5)] <- NA
 mod2 <- TAM::tam.fa( resp=resp , irtmodel="bifactor2" , dims=dims1 , 
               control=list(maxiter=maxiter) ) 
-res2 <- testlet.marginalized( mod2 )
+res2 <- sirt::testlet.marginalized( mod2 )
 res2
 }
 }

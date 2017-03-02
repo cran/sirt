@@ -103,7 +103,7 @@ theta <- wmod1$theta
 error <- wmod1$error
 
 # estimate true score transformation
-dfr <- truescore.irt( A=A , B=B , theta=theta , error=error )
+dfr <- sirt::truescore.irt( A=A , B=B , theta=theta , error=error )
 
 # plot different person parameter estimates and standard errors
 par(mfrow=c(2,2))
@@ -133,7 +133,7 @@ B <- mod2$AXsi[,-1]
 theta <- wmod2$theta
 error <- wmod2$error
 # estimate true score transformation
-dfr <- truescore.irt( A=A , B=B , theta=theta , error=error )
+dfr <- sirt::truescore.irt( A=A , B=B , theta=theta , error=error )
 
 #############################################################################
 # EXAMPLE 2: Dataset Reading data.read
@@ -142,7 +142,7 @@ data(data.read)
 
 #****
 # Model 1: estimate difficulty + guessing model
-mod1 <- rasch.mml2( data.read , fixed.c = rep(.25,12) )
+mod1 <- sirt::rasch.mml2( data.read , fixed.c = rep(.25,12) )
 mod1$person <- mod1$person[ order( mod1$person$EAP) , ]
 # person parameters and standard errors
 theta <- mod1$person$EAP
@@ -151,7 +151,7 @@ A <- rep(1,12)
 B <- - mod1$item$b
 c <- rep(.25,12)
 # estimate true score transformation
-dfr <- truescore.irt( A=A , B=B , theta=theta , error=error ,c=c)
+dfr <- sirt::truescore.irt( A=A , B=B , theta=theta , error=error ,c=c)
 
 plot( theta , dfr$percscore , pch=16 , cex=.6 , xlab=expression(theta) , type="l",
     ylab=expression(paste( pi , "(",theta , ")" ))  , main="Percent Score Transformation" )
@@ -160,14 +160,14 @@ points( theta , dfr$lower + (dfr$upper-dfr$lower)*
 
 #****
 # Model 2: Rasch model
-mod2 <- rasch.mml2( data.read  )
+mod2 <- sirt::rasch.mml2( data.read  )
 # person parameters and standard errors
 theta <- mod2$person$EAP
 error <- mod2$person$SE.EAP
 A <- rep(1,12)
 B <- - mod2$item$b
 # estimate true score transformation
-dfr <- truescore.irt( A=A , B=B , theta=theta , error=error )
+dfr <- sirt::truescore.irt( A=A , B=B , theta=theta , error=error )
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

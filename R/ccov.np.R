@@ -9,7 +9,7 @@ ccov.np <- function( data , score , bwscale = 1.1 , thetagrid = seq( -3,3,len=20
             I <- ncol(data)
             # z-standardization of score
 			if ( scale_score ){
-				score <- base::scale( score )[,1]
+				score <- scale( score )[,1]
 			}
             # matrix of item response functions
             if (progress ){

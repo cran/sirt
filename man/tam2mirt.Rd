@@ -93,7 +93,7 @@ dat <- data.read
 mod <- TAM::tam.mml( dat )
 summary(mod)
 # conversion to mirt
-res <- tam2mirt(mod)
+res <- sirt::tam2mirt(mod)
 # generated lavaan syntax
 cat(res$lavaan.syntax.fixed)
 cat(res$lavaan.syntax.freed)
@@ -134,7 +134,7 @@ mirt.wrapper.coef(mres1)
 mod <- TAM::tam.mml.2pl( dat )
 summary(mod)
 # conversion to mirt
-res <- tam2mirt(mod)
+res <- sirt::tam2mirt(mod)
 mres <- res$mirt
 # lavaan syntax
 cat(res$lavaan.syntax.fixed)
@@ -168,7 +168,7 @@ colnames(Q) <- c("A","B","C")
 mod <- TAM::tam.mml( resp=dat , Q=Q , control=list(snodes=1000,maxiter=30) )
 summary(mod)
 # mirt conversion
-res <- tam2mirt(mod)
+res <- sirt::tam2mirt(mod)
 mres <- res$mirt
 # mirt syntax
 cat(res$mirt.syntax)
@@ -218,7 +218,7 @@ mirt::itemfit(mres)
 mod <- TAM::tam.mml.2pl( resp=dat , Q=Q , control=list(snodes=1000,maxiter=30) )
 summary(mod)
 # mirt conversion
-res <- tam2mirt(mod)
+res <- sirt::tam2mirt(mod)
 mres <- res$mirt
 # generated lavaan syntax
 cat(res$lavaan.syntax.fixed)
@@ -235,7 +235,7 @@ mirt::residuals(mres)
 mirt::itemfit(mres)
 
 # estimate mirt model by using the generated lavaan syntax with freed parameters
-res2 <- lavaan2mirt( dat , res$lavaan.syntax.freed ,
+res2 <- sirt::lavaan2mirt( dat , res$lavaan.syntax.freed ,
             technical=list(NCYCLES=3) , verbose=TRUE)  
                  # use only few cycles for illustrational purposes
 mirt.wrapper.coef(res2$mirt)
@@ -261,7 +261,7 @@ library(TAM)
 mod1 <- TAM::tam.mml( dat[,1:6] )
 summary(mod1)
 # convert to mirt object
-mmod1 <- tam2mirt( mod1 )
+mmod1 <- sirt::tam2mirt( mod1 )
 rmod1 <- mmod1$mirt
 # coefficients in mirt
 coef(rmod1)
@@ -280,7 +280,7 @@ mirt::itemplot(rmod1,"O3")
 mod2 <- TAM::tam.mml.2pl( dat[,1:6] , irtmodel="GPCM" )
 summary(mod2)
 # convert to mirt object
-mmod2 <- tam2mirt( mod2 )
+mmod2 <- sirt::tam2mirt( mod2 )
 rmod2 <- mmod2$mirt
 # coefficients in mirt
 mirt.wrapper.coef(rmod2)

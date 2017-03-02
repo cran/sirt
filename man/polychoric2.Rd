@@ -74,7 +74,7 @@ dat <- data.Students[ , paste0("act" , 1:5 ) ]
 library(psych)
 t0 <- psych::polychoric( dat )$rho
 # Olsson method (maximum likelihood estimation)
-t1 <- polychoric2( dat )$rho
+t1 <- sirt::polychoric2( dat )$rho
 # maximum absolute difference
 max( abs( t0 - t1 ) )
   ##   [1] 0.006914892

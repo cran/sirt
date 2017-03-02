@@ -78,7 +78,7 @@ probs <- c(.5 , .3 , .2 )
 alpha0 <- .5
 alpha <- alpha0*probs
 alpha <- matrix( alpha , nrow=N , ncol=length(alpha) , byrow=TRUE  )
-x <- dirichlet.simul( alpha )
+x <- sirt::dirichlet.simul( alpha )
 
 # (2) estimate Dirichlet parameters
 dirichlet.mle(x)
@@ -113,7 +113,7 @@ dirichlet.ll <- function(param) {
 
 #*** weights 10-10-1
 weights <- c(10, 10 , 1 )
-mod1a <- dirichlet.mle( x , weights= weights )
+mod1a <- sirt::dirichlet.mle( x , weights= weights )
 mod1a
 # estimation in maxLik
 mod1b <- maxLik::maxLik(loglik, start=c(.5,.5)) 
@@ -122,7 +122,7 @@ coef( mod1b )
 
 #*** weights 10-10-10
 weights <- c(10, 10 , 10 )
-mod2a <- dirichlet.mle( x , weights= weights )
+mod2a <- sirt::dirichlet.mle( x , weights= weights )
 mod2a
 # estimation in maxLik
 mod2b <- maxLik::maxLik(loglik, start=c(.5,.5)) 
@@ -131,7 +131,7 @@ coef( mod2b )
 
 #*** weights 30-10-2
 weights <- c(30, 10 , 2 )
-mod3a <- dirichlet.mle( x , weights= weights )
+mod3a <- sirt::dirichlet.mle( x , weights= weights )
 mod3a
 # estimation in maxLik
 mod3b <- maxLik::maxLik(loglik, start=c(.25,.25)) 

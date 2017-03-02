@@ -51,11 +51,11 @@ Numeric vector
 data(data.read)
 
 # estimate 2PNO with MCMC with 3000 iterations and 500 burn-in iterations
-mod <- mcmc.2pno( dat=data.read , iter=1000 , burnin=100 )
+mod <- sirt::mcmc.2pno( dat=data.read , iter=1000 , burnin=100 )
 # plot MCMC chains
 plot( mod$mcmcobj , ask=TRUE )
 # compute Rhat statistics
-round( mcmc_Rhat( mod$mcmcobj[[1]] ) , 3 )
+round( sirt::mcmc_Rhat( mod$mcmcobj[[1]] ) , 3 )
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

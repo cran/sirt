@@ -4,8 +4,8 @@
 #****************************
 # rowMaxs function
 rowMaxs.sirt <- function(matr){ 
-	.Call("rowMaxsCPP_source", matr , PACKAGE = "sirt")
-					}
+	rowMaxsCPP_source( matr )
+}
 #*****************************					
 # rowMins function
 rowMins.sirt <- function(matr){
@@ -14,11 +14,11 @@ rowMins.sirt <- function(matr){
     res <- list( "minval" = - res2$maxval ,
 					"minind" = res2$maxind )
 	return(res)
-		}
+}
 ##########################################################################
 # rowwise cumulative sum
 rowCumsums.sirt <- function(matr){ 
-	.Call("rowCumsums2_source", matr , PACKAGE = "sirt")
+	rowCumsums2_source( matr )
 					}
 # The C code was posted by Romain Francois at
 # http://lists.r-forge.r-project.org/pipermail/rcpp-devel/2010-October/001198.html
@@ -34,7 +34,7 @@ colCumsums.sirt <- function(matr){
 # 'interval_index' searches an index when a frequency is exceeded
 # -> used in plausible value imputation
 rowIntervalIndex.sirt <- function(matr,rn){ 
-	.Call("interval_index_C", matr , rn , PACKAGE = "sirt")
+	interval_index_C( matr , rn)
 					}	
 
 ##########################################################################
@@ -48,13 +48,12 @@ rowKSmallest.sirt <- function( matr , K , break.ties=TRUE){
     # define integer matrix
     indexmatr <- matrix( 1:N2 , N1 , N2 , byrow=TRUE )
     # apply function for extracting k smallest elements
-	a1 <- .Call("rowKSmallest_C", matr , K , indexmatr , 
-					rnmatr=rM1 , PACKAGE = "sirt")
+	a1 <- rowKSmallest_C( matr , K , indexmatr , rM1)
 	## OUTPUT:					
 	## return List::create(_["smallval"]=SMALLVAL ,
 	##		              _["smallind"]=SMALLIND ) ;  					
     return(a1)
-        }
+}
 ##########################################################################
 # Ksmallest -> different implementation
 rowKSmallest2.sirt <- function(matr , K ){

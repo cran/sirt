@@ -62,7 +62,7 @@ especially \code{subscore::CTTsub}.
 #############################################################################	
 
 data( data.read )
-p1 <- prmse.subscores.scales(data=data.read, 
+p1 <- sirt::prmse.subscores.scales(data=data.read, 
          subscale = substring( colnames(data.read) , 1 ,1 ) )
 print( p1 , digits= 3 )
   ##                 A       B       C

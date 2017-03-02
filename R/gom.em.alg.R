@@ -27,7 +27,7 @@
 					byrow=TRUE )	)
 					}
 #    probs <- lambda %*% t(theta.k)
-    probs <- base::tcrossprod( lambda ,theta.k)
+    probs <- tcrossprod( lambda ,theta.k)
 	probsL <- array( 0 , dim=c( nrow(lambda) , 2 , nrow(theta.k) ) )
 	probsL[,2,] <- probs
 	probsL[,1,] <- 1-probs	
@@ -64,10 +64,10 @@
     n.k <- colSums( f.qk.yi )
     # expected counts at theta.k and item j
 #    n.jk[,,1] <-  t(dat2.resp)  %*% f.qk.yi
-    n.jk[,,1] <-  base::crossprod(dat2.resp , f.qk.yi )
+    n.jk[,,1] <-  crossprod(dat2.resp , f.qk.yi )
     # compute r.jk (expected counts for correct item responses at theta.k for item j
 #    r.jk[,,1] <- t( dat2 * dat2.resp )  %*% f.qk.yi
-    r.jk[,,1] <- base::crossprod( dat2 * dat2.resp , f.qk.yi )
+    r.jk[,,1] <- crossprod( dat2 * dat2.resp , f.qk.yi )
 	K <- 1
 	# expected counts
 	TP <- nrow(theta.k)
@@ -145,7 +145,7 @@
     if (progress){
 		cat("  M steps b parameter |")
 				  }
-	an.ik <- base::aperm( n.ik , c(2,3,1) )	
+	an.ik <- aperm( n.ik , c(2,3,1) )	
 	it <- 0 ;	conv1 <- 1000
 	while( ( it < msteps ) & ( conv1 > mstepconv ) ){	
 		b0 <- b

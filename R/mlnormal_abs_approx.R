@@ -2,7 +2,7 @@
 mlnormal_abs_approx <- function(x , eps = 1E-4, deriv = 0)
 {
 	res <- NULL
-	abs_x <- base::sqrt(x^2 + eps)
+	abs_x <- sqrt(x^2 + eps)
 	if ( deriv == 0){
 		res <- abs_x
 	}
@@ -11,15 +11,15 @@ mlnormal_abs_approx <- function(x , eps = 1E-4, deriv = 0)
 	}
 	if ( deriv == 2){
 		h <- 1E-4
-		h <- h * base::abs(x)
+		h <- h * abs(x)
 		y0 <- fct1( x = x , eps = eps )
 		y1 <- fct1( x = x+h , eps = eps )
 		res <- ( y1 - y0 ) / h
 	}
-	base::return(res)
+	return(res)
 }
 
 fct1 <- function(x, eps=eps)
 { 
-	2*x / base::sqrt(x^2 +eps)
+	2*x / sqrt(x^2 +eps)
 }

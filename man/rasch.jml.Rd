@@ -163,19 +163,19 @@ set.seed(789)
 N <- 500    # number of persons
 I <- 11     # number of items
 b <- seq( -2 , 2 , length=I )
-dat <- sim.raschtype( stats::rnorm( N ) , b )
+dat <- sirt::sim.raschtype( stats::rnorm( N ) , b )
 colnames(dat) <- paste( "I" , 1:I , sep="")
 
 # JML estimation of the Rasch model
-mod1 <- rasch.jml( dat )
+mod1 <- sirt::rasch.jml( dat )
 summary(mod1)
 
 # MML estimation with rasch.mml2 function
-mod2 <- rasch.mml2( dat )
+mod2 <- sirt::rasch.mml2( dat )
 summary(mod2)
 
 # Pairwise method of Fischer
-mod3 <- rasch.pairwise( dat )
+mod3 <- sirt::rasch.pairwise( dat )
 summary(mod3)
 
 # JML estimation in TAM
@@ -195,7 +195,7 @@ mod5$item.par	   # extract item parameters
 constraints <- matrix( cbind( 4 , -.76 ,
                               6 , .10 ) , 
                   ncol=2 , byrow=TRUE )
-mod6 <- rasch.jml( dat , constraints = constraints )
+mod6 <- sirt::rasch.jml( dat , constraints = constraints )
 summary(mod6)
   # For constrained item parameters, it this not obvious
   # how to calculate a 'right correction' of item parameter bias

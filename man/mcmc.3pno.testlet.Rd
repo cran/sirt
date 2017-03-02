@@ -170,7 +170,7 @@ iter <- 500
 
 #***
 # Model 1: 1PNO model
-mod1 <- mcmc.3pno.testlet( dat ,  est.slope=FALSE , est.guess=FALSE , 
+mod1 <- sirt::mcmc.3pno.testlet( dat ,  est.slope=FALSE , est.guess=FALSE , 
             burnin=burnin, iter=iter )
 summary(mod1)
 plot(mod1,ask=TRUE) # plot MCMC chains in coda style
@@ -178,20 +178,20 @@ plot(mod1,ask=TRUE , layout=2) # plot MCMC output in different layout
 
 #***
 # Model 2: 3PNO model with Beta(5,17) prior for guessing parameters
-mod2 <- mcmc.3pno.testlet( dat ,  guess.prior=c(5,17) ,
+mod2 <- sirt::mcmc.3pno.testlet( dat ,  guess.prior=c(5,17) ,
                burnin=burnin, iter=iter )
 summary(mod2)
 
 #***
 # Model 3: Rasch (1PNO) testlet model
 testlets <- substring( colnames(dat) , 1 , 1 )
-mod3 <- mcmc.3pno.testlet( dat ,  testlets=testlets ,  est.slope=FALSE , 
+mod3 <- sirt::mcmc.3pno.testlet( dat ,  testlets=testlets ,  est.slope=FALSE , 
            est.guess=FALSE , burnin=burnin, iter=iter )
 summary(mod3)
 
 #***
 # Model 4: 3PNO testlet model with (almost) fixed guessing parameters .25
-mod4 <- mcmc.3pno.testlet( dat ,  guess.prior=1000*c(25,75) , testlets=testlets , 
+mod4 <- sirt::mcmc.3pno.testlet( dat ,  guess.prior=1000*c(25,75) , testlets=testlets , 
               burnin=burnin, iter=iter )
 summary(mod4)
 plot(mod4, ask=TRUE, layout=2)
@@ -233,7 +233,7 @@ iter <- 1000
 
 #***
 # Model 1: 1PNO model (without testlet structure)
-mod1 <- mcmc.3pno.testlet( dat=Y ,  est.slope=FALSE , est.guess=FALSE , 
+mod1 <- sirt::mcmc.3pno.testlet( dat=Y ,  est.slope=FALSE , est.guess=FALSE , 
             burnin=burnin, iter=iter , testlets= testlets )        
 summary(mod1)        
 
@@ -245,7 +245,7 @@ cbind( sdt , summ1[ grep("sigma\\.testlet" , summ1$parameter ) , "Mean" ] )
 
 #***
 # Model 2: 1PNO model (without testlet structure)
-mod2 <- mcmc.3pno.testlet( dat=Y ,  est.slope=TRUE , est.guess=FALSE , 
+mod2 <- sirt::mcmc.3pno.testlet( dat=Y ,  est.slope=TRUE , est.guess=FALSE , 
            burnin=burnin, iter=iter , testlets= testlets )        
 summary(mod2)        
 
@@ -295,7 +295,7 @@ iter <- 1500
 
 #***
 # Model 1: 2PNO model
-mod1 <- mcmc.3pno.testlet( dat=Y ,  est.slope=TRUE , est.guess=FALSE , 
+mod1 <- sirt::mcmc.3pno.testlet( dat=Y ,  est.slope=TRUE , est.guess=FALSE , 
              burnin=burnin, iter=iter , testlets= testlets )                               
 summary(mod1)        
 

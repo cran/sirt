@@ -146,10 +146,10 @@ y <- .2 * x+ .3*theta + stats::rnorm( n , .4 )
 dfr <- data.frame( theta , 1 , x , y )
 
 # simulate Rasch model
-dat1 <- sim.raschtype( theta = theta , b = b )
+dat1 <- sirt::sim.raschtype( theta = theta , b = b )
 
 # Plausible value draws
-pv1 <- plausible.value.imputation.raschtype(data=dat1 , X=dfr[,-1] , b = b ,
+pv1 <- sirt::plausible.value.imputation.raschtype(data=dat1 , X=dfr[,-1] , b = b ,
             nplausible=3 , iter=10 , burnin=5)
 # estimate linear regression based on first plausible value
 mod1 <- stats::lm( pv1$pvdraws[,1] ~ x+y )
@@ -190,7 +190,7 @@ f.yi.qk <- f.yi.qk / rowSums(f.yi.qk)
 # define covariates
 X <- cbind( 1 , x , y )
 # draw plausible values        
-mod2 <- plausible.value.imputation.raschtype( f.yi.qk =f.yi.qk , 
+mod2 <- sirt::plausible.value.imputation.raschtype( f.yi.qk =f.yi.qk , 
                   theta.list=theta.list , X=X , iter=10 , burnin=5)
 
 # linear regression
@@ -230,11 +230,11 @@ f.yi.qk <- f.yi.qk / rowSums(f.yi.qk)
 # define covariates
 X <- cbind( 1 , x , y )
 # draw plausible values (assuming variance homogeneity)
-mod3a <- plausible.value.imputation.raschtype( f.yi.qk =f.yi.qk , 
+mod3a <- sirt::plausible.value.imputation.raschtype( f.yi.qk =f.yi.qk , 
                   theta.list=theta.list , X=X , iter=10 , burnin=5)
 # draw plausible values (assuming variance heterogeneity)
 #  -> include predictor Z
-mod3b <- plausible.value.imputation.raschtype( f.yi.qk =f.yi.qk , 
+mod3b <- sirt::plausible.value.imputation.raschtype( f.yi.qk =f.yi.qk , 
                   theta.list=theta.list , X=X , Z=X , iter=10 , burnin=5)
 
 # investigate variance of theta conditional on x

@@ -91,7 +91,7 @@ summary(dat)
 categorical <- colnames(dat)[2:6]
 
 # (1) categorize data
-res <- categorize( dat , categorical=categorical )
+res <- sirt::categorize( dat , categorical=categorical )
 
 # (2) multiple imputation using the mice package
 dat2 <- res$data
@@ -102,7 +102,7 @@ imp <- mice::mice( as.matrix(dat2) , impMethod = impMethod , maxit=1 , m=1 )
 dat3 <- mice::complete(imp,action=1)
 
 # (3) decategorize dataset
-dat3a <- decategorize( dat3 , categ_design = res$categ_design )
+dat3a <- sirt::decategorize( dat3 , categ_design = res$categ_design )
 	
 #############################################################################
 # EXAMPLE 2: Categorize ordinal and continuous data
@@ -119,7 +119,7 @@ quant <-  c(6,5,11)
 names(quant) <- c("math" , "read" , "hisei")
 
 # categorize data
-res <- categorize( dat , categorical = categorical , quant=quant)
+res <- sirt::categorize( dat , categorical = categorical , quant=quant)
 str(res)
 }
 }

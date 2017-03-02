@@ -72,9 +72,9 @@ inv.alignment2.lambda.alg <- function( lambda , psi0 , nu , align.scale ,
 # auxiliary function which Calls Rcpp
 ia_optim_lambda_R <- function( lambda , psi0 , psi0b , align.scale , align.pow ,
 					wgt , eps , group.combis ){
-     .Call("ia_optim_lambda" ,  lambda , psi0 , psi0b , align.scale , align.pow ,
-					wgt , eps , group.combis-1 , PACKAGE="sirt")
-											}
+     ia_optim_lambda(  lambda , psi0 , psi0b , align.scale , align.pow ,
+					wgt , eps , group.combis-1)
+}
 ################################################################################
 
 ##############################################################################
@@ -147,6 +147,6 @@ inv.alignment2.nu.alg <- function( lambda , psi0 , nu , align.scale ,
 # auxiliary function for calling Rcpp
 ia_optim_nu_R <- function( lambda , nu , psi0 , psi0b , alpha0 , alpha0b , align.scale , align.pow ,
 					wgt , eps , group.combis ){
-	.Call( "ia_optim_nu" ,  lambda , nu , psi0 , psi0b , alpha0 , alpha0b , align.scale , align.pow ,
-					wgt , eps , group.combis-1 , PACKAGE="sirt")	
-						}
+	ia_optim_nu( lambda , nu , psi0 , psi0b , alpha0 , alpha0b , align.scale , align.pow ,
+					wgt , eps , group.combis-1)	
+}

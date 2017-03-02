@@ -158,7 +158,7 @@ dat <- 1  * ( p1 > stats::runif(N*I)  )
 itemgroups <- rep( paste0("A" , 1:K ) , Ik )
 
 # estimate model
-mod <- mcmc.2pnoh(dat  , itemgroups , burnin=200 , iter=1000 )
+mod <- sirt::mcmc.2pnoh(dat  , itemgroups , burnin=200 , iter=1000 )
 # summary
 summary(mod)
 # plot

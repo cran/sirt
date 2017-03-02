@@ -1,71 +1,32 @@
 
+// [[Rcpp::depends(RcppArmadillo)]]
 
-// includes from the plugin
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
 
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
-
 using namespace Rcpp;
+
+
 
 
 /////////////////***********************************////////////////
 /// estimation subfunction for F
 
-
-// declarations
-extern "C" {
-SEXP noharm_estFcpp( SEXP Fval_, SEXP Pval_, SEXP Fpatt_, SEXP Ppatt_, SEXP I_, 
-	SEXP D_, SEXP b0jk_, SEXP b1jk_, SEXP b2jk_, SEXP b3jk_, SEXP wgtm_, 
-	SEXP pm_, SEXP Psival_, SEXP Psipatt_, SEXP maxincrement_ ,
-	SEXP modtype_) ;
-}
-
-// definition
-
-SEXP noharm_estFcpp( SEXP Fval_, SEXP Pval_, SEXP Fpatt_, SEXP Ppatt_, SEXP I_, 
-	SEXP D_, SEXP b0jk_, SEXP b1jk_, SEXP b2jk_, SEXP b3jk_, SEXP wgtm_, 
-	SEXP pm_, SEXP Psival_, SEXP Psipatt_, SEXP maxincrement_ ,
-	SEXP modtype_ ){
-BEGIN_RCPP
-  
-     // .noharm.estF <- function( Fval , Pval , Fpatt , Ppatt ,   
-     //		I , D ,  b0.jk , b1.jk , b2.jk , b3.jk ,   
-     //		update=TRUE){  
-       
-       
-     Rcpp::NumericMatrix Fval(Fval_);          
-     Rcpp::NumericMatrix Pval(Pval_);        
-     Rcpp::NumericMatrix Fpatt(Fpatt_);          
-     Rcpp::NumericMatrix Ppatt(Ppatt_);    
-     int I = as<int>(I_) ;  
-     int D = as<int>(D_) ;  
-     Rcpp::NumericMatrix b0jk(b0jk_);      
-     Rcpp::NumericMatrix b1jk(b1jk_);  
-     Rcpp::NumericMatrix b2jk(b2jk_);  
-     Rcpp::NumericMatrix b3jk(b3jk_);  
-     Rcpp::NumericMatrix wgtm(wgtm_);  
-     Rcpp::NumericMatrix pm(pm_);  
-     Rcpp::NumericMatrix Psival(Psival_);        
-     Rcpp::NumericMatrix Psipatt(Psipatt_);          
-     double maxincrement = as<double>(maxincrement_) ;  
-     int modtype = as<int>(modtype_) ;  
-       
-     // Rcpp::NumericVector weights(weights_) ;  
-     // int I=Fval.nrow() ;  
-     // int D=Fval.ncol();  
+///********************************************************************
+///** noharm_estFcpp
+// [[Rcpp::export]]
+Rcpp::List noharm_estFcpp( Rcpp::NumericMatrix Fval, 
+	Rcpp::NumericMatrix Pval, Rcpp::NumericMatrix Fpatt, 
+	Rcpp::NumericMatrix Ppatt, int I, int D, 
+	Rcpp::NumericMatrix b0jk, Rcpp::NumericMatrix b1jk, 
+	Rcpp::NumericMatrix b2jk, Rcpp::NumericMatrix b3jk, 
+	Rcpp::NumericMatrix wgtm, Rcpp::NumericMatrix pm, 
+	Rcpp::NumericMatrix Psival, Rcpp::NumericMatrix Psipatt, 
+	double maxincrement , int modtype ){
+      
      Rcpp::NumericVector dj(I) ;  
      Rcpp::NumericVector ej(I) ;  
      Rcpp::NumericMatrix ej_ek(I,I) ;  
-       
-       
      //*************** calculate dj  
      // 	dj <- sqrt( diag( Fval %*% Pval %*% t(Fval) ) )  
      for ( int jj = 0 ; jj <I;jj++){  
@@ -141,7 +102,6 @@ BEGIN_RCPP
      	}  
      }  
        
-       
      //*!!!!!!!!!!!!!!!!!!!!!!!  
      //*!!!!! one iteration  
      Rcpp::NumericVector eps0jj(I);  
@@ -200,58 +160,30 @@ BEGIN_RCPP
      }  
      }  
      }  
-       
-       
      //*************************************************      
-     // OUTPUT              
-                   
+     // OUTPUT                                 
      return Rcpp::List::create(    
          Rcpp::_["Fval_"] = Fval ,  
          Rcpp::_["change"] = parchange   
          ) ;  
-END_RCPP
 }
 
 
 /////////////////***********************************////////////////
 /// estimation subfunction for P
 
-// declarations
-extern "C" {
-SEXP noharm_estPcpp( SEXP Fval_, SEXP Pval_, SEXP Fpatt_, SEXP Ppatt_, SEXP I_,
-	SEXP D_, SEXP b0jk_, SEXP b1jk_, SEXP b2jk_, SEXP b3jk_, SEXP wgtm_, 
-	SEXP pm_, SEXP Psival_, SEXP Psipatt_, SEXP maxincrement_ ,
-	SEXP modtype_) ;
-}
+///********************************************************************
+///** noharm_estPcpp
+// [[Rcpp::export]]
+Rcpp::List noharm_estPcpp( Rcpp::NumericMatrix Fval, 
+	Rcpp::NumericMatrix Pval, Rcpp::NumericMatrix Fpatt, 
+	Rcpp::NumericMatrix Ppatt, int I, 
+	int D, Rcpp::NumericMatrix b0jk, Rcpp::NumericMatrix b1jk, 
+	Rcpp::NumericMatrix b2jk, Rcpp::NumericMatrix b3jk, 
+	Rcpp::NumericMatrix wgtm, Rcpp::NumericMatrix pm, 
+	Rcpp::NumericMatrix Psival, Rcpp::NumericMatrix Psipatt, 
+	double maxincrement , int modtype ){
 
-// definition
-
-SEXP noharm_estPcpp( SEXP Fval_, SEXP Pval_, SEXP Fpatt_, SEXP Ppatt_, SEXP I_, 
-	SEXP D_, SEXP b0jk_, SEXP b1jk_, SEXP b2jk_, SEXP b3jk_, SEXP wgtm_, 
-	SEXP pm_, SEXP Psival_, SEXP Psipatt_, SEXP maxincrement_ ,
-	SEXP modtype_){
-BEGIN_RCPP
-  
-     Rcpp::NumericMatrix Fval(Fval_);          
-     Rcpp::NumericMatrix Pval(Pval_);        
-     Rcpp::NumericMatrix Fpatt(Fpatt_);          
-     Rcpp::NumericMatrix Ppatt(Ppatt_);    
-     int I = as<int>(I_) ;  
-     int D = as<int>(D_) ;  
-     Rcpp::NumericMatrix b0jk(b0jk_);      
-     Rcpp::NumericMatrix b1jk(b1jk_);  
-     Rcpp::NumericMatrix b2jk(b2jk_);  
-     Rcpp::NumericMatrix b3jk(b3jk_);  
-     Rcpp::NumericMatrix wgtm(wgtm_);  
-     Rcpp::NumericMatrix pm(pm_);  
-     Rcpp::NumericMatrix Psival(Psival_);        
-     Rcpp::NumericMatrix Psipatt(Psipatt_);  
-     double maxincrement = as<double>(maxincrement_) ;  
-     int modtype = as<int>(modtype_) ;         
-              
-     // Rcpp::NumericVector weights(weights_) ;  
-     // int I=Fval.nrow() ;  
-     // int D=Fval.ncol();  
      Rcpp::NumericVector dj(I) ;  
      Rcpp::NumericVector ej(I) ;  
      Rcpp::NumericMatrix ej_ek(I,I) ;  
@@ -404,17 +336,13 @@ BEGIN_RCPP
      }  
      }  
        
-       
-       
      //*************************************************      
-     // OUTPUT              
-                   
+     // OUTPUT                          
      return Rcpp::List::create(    
          Rcpp::_["Pval_"] = Pval ,  
          Rcpp::_["change"] = parchange ,  
          Rcpp::_["residuals"] = eps0jj   
          ) ;  
-END_RCPP
 }
 
 
@@ -423,43 +351,18 @@ END_RCPP
 /////////////////***********************************////////////////
 /// estimation subfunction for Psi
 
+///********************************************************************
+///** noharm_estPcpp
+// [[Rcpp::export]]
+Rcpp::List noharm_estPsicpp( Rcpp::NumericMatrix Fval, 
+	Rcpp::NumericMatrix Pval, Rcpp::NumericMatrix Fpatt, 
+	Rcpp::NumericMatrix Ppatt, int I, 
+	int D, Rcpp::NumericMatrix b0jk, Rcpp::NumericMatrix b1jk, 
+	Rcpp::NumericMatrix b2jk, Rcpp::NumericMatrix b3jk, 
+	Rcpp::NumericMatrix wgtm, Rcpp::NumericMatrix pm, 
+	Rcpp::NumericMatrix Psival, Rcpp::NumericMatrix Psipatt, 
+	double maxincrement , int modtype ){
 
-// declarations
-extern "C" {
-SEXP noharm_estPsicpp( SEXP Fval_, SEXP Pval_, SEXP Fpatt_, SEXP Ppatt_, SEXP I_, 
-	SEXP D_, SEXP b0jk_, SEXP b1jk_, SEXP b2jk_, SEXP b3jk_, SEXP wgtm_, 
-	SEXP pm_, SEXP Psival_, SEXP Psipatt_, SEXP maxincrement_,
-	SEXP modtype_) ;
-}
-
-// definition
-
-SEXP noharm_estPsicpp( SEXP Fval_, SEXP Pval_, SEXP Fpatt_, SEXP Ppatt_, SEXP I_, 
-	SEXP D_, SEXP b0jk_, SEXP b1jk_, SEXP b2jk_, SEXP b3jk_, SEXP wgtm_, 
-	SEXP pm_, SEXP Psival_, SEXP Psipatt_, SEXP maxincrement_ ,
-	SEXP modtype_){
-BEGIN_RCPP
-        
-     Rcpp::NumericMatrix Fval(Fval_);          
-     Rcpp::NumericMatrix Pval(Pval_);        
-     Rcpp::NumericMatrix Fpatt(Fpatt_);          
-     Rcpp::NumericMatrix Ppatt(Ppatt_);    
-     int I = as<int>(I_) ;  
-     int D = as<int>(D_) ;  
-     Rcpp::NumericMatrix b0jk(b0jk_);      
-     Rcpp::NumericMatrix b1jk(b1jk_);  
-     Rcpp::NumericMatrix b2jk(b2jk_);  
-     Rcpp::NumericMatrix b3jk(b3jk_);  
-     Rcpp::NumericMatrix wgtm(wgtm_);  
-     Rcpp::NumericMatrix pm(pm_);  
-     Rcpp::NumericMatrix Psival(Psival_);        
-     Rcpp::NumericMatrix Psipatt(Psipatt_);          
-     double maxincrement = as<double>(maxincrement_) ;  
-     int modtype = as<int>(modtype_) ;         
-       
-     // Rcpp::NumericVector weights(weights_) ;  
-     // int I=Fval.nrow() ;  
-     // int D=Fval.ncol();  
      Rcpp::NumericVector dj(I) ;  
      Rcpp::NumericVector ej(I) ;  
      Rcpp::NumericMatrix ej_ek(I,I) ;  
@@ -595,13 +498,11 @@ BEGIN_RCPP
      }         
        
      //*************************************************      
-     // OUTPUT              
-                   
+     // OUTPUT                     
      return Rcpp::List::create(    
          Rcpp::_["Psival_"] = Psival ,  
          Rcpp::_["change"] = parchange   
          ) ;  
-END_RCPP
 }
 
 

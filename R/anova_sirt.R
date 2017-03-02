@@ -2,12 +2,12 @@
 ##############################################################
 # anova rasch.mml
 anova.rasch.mml <- function( object , ... ){
-	cl <- base::match.call()
+	cl <- match.call()
 	model1 <- object
 	model2 <- list(object , ... )[[2]]
 	res <- IRT.anova.sirt( model1 , model2 )
-	cl <- base::paste(cl)[-1]
-	ind <- base::match( res$Model , c("model1" , "model2") )
+	cl <- paste(cl)[-1]
+	ind <- match( res$Model , c("model1" , "model2") )
 	res$Model <- cl[ind]
     print(res)	
 	invisible(res)
@@ -48,7 +48,7 @@ IRT.anova.sirt <- function (object, ...){
     model2a <- objects[[2]]
     model1 <- IRT.IC(model1a)
     model2 <- IRT.IC(model2a)
-    dfr1 <- base::data.frame(Model = cl2[1], loglike = model1["loglike"], 
+    dfr1 <- data.frame(Model = cl2[1], loglike = model1["loglike"], 
         Deviance = -2 * model1["loglike"])
     dfr1$Npars <- model1["Npars"]
     dfr1$AIC <- model1["AIC"]
@@ -58,8 +58,8 @@ IRT.anova.sirt <- function (object, ...){
     dfr2$Npars <- model2["Npars"]
     dfr2$AIC <- model2["AIC"]
     dfr2$BIC <- model2["BIC"]
-    dfr <- base::rbind(dfr1, dfr2)
-    dfr <- dfr[ base::order(dfr$Npars), ]
+    dfr <- rbind(dfr1, dfr2)
+    dfr <- dfr[ order(dfr$Npars), ]
     dfr$Chisq <- NA
     dfr$df <- NA
     dfr$p <- NA

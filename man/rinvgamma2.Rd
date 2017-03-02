@@ -76,13 +76,13 @@ n0 <- 100
 var0 <- 1.5
 
 # 100 random draws
-y1 <- rinvgamma2( n=100 , n0 , var0 )
+y1 <- sirt::rinvgamma2( n=100 , n0 , var0 )
 summary(y1)
 graphics::hist(y1)
 
 # density y at grid x
 x <- base::seq( 0 , 2 , len=100 )
-y <- dinvgamma2( x , n0 , var0 )
+y <- sirt::dinvgamma2( x , n0 , var0 )
 graphics::plot( x , y , type="l")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

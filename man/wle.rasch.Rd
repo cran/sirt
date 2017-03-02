@@ -98,11 +98,11 @@ likelihood estimation method in \code{\link{rasch.jml}}.
 data(data.read)
 
 # estimate the Rasch model
-mod <- rasch.mml2(data.read)
+mod <- sirt::rasch.mml2(data.read)
 mod$item
 
 # estmate WLEs
-mod.wle <- wle.rasch( dat = data.read , b = mod$item$b )
+mod.wle <- sirt::wle.rasch( dat = data.read , b = mod$item$b )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

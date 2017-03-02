@@ -66,7 +66,7 @@ for ( ii in 1:3){
     error.corr[ ind.ii , ind.ii ] <- ii
         }
 # estimate the model with error correlations
-mod1 <- rasch.pml3( dat , error.corr = error.corr)
+mod1 <- sirt::rasch.pml3( dat , error.corr = error.corr)
 summary(mod1)
 
 # extract item parameters
@@ -81,7 +81,7 @@ covM <- outer( sqrt(resvar[,1]) , sqrt(resvar[,1] ) ) * corM
 facloadings <- A *facA
 
 # estimate reliability
-rel1 <- reliability.nonlinearSEM( facloadings =facloadings , thresh =thresh , 
+rel1 <- sirt::reliability.nonlinearSEM( facloadings =facloadings , thresh =thresh , 
            resid.cov=covM)
 rel1$omega.rel
 }

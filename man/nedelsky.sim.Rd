@@ -133,11 +133,11 @@ b[,3] <- -2.5 + stats::runif( I , -.75 , .75 )
 K <- 3           # number of distractors
 N <- 2000        # number of persons
 # apply simulation function
-dat <- nedelsky.sim( theta = stats::rnorm(N,sd=1.2) , b=b )
+dat <- sirt::nedelsky.sim( theta = stats::rnorm(N,sd=1.2) , b=b )
 
 #*** latent response patterns
 K <- 3
-combis <- nedelsky.latresp(K=3)
+combis <- sirt::nedelsky.latresp(K=3)
 
 #*** defining the Nedelsky item response function for estimation in mirt
 par <- c( 3  , rep(-1,K) , 1 , rep(1,K+1) ,1)
@@ -150,10 +150,10 @@ nedelsky.icc <- function( par , Theta , ncat ){
      a <- par[ K+2]
      tau <- par[1:(K+1) + (K+2) ]
      thdim <- par[ K+2+K+1 +1 ]
-     probs <- nedelsky.irf( Theta , K=K , b=b , a=a , tau=tau , combis , 
+     probs <- sirt::nedelsky.irf( Theta , K=K , b=b , a=a , tau=tau , combis , 
                     thdim=thdim  )$probs
      return(probs)
-            }
+}
 name <- "nedelsky"
 # create item response function
 nedelsky.itemfct <- mirt::createItem(name, par=par, est=est, P=nedelsky.icc)
@@ -185,7 +185,7 @@ mirt.wrapper.itemplot(mod1 ,ask=TRUE)
 # fit Nedelsky model with xxirt function in sirt
 
 # define item class for xxirt
-item_nedelsky <- xxirt_createDiscItem( name = "nedelsky" , par = par , 
+item_nedelsky <- sirt::xxirt_createDiscItem( name = "nedelsky" , par = par , 
                 est = est , P = nedelsky.icc ,
                 prior = c( b1="dnorm" , b2 = "dnorm" , b3 = "dnorm" ) , 
                 prior_par1 = c( b1 = -1 , b2=-1 , b3=-1) , 
@@ -205,18 +205,18 @@ P_Theta1 <- function( par , Theta , G){
     pi1 <- pi1 / sum(pi1)
     pi_Theta[,1] <- pi1
     return(pi_Theta)
-                }
+}
 #** create distribution class
 par_Theta <- c( "mu"=0, "sigma" = 1 )  
-customTheta <- xxirt_createThetaDistribution( par=par_Theta, est=c(FALSE,TRUE), 
+customTheta <- sirt::xxirt_createThetaDistribution( par=par_Theta, est=c(FALSE,TRUE), 
                    P=P_Theta1 )
 
 #-- create parameter table
 itemtype <- rep( "nedelsky" , I )
-partable <- xxirt_createParTable( dat , itemtype = itemtype , customItems = customItems )
+partable <- sirt::xxirt_createParTable( dat, itemtype = itemtype, customItems = customItems)
 
 # estimate model
-mod2 <- xxirt( dat = dat , Theta=Theta , partable = partable , customItems = customItems ,
+mod2 <- sirt::xxirt( dat=dat, Theta=Theta, partable=partable, customItems=customItems,
                     customTheta = customTheta)
 summary(mod2)
 # compare sirt::xxirt and mirt::mirt
@@ -231,7 +231,7 @@ data(data.si06)
 dat <- data.si06
 
 #*** create latent responses
-combis <- nedelsky.latresp(K)
+combis <- sirt::nedelsky.latresp(K)
 I <- ncol(dat)
 #*** define item response function
 K <- 3
@@ -245,10 +245,10 @@ nedelsky.icc <- function( par , Theta , ncat ){
      a <- par[ K+2]
      tau <- par[1:(K+1) + (K+2) ]
      thdim <- par[ K+2+K+1 +1 ]
-     probs <- nedelsky.irf( Theta , K=K , b=b , a=a , tau=tau , combis , 
+     probs <- sirt::nedelsky.irf( Theta , K=K , b=b , a=a , tau=tau , combis , 
                     thdim=thdim  )$probs
      return(probs)
-            }
+}
 name <- "nedelsky"
 # create item response function
 nedelsky.itemfct <- mirt::createItem(name, par=par, est=est, P=nedelsky.icc)

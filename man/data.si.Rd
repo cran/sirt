@@ -167,7 +167,7 @@ library(mirt)
 mod1 <- mirt::mirt( dat , model=1 , itemtype="2PLNRM" , key=rep(0,ncol(dat) ) ,
             verbose=TRUE  )
 summary(mod1)
-cmod1 <- mirt.wrapper.coef(mod1)$coef
+cmod1 <- sirt::mirt.wrapper.coef(mod1)$coef
 cmod1[,-1] <- round( cmod1[,-1] , 3)
 
 #** normalize item parameters according Suh and Bolt (2010)

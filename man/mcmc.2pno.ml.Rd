@@ -231,7 +231,7 @@ burnin <- 50 ; iter <- 100
 
 #***
 # Model 1: 1PNO with no cluster item effects
-mod1 <- mcmc.2pno.ml( dat , group , est.b.Var="n" , burnin=burnin , iter=iter )
+mod1 <- sirt::mcmc.2pno.ml( dat , group , est.b.Var="n" , burnin=burnin , iter=iter )
 summary(mod1)	# summary
 plot(mod1,layout=2,ask=TRUE) # plot results
 # write results to coda file
@@ -239,21 +239,21 @@ mcmclist2coda( mod1$mcmcobj , name = "data.ml1_mod1" )
 
 #***
 # Model 2: 1PNO with cluster item effects of item difficulties 
-mod2 <- mcmc.2pno.ml( dat , group , est.b.Var="i" , burnin=burnin , iter=iter )
+mod2 <- sirt::mcmc.2pno.ml( dat , group , est.b.Var="i" , burnin=burnin , iter=iter )
 summary(mod2)
 plot(mod2, ask=TRUE , layout=2 )
 
 #***
 # Model 3: 2PNO with cluster item effects of item difficulties but
 #          joint item slopes
-mod3 <- mcmc.2pno.ml( dat , group , est.b.Var="i" , est.a.M="h" , 
+mod3 <- sirt::mcmc.2pno.ml( dat , group , est.b.Var="i" , est.a.M="h" , 
               burnin=burnin , iter=iter )
 summary(mod3)
 
 #***
 # Model 4: 2PNO with cluster item effects of item difficulties and
 #          cluster item effects with a jointly estimated SD
-mod4 <- mcmc.2pno.ml( dat , group , est.b.Var="i" , est.a.M="h" ,
+mod4 <- sirt::mcmc.2pno.ml( dat , group , est.b.Var="i" , est.a.M="h" ,
                 est.a.Var="j" , burnin=burnin , iter=iter )
 summary(mod4)
 
@@ -269,26 +269,26 @@ burnin <- 100 ; iter <- 500
 
 #***
 # Model 1: no intercept variance, no slopes
-mod1 <- mcmc.2pno.ml( dat=dat , group=group , est.b.Var="n" , 
+mod1 <- sirt::mcmc.2pno.ml( dat=dat , group=group , est.b.Var="n" , 
              burnin=burnin , iter=iter , link="normal" ,  progress.iter=20  )
 summary(mod1)
 
 #***
 # Model 2a: itemwise intercept variance, no slopes
-mod2a <- mcmc.2pno.ml( dat=dat , group=group , est.b.Var="i" , 
+mod2a <- sirt::mcmc.2pno.ml( dat=dat , group=group , est.b.Var="i" , 
             burnin=burnin , iter=iter ,link="normal" ,  progress.iter=20  )
 summary(mod2a)
 
 #***
 # Model 2b: homogeneous intercept variance, no slopes
-mod2b <- mcmc.2pno.ml( dat=dat , group=group , est.b.Var="j" , 
+mod2b <- sirt::mcmc.2pno.ml( dat=dat , group=group , est.b.Var="j" , 
               burnin=burnin , iter=iter ,link="normal" ,  progress.iter=20  )
 summary(mod2b)
 
 #***
 # Model 3: intercept variance and slope variances
 #          hierarchical item and slope parameters
-mod3 <- mcmc.2pno.ml( dat=dat , group=group , 
+mod3 <- sirt::mcmc.2pno.ml( dat=dat , group=group , 
                est.b.M="h" , est.b.Var="i" , est.a.M="h" , est.a.Var="i" , 
                burnin=burnin , iter=iter ,link="normal" ,  progress.iter=20  )
 summary(mod3)
@@ -324,7 +324,7 @@ m1 <- stats::pnorm( theta - b )
 dat <- 1 * ( m1 > matrix( stats::runif( n*G*I ) , n*G , I ) )
 
 #*** estimate model
-mod <- mcmc.2pno.ml( dat , group=group , burnin=burnin , iter=iter , 
+mod <- sirt::mcmc.2pno.ml( dat , group=group , burnin=burnin , iter=iter , 
             est.b.M="n" , est.b.Var="i" , progress.iter=20)
 summary(mod)
 plot(mod , layout=2 , ask=TRUE )

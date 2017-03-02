@@ -65,7 +65,7 @@ x <- c(0 , 0 ,  .5 , 1  , 1  )
 y <- c( 0 , -.5 ,  1 , 3 , .5 )
 rho <- c( .2 , .8 , -.4 , .6 , .5 )
 # compare pbivnorm2 and pbivnorm functions
-pbiv2 <- pbivnorm2( x = x , y = y , rho = rho )
+pbiv2 <- sirt::pbivnorm2( x = x , y = y , rho = rho )
 pbiv <- pbivnorm::pbivnorm(  x ,  y , rho = rho )
 max( abs(pbiv-pbiv2))
   ## [1] 0.0030626

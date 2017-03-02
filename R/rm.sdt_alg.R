@@ -3,11 +3,11 @@
 # C code
 # calculation of probabilities
 probraterfct1 <- function (crater,drater,dimA,B,dimB){ 
-.Call("rm_probraterfct1", crater,drater,dimA,B,dimB, PACKAGE = "sirt")
+	rm_probraterfct1( crater,drater,dimA,B,dimB)
 					}
 # array multiplication					
 arraymult1 <- function (A,dimA,B,dimB){ 
-.Call("rm_arraymult1", A, dimA, B, dimB, PACKAGE = "sirt")
+	rm_arraymult1( A, dimA, B, dimB)
 					}					
 
 

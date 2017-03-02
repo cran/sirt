@@ -216,7 +216,7 @@ wgt <- matrix( sqrt(Ng) , length(Ng) , ncol(nu) )
 #***
 # Model 1: Alignment using a quadratic loss function
 #   -> use the default of align.pow=c(1,1) and align.scale=c(1,1)
-mod1 <- invariance.alignment( lambda , nu , wgt )
+mod1 <- sirt::invariance.alignment( lambda , nu , wgt )
 summary(mod1)
   ##   Effect Sizes of Approximate Invariance 
   ##          loadings intercepts
@@ -226,7 +226,7 @@ summary(mod1)
 
 #****
 # Model 2: Different powers for alignment
-mod2 <- invariance.alignment( lambda , nu , wgt ,  align.pow=c(.25,1/2) , 
+mod2 <- sirt::invariance.alignment( lambda , nu , wgt ,  align.pow=c(.25,1/2) , 
               align.scale=c(.95,.95) ,  max.increment=.1)
 summary(mod2)
 
@@ -241,7 +241,7 @@ round( mod2$nu.resid ,3 )
 #****
 # Model 3: Low powers for alignment of scale and power
 # Note that setting increment.factor larger than 1 seems necessary
-mod3 <- invariance.alignment( lambda , nu , wgt , align.pow=c(.25,.35) , 
+mod3 <- sirt::invariance.alignment( lambda , nu , wgt , align.pow=c(.25,.35) , 
             align.scale=c(.55,.55) , psi0.init=mod1$psi0 , alpha0.init = mod1$alpha0 )
 summary(mod3)
 
@@ -313,7 +313,7 @@ nu <- matrix( ipars[ ipars$op == "~1"  & ipars$se != 0 , "est" ], nrow=4 ,  byro
 colnames(nu) <- colnames(dat)[-1]
 
 # Model 1: least squares optimization
-mod1 <- invariance.alignment( lambda=lambda , nu=nu )
+mod1 <- sirt::invariance.alignment( lambda=lambda , nu=nu )
 summary(mod1)
   ##   Effect Sizes of Approximate Invariance 
   ##          loadings intercepts
@@ -329,7 +329,7 @@ summary(mod1)
   ##   4  0.171 0.935
 
 # Model 2: sparse target function
-mod2 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(1/4,1/4) )
+mod2 <- sirt::invariance.alignment( lambda=lambda , nu=nu , align.pow=c(1/4,1/4) )
 summary(mod2)
   ##   Effect Sizes of Approximate Invariance 
   ##          loadings intercepts
@@ -353,11 +353,11 @@ lambda <- data.ess2005$lambda
 nu <- data.ess2005$nu
 
 # Model 1: least squares optimization
-mod1 <- invariance.alignment( lambda=lambda , nu=nu )
+mod1 <- sirt::invariance.alignment( lambda=lambda , nu=nu )
 summary(mod1)
 
 # Model 2: sparse target function and definition of scales
-mod2 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(1/4,1/4) , 
+mod2 <- sirt::invariance.alignment( lambda=lambda , nu=nu , align.pow=c(1/4,1/4) , 
             align.scale= c( .2 , .3)  )
 summary(mod2)
 
@@ -421,7 +421,7 @@ colnames(nu) <- itempars$item
 lambda <- 1+0*nu
 
 # linking using least squares optimization
-mod1 <- invariance.alignment( lambda=lambda , nu=nu )
+mod1 <- sirt::invariance.alignment( lambda=lambda , nu=nu )
 summary(mod1)
   ##   Group Means and Standard Deviations 
   ##          alpha0 psi0
@@ -429,7 +429,7 @@ summary(mod1)
   ##   study2  0.286    1
 
 # linking using powers of .5
-mod2 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(.5,.5) )
+mod2 <- sirt::invariance.alignment( lambda=lambda , nu=nu , align.pow=c(.5,.5) )
 summary(mod2)
   ##   Group Means and Standard Deviations 
   ##          alpha0 psi0
@@ -437,7 +437,7 @@ summary(mod2)
   ##   study2  0.213    1
 
 # linking using powers of .25
-mod3 <- invariance.alignment( lambda=lambda , nu=nu , align.pow=c(.25,.25) )
+mod3 <- sirt::invariance.alignment( lambda=lambda , nu=nu , align.pow=c(.25,.25) )
 summary(mod3)
   ##   Group Means and Standard Deviations 
   ##          alpha0 psi0
@@ -455,8 +455,8 @@ dat.female <- dat[ dat$female == 1 , substring( colnames(dat) ,1,1) == "M"  ]
 
 #*************************
 # Model 1: Linking using the Rasch model
-mod1m <- rasch.mml2( dat.male )
-mod1f <- rasch.mml2( dat.female )
+mod1m <- sirt::rasch.mml2( dat.male )
+mod1f <- sirt::rasch.mml2( dat.female )
 
 # create objects for invariance.alignment
 nu <- rbind( mod1m$item$thresh , mod1f$item$thresh )
@@ -470,7 +470,7 @@ round( rowMeans(nu) , 3 )
   ##   -0.081 -0.049 
 
 # Linking using least squares optimization
-res1a <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) )
+res1a <- sirt::invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) )
 summary(res1a)
   ##   Effect Sizes of Approximate Invariance 
   ##          loadings intercepts
@@ -484,7 +484,7 @@ summary(res1a)
   ##   female  0.016    1
 
 # Linking using optimization with absolute values
-res1b <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) ,
+res1b <- sirt::invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) ,
                 align.pow=c( .5 , .5 ) )
 summary(res1b)
   ##   Group Means and Standard Deviations 
@@ -499,7 +499,7 @@ itempartable$item <- c( paste0(mod1m$item$item)  ,  paste0(mod1f$item$item) )
 itempartable$a <- 1
 itempartable$b <- c( mod1m$item$b , mod1f$item$b )
 # estimate linking parameters
-res1c <- linking.haberman( itempars= itempartable )
+res1c <- sirt::linking.haberman( itempars= itempartable )
   ##   Transformation parameters (Haberman linking)
   ##      study At     Bt
   ##   1 female  1  0.000
@@ -516,7 +516,7 @@ res1c <- linking.haberman( itempars= itempartable )
 #-- results of equating.rasch
 x <- itempartable[ 1:I , c("item" , "b") ]
 y <- itempartable[ I + 1:I , c("item" , "b") ]
-res1d <- equating.rasch( x , y )
+res1d <- sirt::equating.rasch( x , y )
 round( res1d$B.est , 3 )
   ##     Mean.Mean Haebara Stocking.Lord
   ##   1     0.032   0.032         0.029
@@ -524,8 +524,8 @@ round( res1d$B.est , 3 )
 #*************************
 # Model 2: Linking using the 2PL model
 I <- ncol(dat.male)
-mod2m <- rasch.mml2( dat.male , est.a=1:I)
-mod2f <- rasch.mml2( dat.female , est.a=1:I)
+mod2m <- sirt::rasch.mml2( dat.male , est.a=1:I)
+mod2f <- sirt::rasch.mml2( dat.female , est.a=1:I)
 
 # create objects for invariance.alignment
 nu <- rbind( mod2m$item$thresh , mod2f$item$thresh )
@@ -535,7 +535,7 @@ lambda <- rbind( mod2m$item$a , mod2f$item$a )
 colnames(lambda) <- mod2m$item$item
 rownames(lambda) <- c("male" , "female")
 
-res2a <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) )
+res2a <- sirt::invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) )
 summary(res2a)
   ##   Effect Sizes of Approximate Invariance 
   ##          loadings intercepts
@@ -548,7 +548,7 @@ summary(res2a)
   ##   male   -0.044 0.968
   ##   female  0.047 1.034
 
-res2b <- invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) ,
+res2b <- sirt::invariance.alignment( lambda , nu , align.scale = c( .3 , .5 ) ,
                 align.pow=c( .5 , .5 ) )
 summary(res2b)
   ##   Group Means and Standard Deviations 
@@ -563,7 +563,7 @@ itempartable$item <- c( paste0(mod2m$item$item)  ,  paste0(mod2f$item$item ) )
 itempartable$a <- c( mod2m$item$a , mod2f$item$a )
 itempartable$b <- c( mod2m$item$b , mod2f$item$b )
 # estimate linking parameters
-res2c <- linking.haberman( itempars= itempartable )
+res2c <- sirt::linking.haberman( itempars= itempartable )
   ##   Transformation parameters (Haberman linking)
   ##      study    At   Bt
   ##   1 female 1.000 0.00

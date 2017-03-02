@@ -4,7 +4,7 @@
 monoreg.rowwise <- function(yM,wM){ 
     yM <- as.matrix(yM)
 	wM <- as.matrix(wM)
-	res <- .Call("monoreg_rowwise_Cpp", yM , wM , PACKAGE = "sirt")
+	res <- monoreg_rowwise_Cpp( yM , wM )
 	return(res)
 					}	
 ##############################################################
@@ -12,6 +12,6 @@ monoreg.rowwise <- function(yM,wM){
 monoreg.colwise <- function(yM,wM){
     yM <- as.matrix(yM)
 	wM <- as.matrix(wM)
-	res <- .Call("monoreg_rowwise_Cpp", t(yM) , t(wM) , PACKAGE = "sirt")
+	res <- monoreg_rowwise_Cpp( t(yM) , t(wM) )
 	return(t(res))
-					}	
+}	

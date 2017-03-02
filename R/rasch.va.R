@@ -30,7 +30,7 @@ rasch.va <- function( dat , globconv=.001 , maxiter=1000){
 					2 * matrix( b , N , I , byrow=T ) * mu.i +  # 2nd term
 					mu.i^2 + sigma2.i             
 		xsi.ij <- sqrt( xsi.ij )             
-		lam.xsi.ij <- base::tanh( xsi.ij / 2 ) / ( 4*xsi.ij )
+		lam.xsi.ij <- tanh( xsi.ij / 2 ) / ( 4*xsi.ij )
 		# update beta
 		t1 <- colSums( 2 * lam.xsi.ij  * dat2.resp )
 		b <- colSums( - ( dat2 - .5 ) * dat2.resp + 2 * lam.xsi.ij * mu.i ) / t1

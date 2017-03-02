@@ -4,7 +4,7 @@ mlnormal_proc_variance_shortcut_Z_R <- function( Z_list , Z_index , G , freq_id)
 
 		gg0 <- freq_id[ 1 , "orig_id" ]
 		Z_list_gg0 <- Z_list[[gg0]]
-		NZ <- base::length(Z_list_gg0)
+		NZ <- length(Z_list_gg0)
 		Z_index_gg0 <- Z_index[gg0,,]
 		for (gg in 2:G){
 			# gg <- 2
@@ -26,7 +26,7 @@ mlnormal_proc_variance_shortcut_Z_R <- function( Z_list , Z_index , G , freq_id)
 		}
 		
 	#--- output
-	res <- base::list( "freq_id" = freq_id , "rcpp_args" = NULL)
-	base::return(res)
+	res <- list( "freq_id" = freq_id , "rcpp_args" = NULL)
+	return(res)
 }
 		

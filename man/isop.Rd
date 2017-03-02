@@ -258,14 +258,14 @@ dat <- as.matrix( data.read)
 I <- ncol(dat)
 
 # Model 1: ISOP Model (11 score groups)
-mod1 <- isop.dich( dat )
+mod1 <- sirt::isop.dich( dat )
 summary(mod1)
 plot(mod1)
 
 \dontrun{
 # Model 2: ISOP Model (5 score groups)
 score.breaks <- seq( -.005 , 1.005 , len=5+1 ) 
-mod2 <- isop.dich( dat , score.breaks=score.breaks)
+mod2 <- sirt::isop.dich( dat , score.breaks=score.breaks)
 summary(mod2)
 
 #############################################################################
@@ -279,7 +279,7 @@ dat <- dat[ , grep("M" , colnames(dat) ) ]
 # fit ISOP model
 # Note that for this model many iterations are needed
 #   to reach convergence for ADISOP
-mod1 <- isop.dich( dat , maxit=4000)
+mod1 <- sirt::isop.dich( dat , maxit=4000)
 summary(mod1)
 }
 
@@ -293,7 +293,7 @@ data(data.Students , package="CDM")
 dat <- stats::na.omit( data.Students[ , paste0("act",1:4) ] )
 
 # fit models
-mod1 <- isop.poly( dat )
+mod1 <- sirt::isop.poly( dat )
 summary(mod1)
 plot(mod1)
 }

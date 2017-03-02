@@ -100,7 +100,7 @@ a <- 1.7*c(1.169,0.724,0.554,0.706 )
 b <- c(0.468,-1.541,-0.042,0.698 )
 c <- c(0.159,0.211,0.197,0.177 )
 
-res <- marginal.truescore.reliability( b=b , a =a , c=c)
+res <- sirt::marginal.truescore.reliability( b=b , a =a , c=c)
   ##   Reliability= 0.403 
   ##   > round( res$item , 3 )
   ##     item    pi sig2.tau sig2.error rel.item
@@ -116,13 +116,13 @@ data( data.read)
 
 #***
 # Model 1: 1PL
-mod <- rasch.mml2( data.read )
+mod <- sirt::rasch.mml2( data.read )
 marginal.truescore.reliability( b=mod$item$b )
   ##   Reliability= 0.653 
 
 #***
 # Model 2: 2PL
-mod <- rasch.mml2( data.read , est.a=1:12 )
+mod <- sirt::rasch.mml2( data.read , est.a=1:12 )
 marginal.truescore.reliability( b=mod$item$b , a=mod$item$a)
   ##   Reliability= 0.696 
 

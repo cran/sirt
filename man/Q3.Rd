@@ -76,11 +76,11 @@ For handling local dependencies in IRT models see
 data(data.read)
 
 # estimate the Rasch model
-mod <- rasch.mml2( data.read)
+mod <- sirt::rasch.mml2( data.read)
 # estmate WLEs
-mod.wle <- wle.rasch( dat = data.read , b = mod$item$b )
+mod.wle <- sirt::wle.rasch( dat = data.read , b = mod$item$b )
 # calculate Yen's Q3 statistic
-mod.q3 <- Q3( dat = data.read , theta = mod.wle$theta , b = mod$item$b )
+mod.q3 <- sirt::Q3( dat = data.read , theta = mod.wle$theta , b = mod$item$b )
   ##   Yen's Q3 Statistic based on an estimated theta score 
   ##   *** 12 Items | 66 item pairs
   ##   *** Q3 Descriptives
@@ -97,7 +97,7 @@ abline(h=c(5,9))
 \dontrun{
 # obtain Q3 statistic from modelfit.sirt function which is based on the 
 # posterior distribution of theta and not on observed values
-fitmod <- modelfit.sirt( mod )
+fitmod <- sirt::modelfit.sirt( mod )
 # extract Q3 statistic
 q3stat <- fit$itempairs$Q3
   ##  > summary(q3stat)

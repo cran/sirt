@@ -20,12 +20,12 @@ mlnormal_fit_function_ml <- function( id_list , V1_list , G , N , yresid ,
 			ll <- ll - adet
 			ind <- id_list[[gg]]
 			yr <- yresid[ind]
-			ll <- ll - 0.5 * base::crossprod( yr , V1_list[[gg]] ) %*% yr
+			ll <- ll - 0.5 * crossprod( yr , V1_list[[gg]] ) %*% yr
 		}
 		if (REML){
 			ll <- ll - mlnormal_log_det( XVX ) 
 		}
-		ll <- base::as.vector(ll)
+		ll <- as.vector(ll)
 		crit <- ll
 		log_prior <- log_posterior <- NA
 		
@@ -67,8 +67,8 @@ mlnormal_fit_function_ml <- function( id_list , V1_list , G , N , yresid ,
 	}	
 		
 	#--- output	
-	res <- base::list("loglike" = ll , log_posterior = log_posterior , 
+	res <- list("loglike" = ll , log_posterior = log_posterior , 
 					objfun = crit , log_prior = log_prior ,
 					theta = theta , theta_change = theta_change )								
-    base::return(res)			
+    return(res)			
 }

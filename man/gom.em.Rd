@@ -260,14 +260,14 @@ dat <- dat[ , grep("M" , colnames(dat)) ]
 #***
 # Model 1: Discrete GOM with 3 classes and 5 probability levels
 problevels <- seq( 0 , 1 , len=5 )
-mod1 <- gom.em( dat , K=3 , problevels ,  model="GOM"  )            
+mod1 <- sirt::gom.em( dat , K=3 , problevels ,  model="GOM"  )            
 summary(mod1)
 
 \dontrun{
 #***
 # Model 2: Discrete GOM with 4 classes and 5 probability levels
 problevels <- seq( 0 , 1 , len=5 )
-mod2 <- gom.em( dat , K=4 , problevels ,  model="GOM"  )            
+mod2 <- sirt::gom.em( dat , K=4 , problevels ,  model="GOM"  )            
 summary(mod2)
 
 # model comparison
@@ -288,7 +288,7 @@ problevels <- scan()
  0  0  0  1
 
 problevels <- matrix( problevels, ncol=4 , byrow=TRUE)
-mod2a <- gom.em( dat , K=4 , problevels ,  model="GOM" )            
+mod2a <- sirt::gom.em( dat , K=4 , problevels ,  model="GOM" )            
 # probability distribution for latent classes
 cbind( mod2a$theta.k , mod2a$pi.k )
   ##        [,1] [,2] [,3] [,4]       [,5]
@@ -303,12 +303,12 @@ cbind( mod2a$theta.k , mod2a$pi.k )
 
 #***
 # Model 3: Rasch GOM
-mod3 <- gom.em( dat , model="GOMRasch" , maxiter=20 )            
+mod3 <- sirt::gom.em( dat , model="GOMRasch" , maxiter=20 )            
 summary(mod3)
 
 #***
 # Model 4: 'Ordinary' Rasch model
-mod4 <- rasch.mml2( dat )
+mod4 <- sirt::rasch.mml2( dat )
 summary(mod4)
 
 \dontrun{
@@ -337,10 +337,10 @@ for (ii in 1:I){
 colnames(dat) <- paste0( "I" , 1:I) 
 
 # Model 1: estimate latent class model
-mod1 <- gom.em(dat, K=2, problevels= c(0,1) , model="GOM" )
+mod1 <- sirt::gom.em(dat, K=2, problevels= c(0,1) , model="GOM" )
 summary(mod1)
 # Model 2: estimate GOM
-mod2 <- gom.em(dat, K=2, problevels= seq(0,1,0.5) , model="GOM" )
+mod2 <- sirt::gom.em(dat, K=2, problevels= seq(0,1,0.5) , model="GOM" )
 summary(mod2)
 # estimated distribution
 cbind( mod2$theta.k , mod2$pi.k )
@@ -369,11 +369,11 @@ for (ii in 1:I){
 colnames(dat) <- paste0( "I" , 1:I) 
 
 #** Model 1: estimate latent class model
-mod1 <- gom.em(dat, K=2, problevels= c(0,1) , model="GOM" )
+mod1 <- sirt::gom.em(dat, K=2, problevels= c(0,1) , model="GOM" )
 summary(mod1)
 
 #** Model 2: estimate GOM
-mod2 <- gom.em(dat, K=2, problevels= seq(0,1,0.5) , model="GOM" )
+mod2 <- sirt::gom.em(dat, K=2, problevels= seq(0,1,0.5) , model="GOM" )
 summary(mod2)
 # inspect distribution
 cbind( mod2$theta.k , mod2$pi.k )
@@ -427,7 +427,7 @@ mod2m@logLik
 ( AIC <- -2*mod2m@logLik+2*mod2m@nest )
 ( BIC <- -2*mod2m@logLik+log(mod2m@Data$N)*mod2m@nest )
 # extract coefficients
-( cmod2m <- mirt.wrapper.coef(mod2m) )
+( cmod2m <- sirt::mirt.wrapper.coef(mod2m) )
 # compare estimated distributions
 round( cbind( "sirt"  = mod2$pi.k , "mirt" = mod2m@Prior[[1]] ) , 5 )
   ##           sirt    mirt

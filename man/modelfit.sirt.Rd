@@ -116,57 +116,57 @@ dat <- data.read
 I <- ncol(dat)
 
 #*** Model 1: Rasch model
-mod1 <- rasch.mml2(dat)
-fmod1 <- modelfit.sirt( mod1 )
+mod1 <- sirt::rasch.mml2(dat)
+fmod1 <- sirt::modelfit.sirt( mod1 )
 summary(fmod1)
 
 #*** Model 1b: Rasch model in TAM package
 library(TAM)
 mod1b <- TAM::tam.mml(dat)
-fmod1b <- modelfit.sirt( mod1b )
+fmod1b <- sirt::modelfit.sirt( mod1b )
 summary(fmod1b)
 
 #*** Model 2: Rasch model with smoothed distribution
-mod2 <- rasch.mml2( dat , distribution.trait="smooth3" )
-fmod2 <- modelfit.sirt( mod2 )
+mod2 <- sirt::rasch.mml2( dat , distribution.trait="smooth3" )
+fmod2 <- sirt::modelfit.sirt( mod2 )
 summary(fmod2 )
 
 #*** Model 3: 2PL model
-mod3 <- rasch.mml2( dat , distribution.trait="normal" , est.a=1:I )
-fmod3 <- modelfit.sirt( mod3 )
+mod3 <- sirt::rasch.mml2( dat , distribution.trait="normal" , est.a=1:I )
+fmod3 <- sirt::modelfit.sirt( mod3 )
 summary(fmod3 )
 
 #*** Model 3: 2PL model in TAM package
 mod3b <- TAM::tam.mml.2pl( dat )
-fmod3b <- modelfit.sirt(mod3b)
+fmod3b <- sirt::modelfit.sirt(mod3b)
 summary(fmod3b)
 # model fit in TAM package
 tmod3b <- TAM::tam.modelfit(mod3b)
 summary(tmod3b)
 # model fit in mirt package
 library(mirt)
-mmod3b <- tam2mirt(mod3b)   # convert to mirt object
+mmod3b <- sirt::tam2mirt(mod3b)   # convert to mirt object
 mirt::M2(mmod3b$mirt)         # global fit statistic
 mirt::residuals( mmod3b$mirt , type="LD")  # local dependence statistics
 
 #*** Model 4: 3PL model with equal guessing parameter
 mod4 <- TAM::rasch.mml2( dat, distribution.trait="smooth3", est.a=1:I, est.c=rep(1,I) )
-fmod4 <- modelfit.sirt( mod4 )
+fmod4 <- sirt::modelfit.sirt( mod4 )
 summary(fmod4 )
 
 #*** Model 5: Latent class model with 2 classes
-mod5 <- rasch.mirtlc( dat , Nclasses=2 )
-fmod5 <- modelfit.sirt( mod5 )
+mod5 <- sirt::rasch.mirtlc( dat , Nclasses=2 )
+fmod5 <- sirt::modelfit.sirt( mod5 )
 summary(fmod5 )
 
 #*** Model 6: Rasch latent class model with 3 classes
-mod6 <- rasch.mirtlc( dat , Nclasses=3 , modeltype="MLC1", mmliter=100)
-fmod6 <- modelfit.sirt( mod6 )
+mod6 <- sirt::rasch.mirtlc( dat , Nclasses=3 , modeltype="MLC1", mmliter=100)
+fmod6 <- sirt::modelfit.sirt( mod6 )
 summary(fmod6 )
 
 #*** Model 7: PML estimation
-mod7 <- rasch.pml3( dat )
-fmod7 <- modelfit.sirt( mod7 )
+mod7 <- sirt::rasch.pml3( dat )
+fmod7 <- sirt::modelfit.sirt( mod7 )
 summary(fmod7 )
 
 #*** Model 8: PML estimation
@@ -178,14 +178,14 @@ for ( ii in 1:3){
     ind.ii <- which( itemcluster == ii )
     error.corr[ ind.ii , ind.ii ] <- ii
         }
-mod8 <- rasch.pml3( dat , error.corr = error.corr )
-fmod8 <- modelfit.sirt( mod8 )
+mod8 <- sirt::rasch.pml3( dat , error.corr = error.corr )
+fmod8 <- sirt::modelfit.sirt( mod8 )
 summary(fmod8 )
 
 #*** Model 9: 1PL in smirt
 Qmatrix <- matrix( 1 , nrow=I , ncol=1 )
-mod9 <- smirt( dat , Qmatrix=Qmatrix )
-fmod9 <- modelfit.sirt( mod9 )
+mod9 <- sirt::smirt( dat , Qmatrix=Qmatrix )
+fmod9 <- sirt::modelfit.sirt( mod9 )
 summary(fmod9 )
 
 #*** Model 10: 3-dimensional Rasch model in NOHARM 
@@ -202,16 +202,16 @@ diag(P.init) <- 1
 F.pattern <- 0*Q
 F.init <- Q
 # estimate model
-mod10 <- R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern , 
+mod10 <- sirt::R2noharm( dat = dat , model.type="CFA" , F.pattern = F.pattern , 
             F.init = F.init , P.pattern = P.pattern , P.init = P.init , 
             writename = "ex4e" , noharm.path = noharm.path  , dec ="," )
-fmod10 <- modelfit.sirt( mod10 )
+fmod10 <- sirt::modelfit.sirt( mod10 )
 summary(fmod10)
 
 #*** Model 11: Rasch model in mirt package
 library(mirt)
 mod11 <- mirt::mirt(dat , 1, itemtype="Rasch",verbose=TRUE)
-fmod11 <- modelfit.sirt( mod11 )
+fmod11 <- sirt::modelfit.sirt( mod11 )
 summary(fmod11)
 # model fit in mirt package
 mirt::M2(mod11)

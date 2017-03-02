@@ -87,11 +87,11 @@ estimation) can be conducted with \code{\link{rasch.pml3}}.
 data(data.read)
 
 #*** Model 1: no constraint on item difficulties
-mod1 <- rasch.pairwise( data.read )
+mod1 <- sirt::rasch.pairwise( data.read )
 summary(mod1)
 
 #*** Model 2: sum constraint on item difficulties
-mod2 <- rasch.pairwise( data.read , zerosum=TRUE)
+mod2 <- sirt::rasch.pairwise( data.read , zerosum=TRUE)
 summary(mod2)
 
 \dontrun{
@@ -100,7 +100,7 @@ mod2$item$b   # extract item difficulties
 # Bootstrap for item difficulties
 boot_pw <- function(data, indices ){   
         dd <- data[ indices , ] # bootstrap of indices
-        mod <- rasch.pairwise( dd , zerosum=TRUE , progress=FALSE)
+        mod <- sirt::rasch.pairwise( dd , zerosum=TRUE , progress=FALSE)
         mod$item$b   
     }
 set.seed(986)

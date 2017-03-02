@@ -1,47 +1,24 @@
 
 
-// includes from the plugin
+// [[Rcpp::depends(RcppArmadillo)]]
 
+#include <RcppArmadillo.h>
 #include <Rcpp.h>
-
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
 
 using namespace Rcpp;
 
 
 // user includes
 
+///********************************************************************
+///** mle_pcm_group_C
+// [[Rcpp::export]]
+Rcpp::List mle_pcm_group_C( Rcpp::NumericMatrix dat, 
+	Rcpp::NumericMatrix dat_resp, Rcpp::NumericMatrix groupM, 
+	Rcpp::NumericMatrix b, Rcpp::NumericVector a, 
+	Rcpp::NumericVector maxK, Rcpp::NumericVector theta0, 
+	double conv, int maxiter ){
 
-// declarations
-extern "C" {
-SEXP mle_pcm_group_C( SEXP dat_, SEXP dat_resp_, SEXP groupM_, SEXP b_, 
-	SEXP a_, SEXP maxK_, SEXP theta0_, SEXP conv_, SEXP maxiter_) ;
-}
-
-// definition
-
-SEXP mle_pcm_group_C( SEXP dat_, SEXP dat_resp_, SEXP groupM_, SEXP b_, 
-	SEXP a_, SEXP maxK_, SEXP theta0_, SEXP conv_, SEXP maxiter_ ){
-BEGIN_RCPP
-  
-     Rcpp::NumericMatrix dat(dat_);          
-     Rcpp::NumericMatrix dat_resp(dat_resp_);  
-     Rcpp::NumericMatrix groupM(groupM_);  
-     Rcpp::NumericMatrix b(b_);    
-     Rcpp::NumericVector a(a_) ;  
-     Rcpp::NumericVector maxK(maxK_) ;  
-     Rcpp::NumericVector theta0(theta0_) ;  
-     double conv = as<double>(conv_) ;    
-     int maxiter = as<int>(maxiter_);     
-       
-     // int N = dat.nrow() ;  
      int I = dat.ncol() ;  
        
      double eps=1e-10;
@@ -141,38 +118,25 @@ BEGIN_RCPP
          Rcpp::_["setheta"]=setheta ,  
          Rcpp::_["Niter"] = Niter  
                  ) ;  
-       
+}
+
      ////****** PRINT OUTPUT ****************************  
      // Rcpp::Rcout << "pij " << pij[0] << " " << pij[1] << " " <<   
      //    pij[2] << " " << pij[3] << " " << pij[4]        << std::endl ;  
      //Rcpp::Rcout << "ii  " << ii << " l1=" << l1 << " l2=" << l2 <<  
      //    "  lam1=" << lam1 << std::endl ;
-END_RCPP
-}
 
 
 
-// declarations
-extern "C" {
-SEXP mle_pcm_C( SEXP dat_, SEXP dat_resp_, SEXP b_, SEXP a_, SEXP maxK_, 
-	 SEXP theta0_, SEXP conv_, SEXP maxiter_) ;
-}
 
-// definition
+///********************************************************************
+///** mle_pcm_C
+// [[Rcpp::export]]     
+Rcpp::List mle_pcm_C( Rcpp::NumericMatrix dat, 
+	Rcpp::NumericMatrix dat_resp, Rcpp::NumericMatrix b, 
+	Rcpp::NumericVector a, Rcpp::NumericVector maxK, 
+	Rcpp::NumericVector theta0, double conv, int maxiter ){
 
-SEXP mle_pcm_C( SEXP dat_, SEXP dat_resp_, SEXP b_, SEXP a_, SEXP maxK_, 
-	SEXP theta0_, SEXP conv_, SEXP maxiter_ ){
-BEGIN_RCPP
-  
-     Rcpp::NumericMatrix dat(dat_);          
-     Rcpp::NumericMatrix dat_resp(dat_resp_);          
-     Rcpp::NumericMatrix b(b_);    
-     Rcpp::NumericVector a(a_) ;  
-     Rcpp::NumericVector maxK(maxK_) ;  
-     Rcpp::NumericVector theta0(theta0_) ;  
-     double conv = as<double>(conv_) ;    
-     int maxiter = as<int>(maxiter_);     
-       
      int N = dat.nrow() ;  
      int I = dat.ncol() ;  
        
@@ -269,12 +233,6 @@ BEGIN_RCPP
          Rcpp::_["Niter"] = Niter  
                  ) ;  
        
-     ////****** PRINT OUTPUT ****************************  
-     // Rcpp::Rcout << "pij " << pij[0] << " " << pij[1] << " " <<   
-     //    pij[2] << " " << pij[3] << " " << pij[4]        << std::endl ;  
-     //Rcpp::Rcout << "ii  " << ii << " l1=" << l1 << " l2=" << l2 <<  
-     //    "  lam1=" << lam1 << std::endl ;
-END_RCPP
 }
 
 

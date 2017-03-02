@@ -16,7 +16,7 @@ dirichlet.simul <- function( alpha ){
 #################################################
 # derivative of digamma function
 digamma1 <- function(x,h=.001){
-    ( base::digamma(x+h) - base::digamma(x-h) ) / (2*h)
+    ( digamma(x+h) - digamma(x-h) ) / (2*h)
                 }
 ##################################################
 # Maximum likelihood estimation of distribution parameters
@@ -50,7 +50,7 @@ dirichlet.mle <- function( x ,  weights=NULL , eps=10^(-5),convcrit=.00001 , max
     # BEGIN iterations
     while( ( conv > convcrit ) & (iter < maxit) ){
         alpha0 <- alpha
-        g <- N * base::digamma( sum(alpha ) ) - N * base::digamma(alpha) + N * log.pbar
+        g <- N * digamma( sum(alpha ) ) - N * digamma(alpha) + N * log.pbar
         z <- N * digamma1( sum(alpha ))
         H <- diag( -N*digamma1( alpha ) ) + z
         alpha <- alpha0 - solve(H , g )

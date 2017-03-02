@@ -104,7 +104,7 @@ b1b[,1] <- b2[,1]
 b1b[,2] <- rowSums( b2[,1:2] )
 b1b[,3] <- rowSums( b2[,1:3] )
 # assess fit
-fit1a <- pcm.fit(b=b1, theta=wle1a$theta , dat)
+fit1a <- sirt::pcm.fit(b=b1, theta=wle1a$theta , dat)
 fit1a$item
 
 #############################################################################
@@ -123,7 +123,7 @@ wle <- TAM::tam.wle(mod)
 # extract item parameters
 b1 <- - mod$AXsi[ , -1 ]
 # assess fit
-fit1a <- pcm.fit(b=b1, theta=wle$theta , dat)
+fit1a <- sirt::pcm.fit(b=b1, theta=wle$theta , dat)
 fit1a$item
 
 #############################################################################

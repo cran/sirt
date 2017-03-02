@@ -273,25 +273,25 @@ dat <- data.ratings1
 
 \dontrun{
 # Model 1: Partial Credit Model: no rater effects
-mod1 <- rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod1 <- sirt::rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="n" , est.d.rater="n" , maxiter=15)
 summary(mod1)
             
 # Model 2: Generalized Partial Credit Model: no rater effects
-mod2 <- rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod2 <- sirt::rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="n" , est.d.rater="n" , 
             est.a.item =TRUE , d.start=100 , maxiter=15)
 summary(mod2)
 }
             
 # Model 3: Equal effects in SDT
-mod3 <- rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod3 <- sirt::rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="e" , est.d.rater="e" , maxiter=15)
 summary(mod3)
 
 \dontrun{
 # Model 4: Rater effects in SDT
-mod4 <- rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
+mod4 <- sirt::rm.sdt( dat[ , paste0( "k",1:5) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="r" , est.d.rater="r" , maxiter=15)
 summary(mod4)
 
@@ -305,13 +305,13 @@ dat <- dat[ dat$rater < 814 , ]
 psych::describe(dat)
             
 # Model 1: item- and rater-specific effects
-mod1 <- rm.sdt( dat[ , paste0( "crit",c(2:4)) ] , rater=dat$rater , 
+mod1 <- sirt::rm.sdt( dat[ , paste0( "crit",c(2:4)) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="a" , est.d.rater="a" , maxiter=10)
 summary(mod1)
 plot(mod1)
 
 # Model 2: Differing number of categories per variable
-mod2 <- rm.sdt( dat[ , paste0( "crit",c(2:4,6)) ] , rater=dat$rater , 
+mod2 <- sirt::rm.sdt( dat[ , paste0( "crit",c(2:4,6)) ] , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="a" , est.d.rater="a" , maxiter=10)
 summary(mod2)
 plot(mod2)
@@ -326,7 +326,7 @@ dat <- dat[ dat$rater < 814 , ]
 psych::describe(dat)
 
 # Model 1: Discrete theta skill space with values of 0,1,2 and 3
-mod1 <- rm.sdt( dat[ , paste0( "crit",c(2:4)) ] , theta.k = 0:3 , rater=dat$rater , 
+mod1 <- sirt::rm.sdt( dat[ , paste0( "crit",c(2:4)) ] , theta.k = 0:3 , rater=dat$rater , 
             pid=dat$idstud , est.c.rater="a" , est.d.rater="a" , skillspace="discrete" ,
             maxiter=20)
 summary(mod1)
@@ -339,7 +339,7 @@ plot(mod1)
 tau.item.fixed <- cbind( 1, 1:3,  100*cumsum( c( 0.5, 1.5, 2.5)) )
 a.item.fixed <- cbind( 1, 100 )
 # fit HRM-SDT 
-mod2 <- rm.sdt( dat[ , "crit2" , drop=FALSE] , theta.k = 0:3 , rater=dat$rater , 
+mod2 <- sirt::rm.sdt( dat[ , "crit2" , drop=FALSE] , theta.k = 0:3 , rater=dat$rater , 
             tau.item.fixed=tau.item.fixed ,a.item.fixed=a.item.fixed, pid=dat$idstud, 
             est.c.rater="a", est.d.rater="a", skillspace="discrete", maxiter=20)
 summary(mod2)            

@@ -1,5 +1,5 @@
 
 pow <- function(x , a)
 {
-	base::return( x^a )
+	return( x^a )
 }

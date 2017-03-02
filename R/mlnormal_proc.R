@@ -6,16 +6,16 @@ mlnormal_proc <- function( id , X , y, beta , theta , REML_shortcut , method ,
 
 zz0 <- Sys.time()
 	#*** number of groups (ids)
-	G <- base::length( base::unique(id))
+	G <- length( unique(id))
 	#*** rename identifiers
-	id <- base::match( id , base::unique(id))
-	if ( base::sum( base::diff(id) < 0 ) > 0 ){ 
-			base::stop("id vector must be ordered!") 
+	id <- match( id , unique(id))
+	if ( sum( diff(id) < 0 ) > 0 ){ 
+			stop("id vector must be ordered!") 
 	}
 	
 	#**** reorder identifiers for faster computation		
 	reorder_obs <- freq_id <- NULL	
-	do_compute <- base::rep( TRUE , G )
+	do_compute <- rep( TRUE , G )
 # cat("-- before variance_shortcut") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 
 	rcpp_args <- NULL									
@@ -36,45 +36,45 @@ zz0 <- Sys.time()
 # cat("-- after variance_shortcut") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1										
  
     #*** create id_list
-    id_list <- base::as.list(1:G)
+    id_list <- as.list(1:G)
     for (gg in 1:G){
-        ind <- base::which( id == gg  )
+        ind <- which( id == gg  )
         id_list[[gg]] <- ind
 			}	
 	# create X list
-	X_list <- base::as.list(1:G)
-	y_list <- base::as.list(1:G)
+	X_list <- as.list(1:G)
+	y_list <- as.list(1:G)
 	for (gg in 1:G){
 		ind <- id_list[[gg]]
 		X_list[[gg]] <- X[ ind , ]
 		y_list[[gg]] <- y[ ind ]
 	}
 
-	N <- base::length(y)			
-	id_dim <- base::rowsum( base::rep(1,N) , id )[,1]		
+	N <- length(y)			
+	id_dim <- rowsum( rep(1,N) , id )[,1]		
    
     #--- objects of beta if they are not existing
-	if ( base::is.null(beta) ){
-		beta <- base::rep( 0 , base::ncol(X) )
+	if ( is.null(beta) ){
+		beta <- rep( 0 , ncol(X) )
 	}
 	
    
 	#--- names
-	NT <- base::length(theta)
-	NB <- base::length(beta)
-	if ( base::is.null( base::names( theta )) ){
-		base::names(theta) <- base::paste0( "theta" , 1:NT )
+	NT <- length(theta)
+	NB <- length(beta)
+	if ( is.null( names( theta )) ){
+		names(theta) <- paste0( "theta" , 1:NT )
 	}
-	if ( base::is.null( base::names( beta )) ){
-		base::names(beta) <- base::colnames(X)
-		ind <- base::names(beta) == ""
-		base::names(beta)[ ind ] <- base::paste0( "beta" , 1:NB )[ind] 
+	if ( is.null( names( beta )) ){
+		names(beta) <- colnames(X)
+		ind <- names(beta) == ""
+		names(beta)[ ind ] <- paste0( "beta" , 1:NB )[ind] 
 	}	
 	#--- REML
 	REML <- if ( method == "REML" ){ TRUE } else { FALSE }
 
 	#--- REML_shortcut
-	if ( base::is.null(REML_shortcut) ){
+	if ( is.null(REML_shortcut) ){
 		REML_shortcut <- TRUE
 	}
 	
@@ -86,16 +86,16 @@ zz0 <- Sys.time()
 	if ( REML ){ des_method <- "Restricted Maximum Likelihood Estimation" }
 	
 	#-- vector
-	descriptions <- base::c( "log_like_verbose" = des_ll , des_method = des_method )
+	descriptions <- c( "log_like_verbose" = des_ll , des_method = des_method )
 	
 	if ( ! variance_shortcut ){
 		use_Rcpp <- FALSE
 	}
 # cat("-- end preproc") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1											
     #--- output
-    res <- base::list( "id_list" = id_list , "G" = G , "y_list" = y_list ,
+    res <- list( "id_list" = id_list , "G" = G , "y_list" = y_list ,
 				"X_list" = X_list , "N" = N , "NB" = NB,
-				X = base::as.matrix(X) , y = base::as.matrix(y) , 
+				X = as.matrix(X) , y = as.matrix(y) , 
 				id = id , 
 				"NT" = NT , "theta" = theta ,Z_list = Z_list , Z_index = Z_index , 
 				freq_id = freq_id , do_compute = do_compute , 
@@ -103,6 +103,6 @@ zz0 <- Sys.time()
 				descriptions = descriptions , rcpp_args = rcpp_args ,
 				use_Rcpp = use_Rcpp
 					)
-    base::return(res)
+    return(res)
 }
 ###############################################################

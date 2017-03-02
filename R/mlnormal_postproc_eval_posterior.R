@@ -5,7 +5,7 @@ mlnormal_postproc_eval_posterior <- function(ll , beta , theta ,
 	use_prior <- prior_args$use_prior
 	use_penalty <- prior_args$use_penalty	
 	no_priors <- ( ! use_prior ) & ( ! use_penalty )
-	ll <- base::as.vector(ll)
+	ll <- as.vector(ll)
 	
 	#*** evaluate priors theta
 	if ( use_prior){
@@ -36,9 +36,9 @@ mlnormal_postproc_eval_posterior <- function(ll , beta , theta ,
 		display_posterior <- TRUE	
 	}
 	
-	res <- base::list( "loglike" = ll , log_prior = log_prior , 
+	res <- list( "loglike" = ll , log_prior = log_prior , 
 			log_posterior = log_posterior , use_prior = use_prior ,
 			no_priors = no_priors , use_penalty = use_penalty , 
 			REML = REML , display_posterior = display_posterior )			
-	base::return(res)
+	return(res)
 }

@@ -1,19 +1,18 @@
-//***  Code created: 2014-02-10 08:53:56
-//***  gooijer_csn_table__2.01.Cpp
+
+
+// [[Rcpp::depends(RcppArmadillo)]]
 
 
 // includes from the plugin
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
+
+
+// [[packageincludes]]
 #include "gooijercsntableaux.h"
+// #include "c:/Users/robitzsch/Dropbox/Eigene_Projekte/R-Routinen/IRT-Functions/sirt_package/1.15/sirt_work/src/gooijercsntableaux__1.08.h"
 
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
 
-#ifndef END_RCPP
-#define END_RCPP
-#endif
 
 using namespace Rcpp;
 
@@ -26,41 +25,21 @@ using namespace Rcpp;
 //********************************************************************
 //********************************************************************
 
-// declarations
-extern "C" {
-SEXP gooijer_csn_table( SEXP dat_, SEXP dat_perm_, SEXP RR_, SEXP NS_, 
-	SEXP progress_, SEXP progress_vec_, SEXP score_index_) ;
-}
 
-// definition
-
-SEXP gooijer_csn_table( SEXP dat_, SEXP dat_perm_, SEXP RR_, SEXP NS_, 
-	SEXP progress_, SEXP progress_vec_, SEXP score_index_ ){
-BEGIN_RCPP
-  
-       
-     Rcpp::NumericMatrix dat(dat_);  
-     Rcpp::NumericMatrix dat_perm(dat_perm_);  
-     int RR=as<int>(RR_) ;  
-     int NS=as<int>(NS_) ;  
-     int progress=as<int>(progress_) ;  
-     Rcpp::NumericVector progress_vec(progress_vec_)  ;  
-     Rcpp::NumericMatrix score_index(score_index_);  
-       
-       
+///********************************************************************
+///** gooijer_csn_table
+// [[Rcpp::export]]
+Rcpp::List gooijer_csn_table( Rcpp::NumericMatrix dat, 
+	Rcpp::NumericMatrix dat_perm, int RR , int NS, 
+	int progress, Rcpp::NumericVector progress_vec, 
+	Rcpp::NumericMatrix score_index ){
+ 
      int N=dat.nrow() ;  
      Rcpp::NumericVector stat_perm(RR) ;  
-       
-     RNGScope scope;  
-       
-       
      Rcpp::NumericMatrix sampleM = dat_perm ;  
-       
      // compute Gooijer statistic for original data  
      Rcpp::NumericVector stat = gta(dat) ;  
-       
      //******* ;  
-       
      Rcpp::NumericVector s1(1);  
      int zz=0;  
      if ( progress==1){  
@@ -84,15 +63,12 @@ BEGIN_RCPP
       		  
         		  
      //*************************************************      
-     // OUTPUT              
-                   
+     // OUTPUT                                 
       return Rcpp::List::create(    
          Rcpp::_["stat"] = stat ,    
          Rcpp::_["stat_perm"]=stat_perm  
          ) ;  
-END_RCPP
 }
-
 //********************************************************************
 //********************************************************************
 //********************************************************************
@@ -109,23 +85,14 @@ END_RCPP
 //********************************************************************
 
 
-// declarations
-extern "C" {
-SEXP isop_tests_C( SEXP dat_, SEXP dat_resp_, SEXP weights_, SEXP jackunits_, SEXP JJ_) ;
-}
 
-// definition
-
-SEXP isop_tests_C( SEXP dat_, SEXP dat_resp_, SEXP weights_, SEXP jackunits_, SEXP JJ_ ){
-BEGIN_RCPP
+///********************************************************************
+///** isop_tests_C
+// [[Rcpp::export]]
+Rcpp::List isop_tests_C( Rcpp::NumericMatrix dat, 
+	Rcpp::NumericMatrix dat_resp, Rcpp::NumericVector weights, 
+	Rcpp::NumericVector jackunits, int JJ ){
   
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericMatrix dat(dat_);  
-     Rcpp::NumericMatrix dat_resp(dat_resp_) ;   
-     Rcpp::NumericVector weights(weights_) ;  
-     Rcpp::NumericVector jackunits(jackunits_) ;  
-     int JJ=as<int>(JJ_) ;  
        
      int N=dat.nrow();  
      int I=dat.ncol();  
@@ -187,11 +154,8 @@ BEGIN_RCPP
              }  
        
      // compute statistic for the whole test          
-       
      double tmp1 ;  
-     double tmp2 ;  
-              
-              
+     double tmp2 ;        
      for (int jj=0;jj<JJ+1;jj++){          
          tmp2 = 0 ;  
          for (int ii=0;ii<I;ii++){          
@@ -201,23 +165,16 @@ BEGIN_RCPP
                  }  
          W1test[jj] = W1test[jj] / tmp2 ;          
              }  
-               
-               
+                              
      ///////////////////////////////////////  
      /// OUTPUT                  
-       
      return List::create(  
              Rcpp::_["W1test"] = W1test ,   
              Rcpp::_["W1i"] = W1i ,  
              Rcpp::_["Esi"] = Esi ,  
              Rcpp::_["Edi"] = Edi  
      			) ;  
-     
-END_RCPP
 }
-
-
-
 //********************************************************************
 //********************************************************************
 //********************************************************************

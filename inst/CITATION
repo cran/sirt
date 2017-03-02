@@ -8,9 +8,11 @@ citEntry(entry="Manual",
          author = personList(as.person("Alexander Robitzsch")),
          year = year,
          note = vers,
+	 url = "https://CRAN.R-project.org/package=sirt" ,
          textVersion =
-         paste0("Robitzsch, A. (",
-               year,
-               "). sirt: Supplementary item response theory models. ",
-               vers, "."))
+         paste0("Robitzsch, A. (",  year,"). 
+               sirt: Supplementary item response theory models. ",
+               vers, 
+               ". https://CRAN.R-project.org/package=sirt")
+               )
 

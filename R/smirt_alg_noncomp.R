@@ -4,20 +4,15 @@
 ## extern "C" {
 ## SEXP SMIRT_CALCPROB_NONCOMP( SEXP a, SEXP b, SEXP Q, SEXP thetak, SEXP cc, SEXP dd) ;
 calcprob.noncomp <- function (a,b,Q,thetak,cc,dd){ 
-	.Call("SMIRT_CALCPROB_NONCOMP", a,b,Q,thetak,cc,dd, PACKAGE = "sirt")
-					}
+	SMIRT_CALCPROB_NONCOMP( a,b,Q,thetak,cc,dd)
+}
 #######################################
 # calculation of posterior distribution
 ## extern "C" {
 ## SEXP SMIRT_CALCPOST( SEXP dat2, SEXP dat2resp, SEXP probs, SEXP dat2ind, SEXP pik, SEXP K) ;
 calcpost <- function (dat2 , dat2resp , probs, dat2ind , pik , K){ 
-	.Call("SMIRT_CALCPOST", dat2 , dat2resp , probs, dat2ind , pik , 
-				K, PACKAGE = "sirt")
-					}
-######################################
-#calcpost2 <- function (dat2 , dat2resp , probs){ 
-#.Call("SMIRT_CALCLIKE", dat2 , dat2resp , probs , PACKAGE = "sirt")
-# 					}
+	SMIRT_CALCPOST( dat2 , dat2resp , probs, dat2ind , pik , K )
+}
 
 					
 ######################################

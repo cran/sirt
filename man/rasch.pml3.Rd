@@ -223,14 +223,14 @@ dat <- data.read
 
 #******
 # Model 1: Rasch model with PML estimation
-mod1 <- rasch.pml3( dat )
+mod1 <- sirt::rasch.pml3( dat )
 summary(mod1)
 
 #******
 # Model 2: Excluding item pairs with local dependence 
 #          from bivariate composite likelihood
 itemcluster <- rep( 1:3 , each=4)
-mod2 <- rasch.pml3( dat , itemcluster = itemcluster )
+mod2 <- sirt::rasch.pml3( dat , itemcluster = itemcluster )
 summary(mod2)
 
 \dontrun{
@@ -243,7 +243,7 @@ for ( ii in 1:3){
     error.corr[ ind.ii , ind.ii ] <- ii
         }
 # estimate the model with error correlations
-mod3 <- rasch.pml3( dat , error.corr = error.corr )
+mod3 <- sirt::rasch.pml3( dat , error.corr = error.corr )
 summary(mod3)
 
 #****
@@ -252,7 +252,7 @@ I <- ncol(error.corr)
 error.corr1 <- matrix( 1:(I*I) , ncol= I )
 error.corr <- error.corr1 * ( error.corr > 0 )  
 # estimate the model with error correlations
-mod4 <- rasch.pml3( dat , error.corr = error.corr )
+mod4 <- sirt::rasch.pml3( dat , error.corr = error.corr )
 summary(mod4)
 
 #****
@@ -262,13 +262,13 @@ summary(mod4)
 est.b <- 1:I
 est.b[7] <- 1; est.b[12] <- 2 ; est.b[6] <- 0
 b.init <- rep( 0, I ) ; b.init[6] <- .1
-mod5 <- rasch.pml3( dat , est.b =est.b , b.init=b.init)
+mod5 <- sirt::rasch.pml3( dat , est.b =est.b , b.init=b.init)
 summary(mod5)
 
 #****
 # Model 6: estimate three item slope groups
 est.a <- rep(1:3 , each=4 )
-mod6 <- rasch.pml3( dat , est.a =est.a , est.sigma=0)
+mod6 <- sirt::rasch.pml3( dat , est.a =est.a , est.sigma=0)
 summary(mod6)
 
 #############################################################################
@@ -283,7 +283,7 @@ dat <- dat[ , substring(colnames(dat),1,1)=="R" ]
 
 #******
 # Model 1: Rasch model with PML estimation
-mod1 <- rasch.pml3( as.matrix(dat) )
+mod1 <- sirt::rasch.pml3( as.matrix(dat) )
   ## Trait SD (Logit Link) : 1.419 
 
 #******
@@ -296,7 +296,7 @@ for ( ii in 1:(length(unique(testlets))) ){
     error.corr[ ind.ii , ind.ii ] <- ii
         }
 # estimate the model with error correlations
-mod2 <- rasch.pml3( dat , error.corr = error.corr )
+mod2 <- sirt::rasch.pml3( dat , error.corr = error.corr )
   ## Trait SD (Logit Link) : 1.384
 
 #****
@@ -305,7 +305,7 @@ I <- ncol(error.corr)
 error.corr1 <- matrix( 1:(I*I) , ncol= I )
 error.corr <- error.corr1 * ( error.corr > 0 )  
 # estimate the model with error correlations
-mod3 <- rasch.pml3( dat , error.corr = error.corr )
+mod3 <- sirt::rasch.pml3( dat , error.corr = error.corr )
   ## Trait SD (Logit Link) : 1.384 
 
 #############################################################################
@@ -321,18 +321,18 @@ theta <- stats::rnorm(N,sd=1.3 )	# trait SD of 1.3
 b <- seq(-2 , 2 , length=I) # item difficulties
 
 # simulate data from the Rasch model
-dat <- sim.raschtype( theta = theta , b = b )
+dat <- sirt::sim.raschtype( theta = theta , b = b )
 
 # estimation with rasch.pml and probit link
-mod1 <- rasch.pml3( dat )
+mod1 <- sirt::rasch.pml3( dat )
 summary(mod1)
 
 # estimation with rasch.mml2 function
-mod2 <- rasch.mml2( dat )
+mod2 <- sirt::rasch.mml2( dat )
 
 # estimate item parameters for groups with five item parameters each
 est.b <- rep( 1:(I/2) , each=2 )
-mod3 <- rasch.pml3( dat , est.b=est.b )
+mod3 <- sirt::rasch.pml3( dat , est.b=est.b )
 summary(mod3)
 
 # compare parameter estimates
@@ -357,29 +357,29 @@ itemcluster[c(2,4,9)] <- 2
 rho <- c( .7 , .5 )
 
 # simulate data (under the logit link)
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
 
 #***
 # Model 1: estimation using the Rasch model (with probit link)
-mod1 <- rasch.pml3( dat )
+mod1 <- sirt::rasch.pml3( dat )
 #***
 # Model 2: estimation when pairs of locally dependent items are eliminated
-mod2 <- rasch.pml3( dat , itemcluster=itemcluster)
+mod2 <- sirt::rasch.pml3( dat , itemcluster=itemcluster)
 
 #***
 # Model 3: Positive correlations within testlets
 est.corrs <- diag( 1 , I )
 est.corrs[ c(3,5) , c(3,5) ] <- 2
 est.corrs[ c(2,4,9) , c(2,4,9) ] <- 3
-mod3 <- rasch.pml3( dat , error.corr=est.corrs )
+mod3 <- sirt::rasch.pml3( dat , error.corr=est.corrs )
 
 #***
 # Model 4: Negative correlations between testlets
 est.corrs <- diag( 1 , I )
 est.corrs[ c(3,5) , c(2,4,9) ] <- 2
 est.corrs[ c(2,4,9) , c(3,5) ] <- 2
-mod4 <- rasch.pml3( dat , error.corr=est.corrs )
+mod4 <- sirt::rasch.pml3( dat , error.corr=est.corrs )
 
 #***
 # Model 5: sum constraint of zero within and between testlets
@@ -396,7 +396,7 @@ err.constraint[ ( itempairs0$item1 \%in\% cluster2 )
 # set sum of error covariances to 1.2
 err.constraintV <- matrix(3*.4,1,1)
 
-mod5 <- rasch.pml3( dat , error.corr=est.corrs , 
+mod5 <- sirt::rasch.pml3( dat , error.corr=est.corrs , 
          err.constraintM=err.constraint, err.constraintV=err.constraintV)
 
 #****
@@ -417,7 +417,7 @@ err.constraint[ ( itempairs0$item1 \%in\%  cluster2 )
        & ( itempairs0$item2 \%in\% cluster2 )  , 2 ] <- 1
 err.constraintV[2,1] <- 0
 
-mod6 <- rasch.pml3( dat , error.corr=est.corrs , 
+mod6 <- sirt::rasch.pml3( dat , error.corr=est.corrs , 
     err.constraintM=err.constraint,  err.constraintV=err.constraintV)
 summary(mod6)
 
@@ -441,7 +441,7 @@ itemcluster[ 7:9 ] <- 3
 rho <- c( .55 , .35 , .45)
 
 # simulate data
-dat <- sim.rasch.dep( theta , b , itemcluster , rho )
+dat <- sirt::sim.rasch.dep( theta , b , itemcluster , rho )
 colnames(dat) <- paste("I" , seq(1,ncol(dat)) , sep="")
 
 #***
@@ -453,7 +453,7 @@ for ( ii in 1:3){
     error.corr[ ind.ii , ind.ii ] <- ii
         }
 # estimate the model
-mod1 <- rasch.pml3( dat , error.corr = error.corr )
+mod1 <- sirt::rasch.pml3( dat , error.corr = error.corr )
 
 #***
 # Model 2: residual correlation (different within item clusters)
@@ -467,15 +467,15 @@ I <- ncol(error.corr)
 error.corr1 <- matrix( 1:(I*I) , ncol= I )
 error.corr <- error.corr1 * ( error.corr > 0 )                
 # estimate the model
-mod2 <- rasch.pml3( dat , error.corr = error.corr )
+mod2 <- sirt::rasch.pml3( dat , error.corr = error.corr )
 
 #***
 # Model 3: eliminate item pairs within itemclusters for PML estimation
-mod3 <- rasch.pml3( dat , itemcluster = itemcluster )
+mod3 <- sirt::rasch.pml3( dat , itemcluster = itemcluster )
 
 #***
 # Model 4: Rasch model ignoring dependency
-mod4 <- rasch.pml3( dat )
+mod4 <- sirt::rasch.pml3( dat )
 
 # compare different models
 summary(mod1)

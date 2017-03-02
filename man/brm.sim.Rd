@@ -154,7 +154,7 @@ I <- length(delta) # number of items
 
 set.seed(865)
 theta <- stats::rnorm( N )
-dat <- brm.sim( theta=theta , delta=delta , tau=tau , K=K)
+dat <- sirt::brm.sim( theta=theta , delta=delta , tau=tau , K=K)
 psych::describe(dat)
 
 #*** (2) some preliminaries for estimation of the model in mirt
@@ -164,7 +164,7 @@ Theta <- matrix( seq( -4 , 4, len=21) , ncol=1 )
 
 # compute item response function
 ii <- 1     # item ii=1
-b1 <- brm.irf( Theta=Theta , delta=delta[ii] , tau=tau[ii] ,  ncat=K )
+b1 <- sirt::brm.irf( Theta=Theta , delta=delta[ii] , tau=tau[ii] ,  ncat=K )
 # plot item response functions
 graphics::matplot( Theta[,1] , b1 , type="l" )
 
@@ -177,7 +177,7 @@ brm.icc <- function( par , Theta , ncat ){
      delta <- par[1]
      tau <- par[2] 
      thdim <- par[3]
-     probs <- brm.irf( Theta=Theta , delta=delta , tau=tau ,  ncat=ncat ,
+     probs <- sirt::brm.irf( Theta=Theta , delta=delta , tau=tau ,  ncat=ncat ,
             thdim=thdim)     
      return(probs)
             }
@@ -204,7 +204,7 @@ print(mod1)
 summary(mod1)
 coef(mod1)
 # estimated coefficients and comparison with simulated data
-cbind( mirt.wrapper.coef( mod1 )$coef , delta , tau )
+cbind( sirt::mirt.wrapper.coef( mod1 )$coef , delta , tau )
 mirt.wrapper.itemplot(mod1 ,ask=TRUE)	
 
 #---------------------------
@@ -254,7 +254,7 @@ m1$delta.TAM <- log( m1$b / m1$a)
 m1$tau.TAM <- log( m1$a * m1$b ) 
 
 # compare estimated parameter
-m2 <- cbind( mirt.wrapper.coef( mod1 )$coef , delta , tau )[,-1]
+m2 <- cbind( sirt::mirt.wrapper.coef( mod1 )$coef , delta , tau )[,-1]
 colnames(m2) <- c(  "delta.mirt", "tau.mirt", "thdim" ,"delta.true" ,"tau.true"   )
 m2 <- cbind(m1,m2)
 round( m2 , 3 )

@@ -73,7 +73,7 @@ Sigma.all <- rbind( matrix( Sigma1 , nrow=1 , byrow=TRUE) ,
 Sigma.all <- Sigma.all[ c(1,1,2,2,1 ) , ]
 
 # eigenvalue decomposition
-m1 <- eigenvalues.manymatrices( Sigma.all )
+m1 <- sirt::eigenvalues.manymatrices( Sigma.all )
 m1
 
 # eigenvalue decomposition for Sigma1

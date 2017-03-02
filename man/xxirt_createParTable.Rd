@@ -121,22 +121,22 @@ P_1PL <- function( par, Theta , ncat){
 #** created item classes of 1PL and 2PL models
 par <- c( "a"= 1 , "b" = 0 )
 # define some slightly informative prior of 2PL
-item_2PL <- xxirt_createDiscItem( name = "2PL", par = par, est = c(TRUE,TRUE), 
+item_2PL <- sirt::xxirt_createDiscItem( name = "2PL", par = par, est = c(TRUE,TRUE), 
                 P = P_2PL, prior = c( a="dlnorm"), prior_par1 = c(a=0),
                 prior_par2 = c(a=5) )                   
-item_1PL <- xxirt_createDiscItem( name = "1PL", par = par[2], est = c(TRUE), 
+item_1PL <- sirt::xxirt_createDiscItem( name = "1PL", par = par[2], est = c(TRUE), 
                 P = P_1PL )
 # list of item classes in customItems                
 customItems <- list( item_1PL ,  item_2PL )
 
 #-- create parameter table
 itemtype <- rep( "1PL" , 12 )
-partable <- xxirt_createParTable(dat, itemtype = itemtype, customItems = customItems)
+partable <- sirt::xxirt_createParTable(dat, itemtype = itemtype, customItems = customItems)
 # privide starting values
-partable1 <- xxirt_modifyParTable( partable , parname = "b" , 
+partable1 <- sirt::xxirt_modifyParTable( partable , parname = "b" , 
                    value = - stats::qlogis( colMeans(dat) ) )
 # equality constraint of parameters and definition of lower bounds                   
-partable1 <- xxirt_modifyParTable( partable1 , item = c("A1","A2") ,
+partable1 <- sirt::xxirt_modifyParTable( partable1 , item = c("A1","A2") ,
                 parname = "b" , parindex = 110 , lower = -1 , value = 0)
 print(partable1)                
 }

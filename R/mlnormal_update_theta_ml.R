@@ -9,11 +9,11 @@ mlnormal_update_theta_ml <- function( y , X , beta ,
  zz0 <- Sys.time()	
 	# calculate residuals
 	yresid <- y - X %*% beta
-	der <- base::rep(0,NT)
+	der <- rep(0,NT)
 	do_computation <- TRUE
 	
 	# list with V^(-1)%*% d V / d theta_i
-	V1_D1V_list <- base::as.list(1:NT)
+	V1_D1V_list <- as.list(1:NT)
 	theta0 <- theta
  
 	for (pp in 1:NT){
@@ -22,7 +22,7 @@ mlnormal_update_theta_ml <- function( y , X , beta ,
 # zz0 <- Sys.time()
 		deri <- 0
 		deri_t2 <- 0
-		H11 <- base::as.list(1:G)
+		H11 <- as.list(1:G)
 		#----- ! REML
 		if ( ( ! REML ) | REML_shortcut  ){
 			for (gg in 1:G){
@@ -36,7 +36,7 @@ mlnormal_update_theta_ml <- function( y , X , beta ,
 				deri <- deri - tM1
 				ind <- id_list[[gg]]
 				yr <- yresid[ind] 
-				deri_t2 <- deri_t2 + 1/2* base::crossprod( yr , M1 ) %*% PV_gg %*% yr 
+				deri_t2 <- deri_t2 + 1/2* crossprod( yr , M1 ) %*% PV_gg %*% yr 
 			}  ## end gg
 		V1_D1V_list[[pp]] <- H11
 		der[pp] <- deri + deri_t2
@@ -46,16 +46,16 @@ mlnormal_update_theta_ml <- function( y , X , beta ,
 		#--- REML shortcut estimation | somewhat faster
 		if (REML_shortcut & REML){
 			V1_D1V_V1_pp_list <- V1_D1V_V1_list[[pp]] 	
-			dim_X <- base::dim(X)
+			dim_X <- dim(X)
 			NX <- dim_X[2]
 			N <- dim_X[1]			
-			G00 <- base::matrix( 0 , nrow=NX , ncol=N)
+			G00 <- matrix( 0 , nrow=NX , ncol=N)
 			for (gg in 1:G){
 				ind_gg <- id_list[[gg]]
-				G00[ , ind_gg] <- base::crossprod( X[ ind_gg , ] , V1_D1V_V1_pp_list[[gg]] )
+				G00[ , ind_gg] <- crossprod( X[ ind_gg , ] , V1_D1V_V1_pp_list[[gg]] )
 			}
 			G00 <- G00 %*% X
-			der_add <- 0.5 * tracemat( base::solve(XVX) %*% G00 )
+			der_add <- 0.5 * tracemat( solve(XVX) %*% G00 )
 			der[pp] <- der[pp] + der_add
 		}
 # cat("### not REML shortcut (alternative) ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
@@ -64,8 +64,8 @@ mlnormal_update_theta_ml <- function( y , X , beta ,
 		if ( ! REML_shortcut ){
 			D1_V_pp_list <- D1_V_list[[pp]]
 #  cat("* compute H_pp (V1)") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1
-			N <- base::dim(P)[1]
-			H_pp <- base::matrix( 0 , nrow=N , ncol=N)
+			N <- dim(P)[1]
+			H_pp <- matrix( 0 , nrow=N , ncol=N)
 			for (gg in 1:G){
 				for (hh in 1:G){
 					# hh <- 1
@@ -86,7 +86,7 @@ mlnormal_update_theta_ml <- function( y , X , beta ,
 			for (gg in 1:G){
 				ind_gg <- id_list[[gg]]
 				Py_gg <- Py[ ind_gg , 1]
-				deri_t2 <- deri_t2 + .5* base::crossprod( Py_gg , D1_V_pp_list[[gg]] ) %*% Py_gg
+				deri_t2 <- deri_t2 + .5* crossprod( Py_gg , D1_V_pp_list[[gg]] ) %*% Py_gg
 			}	
 			der[pp] <- deri + deri_t2
 								
@@ -98,7 +98,7 @@ mlnormal_update_theta_ml <- function( y , X , beta ,
 # cat("-- start theta_infomat") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1		
 
 	#***** compute expected information matrix
-    theta_infomat <- base::matrix( 0 , nrow=NT , ncol=NT)
+    theta_infomat <- matrix( 0 , nrow=NT , ncol=NT)
 	for (pp in 1:NT){
 		for (qq in 1:pp){		
 			# pp <- 1
@@ -110,11 +110,11 @@ mlnormal_update_theta_ml <- function( y , X , beta ,
 					if ( do_compute[gg] ){								
 						#*** remove this line @ARb 2016-07-15
 						# a2 <- V1_D1V_list[[pp]][[gg]] * V1_D1V_list[[qq]][[gg]]
-						# ta2 <- 1/2 * base::sum(a2)
+						# ta2 <- 1/2 * sum(a2)
 						# a2 <- V1_D1V_list[[pp]][[gg]] %*% V1_D1V_list[[qq]][[gg]]
 						# ta2 <- tracemat( a2 ) / 2								
-						a2 <- V1_D1V_list[[pp]][[gg]] * base::t( V1_D1V_list[[qq]][[gg]] )
-						ta2 <- base::sum(a2) / 2
+						a2 <- V1_D1V_list[[pp]][[gg]] * t( V1_D1V_list[[qq]][[gg]] )
+						ta2 <- sum(a2) / 2
 					}
 					### simplify computation of a2					
 					theta_infomat[pp,qq] <- theta_infomat[pp,qq] + ta2
@@ -124,7 +124,7 @@ mlnormal_update_theta_ml <- function( y , X , beta ,
             if ( ! REML_shortcut ){
 				a23 <- V1_D1V_list[[pp]] * V1_D1V_list[[qq]]
 # cat("### infomat (pp,qq) (A1) ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
-				theta_infomat[pp,qq] <- 1/2 * base::sum(a23)
+				theta_infomat[pp,qq] <- 1/2 * sum(a23)
 	        }
 			theta_infomat[qq,pp] <- theta_infomat[pp,qq]
 		}  # end qq
@@ -164,12 +164,12 @@ mlnormal_update_theta_ml <- function( y , X , beta ,
 	theta_change <- mlnormal_parameter_change( pars=theta , pars0=theta0 )
 	
 	# convert to vector
-	theta <- mlnormal_as_vector_names(pars = theta , parnames = base::names(theta0) )
+	theta <- mlnormal_as_vector_names(pars = theta , parnames = names(theta0) )
 
 	#--- output
-	res <- base::list( "der" = der , "yresid" = yresid , "V1_D1V_list" = V1_D1V_list,
+	res <- list( "der" = der , "yresid" = yresid , "V1_D1V_list" = V1_D1V_list,
 		    "theta_infomat" = res_newton$theta_infomat, "Hinv" = res_newton$Hinv , 
 			"theta" = theta , "theta_change" = theta_change ,
 			theta_increment = theta - theta0 )
-	base::return(res)
+	return(res)
 }

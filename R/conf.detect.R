@@ -7,7 +7,7 @@ conf.detect <- function( data , score , itemcluster , bwscale = 1.1 , progress =
 	CALL <- match.call()
     cat("-----------------------------------------------------------\n" )
     cat("Confirmatory DETECT Analysis \n" ) ; flush.console()
-    h1 <- base::is.matrix( score )
+    h1 <- is.matrix( score )
     if (h1){ 
 		PP <- ncol(score) 
 	}

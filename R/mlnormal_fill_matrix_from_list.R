@@ -5,5 +5,5 @@ mlnormal_fill_matrix_from_list <- function( V1 , V1_list ,
 			ind <- id_list[[gg]] 
 			V1[ ind , ind ] <- V1_list[[gg]]
 		}
-		base::return(V1)
+		return(V1)
 }

@@ -3,7 +3,7 @@ mlnormal_proc_control <- function( control_beta , control_theta ,
 		beta_lower , beta_upper , theta_lower , theta_upper)
 {
 	# initial control list for beta and theta	
-	control0 <- base::list( maxiter = 10 , conv = 1E-4 , ridge = 1E-6 )	
+	control0 <- list( maxiter = 10 , conv = 1E-4 , ridge = 1E-6 )	
 		
 	#*** beta | add arguments to a list
 	# set defaults
@@ -24,7 +24,7 @@ mlnormal_proc_control <- function( control_beta , control_theta ,
 	control_theta0$theta_upper <- theta_upper				
 			
 	#--- output
-	res <- base::list( control_beta = control_beta0 ,
+	res <- list( control_beta = control_beta0 ,
 						control_theta = control_theta0 )
-	base::return(res)									
+	return(res)									
 }

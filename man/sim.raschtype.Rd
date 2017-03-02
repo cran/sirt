@@ -88,7 +88,7 @@ base::set.seed(9765)
 N <- 500    # number of persons
 I <- 11     # number of items
 b <- base::seq( -2 , 2 , length=I )
-dat <- sim.raschtype( stats::rnorm( N ) , b )
+dat <- sirt::sim.raschtype( stats::rnorm( N ) , b )
 base::colnames(dat) <- base::paste0( "I" , 1:I )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

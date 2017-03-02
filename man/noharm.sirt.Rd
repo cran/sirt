@@ -215,7 +215,8 @@ Model fit can be assessed by \code{\link{modelfit.sirt}}.
 See \code{\link{R2noharm}} for running the NOHARM software from within \R.
 
 See Fraser and McDonald (2012) for an implementation of the NOHARM model which
-is available as freeware (\url{http://noharm.niagararesearch.ca/}).
+is available as freeware ({http://noharm.niagararesearch.ca/};
+the link seems to be broken in the meanwhile).
 }
 
 
@@ -256,15 +257,15 @@ diag(Pval) <- 1
 Fval <- .7 * ( f1>0)
 Fpatt <- 1 * ( Fval > 0 )
 # estimate model
-mod1 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval )
+mod1 <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval )
 summary(mod1)
 # EAP ability estimates
-pmod1 <- R2noharm.EAP(mod1 , theta.k = seq(-4,4,len=10) )
+pmod1 <- sirt::R2noharm.EAP(mod1 , theta.k = seq(-4,4,len=10) )
 # model fit
-summary( modelfit.sirt( mod1 ))
+summary( sirt::modelfit.sirt( mod1 ))
 
 # estimate model based on tetrachoric correlations
-mod1b <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval , 
+mod1b <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval , 
             modesttype=2)
 summary(mod1b)
 
@@ -275,7 +276,7 @@ Psipatt <- 0*diag(I)
 Psipatt[1,2] <- 1
 Psival <- 0*Psipatt
 # estimate model
-mod2 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
+mod2 <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
             Psival=Psival , Psipatt=Psipatt )
 summary(mod2)
 
@@ -287,16 +288,16 @@ Fpatt <- 0*Fval
 Ppatt <- Pval <- matrix(1,2,2)
 Pval[1,2] <- Pval[2,1] <- 0
 # estimate model
-mod3 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval )
+mod3 <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval )
 summary(mod3)
 # model fit
-summary( modelfit.sirt( mod3 ))
+summary( sirt::modelfit.sirt( mod3 ))
 
 #** compare fit with NOHARM
 noharm.path <- "c:/NOHARM"
 P.pattern <- Ppatt ; P.init <- Pval
 F.pattern <- Fpatt ; F.init <- Fval
-mod3b <- R2noharm( dat = dat , model.type="CFA" ,  
+mod3b <- sirt::R2noharm( dat = dat , model.type="CFA" ,  
              F.pattern = F.pattern , F.init = F.init , P.pattern = P.pattern ,
              P.init = P.init , writename = "example_sim_2dim_rasch" , 
              noharm.path = noharm.path  , dec = "," )
@@ -315,7 +316,7 @@ Fpatt <- matrix( 0 , I , 1 )
 Fval <- 1 + 0*Fpatt
 Ppatt <- Pval <- matrix(1,1,1)
 # estimate model
-mod1 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval )
+mod1 <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval )
 summary(mod1)
 plot(mod1)	# semPaths plot
 
@@ -323,7 +324,7 @@ plot(mod1)	# semPaths plot
 wgtm <- matrix( 1 , I , I )
 wgtm[1:4,1:4] <- wgtm[5:8,5:8] <- wgtm[ 9:12, 9:12] <- 0
 # estimation
-mod2 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval , wgtm=wgtm)
+mod2 <- sirt::noharm.sirt(dat=dat, Ppatt=Ppatt,Fpatt=Fpatt, Fval=Fval, Pval=Pval, wgtm=wgtm)
 summary(mod2)
 
 #**** Model 3: Rasch model with correlated residuals
@@ -332,11 +333,11 @@ Psipatt[1:4,1:4] <- Psipatt[5:8,5:8] <- Psipatt[ 9:12, 9:12] <- 1
 diag(Psipatt) <- 0
 Psival <- .6*(Psipatt>0)
 # estimation
-mod3 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
+mod3 <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
             Psival=Psival , Psipatt=Psipatt )
 summary(mod3)
 # allow only positive residual correlations
-mod3b <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
+mod3b <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt, Fpatt=Fpatt, Fval=Fval , Pval=Pval ,
             Psival=Psival , Psipatt=Psipatt , pos.residcorr=TRUE)
 summary(mod3b)
 
@@ -347,10 +348,10 @@ Ppatt <- Pval <- diag(4)
 colnames(Ppatt) <- c("g" , "A", "B","C")
 Pval <- .5*Pval
 # estimation
-mod4 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  )
+mod4 <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  )
 summary(mod4)
 # allow only positive variance entries
-mod4b <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
+mod4b <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
                pos.variance=TRUE )
 summary(mod4b)
 
@@ -362,13 +363,13 @@ Pval <- diag(4)
 Ppatt <- 0*Pval
 colnames(Ppatt) <- c("g" , "A", "B","C")
 # estimation
-mod5 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  )
+mod5 <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  )
 summary(mod5)
 # allow only positive loadings
-mod5b <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
+mod5b <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval ,
               pos.loading=TRUE )                        
 summary(mod5b)
-summary( modelfit.sirt(mod5b))
+summary( sirt::modelfit.sirt(mod5b))
 
 #**** Model 6: 3-dimensional Rasch model
 Fval <- matrix( 0 , I , 3 )
@@ -379,9 +380,9 @@ diag(Pval) <- 1
 Ppatt <- 1+0*Pval
 colnames(Ppatt) <- c("A", "B","C")
 # estimation
-mod6 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  )
+mod6 <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  )
 summary(mod6)
-summary( modelfit.sirt(mod6) )  # model fit
+summary( sirt::modelfit.sirt(mod6) )  # model fit
 
 #**** Model 7: 3-dimensional 2PL model
 Fval <- matrix( 0 , I , 3 )
@@ -393,13 +394,13 @@ Ppatt <- 1+0*Pval
 diag(Ppatt) <- 0
 colnames(Ppatt) <- c("A", "B","C")
 # estimation
-mod7 <- noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  )
+mod7 <- sirt::noharm.sirt( dat=dat , Ppatt=Ppatt,Fpatt=Fpatt , Fval=Fval , Pval=Pval  )
 summary(mod7)
-summary( modelfit.sirt(mod7) )
+summary( sirt::modelfit.sirt(mod7) )
 
 #**** Model 8: Exploratory factor analysis with 3 dimensions
 # estimation
-mod8 <- noharm.sirt( dat=dat , dimensions=3  )
+mod8 <- sirt::noharm.sirt( dat=dat , dimensions=3  )
 summary(mod8)
 }
 }

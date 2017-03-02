@@ -73,9 +73,9 @@ R2conquest <- function( dat , path.conquest , conquest.name = "console" ,
         h1 <- gsub( "rasch" , name , h1 )
         f1 <- getwd()
         h1 <- intersect( list.files( f1 ) , h1 )
-        base::file.remove(h1 )  
+        file.remove(h1 )  
         # generate label file for ConQuest
-        base::writeLines( c( "===> item" , paste( 1:I , colnames(dat) ) ) , 
+        writeLines( c( "===> item" , paste( 1:I , colnames(dat) ) ) , 
                         paste( name ,".nam" ,sep="") )
 
 										
@@ -131,7 +131,7 @@ R2conquest <- function( dat , path.conquest , conquest.name = "console" ,
             desformat <- readLines(  paste( name , ".des" , sep="")  )    
             desformat <- gsub( "0" , "-0" , desformat )
             desformat <- c( ncol(designmatrix) , desformat )
-            base::writeLines( desformat , paste( name , ".des" , sep="") )         
+            writeLines( desformat , paste( name , ".des" , sep="") )         
                                     }
         # regression statement
         if (is.null(X)){ regrstate <- "" } else { 
@@ -207,10 +207,10 @@ R2conquest <- function( dat , path.conquest , conquest.name = "console" ,
                 ifelse(!only.calibration , "itanal >> %name%.itn;","") ,
                 "quit;"               )	
         # write ConQuest syntax
-        base::writeLines( cqc , paste( name , ".cqc" , sep="") )
+        writeLines( cqc , paste( name , ".cqc" , sep="") )
         # write bat file
 		if ( save.bat ){ 
-			base::writeLines( paste( path.conquest , "\\" , conquest.name , " " ,  
+			writeLines( paste( path.conquest , "\\" , conquest.name , " " ,  
 					paste( name , ".cqc" , sep="") , sep = "") , "analysis.bat" )
 						}
         if ( onlysyntax ){ 
@@ -221,9 +221,9 @@ R2conquest <- function( dat , path.conquest , conquest.name = "console" ,
         # link to conquest console
 		if ( use.bat ){
 #			system( "analysis.bat" , show.output.on.console = show.conquestoutput , invisible = FALSE )
-			base::system( "analysis.bat"  )			
+			system( "analysis.bat"  )			
 					} else {
-        base::system(paste(path.conquest,"\\" , conquest.name , ".exe ", name,".cqc",sep=""),
+        system(paste(path.conquest,"\\" , conquest.name , ".exe ", name,".cqc",sep=""),
 					show.output.on.console = show.conquestoutput , invisible = FALSE)
 							}
 							
@@ -253,7 +253,7 @@ R2conquest <- function( dat , path.conquest , conquest.name = "console" ,
 						} else { wle <- NA }
 												
 			# read shw file
-			shw <- base::readLines( paste( name , ".shw" , sep="") )
+			shw <- readLines( paste( name , ".shw" , sep="") )
 			deviance <- as.numeric( substring( shw[ grep( "Final Deviance:" , shw ) ]  , 17 ) )
 			numbiter <- as.numeric( substring( shw[ grep( "The number of iterations:" , shw ) ]  , 26 ) )
 			ind1 <- grep("TERM 1: item" , shw ) + 6

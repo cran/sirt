@@ -3,7 +3,7 @@
 summary.linking.haberman <- function( object , digits = 3 , file=NULL , ... ){
 
     # open sink
-    CDM::osink( file = file , suffix = paste0( file, "__SUMMARY.Rout") )
+    CDM::osink( file = file , suffix = paste0( "__SUMMARY.Rout") )
 
 	cat("-----------------------------------------------------------------\n")
 	d1 <- utils::packageDescription("sirt")

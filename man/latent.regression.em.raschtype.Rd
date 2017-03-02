@@ -170,17 +170,17 @@ X <- cbind( 1 , dat[ , c("female","hisei","migra" ) ] )
 #***
 # Model 1: Latent regression model in the Rasch model
 # estimate Rasch model
-mod1 <- rasch.mml2( dat[,items] )
+mod1 <- sirt::rasch.mml2( dat[,items] )
 # latent regression model
-lm1 <- latent.regression.em.raschtype( data=dat[,items ], X = X , b = mod1$item$b )
+lm1 <- sirt::latent.regression.em.raschtype( data=dat[,items ], X = X , b = mod1$item$b )
 
 \dontrun{            
 #***
 # Model 2: Latent regression with generalized link function
 # estimate alpha parameters for link function
-mod2 <- rasch.mml2( dat[,items] , est.alpha=TRUE)
+mod2 <- sirt::rasch.mml2( dat[,items] , est.alpha=TRUE)
 # use model estimated likelihood for latent regression model
-lm2 <- latent.regression.em.raschtype( f.yi.qk=mod2$f.yi.qk , 
+lm2 <- sirt::latent.regression.em.raschtype( f.yi.qk=mod2$f.yi.qk , 
             X = X , theta.list=mod2$theta.k)
 
 #***
@@ -188,9 +188,9 @@ lm2 <- latent.regression.em.raschtype( f.yi.qk=mod2$f.yi.qk ,
 testlets <- paste( data.pisaRead$item$testlet)
 itemclusters <- match( testlets , unique(testlets) )
 # estimate Rasch copula model
-mod3 <- rasch.copula2( dat[,items] , itemcluster=itemclusters )
+mod3 <- sirt::rasch.copula2( dat[,items] , itemcluster=itemclusters )
 # use model estimated likelihood for latent regression model
-lm3 <- latent.regression.em.raschtype( f.yi.qk=mod3$f.yi.qk , 
+lm3 <- sirt::latent.regression.em.raschtype( f.yi.qk=mod3$f.yi.qk , 
                 X = X , theta.list=mod3$theta.k) 
 
 #############################################################################
@@ -209,10 +209,10 @@ y <- .2 * x+ .3*theta + stats::rnorm( n , .4 )
 dfr <- data.frame( theta , 1 , x , y )
 
 # simulate Rasch model
-dat1 <- sim.raschtype( theta = theta , b = b )
+dat1 <- sirt::sim.raschtype( theta = theta , b = b )
 
 # estimate latent regression
-mod <- latent.regression.em.raschtype( data = dat1 , X  = dfr[,-1] , b = b )
+mod <- sirt::latent.regression.em.raschtype( data = dat1 , X  = dfr[,-1] , b = b )
   ## Regression Parameters
   ## 
   ##        est se.simple     se        t p   beta    fmi N.simple pseudoN.latent
@@ -246,7 +246,7 @@ dI <- rep( .95 , I )	# upper asymptote of .95
 dI[ c(7,11) ] <- 1		# 7th and 9th item have an asymptote of 1
 
 # latent regression model
-mod1 <- latent.regression.em.raschtype( data = dat1 , X  = dfr[,-1] ,
+mod1 <- sirt::latent.regression.em.raschtype( data = dat1 , X  = dfr[,-1] ,
            b = b , c = cI , d = dI    )
   ## Regression Parameters
   ## 
@@ -284,7 +284,7 @@ f.yi.qk <- f.yi.qk / rowSums(f.yi.qk)
 X1 <- as.matrix(data.frame( "intercept"=1 , "X"=X , "Z"=Z ))
 
 # latent regression model
-res <- latent.regression.em.raschtype( f.yi.qk=f.yi.qk , 
+res <- sirt::latent.regression.em.raschtype( f.yi.qk=f.yi.qk , 
                     X= X1 , theta.list=theta.list)
   ##   Regression Parameters
   ##   
@@ -300,7 +300,7 @@ res <- latent.regression.em.raschtype( f.yi.qk=f.yi.qk ,
                 
 #****
 # Model 2: Estimation with latent.regression.em.normal
-res2 <- latent.regression.em.normal( y = yast , sig.e = sig.e , X = X1)
+res2 <- sirt::latent.regression.em.normal( y = yast , sig.e = sig.e , X = X1)
   ##   Regression Parameters
   ##   
   ##                est se.simple     se       t      p   beta    fmi N.simple pseudoN.latent

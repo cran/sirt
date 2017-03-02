@@ -16,19 +16,19 @@ starts_sim1dim <- function( N , W , var_trait ,
 	
 	var_disturbance <- (1-a^2)*var_state
 	
-	matr <- base::matrix( NA , nrow=N , ncol=W )
-	base::colnames(matr) <- paste0("W",1:W)
+	matr <- matrix( NA , nrow=N , ncol=W )
+	colnames(matr) <- paste0("W",1:W)
 
 	states <- matr
 
-	trait <- stats::rnorm( N , sd = base::sqrt( var_trait ))
+	trait <- stats::rnorm( N , sd = sqrt( var_trait ))
 
 	ww <- 1
-	states[,ww] <- stats::rnorm( N , sd = base::sqrt( var_state ))
+	states[,ww] <- stats::rnorm( N , sd = sqrt( var_state ))
 	for ( ww in 2:W){
-		states[,ww] <- a*states[,ww-1] + stats::rnorm( N , sd = base::sqrt(var_disturbance))
+		states[,ww] <- a*states[,ww-1] + stats::rnorm( N , sd = sqrt(var_disturbance))
 	}
-	matr <- trait + states + stats::rnorm( N*W , sd = base::sqrt( var_error ))
-	base::return(matr)
+	matr <- trait + states + stats::rnorm( N*W , sd = sqrt( var_error ))
+	return(matr)
 }
 #######################################################################		

@@ -145,14 +145,14 @@ mcmc_plot(mcmcobj, ask=TRUE)
 
 # include derived parameters in mcmc object
 derivedPars <- list( "diff12" = ~ I(b2-b1) , "diff13" = ~ I(b3-b1) )
-mcmcobj2 <- mcmc_derivedPars(mcmcobj , derivedPars = derivedPars )
+mcmcobj2 <- sirt::mcmc_derivedPars(mcmcobj , derivedPars = derivedPars )
 mcmc_summary(mcmcobj2)
 
 #*** Wald test for parameters
  # hyp1: b2 - 0.5 = 0
  # hyp2: b2 * b3 = 0
 hypotheses <- list( "hyp1" = ~ I( b2 - .5 )  , "hyp2" = ~ I( b2*b3 ) )
-test1 <- mcmc_WaldTest( mcmcobj , hypotheses=hypotheses )
+test1 <- sirt::mcmc_WaldTest( mcmcobj , hypotheses=hypotheses )
 summary(test1)
 }
 }

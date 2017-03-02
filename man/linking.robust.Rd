@@ -81,7 +81,7 @@ See also the \pkg{plink} package.
 #############################################################################
 
 data(data.si03)
-res1 <- linking.robust( itempars=data.si03 )
+res1 <- sirt::linking.robust( itempars=data.si03 )
 summary(res1)
   ##   Number of items = 27
   ##   Optimal trimming parameter k = 8 |  non-robust parameter k = 0 
@@ -98,7 +98,7 @@ plot(res1)
 data(data.pisaPars)
 
 # Linking with items
-res2 <- linking.robust( data.pisaPars[ , c(1,3,4)] )
+res2 <- sirt::linking.robust( data.pisaPars[ , c(1,3,4)] )
 summary(res2)
   ##   Optimal trimming parameter k = 0 |  non-robust parameter k = 0 
   ##   Linking constant = -0.0883 |  non-robust estimate = -0.0883 
@@ -121,7 +121,7 @@ bdif <- stats::rnorm(I,mean=.4,sd=.09)+( stats::runif(I)>.9 )* rep( 1*c(-1,1)+.4
 itempars$study2 <- itempars$study1 + bdif
 
 # robust linking
-res <- linking.robust( itempars )
+res <- sirt::linking.robust( itempars )
 summary(res)
   ##   Number of items = 38
   ##   Optimal trimming parameter k = 12 |  non-robust parameter k = 0 
