@@ -57,6 +57,7 @@ mirt.specify.partable <- function(mirt.partable, parlist, verbose=TRUE) {
             }
         }
     }
+	mirt.partable0$prior.type <- as.factor(mirt.partable0$prior.type)	
     if(!all(mirt.partable0$prior.type %in% c('none', 'norm', 'beta', 'lnorm'))) ####
         stop('Improper prior.type declared. Please only use the following:
              \'none\', \'norm\', \'beta\', \'lnorm\' ') ####

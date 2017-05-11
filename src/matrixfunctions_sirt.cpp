@@ -281,10 +281,10 @@ Rcpp::List calc_copula_itemcluster_C( Rcpp::NumericVector DD ,
         t1 = 0 ;  
         for ( int cc=0;cc<D ; cc++){  
         	   t1 += res(ii,cc) ;  
-        	   	}  
+      	}  
         rowsums_res[ii] = t1 ;  
         g1_rr[ii] = pow( -1.0 , rowsums_res[ii] ) ;  
-        		}  
+    }  
        
        
         		  

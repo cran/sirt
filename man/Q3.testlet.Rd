@@ -10,7 +10,7 @@ This function calculates the average \eqn{Q_3} statistic (Yen, 1984) within and
 between testlets.
 }
 \usage{
-Q3.testlet(q3.res, testlet.matrix)
+Q3.testlet(q3.res, testlet.matrix, progress=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,6 +22,9 @@ A matrix with two columns. The first column contains names of the testlets and
 the second names of the items. See the examples for the definition of such 
 matrices.
 }
+\item{progress}{Logical indicating whether computation
+progress should be displayed.}
+
 }
 \value{
 A list with following entries

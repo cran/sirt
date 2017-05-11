@@ -11,6 +11,7 @@ IRT.mle <- function(data, irffct, arg.list, theta=rep(0,nrow(data)), type="MLE",
 	iter <- 1	
 	MAP <- WLE <- FALSE
 	conv <- 1E3
+	eps <- 1E-6
 	
 	if ( type == "WLE" ){ WLE <- TRUE }
 	if ( type == "MAP" ){ MAP <- TRUE }
@@ -39,9 +40,8 @@ IRT.mle <- function(data, irffct, arg.list, theta=rep(0,nrow(data)), type="MLE",
 				# theta - 2*h
 				arg.list$theta <- theta-2*h    
 				llM2 <- llM2 + calc.ll( do.call( irffct , arg.list ) , data , ii )     
-					 }   
-					 					 
-						}# end item ii
+			}   					 					 
+		}# end item ii
 		#-----
 		# prior distribution
 		if (MAP){
@@ -50,21 +50,21 @@ IRT.mle <- function(data, irffct, arg.list, theta=rep(0,nrow(data)), type="MLE",
 		   llP2 <- llP2 + log( stats::dnorm( theta+2*h , mean=mu,sd=sigma) )		
 		   llM1 <- llM1 + log( stats::dnorm( theta-h , mean=mu,sd=sigma) )			
 		   llM2 <- llM2 + log( stats::dnorm( theta-2*h , mean=mu,sd=sigma) )		
-					}		
-		#-----
-		
+		}		
+		#-----		
 		#*** likelihood
 		ll0 <- llP0
 		ll1 <- ( llP1 - llP0 ) / h 
 		ll2 <- ( llP1 - 2*llP0 + llM1 ) / (h^2 )
 		# ability increments
 		M1 <- ll1
+		ll2 <- ll2 + eps
 		incr <- - ll1 / ll2 		
 		# WLE bias correction term
 		if (WLE){		
 			ll3 <- ( llP2 - 2*llP1 + 2*llM1 - llM2 ) / (2*h^3 )	
 			incr <- - ll1 / ll2 - ll3 / ( 2*ll2^2 )
-				}	
+		}	
 
 		maxincr <- maxincr / 1.05
 		incr <- ifelse( abs(incr) > maxincr , sign(incr)*maxincr , incr )
@@ -75,9 +75,9 @@ IRT.mle <- function(data, irffct, arg.list, theta=rep(0,nrow(data)), type="MLE",
 			cat("* Iteration" , iter , ":" , "maximum parameter change" ,
 				round( conv, 5 ) , "\n") 
 			utils::flush.console();
-					}	
+		}	
 		iter <- iter + 1					
-			}
+	}
 	#------------- end algorithm
 
 	#--- output

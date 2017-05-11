@@ -8,9 +8,9 @@ sirtcat <- function( label , time0 , active ){
 		print(z1-z0)
 		z0 <- z1 	
 		zout <- z0
-			} else {
+	} else {
 		zout <- NULL
-				}
+	}
 	return(zout)
-		}
+}
 ######################################################	

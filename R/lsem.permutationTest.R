@@ -78,14 +78,13 @@ lsem.permutationTest <- function( lsem.object, B=1000 , residualize = TRUE ,
 	p1 <- rowMeans( parameters_summary_lin_slo >= parameters_summary$lin_slo )
 	p2 <- rowMeans( parameters_summary_lin_slo <= parameters_summary$lin_slo )		
 	teststat$lin_slo_p <- 2*ifelse( p1 < p2 , p1 , p2 )
-	teststat$lin_slo_p <- ifelse( teststat$lin_slo_p > 1 , 
-									       1 , teststat$lin_slo_p )				
+	teststat$lin_slo_p <- ifelse( teststat$lin_slo_p > 1 , 1 , teststat$lin_slo_p )				
 	#********************
 	# pointwise statistics
 	rownames(parameters_permutation) <- rownames(parameters)
 
 	parameters_pointwise_test <- parameters[ , c("grid_index" ,
-			                "moderator","par","parindex" ) ]
+									"moderator","par","parindex" ) ]
 	parindex_ <- parameters$parindex							
 	parameters_pointwise_test$est <- parameters$est - parameters_summary$M[ parindex_ ]	
 	par_pointwise_perm <- parameters_permutation - 	parameters_summary_M[ parindex_ , ] 

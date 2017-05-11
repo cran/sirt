@@ -27,7 +27,7 @@ moderator, specified in \code{moderator.grid}.
 lsem.estimate(data, moderator, moderator.grid, lavmodel, type="LSEM", h = 1.1, 
     residualize=TRUE, fit_measures = c("rmsea", "cfi", "tli", "gfi", "srmr"), 
     standardized=FALSE, standardized_type = "std.all", 
-    lavaan_fct = "sem", eps = 1e-08, verbose = TRUE, ...)
+    lavaan_fct = "sem", sufficient_statistics=FALSE, eps = 1e-08, verbose = TRUE, ...)
     
 \method{summary}{lsem}(object, file=NULL, digits=3, ...)
 
@@ -82,7 +82,10 @@ The types are described in
 \code{\link[lavaan:sem]{lavaan::sem}} (\code{lavaan_fct="sem"})
 should be used.
 }
-
+\item{sufficient_statistics}{Logical whether sufficient statistics of weighted
+means and covariances should be used for model fitting. This option
+must be used if the data contain missing values. Note that this approach is
+only valid for missing completely at random (MCAR) data.}
   \item{eps}{
 Minimum number for weights
 }
@@ -154,10 +157,12 @@ competing factor analytic approaches for the investigation of measurement invari
 Alexander Robitzsch, Oliver Luedtke, Andrea Hildebrandt
 }
 
-\note{
-Note that the specified model in \code{lavaan} syntax should be explicitly saved as
-the object \code{lavmodel} in the global envirnoment as it is done in the examples.
-}
+%% \note{
+%% }
+
+%% Note that the specified model in \code{lavaan} syntax should be explicitly saved as
+%% the object \code{lavmodel} in the global envirnoment as it is done in the examples.
+
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -195,6 +200,11 @@ pmod1 <- sirt::lsem.permutationTest( mod1 , B=10 )
           # to a low number of 10
 summary(pmod1)
 plot(pmod1, type="global")
+
+#** estimate Model 1 based on sufficient statistics
+mod1b <- sirt::lsem.estimate( dat, moderator="age" , moderator.grid=moderator.grid , 
+               lavmodel=lavmodel, h=2, std.lv=TRUE, sufficient_statistics = TRUE )
+summary(mod1b)
 
 #********************************
 #*** Model 2: estimate multiple group model with 4 age groups

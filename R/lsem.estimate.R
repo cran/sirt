@@ -1,15 +1,13 @@
 
 #################################################
 # estimate LSEM model
-
 lsem.estimate <- function( data , moderator , moderator.grid ,
 		lavmodel , type="LSEM" , h = 1.1 , 
 		residualize=TRUE, fit_measures = c("rmsea","cfi","tli","gfi","srmr"),
-		standardized = FALSE , 
+		standardized=FALSE , 
 		standardized_type = "std.all" ,
-		lavaan_fct = "sem" , 
+		lavaan_fct = "sem" , sufficient_statistics = FALSE , 
 		eps=1E-8 , verbose=TRUE , ... ){
-
 		
 	CALL <- match.call()
 	s1 <- Sys.time()	
@@ -20,17 +18,17 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 			stop("standardized=TRUE cannot be applied for type='MGM'")
 		}
 	}
-	# group moderator if type="MGM"
-	out <- lsem.group.moderator( data , type , moderator.grid , moderator ,
-				residualize , h)
+	# group moderator if type="MGM"	
+	out <- lsem_group_moderator( data=data, type=type, moderator.grid=moderator.grid, 
+				moderator=moderator, residualize=residualize, h=h ) 								
     data <- out$data
 	moderator.grouped <- out$moderator.grouped
 	h <- out$h
 	residualize <- out$residualize
-	moderator.grid <- out$moderator.grid		
+	moderator.grid <- out$moderator.grid			
 	# residualize input data	
-	out <- lsem.residualize( data , moderator , moderator.grid ,
-				lavmodel , h , residualize , eps , verbose )		
+	out <- lsem_residualize( data=data, moderator=moderator, moderator.grid=moderator.grid, 
+				lavmodel=lavmodel, h=h, residualize=residualize, eps=eps, verbose=verbose )								
 	G <- out$G
     data <- out$data	
 	weights <- out$weights
@@ -38,16 +36,19 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 	residualized_interceps <- out$residualized_interceps
 	# unweighted fit of lavaan model
 	dat <- data
+	lavmodel__ <- lavmodel
 	if (lavaan_fct=="sem"){
-		lavfit <- lavaan::sem(model = lavmodel, data=dat,  ... )
+		lavfit <- lavaan::sem(model = lavmodel__ , data=dat,  ... )
 	}
 	if (lavaan_fct=="lavaan"){
-		lavfit <- lavaan::lavaan(model = lavmodel, data=dat,  ... )
-	}
+		lavfit <- lavaan::lavaan(model = lavmodel__ , data=dat,  ... )
+	}		
+	# extract variables which are in model and data frame
+	partable <- pars <- lavaan::parameterEstimates(lavfit)
+	variables_model <- intersect( union( partable$lhs , partable$rhs ) , colnames(dat) )
 	fM <- lavaan::fitMeasures( lavfit )
 	fit_measures <- intersect( fit_measures , names(fM) )
-	NF <- length(fit_measures)
-	pars <- lavaan::parameterEstimates(lavfit)
+	NF <- length(fit_measures)	
  	if (standardized){			
 		sol <- lavaan::standardizedSolution( lavfit , type=standardized_type)
 		colnames(sol)[ which( colnames(sol) == "est.std" ) ] <- "est"
@@ -55,20 +56,20 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 		pars <- plyr::rbind.fill( pars , sol )	
 	} 
 	pars <- apply( pars[ , c("lhs" , "op" , "rhs" ) ] , 1 , FUN = function(ll){
-				paste0( ll[1] , ll[2] , ll[3] ) } )
+				paste0( ll[1] , ll[2] , ll[3] ) } )			
 	# fit LSEM for all moderator groups
-	out2 <- lsem.fitsem( dat , weights , lavfit ,
-			  fit_measures , NF , G , moderator.grid , verbose , pars ,
-			  standardized )	
+	out2 <- lsem_fitsem( dat=dat, weights=weights, lavfit=lavfit, 
+					fit_measures=fit_measures, NF=NF, G=G, 
+					moderator.grid=moderator.grid, verbose=verbose, pars=pars, 
+					standardized=standardized, variables_model=variables_model,
+					sufficient_statistics=sufficient_statistics ,
+					lavaan_fct=lavaan_fct, lavmodel=lavmodel,	... )		  
 	parameters <- out2$parameters
-	# fits <- out2$fits
-			
-	rownames(parameters) <- paste0( parameters$par ,
-						"__" , parameters$grid_index )			
-		
+	rownames(parameters) <- paste0( parameters$par , "__" , parameters$grid_index )					
+						
 	#****************************
 	# parameter and fit statistics summary
-	parameters_summary <-  lsem.parameter.summary( parameters , 
+	parameters_summary <- lsem_parameter_summary( parameters , 
 		     moderator.density=out$moderator.density , verbose )
 	out$moderator.density$Neff <- colSums(weights)
 	

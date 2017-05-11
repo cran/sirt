@@ -1,8 +1,8 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 1.15-41
-Date: 2017-03-02 16:13:55
+Version: 2.0-25
+Date: 2017-05-11 13:52:31
 Author: Alexander Robitzsch [aut,cre]
 Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 Description: 
@@ -11,18 +11,16 @@ Description:
     noncompensatory IRT models, MCMC for hierarchical IRT models and 
     testlet models, NOHARM, Rasch copula model, faceted and 
     hierarchical rater models, ordinal IRT model (ISOP), 
-    DETECT statistic, local structural equation modeling (LSEM),
-    mean and covariance structure modelling for multivariate normally
-    distributed data.
+    DETECT statistic, local structural equation modeling (LSEM).
 Depends: R (>= 3.1)
 Imports: CDM, coda, combinat, graphics, gtools, ic.infer, igraph,
-        lavaan, lavaan.survey, MASS, MCMCpack, Matrix, methods, mirt,
-        mvtnorm, pbivnorm, plyr, psych, Rcpp, sfsmisc, sm, stats,
-        survey, TAM, utils
+        lavaan, lavaan.survey, MASS, Matrix, methods, mirt, mvtnorm,
+        pbivnorm, plyr, psych, Rcpp, sfsmisc, sm, stats, survey, TAM,
+        utils
 Suggests: LSAmitR, miceadds
 LinkingTo: Rcpp, RcppArmadillo
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2017-03-02 15:15:12 UTC; sunpn563
+Packaged: 2017-05-11 11:53:22 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2017-03-02 17:05:33
+Date/Publication: 2017-05-11 13:03:03 UTC

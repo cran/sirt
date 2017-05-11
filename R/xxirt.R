@@ -38,11 +38,16 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 		  itemtype <- res$itemtype ; partable <- res$partable
 		  partable_index <- res$partable_index ; ncat <- res$ncat ; maxK <- res$maxK 
 		  mstep_method <- res$mstep_method ; item_index <- res$item_index
-
+		  dat <- as.matrix(dat) 	
+		  
 		# create item list												
 		item_list <- xxirt_createItemList( customItems = customItems , itemtype=itemtype ,
 						items=items, partable = partable )
 						
+		# short cuts for calculating expected counts				
+		dat1_resp <- xxirt_prepare_response_data(G=G, group_index=group_index, 
+						weights=weights, dat1=dat1, dat_resp=dat_resp, maxK=maxK )
+			
 		#*** starting values item parameters
 		par0 <- xxirt_partable_extract_freeParameters( partable=partable )
 		par1 <- xxirt_ThetaDistribution_extract_freeParameters( customTheta=customTheta )
@@ -62,7 +67,7 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 					){
 
 
- # zz0 <- Sys.time()						
+#  zz0 <- Sys.time()						
 			if ( verbose){
 		       cat(disp)	
 		       cat("Iteration" , iter , "   " , paste( Sys.time() ) , "\n" )	
@@ -73,25 +78,26 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 			probs_items <- xxirt_compute_itemprobs( item_list=item_list , 
 							items=items , Theta=Theta , ncat=ncat ,
 							partable=partable , partable_index=partable_index )
- #cat("probs_items ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+# cat(" - probs_items ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 							
 			#*** compute individual likelihood				
 			p.xi.aj <- xxirt_compute_likelihood( probs_items = probs_items , dat=dat , 
-							 resp_index=resp_index )
- # cat("like ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+							 resp_index=resp_index , dat_resp = dat_resp )
+# cat(" - like ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 							 
 			#*** compute prior distribution		
 			prior_Theta <- xxirt_compute_priorDistribution( Theta=Theta , 
 							  customTheta=customTheta , G=G )					  
- # cat("Theta ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+# cat(" - Theta ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 							  
 			#*** compute posterior distribution and expected counts
 			res <- xxirt_compute_posterior( prior_Theta=prior_Theta , p.xi.aj=p.xi.aj , 
 						group=group ,G=G , weights=weights , dat1=dat1 , 
-						dat_resp=dat_resp , maxK=maxK ,group_index = group_index )		
+						dat_resp=dat_resp , maxK=maxK ,group_index = group_index,
+						dat1_resp=dat1_resp )		
 			n.ik <- res$n.ik ; p.aj.xi <- res$p.aj.xi ; N.ik <- res$N.ik ;
 			N.k <- res$N.k ; post_unnorm <- res$post_unnorm
-# cat("posterior ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
+# cat(" - posterior ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 				
 			#*** M-step item parameters	    			
 			par00 <- par0
@@ -102,7 +108,7 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 					  mstep_reltol = mstep_reltol , mstep_method = mstep_method ,
 					  item_index = item_index , h = h , use_grad = use_grad )
 				ll1 <- res$ll1 ; partable <- res$partable ; par0 <- res$par0
-# cat("mstep item ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1				
+# cat(" - mstep item ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1				
 
 			
 			#*** M-step theta distribution
@@ -111,7 +117,7 @@ xxirt <- function( dat , Theta = NULL , itemtype = NULL , customItems = NULL ,
 					  mstep_iter=mstep_iter  , N.k=N.k , par1=par1 ,
 					  mstep_reltol=mstep_reltol , Theta = Theta )		
 			ll2 <- res$ll2 ; customTheta <- res$customTheta ; par1 <- res$par1	  			
-# cat("mstep theta ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1				
+# cat(" - mstep theta ") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1				
 
 			
 			#*** compute deviance

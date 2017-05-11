@@ -108,11 +108,11 @@ Rcpp::List parameters_jackknife( Rcpp::NumericMatrix PARS ){
 		}
 	 } 
 	
-	    return Rcpp::List::create(
+    return Rcpp::List::create(
 		_["PARS_means"]= PARS_means,
 		_["PARS_vcov"]= PARS_vcov
 			) ;
-	}
+}
 
 //************************************************************
 // Eigenvector method
@@ -161,7 +161,7 @@ Rcpp::List evm_aux( arma::mat B , int I , int powD ,
         _["cons_index"] = cons_index ,
       	_["b"] = b 
                 ) ;   
-    	}
+}
     	
 //***************************************                    
 // Choppin's row averaging approach     
@@ -197,7 +197,8 @@ Rcpp::List evm_comp_matrix_poly( Rcpp::NumericMatrix dat ,
 	Rcpp::NumericMatrix dat_resp , Rcpp::NumericVector weights , 
 	int JJ , Rcpp::NumericVector jackunits , 
 	int powD, int progress_, 
-	Rcpp::NumericMatrix row_index, Rcpp::NumericMatrix col_index ){
+	Rcpp::NumericMatrix row_index, Rcpp::NumericMatrix col_index )
+{
  
      int N = dat.nrow() ;  
      int I = row_index.nrow() ;         

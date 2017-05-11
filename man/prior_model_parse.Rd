@@ -7,7 +7,7 @@ Parsing a Prior Model
 }
 \description{
 Parses a string specifying a prior model which is needed
-for the \code{prior} argument in \code{\link{amh}}
+for the \code{prior} argument in \code{LAM::amh}
 }
 \usage{
 prior_model_parse(prior_model)
@@ -25,7 +25,7 @@ String specifying the prior conforming to \R syntax.
 
 \value{
 List with specified prior distributions for parameters
-as needed for the \code{prior} argument in \code{\link{amh}}
+as needed for the \code{prior} argument in \code{LAM::amh}
 }
 %
 
@@ -42,7 +42,7 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{amh}}
+\code{LAM::amh}
 }
 
 \examples{

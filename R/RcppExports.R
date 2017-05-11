@@ -81,22 +81,6 @@ mle_pcm_C <- function(dat, dat_resp, b, a, maxK, theta0, conv, maxiter) {
     .Call('sirt_mle_pcm_C', PACKAGE = 'sirt', dat, dat_resp, b, a, maxK, theta0, conv, maxiter)
 }
 
-mlnormal_proc_variance_shortcut_Z_restructure <- function(Z_list, update_dim, start_orig, end_orig, dim_Z_index, Z_index, orig_id, dim_id) {
-    .Call('sirt_mlnormal_proc_variance_shortcut_Z_restructure', PACKAGE = 'sirt', Z_list, update_dim, start_orig, end_orig, dim_Z_index, Z_index, orig_id, dim_id)
-}
-
-mlnormal_proc_variance_shortcut_XY_restructure <- function(freq_id, y, X, G) {
-    .Call('sirt_mlnormal_proc_variance_shortcut_XY_restructure', PACKAGE = 'sirt', freq_id, y, X, G)
-}
-
-mlnormal_update_V_rcpp_helper <- function(Z_list, Z_index, dim_id, dim_Z_index, startIndex, endIndex, N, max_dim, do_compute, theta, use_ginverse) {
-    .Call('sirt_mlnormal_update_V_rcpp_helper', PACKAGE = 'sirt', Z_list, Z_index, dim_id, dim_Z_index, startIndex, endIndex, N, max_dim, do_compute, theta, use_ginverse)
-}
-
-mlnormal_update_beta_rcpp_helper <- function(dim_id, startIndex, endIndex, G, X, y, V1) {
-    .Call('sirt_mlnormal_update_beta_rcpp_helper', PACKAGE = 'sirt', dim_id, startIndex, endIndex, G, X, y, V1)
-}
-
 noharm_estFcpp <- function(Fval, Pval, Fpatt, Ppatt, I, D, b0jk, b1jk, b2jk, b3jk, wgtm, pm, Psival, Psipatt, maxincrement, modtype) {
     .Call('sirt_noharm_estFcpp', PACKAGE = 'sirt', Fval, Pval, Fpatt, Ppatt, I, D, b0jk, b1jk, b2jk, b3jk, wgtm, pm, Psival, Psipatt, maxincrement, modtype)
 }
@@ -175,5 +159,13 @@ MML2_CALCPOST_V2 <- function(DAT2, DAT2RESP, PROBS) {
 
 MML2_CALCPOST_V3 <- function(DAT2, DAT2RESP, PROBS) {
     .Call('sirt_MML2_CALCPOST_V3', PACKAGE = 'sirt', DAT2, DAT2RESP, PROBS)
+}
+
+xxirt_compute_posterior_expected_counts <- function(dat1_resp_gg, p_aj_xi_gg) {
+    .Call('sirt_xxirt_compute_posterior_expected_counts', PACKAGE = 'sirt', dat1_resp_gg, p_aj_xi_gg)
+}
+
+xxirt_compute_likelihood_helper <- function(dat, dat_resp, probs, TP, maxK) {
+    .Call('sirt_xxirt_compute_likelihood_helper', PACKAGE = 'sirt', dat, dat_resp, probs, TP, maxK)
 }
 

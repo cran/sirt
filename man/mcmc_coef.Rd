@@ -56,7 +56,7 @@ Vector of parameters which should be excluded in calculations
 \item{level}{Confidence level}
 \item{quantiles}{Vector of quantiles to be computed.}
 \item{\dots}{Parameters to be passed to \code{mcmc_plot}.
-See \code{\link{plot.amh}} for arguments.
+See \code{LAM::plot.amh} for arguments.
 }
 \item{derivedPars}{List with derived parameters (see examples).}
 \item{hypotheses}{List with hypotheses of the form
