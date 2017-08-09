@@ -1,7 +1,8 @@
 
 ##################################################
 # create parameter table
-xxirt_createParTable <- function( dat , itemtype , customItems=NULL ){
+xxirt_createParTable <- function( dat , itemtype , customItems=NULL )
+{
 	I <- ncol(dat)
 	ncat1 <- apply( dat , 2 , max , na.rm=TRUE ) + 1
 	items <- colnames(dat)
@@ -11,7 +12,6 @@ xxirt_createParTable <- function( dat , itemtype , customItems=NULL ){
 	dfr <- NULL
 	CI <- length(customItems)	
 	for (ii in 1:I){	
-		# ii <- 1
 		type_ii <- itemtype[ii]
 		item_ii <- NULL
 		for ( vv in 1:CI){
@@ -58,13 +58,3 @@ xxirt_createParTable <- function( dat , itemtype , customItems=NULL ){
 	return(dfr)	
 }
 ##################################################		
-
-	#**** create parameter indices
-#	NP <- nrow(dfr)
-#	dfr$rowindex <- 1:NP
-#	# parameter index
-#	dfr$parindex <- cumsum( dfr$est )
-#	#*** parameter label
-#	dfr$parlabel <- paste0( dfr$item , "_" , dfr$parname )	
-#	attr(dfr , "ncat" ) <- ncat1
-#	attr(dfr , "items" ) <- items

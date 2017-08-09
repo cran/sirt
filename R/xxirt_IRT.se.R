@@ -1,6 +1,7 @@
 
 
-IRT.se.xxirt <- function( object , ...){
+IRT.se.xxirt <- function( object , ...)
+{
 	c1 <- coef(object)
 	v1 <- vcov(object)
 	par1 <- xxirt_partable_extract_freeParameters( object$partable )

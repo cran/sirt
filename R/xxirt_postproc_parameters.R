@@ -1,7 +1,8 @@
 
 #######################################################
 xxirt_postproc_parameters <- function( partable , customTheta , 
-		items , probs_items ){	
+		items , probs_items )
+{	
 	#**** item parameters
 	p1 <- partable[ partable$parfree == 1 , ]
 	par_items <- p1$value

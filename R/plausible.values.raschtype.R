@@ -1,6 +1,4 @@
  
-
-
 #''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 #''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 # Routine for plausible value imputation
@@ -109,7 +107,6 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
     # results pv draw object
     pv1[[  "plausible.value" ]]  <- NULL
     coefs <- coefs[ seq( burnin +1 , iter ) , ]
-# "EAP" = EAP , "SE.EAP" = SD.Post	
     res <- list( "coefsX" = coefs , "coefsZ" = coefsZ[seq( burnin +1 , iter ),,drop=FALSE] , 
 			"pvdraws" = t(pvdraws) , 
 			"posterior" = pv1$posterior.density	 , 
@@ -175,17 +172,19 @@ plausible.value.imputation.raschtype <- function( data=NULL ,
         #.............................................................
         # latent regression model
         mod <- stats::lm( pv ~ 0 + X )
-        res <- list( "est.beta" = coef(mod) , "vcov.beta" = vcov(mod) )
+        res <- list( "est.beta" = stats::coef(mod) , "vcov.beta" = stats::vcov(mod) )
         # sample beta parameter
-        res$samp.beta <- MASS::mvrnorm( mu = res$est.beta , Sigma = res$vcov.beta )
+        res$samp.beta <- CDM::CDM_rmvnorm( 1, mean = res$est.beta , sigma = res$vcov.beta )
         # residual standard deviation
-        n <- nrow(X) ; p <- ncol(X)
+        n <- nrow(X)
+		p <- ncol(X)
         res$est.sigma <- summary(mod)$sigma
         residuals.mod <- ( stats::resid(mod) )^2   * (n-1) / ( n - p - 1)
         mod1 <- stats::lm( residuals.mod ~ 0 + Z )
 #        summary(mod1)
         # sample gamma coefficients for heteroscedasticity
-        res$samp.gamma <- MASS::mvrnorm( mu = stats::coef(mod1) , Sigma = stats::vcov(mod1) )
+        res$samp.gamma <- CDM::CDM_rmvnorm( 1, mean = stats::coef(mod1) , 
+							sigma = stats::vcov(mod1) ) 
         res$fitted.sigma <- sqrt( stats::fitted(mod1) )
         res$lm.latent.regression <- mod
         res$lm.residualsd <- mod1

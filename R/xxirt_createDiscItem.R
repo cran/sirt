@@ -1,7 +1,8 @@
 
 xxirt_createDiscItem <- function( name , par , est , P , lower=-Inf , 
             upper=Inf , prior=NULL , prior_par1=NULL ,
-			prior_par2 = NULL){
+			prior_par2 = NULL)
+{
     res <- list()
 	res$name <- name
     res$par <- par

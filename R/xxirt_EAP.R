@@ -1,7 +1,8 @@
 
 ############################################
 # compute EAP and its standard deviation
-xxirt_EAP <- function(p.aj.xi , Theta ){
+xxirt_EAP <- function(p.aj.xi , Theta )
+{
 	D <- ncol(Theta)
 	e1 <- p.aj.xi %*% Theta
 	colnames(e1) <- paste0("EAP.Dim",1:D)

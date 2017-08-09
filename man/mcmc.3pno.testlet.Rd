@@ -209,7 +209,6 @@ ITT <- I*TT
 b <- round( stats::rnorm( ITT , mean=0 , sd = 1 ) , 2 )
 sd0 <- 1 # sd trait
 sdt <- seq( 0 , 2 , len=TT ) # sd testlets
-sdt <- sdt
 
 # simulate theta
 theta <- stats::rnorm( N , sd = sd0 )
@@ -217,7 +216,7 @@ theta <- stats::rnorm( N , sd = sd0 )
 ut <- matrix(0,nrow=N , ncol=TT )
 for (tt in 1:TT){ 
     ut[,tt] <- stats::rnorm( N , sd = sdt[tt] ) 
-                }
+}
 ut <- ut[ , rep(1:TT,each=I) ]
 # calculate response probability
 prob <- matrix( stats::pnorm( theta + ut + matrix( b , nrow=N , ncol=ITT , 
@@ -270,7 +269,7 @@ ITT <- I*TT
 b <- round( stats::rnorm( ITT , mean=0 , sd = 1 ) , 2 )
 a <- round( stats::runif( ITT , 0.5 , 2 ) ,2)
 sdt <- seq( 0 , 2 , len=TT ) # sd testlets
-sdt <- sdt
+sd0 <- 1
 
 # simulate theta
 theta <- stats::rnorm( N , sd = sd0 )
@@ -278,7 +277,7 @@ theta <- stats::rnorm( N , sd = sd0 )
 ut <- matrix(0,nrow=N , ncol=TT )
 for (tt in 1:TT){ 
    ut[,tt] <- stats::rnorm( N , sd = sdt[tt] ) 
-                 }
+}
 ut <- ut[ , rep(1:TT,each=I) ]
 # calculate response probability
 bM <- matrix( b , nrow=N , ncol=ITT , byrow=TRUE )
@@ -301,7 +300,7 @@ summary(mod1)
 
 summ1 <- mod1$summary.mcmcobj
 # compare item parameters
-cbind( b , summ1[ grep("b" , summ1$parameter ) , "Mean" ] )
+cbind( b , summ1[ grep("b\\[" , summ1$parameter ) , "Mean" ] )
 # item discriminations
 cbind( a , summ1[ grep("a\\[" , summ1$parameter ) , "Mean" ] )
 # Testlet standard deviations

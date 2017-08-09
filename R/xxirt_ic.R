@@ -2,7 +2,8 @@
 
 ###################################################################
 xxirt_ic <- function( dev , N , par_items , par_Theta , I ,
-       par_items_bounds ){
+       par_items_bounds )
+{
 	# Information criteria
 	ic <- list( "deviance" = dev , "n" = N , "I" = I )
 	# ic$np.item <- length(par_items)

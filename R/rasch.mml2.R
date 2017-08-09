@@ -645,7 +645,7 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 					pik2 <- exp( stats::fitted(mod))
 					pi.k[,gg] <- pik2 / sum(pik2)
 					if (center.trait & gg==1){
-						mmm1 <- weighted.mean( theta.k , pik2 )	
+						mmm1 <- stats::weighted.mean( theta.k , pik2 )	
 						theta.k <- theta.k - mmm1
 											}
 					if ( ( ! is.null(est.a) ) | ( irtmodel == "npirt" )  ){ 
@@ -725,98 +725,76 @@ rasch.mml2 <- function( dat , theta.k = seq(-6,6,len=21) , group = NULL , weight
 		#***************************
 		# estimation of alpha
         if ( est.alpha ){ 
-                alpha1.old <- alpha1
-                h <- numdiff.alpha.parm 
-                fixed.c.M <- outer( rep(1,nrow(pjk)) , fixed.c )
-                fixed.d.M <- outer( rep(1,nrow(pjk)) , fixed.d )            
-                #****
-                # alpha1
-                pjk <- .prob.raschtype.genlogis( theta.k , b , alpha1 , alpha2 , fixed.a ,Qmatrix)
-                    pjk <- fixed.c.M + ( fixed.d.M - fixed.c.M) * pjk
-                pjk <- ( pjk + .000000005 ) / 1.00000001 
-                pjk.M <- t(pjk) ;  qjk.M <- 1 - pjk.M
-                pjk1 <- .prob.raschtype.genlogis( theta.k , b  , alpha1+h , alpha2 , fixed.a,Qmatrix)
-                    pjk1 <- fixed.c.M + ( fixed.d.M - fixed.c.M) * pjk1
-                pjk1 <- ( pjk1 + .000000005 ) / 1.00000001 
-                pjk1.M <- t(pjk1) ; qjk1.M <- 1 - pjk1.M
-                pjk2 <- .prob.raschtype.genlogis( theta.k , b  , alpha1-h , alpha2 , fixed.a,Qmatrix)
-                    pjk2 <- fixed.c.M + ( fixed.d.M - fixed.c.M) * pjk2
-                pjk2 <- ( pjk2 + .000000005 ) / 1.00000001 
-                pjk2.M <- t(pjk2) ; qjk2.M <- 1 - pjk2.M
-                # first order derivative
-                # f(x+h) - f(x-h) = 2* f'(x) * h
-                ll0 <- ll1 <- ll2 <- rep(0,G)
-                for (gg in 1:G){ 
-                    ll0[gg] <- sum( r.jk[,,gg] * log( pjk.M ) + ( n.jk[,,gg] - r.jk[,,gg]  ) * log( qjk.M ) )
-                    ll1[gg] <- sum( r.jk[,,gg] * log( pjk1.M ) + ( n.jk[,,gg] - r.jk[,,gg]  ) * log( qjk1.M ) )
-                    ll2[gg] <- sum( r.jk[,,gg] * log( pjk2.M ) + ( n.jk[,,gg] - r.jk[,,gg]  ) * log( qjk2.M ) )
-                            }                
-                ll0a1 <- ll0 <- sum(ll0)
-                ll1a1 <- ll1 <- sum(ll1)
-                ll2a1 <- ll2 <- sum(ll2)
-                d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?
-#				d1 <- ( ll1 - ll0 ) / h
-                # second order derivative
-                # f(x+h)+f(x-h) = 2*f(x) + f''(x)*h^2
-                d2 <- ( ll1 + ll2 - 2*ll0 ) / h^2
-                # change in item difficulty
-                alpha.change <- - d1 / d2
-                alpha.change <- ifelse( abs( alpha.change ) > .1 , .1*sign(alpha.change) , alpha.change )              
-                alpha1 <- alpha1 + alpha.change
-                a1 <- abs(alpha.change )
-				se.alpha <- sqrt( 1 / abs(d2) )
-                #****
-                # alpha2
-                pjk <- .prob.raschtype.genlogis( theta.k , b , alpha1 , alpha2 , fixed.a,Qmatrix)
-                    pjk <- fixed.c.M + ( fixed.d.M - fixed.c.M) * pjk
-                pjk <- ( pjk + .000000005 ) / 1.00000001 
-                pjk.M <- t(pjk) ;  qjk.M <- 1 - pjk.M
-                pjk1 <- .prob.raschtype.genlogis( theta.k , b  , alpha1 , alpha2 +h , fixed.a,Qmatrix )
-                    pjk1 <- fixed.c.M + ( fixed.d.M - fixed.c.M) * pjk1
-                pjk1 <- ( pjk1 + .000000005 ) / 1.00000001 
-                pjk1.M <- t(pjk1) ; qjk1.M <- 1 - pjk1.M
-                pjk2 <- .prob.raschtype.genlogis( theta.k , b  , alpha1 , alpha2 -h , fixed.a,Qmatrix)
-                    pjk2 <- fixed.c.M + ( fixed.d.M - fixed.c.M) * pjk2
-                pjk2 <- ( pjk2 + .000000005 ) / 1.00000001 
-                pjk2.M <- t(pjk2) ; qjk2.M <- 1 - pjk2.M
-                # first order derivative
-                # f(x+h) - f(x-h) = 2* f'(x) * h
-                ll0 <- ll1 <- ll2 <- rep(0,G)
-                for (gg in 1:G){ 
-                    ll0[gg] <- sum( r.jk[,,gg] * log( pjk.M ) + ( n.jk[,,gg] - r.jk[,,gg]  ) * log( qjk.M ) )
-                    ll1[gg] <- sum( r.jk[,,gg] * log( pjk1.M ) + ( n.jk[,,gg] - r.jk[,,gg]  ) * log( qjk1.M ) )
-                    ll2[gg] <- sum( r.jk[,,gg] * log( pjk2.M ) + ( n.jk[,,gg] - r.jk[,,gg]  ) * log( qjk2.M ) )
-                            }                
-                ll0 <- sum(ll0)
-                ll1 <- sum(ll1)
-                ll2 <- sum(ll2)
-                d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?
-#				d1 <- ( ll1 - ll0 ) / h
+            alpha1.old <- alpha1
+            h <- numdiff.alpha.parm 			
+			
+            #-- alpha1
+			calc_prob_args <- list( theta.k=theta.k, b=b, fixed.a=fixed.a, fixed.c=fixed.c, 
+							fixed.d=fixed.d, alpha1=alpha1, alpha2=alpha2, Qmatrix=Qmatrix )
+			pjk.M <- do.call( "rasch_mml2_calc_prob" , args=calc_prob_args )
+			#-- alpha1 + h
+			pjk1.M <- do.call( "rasch_mml2_calc_prob" , args = rasch_mml2_modify_list_element( 
+									x = calc_prob_args , entry="alpha1", value=alpha1 + h ) )			
+			#-- alpha1 - h						
+			pjk2.M <- do.call( "rasch_mml2_calc_prob" , args = rasch_mml2_modify_list_element( 
+									x = calc_prob_args , entry="alpha1", value=alpha1 - h ) )							
+							
+			#-- log likelihood		
+			ll0a1 <- ll0 <- rasch_mml2_mstep_calc_likelihood( G=G, pjk.M=pjk.M, n.jk=n.jk, r.jk=r.jk ) 
+			ll1a1 <- ll1 <- rasch_mml2_mstep_calc_likelihood( G=G, pjk.M=pjk1.M, n.jk=n.jk, r.jk=r.jk ) 
+			ll2a1 <- ll2 <- rasch_mml2_mstep_calc_likelihood( G=G, pjk.M=pjk2.M, n.jk=n.jk, r.jk=r.jk ) 
+			#--- derivatives
+			res <- rasch_mml2_difference_quotient( ll0=ll0, ll1=ll1, ll2=ll2, h=h ) 
+			d1 <- res$d1
+			d2 <- res$d2
 
-                # second order derivative
-                # f(x+h)+f(x-h) = 2*f(x) + f''(x)*h^2
-                d2 <- ( ll1 + ll2 - 2*ll0 ) / h^2
-                # change in item difficulty
+            # change in item difficulty
+			alpha.change <- - d1 / d2
+			alpha.change <- ifelse( abs( alpha.change ) > .1 , .1*sign(alpha.change) , alpha.change )              
+			alpha1 <- alpha1 + alpha.change
+			a1 <- abs(alpha.change )
+			se.alpha <- sqrt( 1 / abs(d2) )						
+			
+            #-- alpha2
+			calc_prob_args <- rasch_mml2_modify_list_element( x = calc_prob_args , entry="alpha1", value=alpha1 )
+			pjk.M <- do.call( "rasch_mml2_calc_prob" , args=calc_prob_args )
+			#-- alpha2 + h
+			pjk1.M <- do.call( "rasch_mml2_calc_prob" , args = rasch_mml2_modify_list_element( 
+									x = calc_prob_args , entry="alpha2", value=alpha2 + h ) )			
+			#-- alpha2 - h						
+			pjk2.M <- do.call( "rasch_mml2_calc_prob" , args = rasch_mml2_modify_list_element( 
+									x = calc_prob_args , entry="alpha2", value=alpha2 - h ) )							
+							
+			#-- log likelihood	
+			ll0a1 <- ll0 <- rasch_mml2_mstep_calc_likelihood( G=G, pjk.M=pjk.M, n.jk=n.jk, r.jk=r.jk ) 
+			ll1a1 <- ll1 <- rasch_mml2_mstep_calc_likelihood( G=G, pjk.M=pjk1.M, n.jk=n.jk, r.jk=r.jk ) 
+			ll2a1 <- ll2 <- rasch_mml2_mstep_calc_likelihood( G=G, pjk.M=pjk2.M, n.jk=n.jk, r.jk=r.jk ) 
+			#--- derivatives
+			res <- rasch_mml2_difference_quotient( ll0=ll0, ll1=ll1, ll2=ll2, h=h ) 
+			d1 <- res$d1
+			d2 <- res$d2
+
+            alpha.change <- - d1 / d2
+            alpha.change <- ifelse( abs( alpha.change ) > .1 , .1*sign(alpha.change) , alpha.change )
+            alpha2 <- alpha2 + alpha.change
+            a2 <- abs(alpha.change)
+            maxalphachange <- max(a1, a2)
+			se.alpha <- c( se.alpha , sqrt( 1 / abs(d2) ) )
+			
+            if (equal.alpha){
+                ll0 <- ll0a1 + ll0 
+                ll1 <- ll1a1 + ll1                 
+                ll2 <- ll2a1 + ll2                 
+                d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?
+                d2 <- ( ll1 + ll2 - 2*ll0 ) / h^2                
                 alpha.change <- - d1 / d2
                 alpha.change <- ifelse( abs( alpha.change ) > .1 , .1*sign(alpha.change) , alpha.change )
-                alpha2 <- alpha2 + alpha.change
+                alpha2 <- alpha1 <- alpha1.old + alpha.change
                 a2 <- abs(alpha.change)
-                maxalphachange <- max(a1, a2)
-				se.alpha <- c( se.alpha , sqrt( 1 / abs(d2) ) )
-                if (equal.alpha){
-                        ll0 <- ll0a1 + ll0 
-                        ll1 <- ll1a1 + ll1                 
-                        ll2 <- ll2a1 + ll2                 
-                        d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?
-                        d2 <- ( ll1 + ll2 - 2*ll0 ) / h^2                
-                        alpha.change <- - d1 / d2
-                        alpha.change <- ifelse( abs( alpha.change ) > .1 , .1*sign(alpha.change) , alpha.change )
-                        alpha2 <- alpha1 <- alpha1.old + alpha.change
-                        a2 <- abs(alpha.change)
-                        maxalphachange <- max(a2)
-						se.alpha <- sqrt( 1 / abs(d2) )
-                            }
-						}
+                maxalphachange <- max(a2)
+				se.alpha <- sqrt( 1 / abs(d2) )
+            }
+		}
 # cat("distribution / rest") ; zz1 <- Sys.time(); print(zz1-zz0) ; zz0 <- zz1	
 #
 

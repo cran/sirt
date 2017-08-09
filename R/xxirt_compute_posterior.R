@@ -8,7 +8,6 @@ xxirt_compute_posterior <- function( prior_Theta , p.xi.aj , group ,
 	TP <- ncol(p.xi.aj)	
 	I <- ncol(dat1)		
 	# posterior distribution
-# zz0 <- Sys.time()	
 	prior1 <- t( prior_Theta[ , group ] )	 
 	p1 <- p.aj.xi <- prior1 * p.xi.aj
 	p.aj.xi <- p.aj.xi / rowSums( p.aj.xi )
@@ -17,7 +16,6 @@ xxirt_compute_posterior <- function( prior_Theta , p.xi.aj , group ,
 	N.ik <- array( 0 , dim=c(I,maxK , TP) )		
 	pi.k <- matrix( 0 , nrow=TP , ncol=G )		
 	for (gg in 1:G){
-		# gg <- 1
 		ind_gg <- group_index[[gg]]	
 		p.aj.xi.gg <- as.matrix( p.aj.xi[ind_gg , ] )
 		dat1_resp_gg <- dat1_resp[ ind_gg , , ]

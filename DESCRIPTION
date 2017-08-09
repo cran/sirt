@@ -1,8 +1,8 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 2.0-25
-Date: 2017-05-11 13:52:31
+Version: 2.1-24
+Date: 2017-08-09 10:34:52
 Author: Alexander Robitzsch [aut,cre]
 Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 Description: 
@@ -13,14 +13,15 @@ Description:
     hierarchical rater models, ordinal IRT model (ISOP), 
     DETECT statistic, local structural equation modeling (LSEM).
 Depends: R (>= 3.1)
-Imports: CDM, coda, combinat, graphics, gtools, ic.infer, igraph,
-        lavaan, lavaan.survey, MASS, Matrix, methods, mirt, mvtnorm,
-        pbivnorm, plyr, psych, Rcpp, sfsmisc, sm, stats, survey, TAM,
-        utils
-Suggests: LSAmitR, miceadds
+Imports: CDM (>= 5.8-5), coda, graphics, lavaan, lavaan.survey,
+        methods, mirt, mvtnorm, Rcpp, sfsmisc, stats, survey, TAM (>=
+        2.5-5), utils
+Suggests: gtools, ic.infer, igraph, Matrix, miceadds, pbivnorm, psych,
+        sm
 LinkingTo: Rcpp, RcppArmadillo
+URL: https://github.com/alexanderrobitzsch/sirt
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2017-05-11 11:53:22 UTC; sunpn563
+Packaged: 2017-08-09 08:35:48 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2017-05-11 13:03:03 UTC
+Date/Publication: 2017-08-09 10:27:51 UTC

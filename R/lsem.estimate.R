@@ -53,7 +53,8 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 		sol <- lavaan::standardizedSolution( lavfit , type=standardized_type)
 		colnames(sol)[ which( colnames(sol) == "est.std" ) ] <- "est"
 		sol$lhs <- paste0( "std__" , sol$lhs)
-		pars <- plyr::rbind.fill( pars , sol )	
+		# pars <- plyr::rbind.fill( pars , sol )	
+		pars <- sirt_rbind_fill( x=pars, y=sol )	
 	} 
 	pars <- apply( pars[ , c("lhs" , "op" , "rhs" ) ] , 1 , FUN = function(ll){
 				paste0( ll[1] , ll[2] , ll[3] ) } )			
@@ -94,23 +95,23 @@ lsem.estimate <- function( data , moderator , moderator.grid ,
 		
 	# output
 	s2 <- Sys.time()	
-	res <- list( "parameters"=parameters , "weights"=weights , 				 
-				 "parameters_summary" = parameters_summary , 
-				 "bw"=out$bw , "h"=h , "N"=out$N , 
-				 "moderator.density"=out$moderator.density , 
-				 "moderator.stat" = moderator.stat , 
-				 "moderator.grouped" = moderator.grouped , 
-				 "m.moderator" = mean( data[,moderator] , na.rm=TRUE ) ,
-				 "sd.moderator"=out$sd.moderator , "moderator"=moderator ,
-				 "moderator.grid" = moderator.grid ,
-				 "lavmodel"=lavmodel , "residualize"=residualize ,
-				 "data"=data , "residualized.intercepts" = residualized_interceps , 
-				 "lavaan.args"=lavaan.args ,
-				 "fit_measures"=fit_measures , "s1"=s1 , "s2"=s2 ,
-				 "standardized" = standardized , 
-				 "standardized_type" = standardized_type , 
-				 "lavaan_fct" = lavaan_fct ,
-				 "type"=type , "CALL" = CALL )	
+	res <- list( parameters=parameters , weights=weights , 				 
+				 parameters_summary = parameters_summary , 
+				 bw=out$bw , h=h , N=out$N , 
+				 moderator.density=out$moderator.density , 
+				 moderator.stat = moderator.stat , 
+				 moderator.grouped = moderator.grouped , 
+				 m.moderator = mean( data[,moderator] , na.rm=TRUE ) ,
+				 sd.moderator=out$sd.moderator , moderator=moderator ,
+				 moderator.grid = moderator.grid ,
+				 lavmodel=lavmodel , residualize=residualize ,
+				 data=data , residualized.intercepts = residualized_interceps , 
+				 lavaan.args=lavaan.args ,
+				 fit_measures=fit_measures , s1=s1 , s2=s2 ,
+				 standardized = standardized , 
+				 standardized_type = standardized_type , 
+				 lavaan_fct = lavaan_fct ,
+				 type=type , CALL = CALL )	
 	class(res) <- "lsem"	
 	return(res)			
 }

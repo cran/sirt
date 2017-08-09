@@ -4,8 +4,8 @@
 xxirt_modifyParTable <- function( partable , parname , item = NULL , value=NULL ,
 		est = NULL , parlabel = NULL , parindex = NULL , lower=NULL ,
 		upper = NULL , prior=NULL ,
-		prior_par1 = NULL , prior_par2 = NULL
-		){
+		prior_par1 = NULL , prior_par2 = NULL )
+{
 	if ( is.null(item) ){
 		item <- paste( unique(partable$item ))
 	}
