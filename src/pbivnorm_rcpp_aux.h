@@ -1,3 +1,6 @@
+//// File Name: pbivnorm_rcpp_aux.h
+//// File Version: 0.52
+//// File Last Change: 2016-01-29 15:53:14
 
 
 // includes from the plugin

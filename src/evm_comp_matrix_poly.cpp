@@ -1,3 +1,6 @@
+//// File Name: evm_comp_matrix_poly.cpp
+//// File Version: 3.603
+//// File Last Change: 2017-04-13 10:29:36
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
