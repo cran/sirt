@@ -1,10 +1,8 @@
 ## File Name: Q3.R
-## File Version: 1.13
-## File Last Change: 2017-05-10 17:23:14
+## File Version: 1.14
  
-#******************************************************************************************************
+###############################################################
 # Yen's Q3 statistic (1984)
-##NS export(yen.q3)
 Q3 <- function( dat , theta , b , progress = TRUE )
 {
     I <- ncol(dat)

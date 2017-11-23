@@ -1,6 +1,5 @@
 %% File Name: rasch.pml3.Rd
-%% File Version: 2.62
-%% File Last Change: 2017-01-18 18:08:41
+%% File Version: 2.64
 
 
 
@@ -202,7 +201,7 @@ This function needs the \pkg{combinat} library.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-Get a summary of \code{rasch.pml2} with \code{\link{summary.rasch.pml}}.
+Get a summary of \code{rasch.pml3} with \code{\link{summary.rasch.pml}}.
 
 For simulation of locally dependent items see \code{\link{sim.rasch.dep}}.
 

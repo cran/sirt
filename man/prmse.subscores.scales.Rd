@@ -1,6 +1,5 @@
 %% File Name: prmse.subscores.scales.Rd
 %% File Version: 0.21
-%% File Last Change: 2017-08-21 17:59:55
 
 \name{prmse.subscores.scales}
 \alias{prmse.subscores.scales}
