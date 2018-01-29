@@ -1,5 +1,5 @@
 ## File Name: rm_numdiff_index.R
-## File Version: 0.15
+## File Version: 0.16
 
 
 ####################################################################
@@ -33,16 +33,14 @@ rm_numdiff_index <- function( pjk , pjk1 , pjk2 , n.ik , diffindex ,
 	res <- rm_numdiff_discrete_differences(ll0=ll0, ll1=ll1, ll2=ll2, h=h)
 	d1 <- res$d1
 	d2 <- res$d2
-    
+
 	#-- compute incremental change in item parameters
 	d2[ abs(d2) < eps2 ] <- eps2
 	increment <- - d1 / d2
 
-
 	
 	#-- trim increment
 	increment <- rm_numdiff_trim_increment( increment=increment, max.increment=max.increment, eps2=eps2 ) 
-								 
 	#--- output
 	res <- list(increment=increment , d1=d1, d2=d2 , ll0=ll0, h=h)
 	return(res)
