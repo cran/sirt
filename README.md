@@ -19,6 +19,5 @@ The version hosted [here](https://github.com/alexanderrobitzsch/sirt) is the dev
 The GitHub version can be installed using `devtools` as:
 
 ```r
-utils::install.packages("devtools")
 devtools::install_github("alexanderrobitzsch/sirt")
 ```

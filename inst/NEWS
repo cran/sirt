@@ -35,6 +35,28 @@ CHANGELOG sirt
 
 
 ------------------------------------------------------------------------
+VERSIONS sirt 2.5  |  2018-03-13  |  Last: sirt 2.5-45
+------------------------------------------------------------------------
+
+FIXED * fixed a bug in postprocessing in rm.sdt() function
+FIXED * fixed bugs in mcmc_XXX() functions when mcmc object (from coda)
+        is a list
+FIXED * handle case of characters "[", "]", "," in variable names in
+        functions mcmc_derivedPars() and mcmc_WaldTest() 
+FIXED * mcmc_WaldTest() now also handle cases of multicollinear
+        hypotheses 
+FIXED * handled NaN problems in noharm.sirt()
+NOTE  * included argument 'reliability' in noharm.sirt()
+NOTE  * changed argument 'logfile' to 'file' in summary.noharm.sirt()
+NOTE  * rewrote some Rcpp function because of memory problems documented at
+        https://cran.r-project.org/web/checks/check_issue_kinds.html
+
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: ---
+
+
+------------------------------------------------------------------------
 VERSIONS sirt 2.4  |  2018-01-29  |  Last: sirt 2.4-20
 ------------------------------------------------------------------------
 
@@ -47,8 +69,6 @@ FIXED * fixed broken function lsdm() because exported functions in
 
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: ---
-
-
 
 ------------------------------------------------------------------------
 VERSIONS sirt 2.3  |  2017-11-23  |  Last: sirt 2.3-57
@@ -78,11 +98,11 @@ VERSIONS sirt 2.2  |  2017-09-20  |  Last: sirt 2.2-14
 ------------------------------------------------------------------------
 
 ADDED * added option for additive linking of item slopes in 
-        'linking.haberman'
-FIXED * fixed broken 'mcmc.3pno.testlet' and 'mcmc.2pno' functions
+        linking.haberman()
+FIXED * fixed broken mcmc.3pno.testlet() and mcmc.2pno() functions
         (thanks to Hyeon-Ah Kang)
 NOTE  * slight changes in output in MCMC IRT functions like
-        'mcmc.3pno.testlet'. Included argument 'file' in summary.
+        mcmc.3pno.testlet(). Included argument 'file' in summary.
 
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: linking.haberman (1)
@@ -96,11 +116,11 @@ NOTE  * included synthetic datasets simulated from original datasets
 NOTE  * moved packages gtools, ic.infer, igraph, Matrix, pbivnorm, psych
         and sm from 'Imports' to 'Suggests'. Removed combinat, MASS 
         and plyr packages from 'Imports'.
-NOTE  * exported 'sirt_rbind_fill' utility function which is a
-        reimplementation of plyr::rbind.fill
-NOTE  * exported utility functions 'sirt_fisherz' and 'sirt_antifisherz'
+NOTE  * exported sirt_rbind_fill() utility function which is a
+        reimplementation of plyr::rbind.fill()
+NOTE  * exported utility functions sirt_fisherz() and 'sirt_antifisherz()
 NOTE  * fixed potential problems with frequencies of zero in 
-        'dif.logistic.regression' (thanks to Armin Haba) 
+        dif.logistic.regression() (thanks to Armin Haba) 
 
 DATA  * included/modified datasets: data.eid.kap4, data.eid.kap5,
         data.eid.kap6, data.eid.kap7
@@ -110,24 +130,24 @@ EXAMP * included/modified examples: ---
 VERSIONS sirt 2.0  |  2017-05-11  |  Last: sirt 2.0-26
 ------------------------------------------------------------------------
 
-NOTE  * moved 'amh', 'loglike_mvnorm', 'mlnormal' and 'pmle' functions 
+NOTE  * moved amh(), loglike_mvnorm(), mlnormal() and pmle() functions 
         to LAM package (soon at CRAN)
-NOTE  * moved 'starts_cov' and 'starts_sim1dim' functions to 
+NOTE  * moved starts_cov() and 'starts_sim1dim' functions to 
         STARTS package (soon at CRAN)
-FIXED * fixed a bug in 'IRT.likelihood' for fitted models in mirt which
+FIXED * fixed a bug in IRT.likelihood() for fitted models in mirt which
         occured due to an output restructure in mirt
-FIXED * fixed a bug in 'mirt.specify.partable'
-NOTE  * avoid division by zero in 'IRT.mle' which caused numerical 
+FIXED * fixed a bug in mirt.specify.partable()
+NOTE  * avoid division by zero in IRT.mle() which caused numerical 
         problems (thanks to Marit List)
-NOTE  * some subfunctions in 'xxirt' were rewritten in Rcpp for reducing
+NOTE  * some subfunctions in xxirt() were rewritten in Rcpp for reducing
         computation time
 NOTE  * removed dependency from MCMCpack package
 ADDED * added functionality for handling missing values unter MCAR 
-        assumption in 'lsem.estimate'. The argument 
+        assumption in lsem.estimate(). The argument 
         'sufficient_statistics=TRUE' allows for local estimation
         of SEM based on weighted means and weighted covariances.
         (suggested by Ulrich Schroeders)
-FIXED * fixed a bug in 'lsem.estimate' if the object name of the argument
+FIXED * fixed a bug in lsem.estimate() if the object name of the argument
         'lavmodel' is not 'lavmodel' 
         (thanks to Ulrich Schroeders and Jenny Wagner)
 
@@ -138,14 +158,14 @@ EXAMP * included/modified examples: lsem.estimate (1)
 VERSIONS sirt 1.15  |  2017-03-02  |  Last: sirt 1.15-41
 ------------------------------------------------------------------------
 
-NOTE  * included option for choosing 'lavaan::lavaan' or 'lavaan::sem' as
-        estimation function in function 'lsem.estimate'. In previous
-        versions, only the 'lavaan::sem' function could be chosen 
+NOTE  * included option for choosing lavaan::lavaan() or lavaan::sem() as
+        estimation function in function lsem.estimate(). In previous
+        versions, only the lavaan::sem() function could be chosen 
         (thanks to Jenny Wagner).
 NOTE  * restructured Rcpp functions
-NOTE  * removed 'CallSwitch' function from namespace and package
-NOTE  * removed minor bug in labeling items in 'sim.raschtype'
-FIXED * fixed a bug in 'smirt' with handling of parameter bounds which
+NOTE  * removed CallSwitch() function from namespace and package
+NOTE  * removed minor bug in labeling items in sim.raschtype()
+FIXED * fixed a bug in smirt() with handling of parameter bounds which
         was recently introduced in sirt 1.13 (thanks to David Armstrong)
 
 DATA  * included/modified datasets: ---
