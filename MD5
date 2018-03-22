@@ -1,4 +1,4 @@
-4190b75748153ad54dc45256301d5b9c *DESCRIPTION
+66c79bfa2422fc2ddef238c1cbfe2d0d *DESCRIPTION
 36275b018f8dded889d36605a6381840 *NAMESPACE
 8e9068906532c23a73fa8ffb9e36cfdc *R/IRT.expectedCounts_sirt.R
 58acafd4a277973ef901a637c944ac75 *R/IRT.factor.scores.sirt.R
@@ -76,7 +76,7 @@ bafcc96b0efc333b6e1ef20483054d3e *R/isop.test.R
 bccf0b338942c2ae8a2c2d20f54a360f *R/isop_tests_cpp.R
 fdf6e3c9dc79a8169a9e45c54b3c56d9 *R/latent.regression.em.normal.R
 8002920e9af54170b224048acb9a2cd3 *R/latent.regression.em.raschtype.R
-c24822a0255f9bc1a8fa14acd593638b *R/lavaan2mirt.R
+e650fa8b62ae82c31dc12396af3bb896 *R/lavaan2mirt.R
 7fe51442430df744a10cec30620e6a55 *R/lavaanify.sirt.R
 a9c322490d9194e45aa036bcf76afe57 *R/lc.2raters.R
 6a895e73a595aba2a71c93a107aecbe3 *R/lc.2raters.aux.R
@@ -203,7 +203,7 @@ d8cdb8b8b540593072f89b572d5832c6 *R/rasch.mml.R
 d49f64ffce34173f63c3b58c0714b82d *R/rasch.mml.npirt.R
 76ab370c840dba2dcbe7a802b7352c59 *R/rasch.mml.ramsay.R
 358dda4d8c00189f2f39c02bd140e651 *R/rasch.mml.raschtype.R
-9ce6c635a1a84c4c5305c26e64b1fed3 *R/rasch.mml2.R
+5c9dadd25ed3876bf92d88dfebd25899 *R/rasch.mml2.R
 dae64e1b7ae53603ca5b0d483dbdac37 *R/rasch.mml2.missing1.R
 e671bd9964820660914087b43b5259d7 *R/rasch.pairwise.R
 51bf4a874053bc36f1167aeb85fca469 *R/rasch.pairwise.itemcluster.R
@@ -346,8 +346,9 @@ b7429b3e11f40c8ff80816adc7bc1928 *R/summary.rasch.mml2.R
 ef133e73b6638fb08404907f8ed94942 *R/summary.smirt.R
 a574f3363452737c4ab85decbcdfeac1 *R/summary.xxirt.R
 f2b2bc9799c47b34f93d5a1b5c8a673c *R/summary_round_helper.R
-1697d809a3d947212b2bd62e81a4f3ce *R/tam2mirt.R
-6bf4241ee2a53ba2c76287a6700480a8 *R/tam2mirt.aux.R
+1303dcd4fb9d3e64baaf3746a8f2dd86 *R/tam2mirt.R
+57a1ac28150eb9a6a0b761de41a4e500 *R/tam2mirt_fix.R
+7ceff559b262e89f5719504ff65b5199 *R/tam2mirt_freed.R
 9773a49f87244b8af18c7a007a535d65 *R/testlet.marginalized.R
 73262cbbadb1c83a7dfdb9cb9e998866 *R/testlet.yen.q3.R
 dec92749bb60163d9c83e210373a9dda *R/tetrachoric2.R
@@ -449,7 +450,7 @@ e0e9786bbd3956f398dfa5916acaa3ac *data/data.si02.rda
 9f067589cd4fd9b6c9555c2e0bf8b6f9 *data/data.timss07.G8.RUS.rda
 7e158d7cdf6a199176a8b30003c9a3bd *data/datalist
 3deb0601b46d247d9ec461a999999b0e *inst/CITATION
-e716583a52a65db169b2feac78dfaa00 *inst/NEWS
+a8ec060f597ae7ff18fbbec577dfa702 *inst/NEWS
 9a7ad79883605f75515fb303b3271387 *man/IRT.mle.Rd
 938690494ff890c7e2562ab41748ab7c *man/Q3.Rd
 b9d96287b607a0d108099974762395ba *man/Q3.testlet.Rd
@@ -513,9 +514,9 @@ b115c1ed5ef50fb99c1f639ed433d222 *man/fuzdiscr.Rd
 58cc9369f41dbacb1544ec08743e90ea *man/gom.jml.Rd
 8c21dee454a5eb1db08c912e10d432d4 *man/greenyang.reliability.Rd
 7aeefdc5b3171338dee0dd96250ea8ba *man/invariance.alignment.Rd
-5896c6fdc957e45ae6bf3920b6d76822 *man/isop.Rd
+1ac3ac6acd70b2da1e9135a5acb7386d *man/isop.Rd
 74f1dacb3741aa85d873c68ef3cc8c17 *man/isop.scoring.Rd
-87977c828fdadb7cd7af98412eb9ce43 *man/isop.test.Rd
+85870c80e120a4d8109be556def25adf *man/isop.test.Rd
 0644e524bab6684c6a4c4fd470cff6de *man/latent.regression.em.raschtype.Rd
 79fa56d48213449c33ad7d4606616663 *man/lavaan2mirt.Rd
 9b4ed9223c05fc94774e7bbe54bc06ab *man/lc.2raters.Rd
@@ -597,7 +598,7 @@ ea6c591eb144c0dbbe8f1b6fef210984 *man/xxirt_createParTable.Rd
 c2c8689a00262c202fb3ccd776aed8b9 *man/xxirt_createThetaDistribution.Rd
 489b262d4f81136a32f0bb09936fe53e *src/Makevars
 a73031cbe7d6aaf0bd22e20f6526977d *src/Makevars.win
-3ce5d15c7c3854f38199bba9e39108f1 *src/RcppExports.cpp
+18e5bd98bb33cc4215fb06a8d8e7ba0d *src/RcppExports.cpp
 d821222df03be60e56975d7753b1d2fe *src/eigenvaluessirt_rcpp.cpp
 5d63f274ac0d98098f761da0a05528c3 *src/evm_comp_matrix_poly_rcpp.cpp
 eefb7eaf8be6e8cc7a1b7196809199fe *src/gooijer_isop_rcpp.cpp
@@ -607,6 +608,6 @@ c6d54053120b63751cdcba26244dd91f *src/mle_pcm_group_rcpp.cpp
 4fa3b4742fb7814c095022ba6a506b87 *src/noharm_sirt_rcpp.cpp
 1585d084856a2ff271e411cb1c952d5e *src/polychoric2_tetrachoric2_rcpp.cpp
 2cb55fc70362a0aca7f137c68070435b *src/probs_multcat_items_counts_rcpp.cpp
-e65ced7da69eace4305c9e7f8c73fde0 *src/rm_proc_data_rcpp.cpp
+4669989a5914f7373a31685edfaf3c43 *src/rm_proc_data_rcpp.cpp
 46d04dcc47ee20be158d8013ada63d39 *src/rm_smirt_mml2_rcpp.cpp
 c2255175664264f77ca7f1b60ecad4b0 *src/xxirt_functions_rcpp.cpp
