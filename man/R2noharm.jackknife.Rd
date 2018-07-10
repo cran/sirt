@@ -1,5 +1,5 @@
 %% File Name: R2noharm.jackknife.Rd
-%% File Version: 1.10
+%% File Version: 1.15
 
 \name{R2noharm.jackknife}
 \alias{R2noharm.jackknife}
@@ -13,9 +13,9 @@ This function performs a jackknife estimation of NOHARM analysis
 to get standard errors based on a replication method (see Christoffersson, 1977).
 }
 \usage{
-R2noharm.jackknife(object, jackunits = NULL)
+R2noharm.jackknife(object, jackunits=NULL)
 
-\method{summary}{R2noharm.jackknife}(object, logfile=NULL , \dots)
+\method{summary}{R2noharm.jackknife}(object, logfile=NULL, \dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,7 +28,7 @@ to the number of jackknife units. If it is a vector of integers, then this vecto
 defines the allocation of persons jackknife units. Integers corresponds to
 row indexes in the data set.
 }
-\item{logfile}{File name if the summary should be sinked into a file}
+\item{logfile}{File name if the summary should be sunk into a file}
 \item{\dots}{Further arguments to be passed}
 }
 %\details{
@@ -40,8 +40,8 @@ row indexes in the data set.
 A list of lists with following entries:
 
 \item{partable}{
-	Data frame with parameters
-		}
+    Data frame with parameters
+        }
 \item{se.pars}{List of estimated standard errors for all parameter estimates:
     \code{tanaka.stat}, \code{rmsr.stat}, \code{rmsea.stat},
     \code{chisquare_df.stat}, \code{thresholds.stat}, \code{final.constants.stat},
@@ -49,8 +49,8 @@ A list of lists with following entries:
     \code{loadings.theta.stat}
     }
 \item{jackknife.pars}{List with obtained results by jackknifing for all parameters:
-    \code{j.tanaka}, \code{j.rmsr}, \code{rmsea}, \code{chisquare_df}, 
-    \code{j.pm}, \code{j.thresholds}, \code{j.factor.cor}, 
+    \code{j.tanaka}, \code{j.rmsr}, \code{rmsea}, \code{chisquare_df},
+    \code{j.pm}, \code{j.thresholds}, \code{j.factor.cor},
     \code{j.loadings}, \code{j.loadings.theta}
         }
 \item{u.jacknunits}{Unique jackknife elements}
@@ -58,7 +58,7 @@ A list of lists with following entries:
 
 
 \references{
-Christoffersson, A. (1977). Two-step weighted least squares factor analysis of 
+Christoffersson, A. (1977). Two-step weighted least squares factor analysis of
 dichotomized variables. \emph{Psychometrika}, \bold{42}, 433-438.
 }
 \author{

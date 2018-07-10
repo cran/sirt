@@ -1,5 +1,5 @@
 %% File Name: sirt-utilities.Rd
-%% File Version: 0.18
+%% File Version: 0.26
 
 \name{sirt-utilities}
 \alias{sirt-utilities}
@@ -19,30 +19,31 @@
 \alias{sirt_summary_print_package}
 \alias{sirt_summary_print_rsession}
 \alias{sirt_summary_print_call}
+\alias{sirt_optimizer}
 
 
 \title{Utility Functions in \pkg{sirt}}
 
 \description{
-Utility functions in \pkg{sirt}. 
+Utility functions in \pkg{sirt}.
 }
 
 \usage{
 # bounds entries in a vector
-bounds_parameters( pars , lower = NULL , upper = NULL)
-	
+bounds_parameters( pars, lower=NULL, upper=NULL)
+
 # improper density function which always returns a value of 1
 dimproper(x)
 
 # generalized inverse of a symmetric function
-ginverse_sym(A, eps= 1E-8)
+ginverse_sym(A, eps=1E-8)
 
 # hard thresholding function
-hard_thresholding(x, lambda)	
+hard_thresholding(x, lambda)
 
 # soft thresholding function
 soft_thresholding(x, lambda)
-	
+
 # power function x^a, like in Cpp
 pow(x, a)
 
@@ -60,7 +61,10 @@ sirt_antifisherz(z)
 # attach all elements in a list in a specified environment
 sirt_attach_list_elements(x, envir)
 
-# print objects in a summary 
+# switch between stats::optim and stats::nlminb
+sirt_optimizer(optimizer, par, fn, grad=NULL, method="L-BFGS-B", ...)
+
+# print objects in a summary
 sirt_summary_print_objects(obji, from=NULL, to=NULL, digits=3, rownames_null=TRUE)
 # print package version and R session
 sirt_summary_print_package_rsession(pack)
@@ -76,16 +80,22 @@ sirt_summary_print_call(CALL)
 \item{pars}{Numeric vector}
 \item{lower}{Numeric vector}
 \item{upper}{Numeric vector}
-	\item{x}{Numeric vector or a matrix or a list}
-	\item{eps}{Numerical. Shrinkage parameter of eigenvalue in 
-	\code{ginverse_sym}}
-	\item{a}{Numeric vector}
-	\item{lambda}{Numeric value}
-	\item{A}{Matrix}
+    \item{x}{Numeric vector or a matrix or a list}
+    \item{eps}{Numerical. Shrinkage parameter of eigenvalue in
+    \code{ginverse_sym}}
+    \item{a}{Numeric vector}
+    \item{lambda}{Numeric value}
+    \item{A}{Matrix}
     \item{y}{Matrix}
     \item{rho}{Numeric}
     \item{z}{Numeric}
-\item{envir}{Environment}  
+\item{envir}{Environment}
+\item{optimizer}{Can be \code{optim} or \code{nlminb}}
+\item{par}{Initial parameter}
+\item{fn}{Function}
+\item{grad}{Gradient}
+\item{method}{Optimization method}
+\item{\ldots}{Further arguments to be passed}
 \item{obji}{Data frame}
 \item{from}{Integer}
 \item{to}{Integer}
@@ -103,12 +113,12 @@ sirt_summary_print_call(CALL)
 \examples{
 #############################################################################
 ## EXAMPLE 1: Trace of a matrix
-#############################################################################	
+#############################################################################
 
 set.seed(86)
-A <- matrix( stats::runif(4) , 2 ,2 )
+A <- matrix( stats::runif(4), 2,2 )
 tracemat(A)
-sum(diag(A))	# = sirt::tracemat(A)
+sum(diag(A))    #=sirt::tracemat(A)
 
 #############################################################################
 ## EXAMPLE 2: Power function
@@ -117,23 +127,23 @@ sum(diag(A))	# = sirt::tracemat(A)
 x <- 2.3
 a <- 1.7
 pow(x=x,a=a)
-x^a			# = sirt::pow(x,a)
+x^a            #=sirt::pow(x,a)
 
 #############################################################################
 ## EXAMPLE 3: Soft and hard thresholding function (e.g. in LASSO estimation)
 #############################################################################
 
-x <- seq( -2 , 2 , length=100 )
-y <- sirt::soft_thresholding( x , lambda = .5)
-graphics::plot( x , y , type="l")
+x <- seq( -2, 2, length=100 )
+y <- sirt::soft_thresholding( x, lambda=.5)
+graphics::plot( x, y, type="l")
 
-z <- sirt::hard_thresholding( x , lambda = .5)
-graphics::lines( x , z , lty=2 , col=2)
+z <- sirt::hard_thresholding( x, lambda=.5)
+graphics::lines( x, z, lty=2, col=2)
 
 #############################################################################
 ## EXAMPLE 4: Bounds on parameters
 #############################################################################
 
-pars <- c( .721 , .346 )
-bounds_parameters( pars = pars , lower=c(-Inf, .5) , upper = c(Inf,1) )
+pars <- c( .721, .346 )
+bounds_parameters( pars=pars, lower=c(-Inf, .5), upper=c(Inf,1) )
 }

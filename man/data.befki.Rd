@@ -1,5 +1,5 @@
 %% File Name: data.befki.Rd
-%% File Version: 0.07
+%% File Version: 0.10
 
 \name{data.befki}
 \alias{data.befki}
@@ -14,7 +14,7 @@ BEFKI Dataset (Schroeders, Schipolowski, & Wilhelm, 2015)
 \description{
 The synthetic dataset is based on the standardization sample of the Berlin
 Test of Fluid and Crystallized Intelligence (BEFKI, Wilhelm, Schroeders, &
-Schipolowski, 2014). The underlying sample consists of N = 11,756 students
+Schipolowski, 2014). The underlying sample consists of N=11,756 students
 from all German federal states (except for the smallest one) and all school
 types of the general educational system attending Grades 5 to 12. A
 detailed description of the study, the sample, and the measure is given in
@@ -29,7 +29,7 @@ data(data.befki_resp)
 
 
 \format{
-\itemize{	
+\itemize{
 \item The dataset \code{data.befki} contains 11756 students, nested within
 581 classes.
 
@@ -63,9 +63,9 @@ in the dataset \code{data.befki}.
 \details{
 The procedure for generating this dataset is based on a factorization of the
 joint distribution. All variables are simulated from unidimensional conditional
-parametric regression models including several interaction and quadratic terms. 
+parametric regression models including several interaction and quadratic terms.
 The multilevel structure is approximated by including
-cluster means as predictors in the regression models. 
+cluster means as predictors in the regression models.
 }
 
 \source{

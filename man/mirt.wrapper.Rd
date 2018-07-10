@@ -1,5 +1,5 @@
 %% File Name: mirt.wrapper.Rd
-%% File Version: 1.74
+%% File Version: 1.81
 
 \name{mirt.wrapper}
 \alias{mirt.wrapper}
@@ -21,7 +21,7 @@ Some Functions for Wrapping with the \pkg{mirt} Package
 Some functions for wrapping with the \pkg{mirt} package.
 }
 \usage{
-# extract coefficients	
+# extract coefficients
 mirt.wrapper.coef(mirt.obj)
 
 # extract posterior, likelihood, ...
@@ -29,14 +29,14 @@ mirt.wrapper.posterior(mirt.obj,weights=NULL)
 \method{IRT.likelihood}{SingleGroupClass}(object, \dots)
 \method{IRT.posterior}{SingleGroupClass}(object, \dots)
 
-# S3 method for extracting item response functions 
+# S3 method for extracting item response functions
 \method{IRT.irfprob}{SingleGroupClass}(object, \dots)
 
 # compute factor scores
 mirt.wrapper.fscores(mirt.obj,weights=NULL)
 
 # convenience function for itemplot
-mirt.wrapper.itemplot( mirt.obj , ask=TRUE , ...)
+mirt.wrapper.itemplot( mirt.obj, ask=TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -44,7 +44,7 @@ mirt.wrapper.itemplot( mirt.obj , ask=TRUE , ...)
 A fitted model in \pkg{mirt} package
 }
 \item{object}{A fitted object in \pkg{mirt} package of class
-	\code{SingleGroupClass} or \code{MultipleGroupClass}.
+    \code{SingleGroupClass} or \code{MultipleGroupClass}.
 }
 \item{weights}{Optional vector of student weights}
 \item{ask}{Optional logical indicating whether each new plot should be
@@ -56,7 +56,7 @@ confirmed.}
 The function \code{mirt.wrapper.coef} collects all item parameters
 in a data frame.
 
-The function \code{mirt.wrapper.posterior} extracts the individual 
+The function \code{mirt.wrapper.posterior} extracts the individual
 likelihood, individual likelihood and expected counts. This function does not
 yet cover the case of multiple groups.
 
@@ -71,14 +71,14 @@ after each other.
 }
 
 \value{
-	
+
 Function \code{mirt.wrapper.coef} -- List with entries
 
 \item{coef}{Data frame with item parameters}
 \item{GroupPars}{Data frame or list with distribution parameters}
-  
 
-Function \code{mirt.wrapper.posterior} -- List with entries  
+
+Function \code{mirt.wrapper.posterior} -- List with entries
 
 \item{theta.k}{Grid of theta points}
 \item{pi.k}{Trait distribution on \code{theta.k}}
@@ -87,10 +87,10 @@ Function \code{mirt.wrapper.posterior} -- List with entries
 \item{n.ik}{Expected counts}
 \item{data}{Used dataset}
 
-Function \code{mirt.wrapper.fscores} -- List with entries  
+Function \code{mirt.wrapper.fscores} -- List with entries
 
 \item{person}{Data frame with person parameter estimates (factor scores)
-	EAP, MAP and MLE for all dimensions.
+    EAP, MAP and MLE for all dimensions.
 }
 \item{EAP.rel}{EAP reliabilities}
 }
@@ -118,7 +118,7 @@ and on GitHub \url{https://github.com/philchalmers/mirt}.
 % \href{https://github.com/philchalmers/mirt}{GitHub}
 
 See \url{https://groups.google.com/forum/#!forum/mirt-package}
-for discussion about the \pkg{mirt} package. \cr		
+for discussion about the \pkg{mirt} package. \cr
 
 
 See for the main estimation functions in \pkg{mirt}:
@@ -129,7 +129,7 @@ and \code{\link[mirt:bfactor]{mirt::bfactor}}.
 See \code{\link[mirt:coef-method]{mirt::coef-method}}for extracting
 coefficients.
 
-See \code{\link[mirt:mod2values]{mirt::mod2values}} for collecting 
+See \code{\link[mirt:mod2values]{mirt::mod2values}} for collecting
 parameter values in a mirt parameter table.
 
 See \code{\link{lavaan2mirt}} for converting \code{lavaan} syntax
@@ -167,29 +167,29 @@ extractor functions.
 %3
 \item Located unidimensional and multidimensional
 latent class models / Multidimensional latent class IRT models
-(\code{\link{data.read}}, Model 12;  
+(\code{\link{data.read}}, Model 12;
 \code{\link{rasch.mirtlc}}, Example 4)
 
 %4
-\item Multimensional IRT model with discrete latent traits
+\item Multidimensional IRT model with discrete latent traits
  (\code{\link{data.read}}, Model 13)
- 
-%5 
+
+%5
 \item DINA model (\code{\link{data.read}}, Model 14;
 \code{\link[CDM:data.dcm]{data.dcm}}, \pkg{CDM}, Model 1m)
 
 %6
 \item Unidimensional IRT model with non-normal distribution
  (\code{\link{data.read}}, Model 15)
- 
-%7 
+
+%7
 \item Grade of membership model  (\code{\link{gom.em}}, Example 2)
 
 %8
 \item Rasch copula model (\code{\link{rasch.copula2}}, Example 5)
 
 %9
-\item Additive GDINA model 
+\item Additive GDINA model
 (\code{\link[CDM:data.dcm]{data.dcm}}, \pkg{CDM}, Model 6m)
 
 %10
@@ -199,7 +199,7 @@ latent class models / Multidimensional latent class IRT models
 \item Normally distributed residuals (\code{\link{data.big5}}, Example 1, Model 5)
 
 % 12
-\item Nedelsky model (\code{\link{nedelsky.irf}}, 
+\item Nedelsky model (\code{\link{nedelsky.irf}},
 Examples 1, 2)
 
 % 13
@@ -227,7 +227,7 @@ data(LSAT7, package="mirt")
 data <- mirt::expand.table(LSAT7)
 
 #*** Model 1: 3PL model for item 5 only, other items 2PL
-mod1 <- mirt::mirt(data, 1, itemtype=c("2PL","2PL","2PL","2PL","3PL") , verbose=TRUE)
+mod1 <- mirt::mirt(data, 1, itemtype=c("2PL","2PL","2PL","2PL","3PL"), verbose=TRUE)
 print(mod1)
 summary(mod1)
 # extracting coefficients
@@ -249,10 +249,10 @@ str(postmod1)
 
 #*** Model 2: Confirmatory model with two factors
 cmodel <- mirt::mirt.model("
-        F1 = 1,4,5
-        F2 = 2,3
+        F1=1,4,5
+        F2=2,3
         ")
-mod2 <- mirt::mirt(data, cmodel , verbose=TRUE)
+mod2 <- mirt::mirt(data, cmodel, verbose=TRUE)
 print(mod2)
 summary(mod2)
 # extract coefficients
@@ -262,7 +262,7 @@ mirt.wrapper.coef(mod2)$coef
 post2 <- sirt::mirt.wrapper.posterior(mod2)
 
 #############################################################################
-# EXAMPLE 2: Extracting item parameters and posterior for differering 
+# EXAMPLE 2: Extracting item parameters and posterior for differering
 #            number of response catagories | Dataset Science
 #############################################################################
 
@@ -272,7 +272,7 @@ psych::describe(Science)
 
 # modify dataset
 dat <- Science
-dat[ dat[,1] > 3 ,1] <- 3
+dat[ dat[,1] > 3,1] <- 3
 psych::describe(dat)
 
 # estimate generalized partial credit model
@@ -298,34 +298,34 @@ sigma <- matrix(c(1.21,.297,1.232,.297,.81,.252,1.232,.252,1.96),3,3)
 itemtype <- rep("dich", nrow(a))
 N <- 1000
 dataset1 <- mirt::simdata(a, d, N, itemtype)
-dataset2 <- mirt::simdata(a, d, N, itemtype, mu = mu, sigma = sigma)
+dataset2 <- mirt::simdata(a, d, N, itemtype, mu=mu, sigma=sigma)
 dat <- rbind(dataset1, dataset2)
 group <- c(rep("D1", N), rep("D2", N))
 
 #group models
 model <- mirt::mirt.model("
-   F1 = 1-5
-   F2 = 6-10
-   F3 = 11-15
+   F1=1-5
+   F2=6-10
+   F3=11-15
       ")
 
 # separate analysis
-mod_configural <- mirt::multipleGroup(dat, model, group = group , verbose=TRUE)
+mod_configural <- mirt::multipleGroup(dat, model, group=group, verbose=TRUE)
 mirt.wrapper.coef(mod_configural)
 
 # equal slopes (metric invariance)
-mod_metric <- mirt::multipleGroup(dat, model, group = group, invariance=c("slopes") , 
+mod_metric <- mirt::multipleGroup(dat, model, group=group, invariance=c("slopes"),
                 verbose=TRUE)
 mirt.wrapper.coef(mod_metric)
-                  
+
 # equal slopes and intercepts (scalar invariance)
-mod_scalar <- mirt::multipleGroup(dat, model, group = group,  
+mod_scalar <- mirt::multipleGroup(dat, model, group=group,
           invariance=c("slopes","intercepts","free_means","free_varcov"), verbose=TRUE)
 mirt.wrapper.coef(mod_scalar)
 
 # full constraint
-mod_fullconstrain <- mirt::multipleGroup(dat, model, group = group,  
-             invariance=c("slopes", "intercepts") , verbose=TRUE )
+mod_fullconstrain <- mirt::multipleGroup(dat, model, group=group,
+             invariance=c("slopes", "intercepts"), verbose=TRUE )
 mirt.wrapper.coef(mod_fullconstrain)
 
 #############################################################################
@@ -336,15 +336,15 @@ data(data.read)
 dat <- data.read
 # specify mirt model with some interactions
 mirtmodel <- mirt.model("
-   A = 1-4
-   B = 5-8
-   C = 9-12
-   (A*B) = 4,8
-   (C*C) = 9
-   (A*B*C) = 12
+   A=1-4
+   B=5-8
+   C=9-12
+   (A*B)=4,8
+   (C*C)=9
+   (A*B*C)=12
    " )
 # estimate model
-res <- mirt::mirt( dat , mirtmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+res <- mirt::mirt( dat, mirtmodel, verbose=TRUE, technical=list(NCYCLES=3) )
 # look at estimated parameters
 mirt.wrapper.coef(res)
 coef(res)
@@ -374,7 +374,7 @@ lavmodel <- "
     A ~ .5*1                      # set mean of A to .5
     B ~ 1                         # estimate mean of B
     "
-res <- sirt::lavaan2mirt( dat , lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+res <- sirt::lavaan2mirt( dat, lavmodel, verbose=TRUE, technical=list(NCYCLES=3) )
 # estimated coefficients
 mirt.wrapper.coef(res$mirt)
 # extract factor scores
@@ -397,8 +397,8 @@ head( round(fres$person,2))
   ##   6     1.06     2.65     0.53     1.06     0.00
 # EAP reliabilities
 round(fres$EAP.rel,3)
-  ##    Var1  Var2  Var3 
-  ##   0.574 0.452 0.541 
+  ##    Var1  Var2  Var3
+  ##   0.574 0.452 0.541
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

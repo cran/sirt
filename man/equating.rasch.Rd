@@ -1,5 +1,5 @@
 %% File Name: equating.rasch.Rd
-%% File Version: 1.27
+%% File Version: 1.32
 
 \name{equating.rasch}
 \alias{equating.rasch}
@@ -10,12 +10,12 @@ Equating in the Generalized Logistic Rasch Model
 \description{
 This function does the linking in the generalized
 logistic item response model. Only item difficulties (\eqn{b}
-item parameters) are allowed. Mean-mean linking and the methods 
+item parameters) are allowed. Mean-mean linking and the methods
 of Haebara and Stocking-Lord are implemented (Kolen & Brennan, 2004).
 }
 \usage{
-equating.rasch(x, y, theta = seq(-4, 4, len = 100), 
-       alpha1 = 0, alpha2 = 0)
+equating.rasch(x, y, theta=seq(-4, 4, len=100),
+       alpha1=0, alpha2=0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,9 +29,9 @@ difficulties
 }
   \item{theta}{
 Vector of theta values at which the linking functions
-should be evaluated. If a weighting according to a prespecified normal 
+should be evaluated. If a weighting according to a prespecified normal
 distribution \eqn{N( \mu,\sigma^2)} is aimed, then choose
-\code{theta=stats::qnorm( seq(.001 , .999 , len=100) , mean=mu, sd=sigma)}
+\code{theta=stats::qnorm( seq(.001, .999, len=100), mean=mu, sd=sigma)}
 }
   \item{alpha1}{
 Fixed \eqn{\alpha_1} parameter in the generalized item
@@ -46,11 +46,11 @@ response model
 %%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-\item{B.est}{Estimated linking constants according to the methods 
+\item{B.est}{Estimated linking constants according to the methods
 \code{Mean.Mean} (Mean-mean linking), \code{Haebara} (Haebara method)
 and \code{Stocking.Lord} (Stocking-Lord method).}
-\item{descriptives}{Descriptives of the linking. The linking error 
-(\code{linkerror}) is calculated under the assumption of simple 
+\item{descriptives}{Descriptives of the linking. The linking error
+(\code{linkerror}) is calculated under the assumption of simple
 random sampling of items}
 \item{anchor}{Original and transformed item parameters of anchor items}
 \item{transf.par}{Original and transformed item parameters of all items}
@@ -72,7 +72,7 @@ Alexander Robitzsch
 For estimating standard errors (due to inference with respect to
 the item domain) of this procedure see \code{\link{equating.rasch.jackknife}}.
 
-For linking several studies see \code{\link{linking.haberman}} or 
+For linking several studies see \code{\link{linking.haberman}} or
 \code{\link{invariance.alignment}}.
 
 A robust alternative to mean-mean linking is implemented in
@@ -100,13 +100,13 @@ mod <- sirt::equating.rasch(x=pars[,c("item","study1")], y=pars[,c("item","study
 #*** linking using the plink package
 # The plink package is not available on CRAN anymore.
 # You can download the package with
-# utils::install.packages("plink", repos = "http://www2.uaem.mx/r-mirror")
-library(plink)	
+# utils::install.packages("plink", repos="http://www2.uaem.mx/r-mirror")
+library(plink)
 I <- nrow(pars)
 pm <- plink::as.poly.mod(I)
 # linking parameters
-plink.pars1 <- list( "study1" = data.frame( 1 , pars$study1 , 0 ) ,
-                     "study2" = data.frame( 1 , pars$study2 , 0 ) )
+plink.pars1 <- list( "study1"=data.frame( 1, pars$study1, 0 ),
+                     "study2"=data.frame( 1, pars$study2, 0 ) )
       # the parameters are arranged in the columns:
       # Discrimination, Difficulty, Guessing Parameter
 # common items
@@ -114,7 +114,7 @@ common.items <- cbind("study1"=1:I,"study2"=1:I)
 # number of categories per item
 cats.item <- list( "study1"=rep(2,I), "study2"=rep(2,I))
 # convert into plink object
-x <- plink::as.irt.pars( plink.pars1, common.items , cat= cats.item, 
+x <- plink::as.irt.pars( plink.pars1, common.items, cat=cats.item,
           poly.mod=list(pm,pm))
 # linking using plink: first group is reference group
 out <- plink::plink(x, rescale="MS", base.grp=1, D=1.7)
@@ -122,7 +122,7 @@ out <- plink::plink(x, rescale="MS", base.grp=1, D=1.7)
 summary(out)
   ##   -------  group2/group1*  -------
   ##   Linking Constants
-  ##   
+  ##
   ##                        A         B
   ##   Mean/Mean     1.000000 -0.088280
   ##   Mean/Sigma    1.000000 -0.088280

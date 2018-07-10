@@ -1,5 +1,5 @@
 %% File Name: lavaan2mirt.Rd
-%% File Version: 0.34
+%% File Version: 0.39
 
 \name{lavaan2mirt}
 \alias{lavaan2mirt}
@@ -11,9 +11,9 @@ Converting a \code{lavaan} Model into a \code{mirt} Model
 
 \description{
 Converts a \code{lavaan} model into a \code{mirt} model.
-Optionally, the model can be estimated with the 
+Optionally, the model can be estimated with the
 \code{\link[mirt:mirt]{mirt::mirt}} function
-(\code{est.mirt=TRUE}) or just \code{mirt} syntax 
+(\code{est.mirt=TRUE}) or just \code{mirt} syntax
 is generated (\code{est.mirt=FALSE}).
 
 Extensions of the \code{lavaan} syntax include guessing and slipping
@@ -23,7 +23,7 @@ See \code{\link[TAM:lavaanify.IRT]{TAM::lavaanify.IRT}} for more details.
 }
 
 \usage{
-lavaan2mirt(dat, lavmodel, est.mirt = TRUE, poly.itemtype="gpcm" , ...)
+lavaan2mirt(dat, lavmodel, est.mirt=TRUE, poly.itemtype="gpcm", ...)
 }
 
 %- maybe also 'usage' for other objects documented here.
@@ -32,7 +32,7 @@ lavaan2mirt(dat, lavmodel, est.mirt = TRUE, poly.itemtype="gpcm" , ...)
 Dataset with item responses
 }
   \item{lavmodel}{
-Model specified in \code{lavaan} syntax 
+Model specified in \code{lavaan} syntax
 (see \code{\link[lavaan:lavaanify]{lavaan::lavaanify}})
 }
   \item{est.mirt}{
@@ -40,7 +40,7 @@ An optional logical indicating whether the model
 should be estimated with \code{\link[mirt:mirt]{mirt::mirt}}
 }
 \item{poly.itemtype}{Item type for polytomous data. This can
-	be \code{gpcm} for the generalized partial credit model
+    be \code{gpcm} for the generalized partial credit model
       or \code{graded} for the graded response model.}
   \item{\dots}{
 Further arguments to be passed for estimation in
@@ -85,15 +85,15 @@ Alexander Robitzsch
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-See \url{http://lavaan.ugent.be/} for \pkg{lavaan} resources.	
-	
+See \url{http://lavaan.ugent.be/} for \pkg{lavaan} resources.
+
 See \url{https://groups.google.com/forum/#!forum/lavaan}
-for discussion about the \pkg{lavaan} package. \cr	
-		
+for discussion about the \pkg{lavaan} package. \cr
+
 See \code{\link{mirt.wrapper}} for convenience wrapper functions
 for \code{\link[mirt:mirt]{mirt::mirt}} objects.
 
-See \code{\link[TAM:lavaanify.IRT]{TAM::lavaanify.IRT}} 
+See \code{\link[TAM:lavaanify.IRT]{TAM::lavaanify.IRT}}
 for extensions of \code{lavaanify}.
 
 See \code{\link{tam2mirt}} for converting fitted objects in the \pkg{TAM}
@@ -114,12 +114,12 @@ dat <- data.read
 #*** Model 1: Single factor model
 lavmodel <- "
      # omit item C3
-     F=~ A1+A2+A3+A4 + C1+C2+C4 + B1+B2+B3+B4 
-     F ~~ 1*F                         
+     F=~ A1+A2+A3+A4 + C1+C2+C4 + B1+B2+B3+B4
+     F ~~ 1*F
             "
-            
+
 # convert syntax and estimate model
-res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+res <- sirt::lavaan2mirt( dat,  lavmodel, verbose=TRUE, technical=list(NCYCLES=3) )
 # inspect coefficients
 coef(res$mirt)
 mirt.wrapper.coef(res$mirt)
@@ -131,31 +131,31 @@ res$mirt.pars
 #*** Model 2: Rasch Model with first six items
 lavmodel <- "
      F=~ a*A1+a*A2+a*A3+a*A4+a*B1+a*B2
-     F ~~ 1*F     
+     F ~~ 1*F
             "
 # convert syntax and estimate model
-res <- sirt::lavaan2mirt( dat ,  lavmodel , est.mirt=FALSE)
+res <- sirt::lavaan2mirt( dat,  lavmodel, est.mirt=FALSE)
 # converted mirt model
 cat(res$mirt.syntax)
 # mirt parameter table
 res$mirt.pars
 # estimate model using generated objects
-res2 <- mirt::mirt( res$dat , res$mirt.model , pars=res$mirt.pars )
+res2 <- mirt::mirt( res$dat, res$mirt.model, pars=res$mirt.pars )
 mirt.wrapper.coef(res2)     # parameter estimates
 
 #******************
 #*** Model 3: Bifactor model
 lavmodel <- "
-     G=~ A1+A2+A3+A4 + B1+B2+B3+B4  + C1+C2+C3+C4 
+     G=~ A1+A2+A3+A4 + B1+B2+B3+B4  + C1+C2+C3+C4
      A=~ A1+A2+A3+A4
-     B=~ B1+B2+B3+B4     
-     C=~ C1+C2+C3+C4   
+     B=~ B1+B2+B3+B4
+     C=~ C1+C2+C3+C4
      G ~~ 1*G
      A ~~ 1*A
      B ~~ 1*B
-     C ~~ 1*C      
-            "           
-res <- sirt::lavaan2mirt( dat ,  lavmodel , est.mirt=FALSE )
+     C ~~ 1*C
+            "
+res <- sirt::lavaan2mirt( dat,  lavmodel, est.mirt=FALSE )
 # mirt syntax and mirt model
 cat(res$mirt.syntax)
 res$mirt.model
@@ -165,26 +165,26 @@ res$mirt.pars
 #*** Model 4: 3-dimensional model with some parameter constraints
 lavmodel <- "
      # some equality constraints among loadings
-     A=~ a*A1+a*A2+a2*A3+a2*A4  
-     B=~ B1+B2+b3*B3+B4     
-     C=~ c*C1+c*C2+c*C3+c*C4         
-     # some equality constraints among thresholds 
-     A1 | da*t1        
-     A3 | da*t1  
-     B3 | da*t1       
+     A=~ a*A1+a*A2+a2*A3+a2*A4
+     B=~ B1+B2+b3*B3+B4
+     C=~ c*C1+c*C2+c*C3+c*C4
+     # some equality constraints among thresholds
+     A1 | da*t1
+     A3 | da*t1
+     B3 | da*t1
      C3 | dg*t1
      C4 | dg*t1
      # standardized latent variables
      A ~~ 1*A
      B ~~ 1*B
-     C ~~ 1*C     
+     C ~~ 1*C
      # estimate Cov(A,B) and Cov(A,C)
      A ~~ B
      A ~~ C
      # estimate mean of B
      B ~ 1
-            "           
-res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+            "
+res <- sirt::lavaan2mirt( dat,  lavmodel, verbose=TRUE, technical=list(NCYCLES=3) )
 # estimated parameters
 mirt.wrapper.coef(res$mirt)
 # generated mirt syntax
@@ -197,22 +197,22 @@ mirt::mod2values(res$mirt)
 #             parameter fixings
 lavmodel <- "
      A=~ a*A1+a*A2+1.3*A3+A4  # set loading of A3 to 1.3
-     B=~ B1+1*B2+b3*B3+B4     
-     C=~ c*C1+C2+c*C3+C4          
-     A1 | da*t1        
-     A3 | da*t1  
+     B=~ B1+1*B2+b3*B3+B4
+     C=~ c*C1+C2+c*C3+C4
+     A1 | da*t1
+     A3 | da*t1
      C4 | dg*t1
      B1 | 0*t1
      B3 | -1.4*t1   # fix item threshold of B3 to -1.4
-     A ~~ 1*A	    
-     B ~~ B         # estimate variance of B freely 
-     C ~~ 1*C     
+     A ~~ 1*A
+     B ~~ B         # estimate variance of B freely
+     C ~~ 1*C
      A ~~ B         # estimate covariance between A and B
      A ~~ .6 * C    # fix covariance to .6
      A ~ .5*1       # set mean of A to .5
      B ~ 1          # estimate mean of B
-            "   
-res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+            "
+res <- sirt::lavaan2mirt( dat,  lavmodel, verbose=TRUE, technical=list(NCYCLES=3) )
 mirt.wrapper.coef(res$mirt)
 
 #******************
@@ -222,21 +222,21 @@ mirt.wrapper.coef(res$mirt)
 lavmodel <- "
      F=~ c*A1+c*A2+1*A3+1.3*A4 + C1__C4 + a*B1+b*B2+b*B3+B4
      # guessing parameters
-     A1+A2 ?= guess1*g1     
-     A3 ?= .25*g1
-     B1+C1 ?= g1
-     B2__B4 ?= 0.10*g1
+     A1+A2 ?=guess1*g1
+     A3 ?=.25*g1
+     B1+C1 ?=g1
+     B2__B4 ?=0.10*g1
      # slipping parameters
-     A1+A2+C3 ?= slip1*s1
-     A3 ?= .02*s1
+     A1+A2+C3 ?=slip1*s1
+     A3 ?=.02*s1
      # fix item intercepts
      A1 | 0*t1
      A2 | -.4*t1
-     F ~ 1	# estimate mean of F
+     F ~ 1    # estimate mean of F
      F ~~ 1*F   # fix variance of F
             "
 # convert syntax and estimate model
-res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=3) )
+res <- sirt::lavaan2mirt( dat,  lavmodel, verbose=TRUE, technical=list(NCYCLES=3) )
 # coefficients
 mirt.wrapper.coef(res$mirt)
 # converted mirt model
@@ -244,7 +244,7 @@ cat(res$mirt.syntax)
 
 #############################################################################
 # EXAMPLE 2: Convert some lavaan syntax to mirt syntax for
-#            longitudinal data data.long   
+#            longitudinal data data.long
 #############################################################################
 
 data(data.long)
@@ -253,11 +253,11 @@ dat <- data.long[,-1]
 #******************
 #*** Model 1: Rasch model for T1
 lavmodel <- "
-     F=~ 1*I1T1 +1*I2T1+1*I3T1+1*I4T1+1*I5T1+1*I6T1 
+     F=~ 1*I1T1 +1*I2T1+1*I3T1+1*I4T1+1*I5T1+1*I6T1
      F ~~ F
             "
 # convert syntax and estimate model
-res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=20) )
+res <- sirt::lavaan2mirt( dat,  lavmodel, verbose=TRUE, technical=list(NCYCLES=20) )
 # inspect coefficients
 mirt.wrapper.coef(res$mirt)
 # converted mirt model
@@ -266,10 +266,10 @@ cat(res$mirt.syntax)
 #******************
 #*** Model 2: Rasch model for two time points
 lavmodel <- "
-     F1=~ 1*I1T1 +1*I2T1+1*I3T1+1*I4T1+1*I5T1+1*I6T1 
+     F1=~ 1*I1T1 +1*I2T1+1*I3T1+1*I4T1+1*I5T1+1*I6T1
      F2=~ 1*I3T2 +1*I4T2+1*I5T2+1*I6T2+1*I7T2+1*I8T2
      F1 ~~ F1
-     F1 ~~ F2     
+     F1 ~~ F2
      F2 ~~ F2
      # equal item difficulties of same items
      I3T1 | i3*t1
@@ -277,15 +277,15 @@ lavmodel <- "
      I4T1 | i4*t1
      I4T2 | i4*t1
      I5T1 | i5*t1
-     I5T2 | i5*t1              
+     I5T2 | i5*t1
      I6T1 | i6*t1
-     I6T2 | i6*t1                   
+     I6T2 | i6*t1
      # estimate mean of F1, but fix mean of F2
      F1 ~ 1
      F2 ~ 0*1
             "
 # convert syntax and estimate model
-res <- sirt::lavaan2mirt( dat ,  lavmodel , verbose=TRUE , technical=list(NCYCLES=20) )
+res <- sirt::lavaan2mirt( dat,  lavmodel, verbose=TRUE, technical=list(NCYCLES=20) )
 # inspect coefficients
 mirt.wrapper.coef(res$mirt)
 # converted mirt model
@@ -300,56 +300,56 @@ Q[7:12,2] <- 1
 rownames(Q) <- colnames(dat)
 colnames(Q) <- c("T1","T2")
 # vector with same items
-itemnr <- as.numeric( substring( colnames(dat) ,2,2) )
+itemnr <- as.numeric( substring( colnames(dat),2,2) )
 # fix mean at T2 to zero
 mu.fixed <- cbind( 2,0 )
 # estimate model in smirt
-mod1 <- sirt::smirt(dat, Qmatrix=Q , irtmodel="comp" , est.b= itemnr, mu.fixed=mu.fixed )
+mod1 <- sirt::smirt(dat, Qmatrix=Q, irtmodel="comp", est.b=itemnr, mu.fixed=mu.fixed )
 summary(mod1)
 
 #############################################################################
-# EXAMPLE 3: Converting lavaan syntax for polytomous data   
+# EXAMPLE 3: Converting lavaan syntax for polytomous data
 #############################################################################
 
 data(data.big5)
 # select some items
-items <- c( grep( "O" , colnames(data.big5) , value=TRUE )[1:6] ,
-            grep( "N" , colnames(data.big5) , value=TRUE )[1:4] )
-#  O3  O8  O13 O18 O23 O28 N1  N6  N11 N16            
-dat <- data.big5[ , items ]
+items <- c( grep( "O", colnames(data.big5), value=TRUE )[1:6],
+            grep( "N", colnames(data.big5), value=TRUE )[1:4] )
+#  O3  O8  O13 O18 O23 O28 N1  N6  N11 N16
+dat <- data.big5[, items ]
 library(psych)
 psych::describe(dat)
 
 #******************
 #*** Model 1: Partial credit model
 lavmodel <- "
-      O =~ 1*O3+1*O8+1*O13+1*O18+1*O23+1*O28
+      O=~ 1*O3+1*O8+1*O13+1*O18+1*O23+1*O28
       O ~~ O
-         "    
+         "
 # estimate model in mirt
-res <- sirt::lavaan2mirt( dat , lavmodel , technical=list(NCYCLES=20) , verbose=TRUE)
+res <- sirt::lavaan2mirt( dat, lavmodel, technical=list(NCYCLES=20), verbose=TRUE)
 # estimated mirt model
 mres <- res$mirt
 # mirt syntax
 cat(res$mirt.syntax)
   ##   O=1,2,3,4,5,6
-  ##   COV = O*O
+  ##   COV=O*O
 # estimated parameters
-mirt.wrapper.coef(mres) 
+mirt.wrapper.coef(mres)
 # some plots
-mirt::itemplot( mres , 3 )   # third item
+mirt::itemplot( mres, 3 )   # third item
 plot(mres)   # item information
 plot(mres,type="trace")  # item category functions
 
 # graded response model with equal slopes
 res1 <- sirt::lavaan2mirt( dat, lavmodel, poly.itemtype="graded", technical=list(NCYCLES=20),
               verbose=TRUE )
-mirt.wrapper.coef(res1$mirt) 
+mirt.wrapper.coef(res1$mirt)
 
 #******************
 #*** Model 2: Generalized partial credit model with some constraints
 lavmodel <- "
-      O =~ O3+O8+O13+a*O18+a*O23+1.2*O28
+      O=~ O3+O8+O13+a*O18+a*O23+1.2*O28
       O ~ 1   # estimate mean
       O ~~ O  # estimate variance
       # some constraints among thresholds
@@ -358,9 +358,9 @@ lavmodel <- "
       O3  | d2*t2
       O8  | d3*t2
       O28 | (-0.5)*t1
-         "             
+         "
 # estimate model in mirt
-res <- sirt::lavaan2mirt( dat , lavmodel , technical=list(NCYCLES=5) , verbose=TRUE)
+res <- sirt::lavaan2mirt( dat, lavmodel, technical=list(NCYCLES=5), verbose=TRUE)
 # estimated mirt model
 mres <- res$mirt
 # estimated parameters
@@ -369,25 +369,25 @@ mirt.wrapper.coef(mres)
 #*** generate syntax for mirt for this model and estimate it in mirt package
 # Items: O3  O8  O13 O18 O23 O28
 mirtmodel <- mirt::mirt.model( "
-             O = 1-6
+             O=1-6
              # a(O18)=a(O23), t1(O3)=t1(O18), t2(O3)=t2(O8)
-             CONSTRAIN= (4,5,a1), (1,3,d1), (1,2,d2)      
-             MEAN = O
-             COV = O*O
+             CONSTRAIN=(4,5,a1), (1,3,d1), (1,2,d2)
+             MEAN=O
+             COV=O*O
                ")
-# initial table of parameters in mirt          
-mirt.pars <- mirt::mirt( dat[,1:6] , mirtmodel , itemtype="gpcm" , pars="values")
+# initial table of parameters in mirt
+mirt.pars <- mirt::mirt( dat[,1:6], mirtmodel, itemtype="gpcm", pars="values")
 # fix slope of item O28 to 1.2
-ind <- which( ( mirt.pars$item == "O28" ) & ( mirt.pars$name == "a1") )
-mirt.pars[ ind , "est"] <- FALSE
-mirt.pars[ ind , "value"] <- 1.2
+ind <- which( ( mirt.pars$item=="O28" ) & ( mirt.pars$name=="a1") )
+mirt.pars[ ind, "est"] <- FALSE
+mirt.pars[ ind, "value"] <- 1.2
 # fix d1 of item O28 to -0.5
-ind <- which( ( mirt.pars$item == "O28" ) & ( mirt.pars$name == "d1") )
-mirt.pars[ ind , "est"] <- FALSE
-mirt.pars[ ind , "value"] <- -0.5
+ind <- which( ( mirt.pars$item=="O28" ) & ( mirt.pars$name=="d1") )
+mirt.pars[ ind, "est"] <- FALSE
+mirt.pars[ ind, "value"] <- -0.5
 # estimate model
-res2 <- mirt::mirt( dat[,1:6] , mirtmodel , pars=mirt.pars ,
-             verbose=TRUE , technical=list(NCYCLES=4) )
+res2 <- mirt::mirt( dat[,1:6], mirtmodel, pars=mirt.pars,
+             verbose=TRUE, technical=list(NCYCLES=4) )
 mirt.wrapper.coef(res2)
 plot(res2, type="trace")
 }

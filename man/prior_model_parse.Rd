@@ -1,5 +1,5 @@
 %% File Name: prior_model_parse.Rd
-%% File Version: 0.05
+%% File Version: 0.07
 
 \name{prior_model_parse}
 \alias{prior_model_parse}
@@ -56,13 +56,13 @@ Alexander Robitzsch
 #*** define prior model as a string
 prior_model <- "
   # prior distributions means
-  mu1 ~ dnorm( NA , mean=0 , sd=1 )
+  mu1 ~ dnorm( NA, mean=0, sd=1 )
   mu2 ~ dnorm(NA)       # mean T2 and T3
   # prior distribution standard deviation
-  sig1 ~ dunif(NA,0 , max=10)
+  sig1 ~ dunif(NA,0, max=10)
       "
 
-#*** convert priors into a list  
+#*** convert priors into a list
 res <- sirt::prior_model_parse( prior_model )
 str(res)
   ##  List of 3

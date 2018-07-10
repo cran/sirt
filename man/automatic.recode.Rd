@@ -1,5 +1,5 @@
 %% File Name: automatic.recode.Rd
-%% File Version: 0.11
+%% File Version: 0.16
 
 \name{automatic.recode}
 \alias{automatic.recode}
@@ -10,12 +10,12 @@ Automatic Method of Finding Keys in a Dataset with Raw Item Responses
 \description{
 This function calculates keys of a dataset with raw item responses.
 It starts with setting the most frequent category of an item to 1.
-Then, in each iteration keys are changed such that the highest 
+Then, in each iteration keys are changed such that the highest
 item discrimination is found.
 }
 \usage{
-automatic.recode(data, exclude = NULL, pstart.min = 0.6, allocate = 200, 
-    maxiter = 20, progress = TRUE)
+automatic.recode(data, exclude=NULL, pstart.min=0.6, allocate=200,
+    maxiter=20, progress=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,7 +23,7 @@ automatic.recode(data, exclude = NULL, pstart.min = 0.6, allocate = 200,
 Dataset with raw item responses
 }
   \item{exclude}{
-Vector with categories to be excluded for searching the key 
+Vector with categories to be excluded for searching the key
 }
   \item{pstart.min}{
 Minimum probability for an initial solution of keys.
@@ -43,10 +43,10 @@ A logical which indicates if iteration progress should be displayed
 %%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-A list with folowing entries
+A list with following entries
 \item{item.stat}{Data frame with item name, p value, item discrimination
 and the calculated key}
-\item{data.scored}{Scored data frame using calculated keys 
+\item{data.scored}{Scored data frame using calculated keys
 in \code{item.stat}
 }
 \item{categ.stats}{Data frame with statistics for all categories
@@ -76,7 +76,7 @@ data(data.raw1)
 
 # recode data.raw1 and exclude keys 8 and 9 (missing codes) and
 # start with initially setting all categories larger than 50 % frequency to 1
-res1 <- sirt::automatic.recode( data.raw1 , exclude=c(8,9) , pstart.min=.50 )
+res1 <- sirt::automatic.recode( data.raw1, exclude=c(8,9), pstart.min=.50 )
 # inspect calculated keys
 res1$item.stat
 

@@ -1,5 +1,5 @@
 %% File Name: R2noharm.EAP.Rd
-%% File Version: 0.10
+%% File Version: 0.14
 
 \name{R2noharm.EAP}
 \alias{R2noharm.EAP}
@@ -12,7 +12,7 @@ This function performs EAP factor score estimation of
 an item response model estimated with NOHARM.
 }
 \usage{
-R2noharm.EAP(noharmobj, theta.k = seq(-6, 6, len = 21) , print.output=TRUE)
+R2noharm.EAP(noharmobj, theta.k=seq(-6, 6, len=21), print.output=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,8 +34,8 @@ A list with following entries
   \item{person}{Data frame of person parameter EAP estimates and
   their corresponding standard errors
     }
-  \item{theta}{Grid of multidimensional theta values where the posterior is 
-  	evaluated.}
+  \item{theta}{Grid of multidimensional theta values where the posterior is
+      evaluated.}
   \item{posterior}{Individual posterior distribution evaluated at \code{theta}}
   \item{like}{Individual likelihood}
   \item{EAP.rel}{EAP reliabilities of all dimensions}

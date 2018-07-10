@@ -1,5 +1,5 @@
 %% File Name: np.dich.Rd
-%% File Version: 0.13
+%% File Version: 0.17
 
 \name{np.dich}
 \alias{np.dich}
@@ -12,8 +12,8 @@ This function does nonparametric item response function
 estimation (Ramsay, 1991).
 }
 \usage{
-np.dich(dat, theta, thetagrid, progress = FALSE, bwscale = 1.1,
-       method = "normal")
+np.dich(dat, theta, thetagrid, progress=FALSE, bwscale=1.1,
+       method="normal")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,7 +22,7 @@ An \eqn{N \times I} data frame of dichotomous
 item responses
 }
   \item{theta}{
-Estimated theta values, for example weighted likelihood 
+Estimated theta values, for example weighted likelihood
 estimates from \code{\link{wle.rasch}}
 }
   \item{thetagrid}{
@@ -33,7 +33,7 @@ response functions shall be evaluated.
 Display progress?
 }
   \item{bwscale}{
-The bandwidth parameter \eqn{h} is calculated by 
+The bandwidth parameter \eqn{h} is calculated by
 the formula \eqn{h=}\code{bwscale}\eqn{\cdot N^{-1/5}}
 }
   \item{method}{
@@ -49,8 +49,8 @@ in the \pkg{sm} library.
 \value{
 A list with following entries
 \item{dat}{Original data frame}
-\item{thetagrid}{Vector of theta values at which the item response 
-	functions are evaluated}
+\item{thetagrid}{Vector of theta values at which the item response
+    functions are evaluated}
 \item{theta}{Used theta values as person parameter estimates}
 \item{estimate}{Estimated item response functions}
 \item{\dots}{}
@@ -82,12 +82,12 @@ dat <- data.read
 # estimate Rasch model
 mod <- sirt::rasch.mml2( dat )
 # WLE estimation
-wle1 <- sirt::wle.rasch( dat=dat , b =mod$item$b )$theta
+wle1 <- sirt::wle.rasch( dat=dat, b=mod$item$b )$theta
 # nonparametric function estimation
-np1 <- sirt::np.dich( dat=dat, theta= wle1, thetagrid = seq(-2.5 , 2.5 , len=100 ) )
+np1 <- sirt::np.dich( dat=dat, theta=wle1, thetagrid=seq(-2.5, 2.5, len=100 ) )
 print( str(np1))
 # plot nonparametric item response curves
-plot( np1 , b = mod$item$b )
+plot( np1, b=mod$item$b )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

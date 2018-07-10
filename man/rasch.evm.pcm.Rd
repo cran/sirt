@@ -1,5 +1,5 @@
 %% File Name: rasch.evm.pcm.Rd
-%% File Version: 0.33
+%% File Version: 0.38
 
 \name{rasch.evm.pcm}
 \alias{rasch.evm.pcm}
@@ -17,27 +17,27 @@ Estimation of the Partial Credit Model using the Eigenvector Method
 This function performs the eigenvector approach to estimate item
 parameters which is based on a pairwise estimation approach
 (Gardner & Engelhard, 2002). No assumption about person parameters
-is required for item parameter estimation. Statistical inference is performed by 
+is required for item parameter estimation. Statistical inference is performed by
 Jackknifing. If a group identifier is provided, tests for differential item
-functioning are performed. 
+functioning are performed.
 }
 
 \usage{
-rasch.evm.pcm(dat, jackunits = 20, weights = NULL, pid = NULL ,
-    group=NULL , powB = 2, adj_eps = 0.3, progress = TRUE )
+rasch.evm.pcm(dat, jackunits=20, weights=NULL, pid=NULL,
+    group=NULL, powB=2, adj_eps=0.3, progress=TRUE )
 
 \method{summary}{rasch.evm.pcm}(object,...)
 
 \method{coef}{rasch.evm.pcm}(object,...)
 
-\method{vcov}{rasch.evm.pcm}(object,...)	
+\method{vcov}{rasch.evm.pcm}(object,...)
 }
 
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dat}{
-Data frame with dichotomous or polytomous item responses 
+Data frame with dichotomous or polytomous item responses
 }
 \item{jackunits}{
 A number of Jackknife units (if an integer is provided as the argument
@@ -77,8 +77,8 @@ An optional logical indicating whether progress should be displayed
 A list with following entries
 
 \item{item}{Data frame with item parameters. The item parameter estimate
-	is denoted by \code{est} while a Jackknife bias-corrected estimate
-	is \code{est_jack}. The Jackknife standard error is \code{se}.
+    is denoted by \code{est} while a Jackknife bias-corrected estimate
+    is \code{est_jack}. The Jackknife standard error is \code{se}.
 }
 \item{b}{Item threshold parameters}
 \item{person}{Data frame with person parameters obtained (MLE)}
@@ -101,8 +101,8 @@ is provided as an argument}
 Choppin, B. (1985). A fully conditional estimation procedure for Rasch Model
 parameters. \emph{Evaluation in Education}, \bold{9}, 29-42.
 
-Garner, M., & Engelhard, G. J. (2002). An eigenvector method for 
-estimating item parameters of the dichotomous and polytomous Rasch models. 
+Garner, M., & Engelhard, G. J. (2002). An eigenvector method for
+estimating item parameters of the dichotomous and polytomous Rasch models.
 \emph{Journal of Applied Measurement}, \bold{3}, 107-128.
 
 Wang, J., & Engelhard, G. (2014). A pairwise algorithm in \R for rater-mediated
@@ -135,7 +135,7 @@ data(data.liking.science)
 dat <- data.liking.science
 
 # estimate partial credit model using 10 Jackknife units
-mod1 <- sirt::rasch.evm.pcm( dat , jackunits=10 )
+mod1 <- sirt::rasch.evm.pcm( dat, jackunits=10 )
 summary(mod1)
 
 \dontrun{
@@ -145,8 +145,8 @@ mod2 <- TAM::tam.mml( dat )
 r1 <- mod2$xsi$xsi
 r1 <- r1 - mean(r1)
 # item parameters are similar
-dfr <- data.frame( "b_TAM"=r1 , mod1$item[,c( "est","est_jack") ] )
-round( dfr , 3 )
+dfr <- data.frame( "b_TAM"=r1, mod1$item[,c( "est","est_jack") ] )
+round( dfr, 3 )
   ##      b_TAM    est est_jack
   ##  1  -2.496 -2.599   -2.511
   ##  2   0.687  0.824    1.030
@@ -173,14 +173,14 @@ eRm::plotPImap(mod3)     # plot person-item maps
 #############################################################################
 
 dat <- scan()
-   1 0 1 1   1 1 0 0   1 0 0 0   0 1 1 1   1 1 1 0   
+   1 0 1 1   1 1 0 0   1 0 0 0   0 1 1 1   1 1 1 0
    1 1 0 1   1 1 1 1   1 0 1 0   1 1 1 1   1 1 0 0
 
-dat <- matrix( dat , 10 , 4 , byrow=TRUE)
-colnames(dat) <- paste0("I" , 1:4 )
+dat <- matrix( dat, 10, 4, byrow=TRUE)
+colnames(dat) <- paste0("I", 1:4 )
 
 # estimate Rasch model with no jackknifing
-mod1 <- sirt::rasch.evm.pcm( dat , jackunits=0 )
+mod1 <- sirt::rasch.evm.pcm( dat, jackunits=0 )
 
 # paired comparison matrix
 mod1$B
@@ -195,14 +195,14 @@ mod1$B
 #############################################################################
 
 dat <- scan()
-   2 2 1 1 1   2 1 2 0 0   1 0 0 0 0   0 1 1 2 0   1 2 2 1 1   
+   2 2 1 1 1   2 1 2 0 0   1 0 0 0 0   0 1 1 2 0   1 2 2 1 1
    2 2 0 2 1   2 2 1 1 0   1 0 1 0 0   2 1 2 2 2   2 1 0 0 1
 
-dat <- matrix( dat , 10 , 5 , byrow=TRUE)
-colnames(dat) <- paste0("I" , 1:5 )
+dat <- matrix( dat, 10, 5, byrow=TRUE)
+colnames(dat) <- paste0("I", 1:5 )
 
 # estimate partial credit model with no jackknifing
-mod1 <- sirt::rasch.evm.pcm( dat , jackunits=0 , powB=3 )
+mod1 <- sirt::rasch.evm.pcm( dat, jackunits=0, powB=3 )
 
 # paired comparison matrix
 mod1$B
@@ -224,12 +224,12 @@ mod1$B
 
 library(CDM)
 data(data.mg,package="CDM")
-dat <- data.mg[ , paste0("I",1:11) ]
+dat <- data.mg[, paste0("I",1:11) ]
 
 #*** Model 1: estimate partial credit model
 mod1 <- sirt::rasch.evm.pcm( dat )
 # item parameters
-round( mod1$b , 3 )
+round( mod1$b, 3 )
   ##        Cat1   Cat2  Cat3
   ##  I1  -1.537     NA    NA
   ##  I2  -2.360     NA    NA
@@ -249,7 +249,7 @@ mod2 <- pairwise::pair(daten=dat)
 summary(mod2)
 plot(mod2)
 # compute standard errors
-semod2 <- pairwise::pairSE(daten=dat,  nsample = 20)
+semod2 <- pairwise::pairSE(daten=dat,  nsample=20)
 semod2
 
 #############################################################################
@@ -258,11 +258,11 @@ semod2
 
 library(CDM)
 data(data.mg,package="CDM")
-dat <- data.mg[ data.mg$group \%in\% c(2,3,11) , ]
+dat <- data.mg[ data.mg$group \%in\% c(2,3,11), ]
 # define items
 items <- paste0("I",1:11)
 # estimate model
-mod1 <- sirt::rasch.evm.pcm( dat[,items] , weights= dat$weight , group= dat$group )
+mod1 <- sirt::rasch.evm.pcm( dat[,items], weights=dat$weight, group=dat$group )
 summary(mod1)
 
 #############################################################################
@@ -271,19 +271,19 @@ summary(mod1)
 
 # simulate some data
 set.seed(9776)
-N <- 1000	# number of persons
-I <- 10		# number of items
+N <- 1000    # number of persons
+I <- 10        # number of items
 # simulate data for first group
 b <- seq(-1.5,1.5,len=I)
-dat1 <- sirt::sim.raschtype( stats::rnorm(N) , b )
+dat1 <- sirt::sim.raschtype( stats::rnorm(N), b )
 # simulate data for second group
 b1 <- b
 b1[4] <- b1[4] + .5 # introduce DIF for fourth item
-dat2 <- sirt::sim.raschtype( stats::rnorm(N,mean=.3) , b1 )
-dat <- rbind(dat1 , dat2 )
-group <- rep( 1:2 , each=N )
+dat2 <- sirt::sim.raschtype( stats::rnorm(N,mean=.3), b1 )
+dat <- rbind(dat1, dat2 )
+group <- rep( 1:2, each=N )
 # estimate model
-mod1 <- sirt::rasch.evm.pcm( dat , group= group )
+mod1 <- sirt::rasch.evm.pcm( dat, group=group )
 summary(mod1)
 }
 }

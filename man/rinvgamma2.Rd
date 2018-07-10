@@ -1,5 +1,5 @@
 %% File Name: rinvgamma2.Rd
-%% File Version: 0.11
+%% File Version: 0.15
 
 \name{rinvgamma2}
 \alias{rinvgamma2}
@@ -9,7 +9,7 @@
 Inverse Gamma Distribution in Prior Sample Size Parameterization
 }
 \description{
-Random draws and density of inverse gamma distribution parametrized
+Random draws and density of inverse gamma distribution parameterized
 in prior sample size \code{n0} and prior variance \code{var0}
 (see Gelman et al., 2014).
 }
@@ -36,7 +36,7 @@ Prior variance
 %%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-A vector containing random draws or density values	
+A vector containing random draws or density values
 }
 
 
@@ -48,8 +48,8 @@ A vector containing random draws or density values
 
 
 \references{
-Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., 
-& Rubin, D. B. (2014). 
+Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A.,
+& Rubin, D. B. (2014).
 \emph{Bayesian data analysis} (Vol. 3). Boca Raton, FL, USA: Chapman & Hall/CRC.
 }
 
@@ -71,7 +71,7 @@ Alexander Robitzsch
 }
 \examples{
 #############################################################################
-# EXAMPLE 1: Inverse gamma distribution 
+# EXAMPLE 1: Inverse gamma distribution
 #############################################################################
 
 # prior sample size of 100 and prior variance of 1.5
@@ -79,14 +79,14 @@ n0 <- 100
 var0 <- 1.5
 
 # 100 random draws
-y1 <- sirt::rinvgamma2( n=100 , n0 , var0 )
+y1 <- sirt::rinvgamma2( n=100, n0, var0 )
 summary(y1)
 graphics::hist(y1)
 
 # density y at grid x
-x <- seq( 0 , 2 , len=100 )
-y <- sirt::dinvgamma2( x , n0 , var0 )
-graphics::plot( x , y , type="l")
+x <- seq( 0, 2, len=100 )
+y <- sirt::dinvgamma2( x, n0, var0 )
+graphics::plot( x, y, type="l")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

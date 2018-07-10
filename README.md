@@ -6,6 +6,11 @@ If you use `sirt` and have suggestions for improvement or have found bugs, pleas
 
 #### CRAN version
 
+<!---
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/sirt)](https://cran.r-project.org/package=sirt)
+&#160;&#160;
+-->
+
 The official version of `sirt` is hosted on CRAN and may be found [here](https://cran.r-project.org/package=sirt). 
 The CRAN version can be installed from within R using:
 

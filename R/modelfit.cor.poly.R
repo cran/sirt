@@ -1,10 +1,10 @@
 ## File Name: modelfit.cor.poly.R
-## File Version: 0.05
+## File Version: 0.06
 
 
 ##########################################################################
 # model fit for polytomous item responses
-modelfit.cor.poly <- function( data , probs , theta.k , f.qk.yi){
+modelfit.cor.poly <- function( data, probs, theta.k, f.qk.yi){
     # create input for tam.modelfit
     tamobj <- list()
     resp.ind <- 1 - is.na(data)
@@ -17,7 +17,7 @@ modelfit.cor.poly <- function( data , probs , theta.k , f.qk.yi){
     tamobj$hwt <- f.qk.yi
     # apply tam.modelfit
     tmod <- TAM::tam.modelfit( tamobj)
-	# tmod <- tam.modelfit( tamobj)
+    # tmod <- tam.modelfit( tamobj)
     return(tmod)
             }
 ##########################################################################

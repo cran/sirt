@@ -1,9 +1,9 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 2.6-9
-Date: 2018-03-21 17:08:08
-Author: Alexander Robitzsch [aut,cre]
+Version: 2.7-50
+Date: 2018-07-09 20:56:06
+Author: Alexander Robitzsch [aut,cre] (<https://orcid.org/0000-0002-8226-3132>)
 Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 Description: 
     Supplementary functions for item response models aiming
@@ -28,9 +28,10 @@ Imports: CDM (>= 6.0), coda, graphics, lavaan, lavaan.survey, MASS,
 Suggests: gtools, ic.infer (>= 1.1-6), igraph, Matrix, miceadds,
         pbivnorm, psych, sm
 LinkingTo: Rcpp, RcppArmadillo
-URL: https://github.com/alexanderrobitzsch/sirt
+URL: https://github.com/alexanderrobitzsch/sirt,
+        https://sites.google.com/site/alexanderrobitzsch2/software
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2018-03-21 16:09:45 UTC; sunpn563
+Packaged: 2018-07-09 18:58:42 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2018-03-22 12:11:12 UTC
+Date/Publication: 2018-07-10 08:00:10 UTC
