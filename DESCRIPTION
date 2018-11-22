@@ -1,8 +1,8 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 2.7-50
-Date: 2018-07-09 20:56:06
+Version: 3.0-32
+Date: 2018-11-22 11:57:33
 Author: Alexander Robitzsch [aut,cre] (<https://orcid.org/0000-0002-8226-3132>)
 Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 Description: 
@@ -18,8 +18,9 @@ Description:
     faceted and hierarchical rater models (DeCarlo, Kim & Johnson, 2011,
     <doi:10.1111/j.1745-3984.2011.00143.x>),
     ordinal IRT model (ISOP; Scheiblechner, 1995, <doi:10.1007/BF02301417>), 
-    DETECT statistic (Stout et al., 1996, <doi:10.1177/014662169602000403>), 
-    local structural equation modeling (LSEM; Hildebrandt et al., 2016,
+    DETECT statistic (Stout, Habing, Douglas & Kim, 1996, 
+    <doi:10.1177/014662169602000403>), local structural equation modeling 
+    (LSEM; Hildebrandt, Luedtke, Robitzsch, Sommer & Wilhelm, 2016,
     <doi:10.1080/00273171.2016.1142856>).
 Depends: R (>= 3.1)
 Imports: CDM (>= 6.0), coda, graphics, lavaan, lavaan.survey, MASS,
@@ -32,6 +33,6 @@ URL: https://github.com/alexanderrobitzsch/sirt,
         https://sites.google.com/site/alexanderrobitzsch2/software
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2018-07-09 18:58:42 UTC; sunpn563
+Packaged: 2018-11-22 11:02:30 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2018-07-10 08:00:10 UTC
+Date/Publication: 2018-11-22 12:00:02 UTC

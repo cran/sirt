@@ -1,5 +1,5 @@
 %% File Name: lsem.permutationTest.Rd
-%% File Version: 0.21
+%% File Version: 0.23
 
 \name{lsem.permutationTest}
 \alias{lsem.permutationTest}
@@ -111,6 +111,8 @@ p values.}
 \item{parameters_summary_MAD}{Mean absolute deviation (MAD)
     statistic in permutation sample.}
 \item{parameters_summary_MAD}{Linear slope parameter in permutation sample.}
+\item{nonconverged_rate}{Percentage of permuted dataset in which a LSEM model
+did not converge}
 }
 
 %%  \item{comp1 }{Description of 'comp1'}
@@ -121,7 +123,7 @@ p values.}
 \references{
 Hildebrandt, A., Wilhelm, O., & Robitzsch, A. (2009). Complementary and
 competing factor analytic approaches for the investigation of measurement invariance.
-\emph{Review of Psychology}, \bold{16}, 87-102.
+\emph{Review of Psychology, 16}, 87-102.
 }
 
 \author{

@@ -1,5 +1,5 @@
 %% File Name: mcmc.3pno.testlet.Rd
-%% File Version: 1.23
+%% File Version: 1.25
 
 \name{mcmc.3pno.testlet}
 \alias{mcmc.3pno.testlet}
@@ -15,7 +15,7 @@ by Markov Chain Monte Carlo methods (Glas, 2012).
 mcmc.3pno.testlet(dat, testlets=rep(NA, ncol(dat)),
    weights=NULL, est.slope=TRUE, est.guess=TRUE, guess.prior=NULL,
    testlet.variance.prior=c(1, 0.2), burnin=500, iter=1000,
-   N.sampvalues=1000, progress.iter=50, save.theta=FALSE)
+   N.sampvalues=1000, progress.iter=50, save.theta=FALSE, save.gamma.testlet=FALSE )
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -63,7 +63,10 @@ Display progress every \code{progress.iter}-th iteration. If no progress
 display is wanted, then choose \code{progress.iter} larger than \code{iter}.
 }
   \item{save.theta}{
-Should theta values be saved?
+Logical indicating whether theta values should be saved
+}
+\item{save.gamma.testlet}{
+Logical indicating whether gamma values should be saved
 }
 }
 
@@ -132,11 +135,11 @@ Wainer, H., Bradlow, E. T., & Wang, X. (2007).
 Cambridge: Cambridge University Press.
 
 Wang, W.-C., & Wilson, M. (2005). The Rasch testlet model.
-\emph{Applied Psychological Measurement}, \bold{29}, 126-149.
+\emph{Applied Psychological Measurement, 29}, 126-149.
 
 Wang, X., Bradlow, E. T., & Wainer, H. (2002). A general Bayesian model
 for testlets: Theory and applications.
-\emph{Applied Psychological Measurement}, \bold{26}, 109-128.
+\emph{Applied Psychological Measurement, 26}, 109-128.
 }
 
 \author{
