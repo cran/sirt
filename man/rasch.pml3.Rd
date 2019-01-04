@@ -1,5 +1,5 @@
 %% File Name: rasch.pml3.Rd
-%% File Version: 2.73
+%% File Version: 2.76
 
 
 
@@ -192,9 +192,12 @@ Machine Intelligence, 24}, 1517-1520.
 
 
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 \note{
 This function needs the \pkg{combinat} library.
 }
@@ -490,6 +493,6 @@ summary(mod4)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Pairwise marginal maximum likelihood (PMML)}
-\keyword{Local dependence}
-\keyword{summary}
+%% \keyword{Pairwise marginal maximum likelihood (PMML)}
+%% \keyword{Local dependence}
+%% \keyword{summary}

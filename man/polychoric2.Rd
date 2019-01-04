@@ -1,5 +1,5 @@
 %% File Name: polychoric2.Rd
-%% File Version: 0.15
+%% File Version: 0.18
 
 \name{polychoric2}
 \alias{polychoric2}
@@ -47,9 +47,11 @@ coefficient. \emph{Psychometrika, 44}, 443-460.
 }
 
 
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
+
+
 
 %%\note{
 %%  ~~further notes~~
@@ -84,5 +86,5 @@ max( abs( t0 - t1 ) )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Polychoric correlation}
-\keyword{Tetrachoric correlation}
+%% \keyword{Polychoric correlation}
+%% \keyword{Tetrachoric correlation}

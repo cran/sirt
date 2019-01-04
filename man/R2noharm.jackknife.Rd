@@ -1,5 +1,5 @@
 %% File Name: R2noharm.jackknife.Rd
-%% File Version: 1.16
+%% File Version: 1.19
 
 \name{R2noharm.jackknife}
 \alias{R2noharm.jackknife}
@@ -62,9 +62,12 @@ Christoffersson, A. (1977). Two-step weighted least squares factor analysis of
 dichotomized variables. \emph{Psychometrika, 42}, 433-438.
 }
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -79,6 +82,6 @@ Alexander Robitzsch
 %}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{NOHARM}
-\keyword{summary}
+%% \keyword{NOHARM}
+%% \keyword{summary}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

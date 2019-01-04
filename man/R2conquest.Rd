@@ -1,5 +1,5 @@
 %% File Name: R2conquest.Rd
-%% File Version: 3.19
+%% File Version: 3.23
 
 \name{R2conquest}
 \alias{R2conquest}
@@ -212,9 +212,13 @@ Wu, M. L., Adams, R. J., Wilson, M. R. & Haldane, S. (2007).
 \emph{ACER ConQuest Version 2.0}. Mulgrave.
 {https://shop.acer.edu.au/acer-shop/group/CON3}.
 }
-\author{
-Alexander Robitzsch
-}
+
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 
 %\note{
 %%  ~~further notes~~
@@ -337,6 +341,6 @@ mod32 <- sirt::R2conquest(dat=dat[,items], path.conquest=path.conquest,
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ConQuest}
-\keyword{summary}
+%% \keyword{ConQuest}
+%% \keyword{summary}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

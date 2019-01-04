@@ -1,5 +1,5 @@
 %% File Name: fuzdiscr.Rd
-%% File Version: 0.18
+%% File Version: 0.21
 
 \name{fuzdiscr}
 \alias{fuzdiscr}
@@ -61,9 +61,12 @@ in the belief function framework.
 \emph{IEEE Transactions on Knowledge and Data Engineering, 25}, 119-130.
 }
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 
 %\note{
 %%  ~~further notes~~
@@ -185,5 +188,5 @@ colMeans(X)
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Fuzzy data}
-\keyword{Belief function}
+%% \keyword{Fuzzy data}
+%% \keyword{Belief function}

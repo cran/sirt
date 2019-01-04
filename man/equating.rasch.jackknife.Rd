@@ -1,5 +1,5 @@
 %% File Name: equating.rasch.jackknife.Rd
-%% File Version: 0.21
+%% File Version: 0.24
 
 \name{equating.rasch.jackknife}
 \alias{equating.rasch.jackknife}
@@ -52,9 +52,12 @@ Monseur, C., & Berezner, A. (2007). The computation of equating errors
 in international surveys in education.
 \emph{Journal of Applied Measurement, 8}, 323-335.
 }
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -87,5 +90,5 @@ res2$descriptives
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Equating}
-\keyword{Linking}% __ONLY ONE__ keyword per line
+%% \keyword{Equating}
+%% \keyword{Linking}% __ONLY ONE__ keyword per line

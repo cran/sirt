@@ -1,5 +1,5 @@
 %% File Name: rasch.mml.Rd
-%% File Version: 3.99245
+%% File Version: 3.99248
 
 \name{rasch.mml2}
 \alias{rasch.mml2}
@@ -964,7 +964,7 @@ mod9 <- sirt::rasch.mml2( dat2, constraints=constraints, irtmodel="missing1",
 summary(mod9)
 
 #*** Model 10: estimate missing data model with a large negative missing delta parameter
-# => This model is equivalent to treating missing responses as wrong
+#=> This model is equivalent to treating missing responses as wrong
 mod10 <- sirt::rasch.mml2( dat2, constraints=constraints, irtmodel="missing1",
              theta.k=seq(-5, 5, len=10), delta.miss=-10, mitermax=4, mmliter=200,
              mu.fixed=NULL )
@@ -1061,10 +1061,10 @@ mod5a@logLik    # GRM
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Marginal maximum likelihood (MML)}
-\keyword{Ramsay's quotient model}
-\keyword{Nonparametric item response theory}
-\keyword{Pseudo-likelihood estimation}
-\keyword{summary}
-\keyword{plot}
+%% \keyword{Marginal maximum likelihood (MML)}
+%% \keyword{Ramsay's quotient model}
+%% \keyword{Nonparametric item response theory}
+%% \keyword{Pseudo-likelihood estimation}
+%% \keyword{summary}
+%% \keyword{plot}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

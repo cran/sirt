@@ -1,5 +1,5 @@
 %% File Name: wle.rasch.jackknife.Rd
-%% File Version: 1.22
+%% File Version: 1.25
 
 \name{wle.rasch.jackknife}
 \alias{wle.rasch.jackknife}
@@ -69,9 +69,12 @@ Warm, T. A. (1989). Weighted likelihood estimation of ability in item response t
 \emph{Psychometrika, 54}, 427-450.
 }
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -81,6 +84,8 @@ Alexander Robitzsch
 \seealso{
 \code{\link{wle.rasch}}
 }
+
+
 \examples{
 #############################################################################
 # EXAMPLE 1: Dataset Reading
@@ -146,5 +151,5 @@ round( a2, 3 )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Weighted likelihood estimation (WLE)}
+%% \keyword{Weighted likelihood estimation (WLE)}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

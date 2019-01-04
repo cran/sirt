@@ -1,5 +1,5 @@
 %% File Name: isop.scoring.Rd
-%% File Version: 1.23
+%% File Version: 1.26
 
 \name{isop.scoring}
 \alias{isop.scoring}
@@ -103,9 +103,11 @@ d-dimensional psychological test data (d-ISOP).
 }
 
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -156,6 +158,6 @@ msc2 <- sirt::isop.scoring( dat[,items], score.itemcat=score.itemcat )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ISOP model}
-\keyword{Nonparametric IRT}
+%% \keyword{ISOP model}
+%% \keyword{Nonparametric IRT}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

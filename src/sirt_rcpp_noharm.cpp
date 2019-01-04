@@ -1,5 +1,5 @@
 //// File Name: sirt_rcpp_noharm.cpp
-//// File Version: 3.403
+//// File Version: 3.415
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
@@ -17,9 +17,10 @@ double noharm_trim_increment( double x, double maxincrement)
     double increment = x;
     if (increment < -maxincrement){
         increment = - maxincrement;
-    }
-    if (increment > maxincrement){
-        increment = maxincrement;
+    } else {
+        if (increment > maxincrement){
+            increment = maxincrement;
+        }
     }
     return increment;
 }
@@ -31,9 +32,10 @@ double noharm_avoid_zero(double x, double eps)
     double x0=x;
     if ( ( x < 0) & ( x > - eps ) ) {
         x0 = - eps;
-    }
-    if ( ( x > 0) & ( x < eps ) ) {
-        x0 = eps;
+    } else {
+        if ( ( x > 0) & ( x < eps ) ) {
+            x0 = eps;
+        }
     }
     return x0;
 }
@@ -66,10 +68,10 @@ Rcpp::List noharm_compute_ej(Rcpp::NumericVector dj, int I)
 {
     Rcpp::NumericVector ej(I);
     Rcpp::NumericMatrix ej_ek(I,I);
-    for( int jj = 0; jj<I;jj++){
+    for( int jj = 0; jj<I; jj++){
         ej[jj] = std::sqrt( 1 + std::pow( dj[jj], 2.0) );
     }
-    for ( int jj = 0; jj<I;jj++){
+    for ( int jj = 0; jj<I; jj++){
         for (int kk=0;kk<I;kk++){
             if ( jj != kk){
                 ej_ek(jj,kk) = 1/( ej[jj] * ej[kk] );
@@ -184,9 +186,9 @@ Rcpp::List noharm_compute_pdfk(Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pva
 /// estimation subfunction for F
 
 ///********************************************************************
-///** noharm_estFcpp
+///** sirt_rcpp_noharm_estF
 // [[Rcpp::export]]
-Rcpp::List noharm_estFcpp( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, Rcpp::NumericMatrix Fpatt,
+Rcpp::List sirt_rcpp_noharm_estF( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, Rcpp::NumericMatrix Fpatt,
     Rcpp::NumericMatrix Ppatt, int I, int D, Rcpp::NumericMatrix b0jk, Rcpp::NumericMatrix b1jk,
     Rcpp::NumericMatrix b2jk, Rcpp::NumericMatrix b3jk, Rcpp::NumericMatrix wgtm, Rcpp::NumericMatrix pm,
     Rcpp::NumericMatrix Psival, Rcpp::NumericMatrix Psipatt, double maxincrement, int modtype )
@@ -195,6 +197,7 @@ Rcpp::List noharm_estFcpp( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, R
     int FR = Fval.nrow();
     int FC = Fval.ncol();
     Rcpp::NumericMatrix Fval_(FR,FC);
+    Rcpp::NumericMatrix F_der(FR,FC);
     for (int cc=0; cc<FC; cc++){
         Fval_(_,cc) = Fval(_,cc);
     }
@@ -279,6 +282,7 @@ Rcpp::List noharm_estFcpp( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, R
                 aincr = std::abs( increment );
                 if ( aincr > parchange ){ parchange = aincr; }
                 Fval_(jj,dd) = Fval_(jj,dd) + increment;
+                F_der(jj,dd) = f1jj;
             }
         }
     }
@@ -286,7 +290,8 @@ Rcpp::List noharm_estFcpp( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, R
     // OUTPUT
     return Rcpp::List::create(
             Rcpp::Named("Fval_") = Fval_,
-            Rcpp::Named("change") = parchange
+            Rcpp::Named("change") = parchange,
+            Rcpp::Named("F_der") = F_der
         );
 }
 
@@ -295,9 +300,9 @@ Rcpp::List noharm_estFcpp( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, R
 /// estimation subfunction for P
 
 ///********************************************************************
-///** noharm_estPcpp
+///** sirt_rcpp_noharm_estP
 // [[Rcpp::export]]
-Rcpp::List noharm_estPcpp( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, Rcpp::NumericMatrix Fpatt,
+Rcpp::List sirt_rcpp_noharm_estP( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, Rcpp::NumericMatrix Fpatt,
     Rcpp::NumericMatrix Ppatt, int I, int D, Rcpp::NumericMatrix b0jk, Rcpp::NumericMatrix b1jk,
     Rcpp::NumericMatrix b2jk, Rcpp::NumericMatrix b3jk, Rcpp::NumericMatrix wgtm, Rcpp::NumericMatrix pm,
     Rcpp::NumericMatrix Psival, Rcpp::NumericMatrix Psipatt, double maxincrement, int modtype )
@@ -419,9 +424,9 @@ Rcpp::List noharm_estPcpp( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, R
 /// estimation subfunction for Psi
 
 ///********************************************************************
-///** noharm_estPcpp
+///** sirt_rcpp_noharm_estPsi
 // [[Rcpp::export]]
-Rcpp::List noharm_estPsicpp( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, Rcpp::NumericMatrix Fpatt,
+Rcpp::List sirt_rcpp_noharm_estPsi( Rcpp::NumericMatrix Fval, Rcpp::NumericMatrix Pval, Rcpp::NumericMatrix Fpatt,
     Rcpp::NumericMatrix Ppatt, int I, int D, Rcpp::NumericMatrix b0jk, Rcpp::NumericMatrix b1jk,
     Rcpp::NumericMatrix b2jk, Rcpp::NumericMatrix b3jk, Rcpp::NumericMatrix wgtm, Rcpp::NumericMatrix pm,
     Rcpp::NumericMatrix Psival, Rcpp::NumericMatrix Psipatt, double maxincrement, int modtype )

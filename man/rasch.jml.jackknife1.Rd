@@ -1,5 +1,5 @@
 %% File Name: rasch.jml.jackknife1.Rd
-%% File Version: 2.15
+%% File Version: 2.18
 
 \name{rasch.jml.jackknife1}
 \alias{rasch.jml.jackknife1}
@@ -47,9 +47,12 @@ A list with following entries
 Hahn, J., & Newey, W. (2004). Jackknife and analytical bias reduction for
 nonlinear panel models. \emph{Econometrica, 72}, 1295-1319.
 }
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 
 \seealso{
 For JML estimation \code{\link{rasch.jml}}.
@@ -96,5 +99,5 @@ mod2 <- sirt::rasch.jml.jackknife1( mod )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Joint maximum likelihood (JML)}
+%% \keyword{Joint maximum likelihood (JML)}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -1,5 +1,5 @@
 %% File Name: brm.sim.Rd
-%% File Version: 0.45
+%% File Version: 0.48
 
 \name{brm-Methods}
 \alias{brm.sim}
@@ -126,9 +126,9 @@ Maximum-likelihood regression with beta-distributed dependent variables.
 \emph{Psychological Methods, 11}(1), 54-71.
 }
 
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 
 %\note{
 %
@@ -267,5 +267,5 @@ round( m2, 3 )
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Beta item response model}
+%% \keyword{Beta item response model}
 % \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

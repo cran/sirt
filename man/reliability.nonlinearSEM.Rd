@@ -1,5 +1,5 @@
 %% File Name: reliability.nonlinearSEM.Rd
-%% File Version: 0.19
+%% File Version: 0.23
 
 \name{reliability.nonlinearSEM}
 \alias{reliability.nonlinearSEM}
@@ -41,9 +41,12 @@ Green, S. B., & Yang, Y. (2009). Reliability of summed item
 scores using structural equation modeling: An alternative to
 coefficient alpha. \emph{Psychometrika, 74}, 155-167.
 }
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 \note{
 This function needs the \pkg{mvtnorm} package.
 }
@@ -90,5 +93,5 @@ rel1$omega.rel
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Reliability}
+%% \keyword{Reliability}
 %% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

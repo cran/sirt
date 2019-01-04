@@ -1,5 +1,5 @@
 %% File Name: R2noharm.Rd
-%% File Version: 2.29
+%% File Version: 2.33
 
 \name{R2noharm}
 \alias{R2noharm}
@@ -178,9 +178,12 @@ New York: Springer.
 }
 
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 \note{
 Possible errors often occur due to wrong \code{dec}
 specification.
@@ -488,6 +491,6 @@ summary(ex4a)
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{NOHARM}
-\keyword{summary}
+%% \keyword{NOHARM}
+%% \keyword{summary}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

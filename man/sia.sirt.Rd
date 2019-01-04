@@ -1,5 +1,5 @@
 %% File Name: sia.sirt.Rd
-%% File Version: 0.20
+%% File Version: 0.23
 
 \name{sia.sirt}
 \alias{sia.sirt}
@@ -80,9 +80,11 @@ Springer, Berlin Heidelberg.
 }
 
 
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
+
+
 
 
 \note{
@@ -147,6 +149,6 @@ Rgraphviz::plot( res.graph, nodeAttrs=list("fontsize"=size2, "shape"=shape2) )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Statistical implicative analysis}
-\keyword{Graphical modeling}
+%% \keyword{Statistical implicative analysis}
+%% \keyword{Graphical modeling}
 % \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

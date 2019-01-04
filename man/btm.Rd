@@ -1,5 +1,5 @@
 %% File Name: btm.Rd
-%% File Version: 0.36
+%% File Version: 0.39
 
 \name{btm}
 \alias{btm}
@@ -114,9 +114,9 @@ Hunter, D. R. (2004). MM algorithms for generalized Bradley-Terry models.
 \emph{Annals of Statistics, 32}, 384-406.
 }
 
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 
 %\note{
 %%  ~~further notes~~
@@ -223,5 +223,5 @@ summary(mod2)
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Bradley-Terry model}
-\keyword{summary}% __ONLY ONE__ keyword per line
+%% \keyword{Bradley-Terry model}
+%% \keyword{summary}% __ONLY ONE__ keyword per line

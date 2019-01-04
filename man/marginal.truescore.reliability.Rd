@@ -1,5 +1,5 @@
 %% File Name: marginal.truescore.reliability.Rd
-%% File Version: 0.24
+%% File Version: 0.27
 
 \name{marginal.truescore.reliability}
 \alias{marginal.truescore.reliability}
@@ -67,9 +67,12 @@ functions for percentile ranks. \emph{Journal of Educational
 Measurement, 31}, 313-325.
 }
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -150,5 +153,5 @@ psych::omega(dat, nfactors=1)     # 1 factor
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Reliability}
+%% \keyword{Reliability}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

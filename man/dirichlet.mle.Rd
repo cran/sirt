@@ -1,5 +1,5 @@
 %% File Name: dirichlet.mle.Rd
-%% File Version: 0.20
+%% File Version: 0.23
 
 \name{dirichlet.mle}
 \alias{dirichlet.mle}
@@ -50,9 +50,10 @@ A list with following entries
 Minka, T. P. (2012). \emph{Estimating a Dirichlet distribution}.
 Technical Report.
 }
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
 %\note{
 %%  ~~further notes~~
 %}
@@ -144,5 +145,5 @@ coef( mod3b )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Dirichlet distribution}
+%% \keyword{Dirichlet distribution}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

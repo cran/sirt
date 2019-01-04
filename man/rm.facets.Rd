@@ -1,5 +1,5 @@
 %% File Name: rm.facets.Rd
-%% File Version: 0.81
+%% File Version: 0.823
 
 \name{rm.facets}
 \alias{rm.facets}
@@ -242,9 +242,12 @@ Wu, M. (2017). Some IRT-based analyses for interpreting rater effects.
 }
 
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 
 \note{
 If the trait standard deviation \code{sigma} strongly
@@ -394,6 +397,6 @@ summary(mod7)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Rater model}
-\keyword{Facets model}
-\keyword{summary}
+%% \keyword{Rater model}
+%% \keyword{Facets model}
+%% \keyword{summary}

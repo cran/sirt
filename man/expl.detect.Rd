@@ -1,5 +1,5 @@
 %% File Name: expl.detect.Rd
-%% File Version: 1.16
+%% File Version: 1.19
 
 \name{expl.detect}
 \alias{expl.detect}
@@ -70,13 +70,15 @@ dimensionality and its application to approximate simple structure,
 \emph{Psychometrika, 64}, 213-249.
 }
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
 
 \seealso{
 For examples see \code{\link{conf.detect}}.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
-\keyword{DETECT}
+%% \keyword{DETECT}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -1,5 +1,5 @@
 %% File Name: class.accuracy.rasch.Rd
-%% File Version: 0.21
+%% File Version: 0.24
 
 \name{class.accuracy.rasch}
 \alias{class.accuracy.rasch}
@@ -60,9 +60,9 @@ Rudner, L.M. (2001). Computing the expected proportions of misclassified examine
 \emph{Practical Assessment, Research & Evaluation, 7}(14).
 }
 
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 %\note{
 %%  ~~further notes~~
 %}
@@ -107,5 +107,5 @@ class.accuracy.rasch( cutscores=cutscores, b=mod$item$b,
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Classification accuracy}
+%% \keyword{Classification accuracy}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

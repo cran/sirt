@@ -1,5 +1,5 @@
 %% File Name: rm.sdt.Rd
-%% File Version: 1.491
+%% File Version: 1.494
 
 \name{rm.sdt}
 \alias{rm.sdt}
@@ -288,9 +288,10 @@ multilevel data sets. \emph{Statistical Methods in Medical Research, 17}, 33-51.
 }
 
 
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
+
 
 %\note{
 %%  ~~further notes~~
@@ -388,7 +389,7 @@ plot(mod2)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Rater model}
-\keyword{Signal detection model}
-\keyword{summary}
-\keyword{plot}
+%% \keyword{Rater model}
+%% \keyword{Signal detection model}
+%% \keyword{summary}
+%% \keyword{plot}

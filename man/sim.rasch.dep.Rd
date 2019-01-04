@@ -1,5 +1,5 @@
 %% File Name: sim.rasch.dep.Rd
-%% File Version: 0.29
+%% File Version: 0.33
 
 \name{sim.rasch.dep}
 \alias{sim.rasch.dep}
@@ -39,9 +39,12 @@ to the number of itemclusters.
 \value{
 An \eqn{N \times I} data frame of dichotomous item responses.
 }
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 \note{
 The specification of the simulation models follows a marginal interpretation
 of the latent trait. Local dependencies are only interpreted as nuisance
@@ -140,6 +143,6 @@ summary(mod3)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Simulating IRT models}
+%% \keyword{Simulating IRT models}
 %\keyword{ ~kwd1 }
 

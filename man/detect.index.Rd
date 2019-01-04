@@ -1,5 +1,5 @@
 %% File Name: detect.index.Rd
-%% File Version: 0.14
+%% File Version: 0.17
 
 \name{detect.index}
 \alias{detect.index}
@@ -52,9 +52,10 @@ dimensionality and its application to approximate simple structure.
 Zhang, J. (2007). Conditional covariance theory and DETECT for
 polytomous items. \emph{Psychometrika, 72}, 69-91.
 }
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
 %\note{
 %%  ~~further notes~~
 %}
@@ -69,5 +70,5 @@ For examples see \code{\link{conf.detect}}.
 %}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{DETECT}
+%% \keyword{DETECT}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

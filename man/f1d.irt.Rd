@@ -1,5 +1,5 @@
 %% File Name: f1d.irt.Rd
-%% File Version: 1.32
+%% File Version: 1.35
 
 \name{f1d.irt}
 \alias{f1d.irt}
@@ -111,9 +111,12 @@ response models for multivariate binary data.
 \emph{Multivariate Behavioral Research, 48}, 534-562.
 }
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 
 %\note{
 %%  ~~further notes~~
@@ -209,5 +212,5 @@ fumod1$item
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Functional unidimensional item response model}
+%% \keyword{Functional unidimensional item response model}
 %% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

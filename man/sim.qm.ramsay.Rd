@@ -1,5 +1,5 @@
 %% File Name: sim.qm.ramsay.Rd
-%% File Version: 0.36
+%% File Version: 0.39
 
 \name{sim.qm.ramsay}
 \alias{sim.qm.ramsay}
@@ -47,9 +47,12 @@ individual differences.
 \emph{Psychological Review, 318}, 339-356.
 }
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 
 
 %\note{
@@ -178,5 +181,5 @@ round( dfr, 2 )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Simulating IRT models}
+%% \keyword{Simulating IRT models}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

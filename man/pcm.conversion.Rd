@@ -1,5 +1,5 @@
 %% File Name: pcm.conversion.Rd
-%% File Version: 0.15
+%% File Version: 0.18
 
 \name{pcm.conversion}
 \alias{pcm.conversion}
@@ -47,9 +47,12 @@ List with the following entries
 %\references{
 %% ~put references to the literature/web site here ~
 %}
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 
 %\note{
 %%  ~~further notes~~
@@ -88,5 +91,5 @@ mod1b$xsi
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Partial credit model}
+%% \keyword{Partial credit model}
 % \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

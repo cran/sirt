@@ -1,5 +1,5 @@
 %% File Name: conf.detect.Rd
-%% File Version: 1.43
+%% File Version: 1.46
 
 \name{conf.detect}
 \alias{conf.detect}
@@ -126,9 +126,9 @@ response data from various test designs. \emph{Psychometrika, 78}, 37-58.
 }
 
 
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 
 
 %\note{
@@ -274,5 +274,5 @@ detect1 <- sirt::conf.detect( data=dat, score=wmod1, itemcluster=itemcluster)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{DETECT}
+%% \keyword{DETECT}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

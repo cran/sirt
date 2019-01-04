@@ -1,5 +1,5 @@
 %% File Name: mirt.wrapper.Rd
-%% File Version: 1.81
+%% File Version: 1.84
 
 \name{mirt.wrapper}
 \alias{mirt.wrapper}
@@ -100,9 +100,11 @@ Function \code{mirt.wrapper.fscores} -- List with entries
 %% ~put references to the literature/web site here ~
 %}
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
 
 %\note{
 %%  ~~further notes~~
@@ -403,5 +405,5 @@ round(fres$EAP.rel,3)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{mirt}
+%% \keyword{mirt}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

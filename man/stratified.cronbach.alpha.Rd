@@ -1,5 +1,5 @@
 %% File Name: stratified.cronbach.alpha.Rd
-%% File Version: 0.24
+%% File Version: 0.27
 
 \name{stratified.cronbach.alpha}
 \alias{stratified.cronbach.alpha}
@@ -48,9 +48,12 @@ Meyer, P. (2010). \emph{Reliability}. Cambridge:
 Oxford University Press.
 }
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -101,5 +104,5 @@ psych::omega(dat, nfactors=3)     # 3 factors
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Reliability}
+%% \keyword{Reliability}
 %% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

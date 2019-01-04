@@ -1,5 +1,5 @@
 %% File Name: dirichlet.simul.Rd
-%% File Version: 0.13
+%% File Version: 0.16
 
 \name{dirichlet.simul}
 \alias{dirichlet.simul}
@@ -29,9 +29,9 @@ A data frame with Dirichlet distributed responses
 %\references{
 %% ~put references to the literature/web site here ~
 %}
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 %\note{
 %%  ~~further notes~~
 %}
@@ -96,5 +96,5 @@ ade4::triangle.plot(x, label=NULL, clabel=1)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Dirichlet distribution}
+%% \keyword{Dirichlet distribution}
 %% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

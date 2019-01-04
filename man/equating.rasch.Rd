@@ -1,5 +1,5 @@
 %% File Name: equating.rasch.Rd
-%% File Version: 1.32
+%% File Version: 1.35
 
 \name{equating.rasch}
 \alias{equating.rasch}
@@ -59,9 +59,12 @@ random sampling of items}
 Kolen, M. J., & Brennan, R. L. (2004). \emph{Test Equating, Scaling, and Linking:
 Methods and Practices}. New York: Springer.
 }
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -134,5 +137,5 @@ pars.out <- plink::link.pars(out)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Equating}
-\keyword{Linking}
+%% \keyword{Equating}
+%% \keyword{Linking}

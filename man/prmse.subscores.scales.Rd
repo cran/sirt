@@ -1,5 +1,5 @@
 %% File Name: prmse.subscores.scales.Rd
-%% File Version: 0.27
+%% File Version: 0.30
 
 \name{prmse.subscores.scales}
 \alias{prmse.subscores.scales}
@@ -51,9 +51,12 @@ The use of subscores in higher education: When is this useful?.
 \emph{Frontiers in Psychology | Educational Psychology, 8}.
 }
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -102,5 +105,5 @@ print( p1, digits=3 )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Proportional reduction of mean squared error (PRMSE)}
+%% \keyword{Proportional reduction of mean squared error (PRMSE)}
 %% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

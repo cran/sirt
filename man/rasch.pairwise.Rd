@@ -1,5 +1,5 @@
 %% File Name: rasch.pairwise.Rd
-%% File Version: 0.28
+%% File Version: 0.34
 
 \name{rasch.pairwise}
 \alias{rasch.pairwise}
@@ -17,7 +17,7 @@ which is a pairwise conditional likelihood estimation approach.
 rasch.pairwise(dat, conv=1e-04, maxiter=3000, progress=TRUE,
         b.init=NULL, zerosum=FALSE)
 
-\method{summary}{rasch.pairwise}(object,...)
+\method{summary}{rasch.pairwise}(object, digits=3, file=NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -42,6 +42,8 @@ An optional vector of length \eqn{I} of item difficulties
   \item{object}{
 Object of class \code{rasch.pairwise}
 }
+\item{digits}{Number of digits after decimal for rounding}
+\item{file}{Optional file name for summary output}
   \item{\dots}{
 Further arguments to be passed
 }
@@ -64,9 +66,12 @@ An object of class \code{rasch.pairwise} with following entries
   In C. R. Rao and S. Sinharay (Eds.), \emph{Handbook of Statistics},
   Vol. 26 (pp. 515-585). Amsterdam: Elsevier.
 }
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -119,7 +124,7 @@ apply(bmod2$t, 2, stats::quantile, probs=c(.025, .5, .975) )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Pairwise conditional maximum likelihood (PCML)}
-\keyword{Minchi method}
-\keyword{summary}
+%% \keyword{Pairwise conditional maximum likelihood (PCML)}
+%% \keyword{Minchi method}
+%% \keyword{summary}
 

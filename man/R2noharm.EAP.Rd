@@ -1,5 +1,5 @@
 %% File Name: R2noharm.EAP.Rd
-%% File Version: 0.14
+%% File Version: 0.17
 
 \name{R2noharm.EAP}
 \alias{R2noharm.EAP}
@@ -45,9 +45,11 @@ A list with following entries
 %% ~put references to the literature/web site here ~
 %}
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
 
 
 %\note{
@@ -63,6 +65,6 @@ For examples see \code{\link{R2noharm}} and \code{\link{noharm.sirt}}.
 %}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Factor scores}
-\keyword{NOHARM}
+%% \keyword{Factor scores}
+%% \keyword{NOHARM}
 %% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -1,5 +1,5 @@
 %% File Name: lavaan2mirt.Rd
-%% File Version: 0.39
+%% File Version: 0.43
 
 \name{lavaan2mirt}
 \alias{lavaan2mirt}
@@ -74,9 +74,12 @@ model are included in the dataset.}
 %% ~put references to the literature/web site here ~
 %}
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 
 %\note{
 %%  ~~further notes~~
@@ -394,6 +397,6 @@ plot(res2, type="trace")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{mirt}
-\keyword{lavaan}
+%% \keyword{mirt}
+%% \keyword{lavaan}
 % \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

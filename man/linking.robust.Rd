@@ -1,5 +1,5 @@
 %% File Name: linking.robust.Rd
-%% File Version: 0.22
+%% File Version: 0.25
 
 \name{linking.robust}
 \alias{linking.robust}
@@ -60,9 +60,12 @@ A list with following entries
 %% ~put references to the literature/web site here ~
 %}
 
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -138,7 +141,7 @@ plot(res)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Linking}
-\keyword{Robust linking}% __ONLY ONE__ keyword per line
-\keyword{summary}
-\keyword{plot}
+%% \keyword{Linking}
+%% \keyword{Robust linking}% __ONLY ONE__ keyword per line
+%% \keyword{summary}
+%% \keyword{plot}

@@ -1,5 +1,5 @@
 %% File Name: mcmc.2pno.Rd
-%% File Version: 1.29
+%% File Version: 1.33
 
 \name{mcmc.2pno}
 \alias{mcmc.2pno}
@@ -76,9 +76,12 @@ A list of class \code{mcmc.sirt} with following entries:
 Johnson, V. E., & Albert, J. H. (1999). \emph{Ordinal Data Modeling}.
 New York: Springer.
 }
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -136,5 +139,5 @@ mod1$summary.mcmcobj
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Markov Chain Monte Carlo (MCMC)}
+%% \keyword{Markov Chain Monte Carlo (MCMC)}
 % \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

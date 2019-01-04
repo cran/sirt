@@ -1,5 +1,5 @@
 %% File Name: rasch.jml.biascorr.Rd
-%% File Version: 0.19
+%% File Version: 0.23
 
 \name{rasch.jml.biascorr}
 \alias{rasch.jml.biascorr}
@@ -44,9 +44,12 @@ models: Some recent developments. In R. Blundell, W. Newey &
 T. Persson (Eds.): \emph{Advances in Economics and
 Econometrics, Ninth World Congress}, Cambridge University Press.
 }
-\author{
-Alexander Robitzsch
-}
+
+%\author{
+%Alexander Robitzsch
+%}
+
+
 %\note{
 %%  ~~further notes~~
 %}
@@ -84,5 +87,5 @@ print( res1$b.biascorr, digits=3 )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Joint maximum likelihood (JML)}
+%% \keyword{Joint maximum likelihood (JML)}
 %\keyword{xxx}

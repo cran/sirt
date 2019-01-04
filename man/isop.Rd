@@ -1,5 +1,5 @@
 %% File Name: isop.Rd
-%% File Version: 3.28
+%% File Version: 3.31
 
 \name{isop}
 \alias{isop.dich}
@@ -221,9 +221,10 @@ am Beispiel des MR SOC. \emph{Diagnostica, 55},
 }
 
 
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
+
 
 %\note{
 %%  ~~further notes~~
@@ -301,8 +302,8 @@ summary(mod1)
 plot(mod1)
 }
 
-\keyword{ISOP model}
-\keyword{ADISOP model}
-\keyword{Nonparametric IRT}
-\keyword{summary}
-\keyword{plot}
+%% \keyword{ISOP model}
+%% \keyword{ADISOP model}
+%% \keyword{Nonparametric IRT}
+%% \keyword{summary}
+%% \keyword{plot}
