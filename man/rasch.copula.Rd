@@ -1,5 +1,5 @@
 %% File Name: rasch.copula.Rd
-%% File Version: 1.729
+%% File Version: 1.733
 
 \name{rasch.copula2}
 \alias{rasch.copula2}
@@ -268,13 +268,19 @@ itemcluster <- rep( 1:3, each=4 )
 # estimate Copula model
 mod1 <- sirt::rasch.copula2( dat=dat, itemcluster=itemcluster)
 
+\dontrun{
 # estimate Rasch model
 mod2 <- sirt::rasch.copula2( dat=dat, itemcluster=itemcluster,
         delta=rep(0,3), est.delta=rep(0,3) )
 summary(mod1)
 summary(mod2)
 
-\dontrun{
+# estimate copula 2PL model
+I <- ncol(dat)
+mod3 <- sirt::rasch.copula2( dat=dat, itemcluster=itemcluster, est.a=1:I,
+                increment.factor=1.05)
+summary(mod3)
+
 #############################################################################
 # EXAMPLE 2: 11 items nested within 2 item clusters (testlets)
 #    with 2 resp. 3 dependent and 6 independent items
