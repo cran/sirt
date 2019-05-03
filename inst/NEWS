@@ -35,6 +35,52 @@ CHANGELOG sirt
 
 
 
+
+------------------------------------------------------------------------
+VERSIONS sirt 3.4  |  2019-05-03  |  Last: sirt 3.4-64
+------------------------------------------------------------------------
+
+ADDED * included optimization function for invariance alignment which
+        minimizes number of DIF effects in invariance.alignment() by
+        setting 'align.pow=c(0,0)'. This optimization function
+        corresponds to the L0 penalty.
+NOTE  * included a warning message in polychoric2() if lowest category
+        is larger than zero (due to correspondence with Njaal Foldnes)
+NOTE  * included argument 'use_pbv' in polychoric2() which allows use
+        of pbv package for computation of bivariate normal probabilities
+NOTE  * included arguments 'conv', 'rho_init' and 'weights' in 
+        polychoric2(). Exported Rcpp-level function sirt_rcpp_polychoric2().
+FIXED * fixed a bug when computing standard errors in lsem.estimate() 
+        when arguments 'pseudo_weights>0' or 'use_lavaan_survey=FALSE' 
+        were used (thanks to Gabriel Olaru)
+NOTE  * changed default in lsem.estimate() of argument 
+        'sufficient_statistics' to TRUE. This option can only be used 
+        for continuous data.
+ADDED * included option for sampling weights in lsem.estimate() and
+        lsem_local_weights()
+ADDED * included uniform and Epanechnikov kernel for LSEM estimation
+        by including the argument 'kernel' in lsem.estimate()
+ADDED * LSEM can now be additionally estimated in a joint estimation
+        approach ('est_joint=TRUE'). Invariance constraints on 
+        parameters are allowed by 'par_invariant' in lsem.estimate()
+NOTE  * included check on invariance constraint for fixed parameters
+        in lsem.estimate() (thanks to Ingo Seifert)
+NOTE  * excluded computation of standard errors in lsem.estimate() if
+        'est_joint=TRUE' is used (thanks to an example of Ingo Seifert)
+NOTE  * now remove cases with missing values on moderators in
+        lsem.estimate() (thanks to @Deleetdk, issues #8, #9)
+FIXED * fixed a bug in xxirt() caused by incorrect data processing 
+        which stopped the function (thanks to Hyejin Shim)
+NOTE  * fit initial model in lsem.estimate() if sufficient
+        statistics are used based on pairwise deletion
+        (thanks to Martina Bader)
+ADDED * added bootstrap functionality for LSEM in the function
+        lsem.bootstrap()        
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: invariance.alignment (1),
+        polychoric2 (1), lsem.estimate (1.1, 1.5)
+
 ------------------------------------------------------------------------
 VERSIONS sirt 3.3  |  2019-03-18  |  Last: sirt 3.3-26
 ------------------------------------------------------------------------

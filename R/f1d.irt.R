@@ -1,22 +1,20 @@
 ## File Name: f1d.irt.R
-## File Version: 1.23
+## File Version: 1.28
 
-#########################################################
-# Functional Unidimensional Model (Ip et al., 2013)
+#--- Functional Unidimensional Model (Ip et al., 2013)
 f1d.irt <- function( dat=NULL, nnormal=1000, nfactors=3,
             A=NULL, intercept=NULL, mu=NULL, Sigma=NULL, maxiter=100,
             conv=10^(-5), progress=TRUE )
 {
     if ( ! is.null(dat) ){
-        TAM::require_namespace_msg("psych")
         # estimate tetrachoric correlation matrix
         if (progress){
             cat("*** Estimate tetrachoric correlation\n")
         }
-        tetra <- res <- tetrachoric2(dat, progress=progress)
+        tetra <- res <- tetrachoric2(dat=dat, progress=progress)
         # estimate factor analysis
-        fac1 <- psych::fa( r=res$rho, nfactors=nfactors, rotate="none" )
-        fac0 <- psych::fa( r=res$rho, nfactors=1, rotate="none" )
+        fac1 <- sirt_import_psych_fa( r=res$rho, nfactors=nfactors, rotate="none" )
+        fac0 <- sirt_import_psych_fa( r=res$rho, nfactors=1, rotate="none" )
         # extract standardized loadings
         A_stand <- as.matrix( fac1$loadings )
         # calculate communality
@@ -26,7 +24,7 @@ f1d.irt <- function( dat=NULL, nnormal=1000, nfactors=3,
         # intercepts
         intercept <- - res$tau / sqrt( 1 - h2 )
         names.dat <- colnames(dat)
-                    } else {
+    } else {
         a0 <- NA
         d0 <- NA
         A[ is.na(A) ] <- 0
@@ -44,8 +42,7 @@ f1d.irt <- function( dat=NULL, nnormal=1000, nfactors=3,
         Sigma <- diag(1,nfactors)
     }
 
-    wgt_theta <- mvtnorm::dmvnorm(x=theta, mean=mu, sigma=Sigma )
-    wgt_theta <- wgt_theta / sum( wgt_theta )
+    wgt_theta <- sirt_dmvnorm_discrete(x=theta, mean=mu, sigma=Sigma )
 
     I <- length(intercept)
     TP <- nrow(theta)
@@ -107,7 +104,6 @@ f1d.irt <- function( dat=NULL, nnormal=1000, nfactors=3,
     }
     #**************************************************
 
-
     if ( ! is.null(dat) ){
         # unstandardized loadings 1 factor model
         A0_stand <- fac0$loadings
@@ -119,15 +115,15 @@ f1d.irt <- function( dat=NULL, nnormal=1000, nfactors=3,
         d0 <- NULL
     }
 
-    item <- data.frame(  "item"=names.dat )
+    item <- data.frame( item=names.dat )
     item$ai.ast <- aiast
     item$ai0 <- a0
     item$di.ast <- diast
     item$di0 <- d0
-
-    person <- data.frame( "theta.ast"=thetaast, "wgt"=wgt_theta )
-    res <- list( "item"=item, "person"=person, "A"=A, "intercept"=intercept,
-                "dat"=dat, "tetra"=tetra )
+    person <- data.frame( theta.ast=thetaast, wgt=wgt_theta )
+    #--- output
+    res <- list( item=item, person=person, A=A, intercept=intercept,
+                dat=dat, tetra=tetra )
     return(res)
 }
-#**************************************************
+
