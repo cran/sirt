@@ -1,11 +1,11 @@
 ## File Name: lsem.estimate.R
-## File Version: 0.96597
+## File Version: 0.96601
 
 # estimate LSEM model
 lsem.estimate <- function( data, moderator, moderator.grid,
         lavmodel, type="LSEM", h=1.1, bw=NULL, residualize=TRUE,
         fit_measures=c("rmsea","cfi","tli","gfi","srmr"), standardized=FALSE,
-        standardized_type="std.all", lavaan_fct="sem", sufficient_statistics=TRUE,
+        standardized_type="std.all", lavaan_fct="sem", sufficient_statistics=FALSE,
         use_lavaan_survey=FALSE, pseudo_weights=0, sampling_weights=NULL,
         est_joint=FALSE, par_invariant=NULL, par_linear=NULL, par_quadratic=NULL,
         partable_joint=NULL, se=NULL, kernel="gaussian", eps=1E-8, verbose=TRUE, ... )
@@ -30,7 +30,7 @@ lsem.estimate <- function( data, moderator, moderator.grid,
                 use_lavaan_survey=use_lavaan_survey, est_joint=est_joint,
                 par_invariant=par_invariant, par_linear=par_linear,
                 par_quadratic=par_quadratic, partable_joint=partable_joint,
-                se=se, verbose=verbose )
+                moderator.grid=moderator.grid, se=se, verbose=verbose )
     sufficient_statistics <- res$sufficient_statistics
     use_lavaan_survey <- res$use_lavaan_survey
     variables_model <- res$variables_model
@@ -41,6 +41,7 @@ lsem.estimate <- function( data, moderator, moderator.grid,
     has_meanstructure <- res$has_meanstructure
     se <- res$se
     compute_se <- res$compute_se
+    pseudo_weights <- res$pseudo_weights
 
     # group moderator if type="MGM"
     out <- lsem_group_moderator( data=data, type=type, moderator.grid=moderator.grid,
