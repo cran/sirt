@@ -1,5 +1,5 @@
 %% File Name: rasch.mml.Rd
-%% File Version: 3.99249
+%% File Version: 3.99258
 
 \name{rasch.mml2}
 \alias{rasch.mml2}
@@ -45,12 +45,12 @@ rasch.mml2( dat, theta.k=seq(-6,6,len=21), group=NULL, weights=NULL,
    fixed.c=rep(0,ncol(dat)), fixed.d=rep(1,ncol(dat)),
    fixed.K=rep(3,ncol(dat)), b.init=NULL, est.a=NULL, est.b=NULL,
    est.c=NULL, est.d=NULL, min.b=-99, max.b=99, min.a=-99, max.a=99,
-   min.c=0, max.c=1, min.d=0, max.d=1, est.K=NULL, min.K=1, max.K=20,
-   beta.init=NULL, min.beta=-8,  pid=1:(nrow(dat)), trait.weights=NULL,
-   center.trait=TRUE, center.b=FALSE,alpha1=0, alpha2=0,est.alpha=FALSE,
-   equal.alpha=FALSE, designmatrix=NULL, alpha.conv=parm.conv, numdiff.parm=0.00001,
-   numdiff.alpha.parm=numdiff.parm, distribution.trait="normal", Qmatrix=NULL,
-   variance.fixed=NULL, variance.init=NULL,
+   min.c=0, max.c=1, min.d=0, max.d=1, prior.b=NULL, prior.a=NULL, prior.c=NULL,
+   prior.d=NULL, est.K=NULL, min.K=1, max.K=20, beta.init=NULL, min.beta=-8,
+   pid=1:(nrow(dat)), trait.weights=NULL,  center.trait=TRUE, center.b=FALSE, alpha1=0,
+   alpha2=0,est.alpha=FALSE, equal.alpha=FALSE, designmatrix=NULL, alpha.conv=parm.conv,
+   numdiff.parm=0.00001, numdiff.alpha.parm=numdiff.parm, distribution.trait="normal",
+   Qmatrix=NULL, variance.fixed=NULL, variance.init=NULL,
    mu.fixed=cbind(seq(1,ncol(Qmatrix)),rep(0,ncol(Qmatrix))),
    irtmodel="raschtype", npformula=NULL, npirt.monotone=TRUE,
    use.freqpatt=is.null(group), delta.miss=0, est.delta=rep(NA,ncol(dat)),
@@ -183,6 +183,18 @@ Minimal \eqn{d} parameter to be estimated
   \item{max.d}{
 Maximal \eqn{d} parameter to be estimated
 }
+\item{prior.b}{Optional prior distribution for \eqn{b} parameters:
+\eqn{N(\mu, \sigma)}. Input is a vector of length two with parameters
+\eqn{\mu} and \eqn{\sigma}.}
+\item{prior.a}{Optional prior distribution for \eqn{a} parameters:
+\eqn{N(\mu, \sigma)}. Input is a vector of length two with parameters
+\eqn{\mu} and \eqn{\sigma}.}
+\item{prior.c}{Optional prior distribution for \eqn{c} parameters:
+\eqn{Beta(a, b)}. Input is a vector of length two with parameters
+\eqn{a} and \eqn{b}.}
+\item{prior.d}{Optional prior distribution for \eqn{d} parameters:
+\eqn{Beta(a, b)}. Input is a vector of length two with parameters
+\eqn{a} and \eqn{b}.}
   \item{est.K}{
 Vector of integers which indicate which \eqn{K}
 parameters should be estimated. Equal integers correspond
@@ -450,10 +462,10 @@ Loken, E., & Rulison, K. L. (2010). Estimation of a four-parameter
 item response theory model. \emph{British Journal of Mathematical
 and Statistical Psychology, 63}, 509-525.
 
-Mislevy, R. J., & Wu, P. K. (1996). \emph{Missing Responses and IRT Ability
-Estimation: Omits, Choice, Time Limits, and Adaptive Testing}.
-ETS Research Report ETS RR-96-30.
-Princeton, ETS.
+Mislevy, R. J., & Wu, P. K. (1996). \emph{Missing responses and IRT ability
+estimation: Omits, choice, time Limits, and adaptive testing}.
+ETS Research Report ETS RR-96-30. Princeton, ETS.
+\doi{10.1002/j.2333-8504.1996.tb01708.x}
 
 Pohl, S., Graefe, L., & Rose, N. (2014). Dealing with omitted and
 not-reached items in competence tests evaluating approaches accounting for
@@ -468,8 +480,8 @@ function estimates with the EM algorithm.
 \emph{Journal of Educational and Behavioral Statistics, 27}, 291-317.
 
 Stukel, T. A. (1988). Generalized logistic models.
-\emph{Journal of the American Statistical Association,
-83}, 426-431.
+\emph{Journal of the American Statistical Association, 83}(402), 426-431.
+\doi{10.1080/01621459.1988.10478613}
 
 van der Maas, H. J. L., Molenaar, D., Maris, G., Kievit, R. A., &
 Borsboom, D. (2011).
@@ -591,6 +603,11 @@ mod7 <- sirt::rasch.mml2( dat, est.a=1:I, est.c=1:I, est.d=1:I,
             min.d=.95, max.c=.25)
         # set minimal d and maximal c parameter to .95 and .25
 summary(mod7)
+
+# 4PL model with prior distributions
+mod7b <- sirt::rasch.mml2( dat, est.a=1:I, est.c=1:I, est.d=1:I, prior.a=c(1,2),
+            prior.c=c(5,17), prior.d=c(20,2) )
+summary(mod7b)
 
 # constrained 4PL model
 # equal slope, guessing and slipping parameters

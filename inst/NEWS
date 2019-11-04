@@ -38,12 +38,41 @@ CHANGELOG sirt
 
 
 ------------------------------------------------------------------------
+VERSIONS sirt 3.7  |  2019-11-04  |  Last: sirt 3.7-40
+------------------------------------------------------------------------
+
+FIXED * fixed a bug in computation of vcov() for xxirt objects
+NOTE  * added utility function resp_groupwise()
+NOTE  * included default method in invariance.alignment() for
+        choosing fixed=TRUE or fixed=FALSE
+FIXED * corrected wrong sign of thresholds in noharm.sirt()
+        (thanks to Asghar Minaei)
+FIXED * fixed a bug in rasch.mirtlc() for multiple dimensions
+        (thanks to @andreanorcinipala, issue #10)
+FIXED * try to fix numerical issues in polychoric2() for 
+        'use_pbv=0' (thanks to Njaal Foldnes)
+ADDED * added prior distributions in rasch.mml2() (arguments
+        'prior.b', 'prior.a', 'prior.c', 'prior.d')
+FIXED * bug fix in mirt.wrapper.coef()
+ADDED * added mirt_summary() function for producing summary output
+        for mirt objects
+ADDED * extended S3 methods IRT.irfprob, IRT.likelihood and 
+        IRT.posterior for objects of class MultipleGroupClass 
+        (models fitted in mirt package)
+ADDED * added S3 method IRT.expectedCounts for objects fitted in
+        mirt package
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: resp_groupwise (1),
+        invariance.alignment (3), rasch.mml2 (1),
+        mirt.wrapper.coef (1)
+
+------------------------------------------------------------------------
 VERSIONS sirt 3.6  |  2019-08-01  |  Last: sirt 3.6-21
 ------------------------------------------------------------------------
 
 FIXED * corrected a bug in lsem.bootstrap() (thanks to Ingo Seifert)
 NOTE  * added utility function scale_group_means()
-NOTE  * included utility function scale_group_means()
 NOTE  * changed parameterization of powers in invariance alignment 
         to have clear correspondence to regularization methods
         (e.g., old: p=.25; new: p=.5)
@@ -75,7 +104,7 @@ ADDED * added option for estimation with sampling weights in gom.em().
         Also included final Newton-Raphson iterations and argument
         for parameter constraints.
 ADDED * included unstandardized and standardized residuals in output
-        of btm () function (value 'residuals'; thanks to Milja Curcin)
+        of btm() function (value 'residuals'; thanks to Milja Curcin)
 
 DATA  * included/modified datasets: data.si07, data.si08, data.trees
 EXAMP * included/modified examples: gom.em (1,3), lsem.estimate (1),

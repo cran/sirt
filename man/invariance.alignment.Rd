@@ -1,5 +1,5 @@
 %% File Name: invariance.alignment.Rd
-%% File Version: 1.634
+%% File Version: 1.644
 
 \name{invariance.alignment}
 \alias{invariance.alignment}
@@ -19,7 +19,7 @@ The function \code{invariance.alignment} performs alignment under approximate
 invariance for \eqn{G} groups and \eqn{I} items
 (Asparouhov & Muthen, 2014; Byrne & van de Vijver, 2017; DeMars, xxxx; Finch, 2016;
 Fischer & Karl, 2019; Flake & McCoach, 2018; Kim et al., 2017; Marsh et al., 2018;
-Muthen & Asparouhov, 2014, 2018; Pokropek, Davidov & Schmidt, xxxx).
+Muthen & Asparouhov, 2014, 2018; Pokropek, Davidov & Schmidt, 2019).
 It is assumed that item loadings and intercepts are
 previously estimated as a unidimensional factor model under the assumption of a factor
 with zero mean and a variance of one.
@@ -43,8 +43,8 @@ argument \code{weights}.
 
 \usage{
 invariance.alignment(lambda, nu, wgt=NULL, align.scale=c(1, 1),
-    align.pow=c(.5, .5), eps=1e-4, psi0.init=NULL, alpha0.init=NULL, center=FALSE,
-    optimizer="optim", fixed=TRUE, ...)
+    align.pow=c(.5, .5), eps=1e-3, psi0.init=NULL, alpha0.init=NULL, center=FALSE,
+    optimizer="optim", fixed=NULL, ...)
 
 \method{summary}{invariance.alignment}(object, digits=3, file=NULL, ...)
 
@@ -93,7 +93,9 @@ be centered.
    \code{"optim"} (using \code{\link[stats:optim]{stats::optim}})
    or \code{"nlminb"} (using \code{\link[stats:nlminb]{stats::nlminb}}).}
 \item{fixed}{Logical indicating whether SD of first group should
-be fixed to one. If \code{fixed=FALSE}, the product of all SDs is set to one.}
+be fixed to one. If \code{fixed=FALSE}, the product of all SDs is set to one.
+If \code{NULL}, then \code{fixed} is automatically chosen by default. For many groups,
+\code{fixed=FALSE} is chosen.}
   \item{object}{
 Object of class \code{invariance.alignment}
   }
@@ -140,7 +142,7 @@ and the optimization functions are defined as
     f_\nu (x)=|  x/ a_\nu ]^{p_\nu}
     \approx [ ( x/ a_\nu )^2 + \varepsilon ]^{p_\nu / 2}
             }
-using a small \eqn{ \varepsilon > 0} (e.g. .0001) to obtain
+using a small \eqn{ \varepsilon > 0} (e.g. .001) to obtain
 a differentiable optimization function. For \eqn{p_\nu=0} or \eqn{p_\lambda=0}, the
 optimization function essentially counts the number of different parameter
 and mimicks a \eqn{L_0} penalty which is zero iff the argument is zero
@@ -157,7 +159,11 @@ Note that Asparouhov and Muthen (2014) use \eqn{a_\lambda=a_\nu=1}
 and \eqn{p_\lambda=p_\nu=0.5} (which can be modified in \code{align.pow}).
 In case of \eqn{p_\lambda=2}, the penalty is approximately
 \eqn{f_\lambda(x)=x^2 }, in case of \eqn{p_\lambda=0.5}
-it is approximately \eqn{f_\lambda(x)=\sqrt{|x|} }.
+it is approximately \eqn{f_\lambda(x)=\sqrt{|x|} }. Note that \pkg{sirt} used a
+different parametrization in versions up to 3.5. The \eqn{p} parameters have to be halved
+for consistency with previous versions (e.g., the Asparouhov & Muthen parametrization
+corresponds to \eqn{p=.25}; see also Fischer & Karl, 2019, for an application of
+the previous parametrization).
 
 Effect sizes of approximate invariance based on \eqn{R^2} have
 been proposed by Asparouhov and Muthen (2014). These are
@@ -194,7 +200,7 @@ A list with following entries
 
 \references{
 Asparouhov, T., & Muthen, B. (2014). Multiple-group factor analysis alignment.
-\emph{Structural Equation Modeling, 21}, 1-14.
+\emph{Structural Equation Modeling, 21}(4), 1-14.
 \doi{10.1080/10705511.2014.919210}
 
 Byrne, B. M., & van de Vijver, F. J. R. (2017). The maximum likelihood alignment
@@ -246,9 +252,9 @@ generalized structured models. \emph{Advances in Data Analysis and Classificatio
 97-120.
 \doi{10.1007/s11634-015-0205-y}
 
-Pokropek, A., Davidov, E., & Schmidt, P. (xxxx). A Monte Carlo simulation study to
+Pokropek, A., Davidov, E., & Schmidt, P. (2019). A Monte Carlo simulation study to
 assess the appropriateness of traditional and newer approaches to test for
-measurement invariance. \emph{Structural Equation Modeling, xx}(xx), xxx-xxx.
+measurement invariance. \emph{Structural Equation Modeling, 26}(5), 724-744.
 \doi{10.1080/10705511.2018.1561293}
 
 Vandenberg, R. J., & Lance, C. E. (2000). A review and synthesis of the
@@ -426,53 +432,12 @@ lambda <- data.ess2005$lambda
 nu <- data.ess2005$nu
 
 # Model 1: least squares optimization
-mod1 <- sirt::invariance.alignment( lambda=lambda, nu=nu )
+mod1 <- sirt::invariance.alignment( lambda=lambda, nu=nu, align.pow=c(2,2) )
 summary(mod1)
 
 # Model 2: sparse target function and definition of scales
-mod2 <- sirt::invariance.alignment( lambda=lambda, nu=nu, align.pow=c(.5,.5),
-            align.scale=c( .2, .3)  )
+mod2 <- sirt::invariance.alignment( lambda=lambda, nu=nu, control=list(trace=2) )
 summary(mod2)
-
-# compare results of Model 1 and Model 2
-round( cbind( mod1$pars, mod2$pars ), 2 )
-  ##      alpha0 psi0 alpha0 psi0
-  ##   1    0.06 0.87   0.05 0.91
-  ##   2   -0.51 1.03  -0.37 0.99
-  ##   3    0.18 0.97   0.25 1.04
-  ##   4   -0.67 0.90  -0.53 0.90
-  ##   5    0.09 0.98   0.10 0.99
-  ##   6    0.23 1.03   0.28 1.00
-  ##   7    0.27 0.97   0.14 1.10
-  ##   8    0.18 0.90   0.07 0.89
-  ##   [...]
-
-# look at nu residuals to explain differences in means
-round( mod1$nu.resid, 2)
-  ##         ipfrule ipmodst ipbhprp imptrad
-  ##    [1,]    0.15   -0.25   -0.01    0.01
-  ##    [2,]   -0.18    0.23    0.10   -0.24
-  ##    [3,]    0.22   -0.34    0.05   -0.02
-  ##    [4,]    0.29   -0.04    0.12   -0.53
-  ##    [5,]   -0.32    0.19    0.00    0.13
-  ##    [6,]    0.05   -0.21    0.05    0.04
-  ##    [7,]   -0.26    0.54   -0.15   -0.02
-  ##    [8,]    0.07   -0.05   -0.10    0.12
-round( mod2$nu.resid, 2)
-  ##         ipfrule ipmodst ipbhprp imptrad
-  ##    [1,]    0.16   -0.25    0.00    0.02
-  ##    [2,]   -0.27    0.14    0.00   -0.30
-  ##    [3,]    0.18   -0.37    0.00   -0.05
-  ##    [4,]    0.19   -0.13    0.00   -0.60
-  ##    [5,]   -0.33    0.19   -0.01    0.12
-  ##    [6,]    0.00   -0.23    0.00    0.01
-  ##    [7,]   -0.16    0.64   -0.01    0.04
-  ##    [8,]    0.15    0.02   -0.02    0.19
-
-round( rowMeans( mod1$nu.resid )[1:8], 2 )
-  ##   [1] -0.02 -0.02 -0.02 -0.04  0.00 -0.02  0.03  0.01
-round( rowMeans( mod2$nu.resid )[1:8], 2 )
-  ##   [1] -0.02 -0.11 -0.06 -0.14 -0.01 -0.06  0.13  0.09
 
 #############################################################################
 # EXAMPLE 4: Linking with item parameters containing outliers

@@ -1,5 +1,5 @@
 %% File Name: lsem.estimate.Rd
-%% File Version: 0.726
+%% File Version: 0.728
 
 \name{lsem.estimate}
 \alias{lsem.estimate}
@@ -201,8 +201,8 @@ residualization.}
 Hildebrandt, A., Luedtke, O., Robitzsch, A., Sommer, C., &
 Wilhelm, O. (2016). Exploring factor model parameters across continuous variables
 with local structural equation models.
-\emph{Multivariate Behavioral Research, 51}, 257-278.
-http://dx.doi.org/10.1080/00273171.2016.1142856
+\emph{Multivariate Behavioral Research, 51}(2-3), 257-278.
+\doi{10.1080/00273171.2016.1142856}
 
 Hildebrandt, A., Wilhelm, O., & Robitzsch, A. (2009). Complementary and
 competing factor analytic approaches for the investigation of measurement invariance.
@@ -263,7 +263,7 @@ mod1b <- sirt::lsem.estimate( dat, moderator="age", moderator.grid=moderator.gri
                lavmodel=lavmodel, h=2, std.lv=TRUE, pseudo_weights=50 )
 summary(mod1b)
 
-#** estimation with samppling weights
+#** estimation with sampling weights
 
 # generate random sampling weights
 set.seed(987)
