@@ -1,8 +1,8 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 3.8-11
-Date: 2020-02-14 14:19:07
+Version: 3.9-4
+Date: 2020-02-17 12:57:09
 Author: Alexander Robitzsch [aut,cre] (<https://orcid.org/0000-0002-8226-3132>)
 Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 Description: 
@@ -32,6 +32,6 @@ URL: https://github.com/alexanderrobitzsch/sirt,
         https://sites.google.com/site/alexanderrobitzsch2/software
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2020-02-14 13:29:08 UTC; sunpn563
+Packaged: 2020-02-17 12:05:12 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2020-02-15 18:00:02 UTC
+Date/Publication: 2020-02-17 19:00:03 UTC

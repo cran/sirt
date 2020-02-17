@@ -1,4 +1,4 @@
-231f77000a928944a83bbb9b51bae794 *DESCRIPTION
+2b9805ad91f28ed302d3dfd15f8e0c05 *DESCRIPTION
 d16d17f1fbe4e6cf0ea3efc7cfe78f61 *NAMESPACE
 30e9dc02f2ec2892c4c03c8a56cddf2b *R/IRT.expectedCounts.mirt.R
 f94cb9598b342217b7d49b7bda7ea7b6 *R/IRT.expectedCounts_sirt.R
@@ -24,7 +24,7 @@ d2f0921e059175c0c24614edda4a97ec *R/Q3.R
 6528b2e9bb59cdcff455c87befc6f202 *R/R2noharm.EAP.R
 ff26e96eec152701f3c07e24094ec7e9 *R/R2noharm.R
 844e5467969a6e3e91012b58f7c7337d *R/R2noharm.jackknife.R
-023916dbdc830ae422c79e6c64c0a8ca *R/RcppExports.R
+7e68049560ca2ad86febe1628b0b1a58 *R/RcppExports.R
 451b30137e8c1a0a6901e8babf660857 *R/Rhat_sirt.R
 5eaa6e90a0293002054b891696779c40 *R/amh_plot.R
 c88d5d0c64f58e8571b713c99fa858ee *R/anova_sirt.R
@@ -42,7 +42,7 @@ dae753d1a4ca55ea96d3cc0206f6f7c3 *R/btm_fit_combine_tables.R
 11698c50c1bba2d8bc8dfa36e26332da *R/ccov.np.R
 e7fcb12cd04200082d5efaf1ed9f4882 *R/ccov_np_print_progress.R
 3def352f858fecbbb582c481f16bcac3 *R/ccov_np_regression.R
-d2ff1ad3b31497ed49adde98eb3c7003 *R/ccov_np_score_density.R
+eee78dcf6258f3f10a29537efc86531b *R/ccov_np_score_density.R
 283c52e9263c0d566c5b81b09c93a951 *R/class.accuracy.rasch.R
 945d2ea58910a24dedab295c3949bb23 *R/coef.rasch.evm.pcm.R
 717ae40c3a42cde0082dd5caec0ac4d3 *R/conf.detect.R
@@ -127,10 +127,10 @@ c15df3b699f175899bffe16ae30e410b *R/lc.2raters.R
 3e706427cb9e3c91bc45dfbab150372e *R/likelihood_adjustment.R
 9bb07609fe5adb4ea093d0d05dbd8825 *R/likelihood_adjustment_aux.R
 e5d972a9650762df219c4b430280e092 *R/likelihood_moments.R
-d9ceb611d0cecfbdadf2d939647867ae *R/linking.haberman.R
+17864ef207d7c5c00bb3dfacf75b5202 *R/linking.haberman.R
 b5ec634756cb1b6b154e8169f810be28 *R/linking.haebara.R
 e2c2a9f1a368ca4538cb8b884834e846 *R/linking.robust.R
-71863ef47a3a7c5ce62fc4ce2c5de409 *R/linking_haberman_als.R
+79767c9710bd9ce2b14e959272a8033c *R/linking_haberman_als.R
 2f9ad83ba164bfdde5d7bb641e99b249 *R/linking_haberman_als_residual_weights.R
 182dd7e99590932d48a86b3014c17cb8 *R/linking_haberman_als_vcov.R
 56d5a186d4640b6e7f98ac2f25851ce2 *R/linking_haberman_bisquare_weight.R
@@ -613,7 +613,7 @@ fc745a7626860538caeb39e7b080b208 *R/xxirt_proc_ParTable.R
 b1509e94ec8858e612d89cb6666bc6a2 *R/yen.q3.R
 f2eb392da5e58902aedfa4fe75c486cf *R/zzz.R
 494d4bce99379673f863450601905c81 *README.md
-53c37c69c110e66c2766d64d350c36e2 *build/partial.rdb
+5c43dfbfd0b097133cc980618f2ed307 *build/partial.rdb
 42f0de19472ba915e3695c7042a0e3b7 *data/data.activity.itempars.rda
 63e20061305c9ee845c102ee2f5ed8dd *data/data.befki.rda
 af1314039076327ffd442475c610b3b9 *data/data.befki_resp.rda
@@ -675,7 +675,7 @@ ad9d4851cbf83a77cd14cf136b25d7eb *data/data.timss07.G8.RUS.rda
 16d7c07274f6ee6925ab14c1203a3156 *data/data.trees.rda
 776f64c40d8d8ea79b91e06a7e19274a *data/datalist
 54d4ce15e7186273c5c7a5f662d8c7c5 *inst/CITATION
-e0eb20ea64f2ccfd44f8c7d38d6748d0 *inst/NEWS
+db6510086238b633208353fddd3462ef *inst/NEWS
 c5f0c4f7a50275722587680dbc12cb00 *man/IRT.mle.Rd
 395648be8ef0fbafb3774c86cd6a700d *man/Q3.Rd
 ed4a1ce2878247588dded67546bd164b *man/Q3.testlet.Rd
@@ -827,7 +827,7 @@ c4cc9bbe7f6dc246ac4ae029ab48f1ff *man/truescore.irt.Rd
 47a1264c3c0c195453cdbcc004097010 *man/xxirt_createThetaDistribution.Rd
 3900e4e4b505787e0f3cb83ad8ba2138 *src/Makevars
 36dc26a5d3e080089104b503a783361f *src/Makevars.win
-5cebc774060da7e4ad995d1886edd102 *src/RcppExports.cpp
+4dd1069f233b905cd5430e8ce3ccbef0 *src/RcppExports.cpp
 89b69b9ad910c5f54abd185796afcda2 *src/gooijer_isop_rcpp.cpp
 083458346653989f8f0e0f98776552ca *src/matrixfunctions_sirt_rcpp.cpp
 39ef0d91575da79997242bf18adee5d5 *src/mle_pcm_group_rcpp.cpp
