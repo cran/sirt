@@ -1,5 +1,5 @@
 %% File Name: rasch.mml.Rd
-%% File Version: 3.992596
+%% File Version: 4.018
 
 \name{rasch.mml2}
 \alias{rasch.mml2}
@@ -11,6 +11,7 @@
 \alias{IRT.likelihood.rasch.mml}
 \alias{IRT.posterior.rasch.mml}
 \alias{IRT.modelfit.rasch.mml}
+\alias{IRT.expectedCounts.rasch.mml}
 \alias{summary.IRT.modelfit.rasch.mml}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -46,15 +47,16 @@ rasch.mml2( dat, theta.k=seq(-6,6,len=21), group=NULL, weights=NULL,
    fixed.K=rep(3,ncol(dat)), b.init=NULL, est.a=NULL, est.b=NULL,
    est.c=NULL, est.d=NULL, min.b=-99, max.b=99, min.a=-99, max.a=99,
    min.c=0, max.c=1, min.d=0, max.d=1, prior.b=NULL, prior.a=NULL, prior.c=NULL,
-   prior.d=NULL, est.K=NULL, min.K=1, max.K=20, beta.init=NULL, min.beta=-8,
-   pid=1:(nrow(dat)), trait.weights=NULL,  center.trait=TRUE, center.b=FALSE, alpha1=0,
-   alpha2=0,est.alpha=FALSE, equal.alpha=FALSE, designmatrix=NULL, alpha.conv=parm.conv,
-   numdiff.parm=0.00001, numdiff.alpha.parm=numdiff.parm, distribution.trait="normal",
-   Qmatrix=NULL, variance.fixed=NULL, variance.init=NULL,
+   prior.d=NULL, est.K=NULL, min.K=1, max.K=20, min.delta=-20, max.delta=20,
+   beta.init=NULL, min.beta=-8, pid=1:(nrow(dat)), trait.weights=NULL,  center.trait=TRUE,
+   center.b=FALSE, alpha1=0, alpha2=0,est.alpha=FALSE, equal.alpha=FALSE,
+   designmatrix=NULL, alpha.conv=parm.conv, numdiff.parm=0.00001,
+   numdiff.alpha.parm=numdiff.parm, distribution.trait="normal", Qmatrix=NULL,
+   variance.fixed=NULL, variance.init=NULL,
    mu.fixed=cbind(seq(1,ncol(Qmatrix)),rep(0,ncol(Qmatrix))),
    irtmodel="raschtype", npformula=NULL, npirt.monotone=TRUE,
    use.freqpatt=is.null(group), delta.miss=0, est.delta=rep(NA,ncol(dat)),
-   ... )
+   nimps=0, ... )
 
 \method{summary}{rasch.mml}(object, file=NULL, ...)
 
@@ -71,6 +73,8 @@ rasch.mml2( dat, theta.k=seq(-6,6,len=21), group=NULL, weights=NULL,
 \method{IRT.posterior}{rasch.mml}(object,...)
 
 \method{IRT.modelfit}{rasch.mml}(object,...)
+
+\method{IRT.expectedCounts}{rasch.mml}(object,...)
 
 \method{summary}{IRT.modelfit.rasch.mml}(object,...)
 }
@@ -200,12 +204,10 @@ Vector of integers which indicate which \eqn{K}
 parameters should be estimated. Equal integers correspond
 to the same estimated parameters.
 }
-  \item{min.K}{
-Minimal \eqn{K} parameter to be estimated
-}
-  \item{max.K}{
-Maximal \eqn{K} parameter to be estimated
-}
+\item{min.K}{ Minimal \eqn{K} parameter to be estimated}
+\item{max.K}{ Maximal \eqn{K} parameter to be estimated}
+\item{min.delta}{ Minimal \eqn{delta.miss} parameter to be estimated}
+\item{max.delta}{ Maximal \eqn{delta.miss} parameter to be estimated}
 \item{beta.init}{Optional vector of initial \eqn{\beta} parameters}
 \item{min.beta}{Minimum \eqn{\beta} parameter to be estimated.}
   \item{pid}{
@@ -297,6 +299,7 @@ grid of \eqn{\theta} values is estimated.
      missing responses and setting all missing responses to incorrect}
 \item{est.delta}{Vector with indices indicating the \eqn{\delta} parameters
     to be estimated if \code{irtmodel="missing1"}.}
+\item{nimps}{Number of imputed datasets of item responses}
   \item{object}{
 Object of class \code{rasch.mml}
 }
@@ -368,14 +371,14 @@ Besides an unidimensional ability \eqn{\theta_p},
 an individual response propensity \eqn{\xi_p} is proposed. We define
 item responses \eqn{X_{pi}} and response indicators \eqn{R_{pi}} indicating whether
 item responses \eqn{X_{pi}} are observed or not. Denoting the logistic function
-by \eqn{L}, the item response model for ability is defined as
+by \eqn{\Psi}, the item response model for ability is defined as
 \deqn{ P( X_{pi}=1  | \theta_p, \xi_p )=P( X_{pi}=1 | \theta_p )
-=L( \theta_p - b_i )}
+=\Psi( a_i (\theta_p - b_i ))}
 We also define a measurement model for response indicators \eqn{R_{pi}} which depends
 on the item response \eqn{X_{pi}} itself:
 \deqn{P( R_{pi}=1 | X_{pi}=k, \theta_p, \xi_p )=
     P( R_{pi}=1 | X_{pi}=k, \xi_p )=
-L \left[  \xi_p -  \beta_i - k \delta _i  \right] \quad \mbox{ for }
+\Psi \left[  \xi_p -  \beta_i - k \delta _i  \right] \quad \mbox{ for }
 \quad k=0,1}
 If \eqn{\delta _i=0}, then the probability of responding to an item is independent
 of the incompletely observed item \eqn{X_{pi}} which is an

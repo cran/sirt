@@ -1,10 +1,13 @@
 %% File Name: linking.haberman.Rd
-%% File Version: 0.738
+%% File Version: 0.751
 
 \name{linking.haberman}
 \alias{linking.haberman}
 \alias{summary.linking.haberman}
+\alias{linking.haberman.lq}
+\alias{summary.linking.haberman.lq}
 \alias{linking_haberman_itempars_prepare}
+\alias{linking_haberman_itempars_convert}
 \alias{L0_polish}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -26,11 +29,19 @@ linking.haberman(itempars, personpars, estimation="OLS", a_trim=Inf, b_trim=Inf,
 
 \method{summary}{linking.haberman}(object, digits=3, file=NULL, ...)
 
+linking.haberman.lq(itempars, pow=2, eps=1e-3, a_log=TRUE, use_nu=FALSE,
+      est_pow=FALSE, lower_pow=.1, upper_pow=3)
+
+\method{summary}{linking.haberman.lq}(object, digits=3, file=NULL, ...)
+
 ## prepare 'itempars' argument for linking.haberman()
 linking_haberman_itempars_prepare(b, a=NULL, wgt=NULL)
 
+## conversion of different parameterizations of item parameters
+linking_haberman_itempars_convert(itempars=NULL, lambda=NULL, nu=NULL, a=NULL, b=NULL)
+
 ## L0 polish precedure minimizing number of interactions in two-way table
-L0_polish(x, tol, eps=0.01, maxiter=30, type=1, verbose=TRUE)
+L0_polish(x, tol, conv=0.01, maxiter=30, type=1, verbose=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -73,6 +84,15 @@ should be displayed.
 }
 \item{adjust_main_effects}{Logical indicating whether all elements in the vector
 of main effects should be simultaneously adjusted}
+\item{pow}{Power \eqn{q}}
+\item{eps}{Epsilon value used in differentiable approximating function}
+\item{use_nu}{Logical indicating whether item intercepts instead of
+item difficulties are used in linking}
+\item{est_pow}{Logical indicating whether power values should be estimated}
+\item{lower_pow}{Lower bound for estimated power}
+\item{upper_pow}{Upper bound for estimated power}
+\item{lambda}{Matrix containing item loadings}
+\item{nu}{Matrix containing item intercepts}
 \item{object}{Object of class \code{linking.haberman}.}
 \item{digits}{Number of digits after decimals for rounding in \code{summary}.}
 \item{file}{Optional file name if \code{summary} should be sunk into a file.}
@@ -82,7 +102,6 @@ of main effects should be simultaneously adjusted}
 \item{wgt}{Matrix of weights}
 \item{x}{Matrix}
 \item{tol}{Tolerance value}
-\item{eps}{Convergence criterion}
 \item{type}{Can be \code{1} (using Tukey's median polish) or
 \code{2} (alternating median regression).}
 \item{verbose}{Logical indicating whether iteration progress should be displayed}
@@ -149,6 +168,10 @@ Effect sizes of invariance are calculated as R-squared measures
 of explained item slopes and intercepts after linking
 in comparison to item parameters across groups
 (Asparouhov & Muthen, 2014).
+
+The function \eqn{linking.haberman.lq} uses the loss function \eqn{\rho(x)=|x|^q}.
+The originally proposed Haberman linking can be obtained with \code{pow=2} (\eqn{q=2}).
+The powers can also be estimated (argument \code{est_pow=TRUE}).
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -221,7 +244,7 @@ West Sussex: Wiley. \doi{10.1002/0470010940}
 
 Terbeck, W., & Davies, P. L. (1998). Interactions and outliers in the two-way
 analysis of variance. \emph{Annals of Statistics, 26}(4), 1279-1305.
-\doi{10.1214/aos/1024691243}
+\doi{10/d66r8s}
 
 Tukey, J. W. (1977). \emph{Exploratory data analysis}. Addison-Wesley.
 

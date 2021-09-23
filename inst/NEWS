@@ -37,6 +37,71 @@ CHANGELOG sirt
 
 
 
+------------------------------------------------------------------------
+VERSIONS sirt 3.10  |  2021-09-22  |  Last: sirt 3.10-118
+------------------------------------------------------------------------
+
+ADDED * included option for regularization penalties in xxirt()
+        using the argument 'penalty_fun_item'
+NOTE  * included additional information for data source in
+        data.pisaMath and data.pisaRead (requested by Paul De Boeck)
+NOTE  * included try-error functionality in lsem.bootstrap() to
+        skip nonconvergent cases (thanks to Ulrich Schroeders)
+NOTE  * included argument 'cluster' in lsem.bootstrap() for 
+        option of bootstrap of clusters (suggested by Ulrich Schroeders)
+NOTE  * included argument 'par_init' in linking.haeabara()
+NOTE  * included general distance function dist='Lp' in
+        linking.haebara. Added arguments 'pow' and 'use_der'.
+NOTE  * included argument 'meth' in invariance.alignment()
+ADDED * included utility function lq_fit() for fitting regression
+        models using the L_q norm. Also exported function
+        lq_fit_estimate_power() for estimating power values.
+NOTE  * included utility function linking_haberman_itempars_convert()
+ADDED * included alternative loss function |x|^q (L_q distance) for
+        Haberman linking in linking.haberman.lq()
+ADDED * included function dexppow() and rexppow() for exponential
+        power function distribution       
+NOTE  * included argument 'wgt.ties' in btm() that allows a weighting
+        of ties different from .5
+ADDED * included predict method for objects of class 'btm'
+NOTE  * exported utility function sirt_rcpp_discrete_inverse()
+NOTE  * added argument 'use_sum_score' in conf.detect(), expl.detect()
+        and ccov.np(). With use_sum_score=TRUE, the bias-corrected
+        DETECT estimator of Zhang and Stout (1999) can be obtained
+        (requested by Cengiz Zopluoglu, Github Issue #13)
+NOTE  * included argument 'bias_corr' in ccov.np() and conf.detect()
+NOTE  * added arguments 'smooth', 'hclust_method', and 'estsample'
+        in expl.detect() (related to Github Issue #15)
+NOTE  * included S3 method IRT.expectedCounts() for rasch.mml2()
+        (objects of class 'rasch.mml')
+NOTE  * included argument 'prior_sd' in rasch.jml() for penalized JML
+NOTE  * included argument 'weights' for sampling weights in
+        rasch.pairwise.itemcluster(), rasch.pairwise(), and
+        rasch.copula2()
+NOTE  * adapted smirt() funtion in cases in which dat has no column
+        names (thanks to Burga Leon Andres Alberto)
+ADDED * included argument 'power' in rasch.pairwise() function
+        (thanks to Joerg-Henrik Heine)
+ADDED * added alternative optimization function for MINCHI method
+        in rasch.pairwise() which can be requested by 'direct_optim=TRUE'.
+        Direct optimization is now the default in rasch.pairwise().
+NOTE  * added object class 'SingleGroupClass' in modelfit.sirt()
+        (thanks to @seonghobae, Github issue #17)
+NOTE  * extended irtmodel='missing1' in rasch.mml2() to the 2PL model
+NOTE  * included arguments 'M_target' and 'SD_target' in 
+        scale_group_means()
+NOTE  * included predict function predict_scale_group_means()
+FIXED * fixed bug in lsem.estimate() when sampling weights were used
+        (thanks to Oliver Luedtke and Geetanjali Basarkod)
+NOTE  * included argument 'seed' in lsem.bootstrap() for replicating
+        results in this function
+ADDED * included option for input of replication designs in 
+        lsem.bootstrap() like balanced repeated replication designs
+        in PISA implemented in arguments 'repl_design' and 'repl_factor'
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: linking.haebara (1),
+        lq_fit (1,2), btm (1)
 
 ------------------------------------------------------------------------
 VERSIONS sirt 3.9  |  2020-02-17  |  Last: sirt 3.9-4
@@ -60,8 +125,8 @@ ADDED * added argument 'smooth' in ccov.np() function that switches
         in conditional covariance estimation (thanks to a discussion
         with @iago-pssjd, Github Issue #11)
 
-DATA  * included/modified datasets: ccov.np (1)
-EXAMP * included/modified examples: ---
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: ccov.np (1)
 
 ------------------------------------------------------------------------
 VERSIONS sirt 3.7  |  2019-11-04  |  Last: sirt 3.7-40

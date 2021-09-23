@@ -1,5 +1,5 @@
 %% File Name: xxirt.Rd
-%% File Version: 0.473
+%% File Version: 0.484
 
 \name{xxirt}
 \alias{xxirt}
@@ -34,7 +34,7 @@ and latent trait distributions can be specified by the user (see Details).
 xxirt(dat, Theta=NULL, itemtype=NULL, customItems=NULL, partable=NULL,
        customTheta=NULL, group=NULL, weights=NULL, globconv=1e-06, conv=1e-04,
        maxit=200, mstep_iter=4, mstep_reltol=1e-06, h=1E-4, use_grad=TRUE,
-       verbose=TRUE)
+       verbose=TRUE, penalty_fun_item=NULL, verbose_index=NULL)
 
 \method{summary}{xxirt}(object, digits=3, file=NULL, ...)
 
@@ -121,11 +121,15 @@ to \code{\link[stats:optim]{stats::optim}}}
   \item{verbose}{
 Logical indicating whether iteration progress should be displayed
 }
+\item{penalty_fun_item}{Optional penalty function used in regularized
+estimation}
 \item{object}{Object of class \code{xxirt}}
 \item{digits}{Number of digits to be rounded}
 \item{file}{Optional file name to which \code{summary} output is written}
 \item{parm}{Optional vector of parameters}
 \item{level}{Confidence level}
+\item{verbose_index}{Logical indicating whether item index should be
+printed in estimation output}
 \item{x}{Object of class \code{xxirt}}
 \item{type}{Type of person parameter estimate. Currently, only
 \code{EAP} is implemented.}
@@ -142,8 +146,13 @@ The item response model is estimated under the assumption of
 local stochastic independence of items. Equality constraints of
 item parameters \eqn{\bold{\delta}_i} among items are allowed.
 
-Probability distribution \eqn{P(\bold{\theta})} are specified as functions
+The probability distribution \eqn{P(\bold{\theta})} are specified as functions
 of an unknown parameter vector \eqn{\bold{\gamma}}.
+
+A penalty function for item parameters can be specified in
+\code{penalty_fun_item}. The penalty function should be differentiable and
+non-differentiable function (e.g., the absolute value function) should
+be approximated by a differentiable function.
 }
 
 \value{
@@ -166,6 +175,7 @@ List with following entries
 \item{customTheta}{Used customized theta distribution}
 \item{p.xi.aj}{Individual likelihood}
 \item{p.aj.xi}{Individual posterior}
+\item{ll_case}{Case-wise log-likelihood values}
 \item{n.ik}{Array of expected counts}
 \item{EAP}{EAP person parameter estimates}
 \item{dat}{Used dataset with item responses}
