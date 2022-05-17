@@ -1,5 +1,5 @@
 %% File Name: sirt-utilities.Rd
-%% File Version: 0.402
+%% File Version: 0.406
 
 \name{sirt-utilities}
 \alias{sirt-utilities}
@@ -90,7 +90,8 @@ sirt_permutations(r,v)
 sirt_attach_list_elements(x, envir)
 
 # switch between stats::optim and stats::nlminb
-sirt_optimizer(optimizer, par, fn, grad=NULL, method="L-BFGS-B", hessian=TRUE, ...)
+sirt_optimizer(optimizer, par, fn, grad=NULL, method="L-BFGS-B", hessian=TRUE,
+                   control=list(), ...)
 
 # print objects in a summary
 sirt_summary_print_objects(obji, from=NULL, to=NULL, digits=3, rownames_null=TRUE,
@@ -128,12 +129,17 @@ sirt_rcpp_discrete_inverse(x0, y0, y)
 \item{r}{Integer}
 \item{v}{Vector}
 \item{envir}{Environment}
-\item{optimizer}{Can be \code{optim} or \code{nlminb}}
+\item{optimizer}{Can be one of the following optimizers: \code{optim}, \code{nlminb},
+\code{bobyqa} (from the \pkg{minqa} packlage), \code{Rvmmin} (from the
+\pkg{optimx} package) or \code{nloptr} (from the \pkg{nloptr} package using
+the argument \code{opts$algorithm="NLOPT_LD_MMA"}).
+}
 \item{par}{Initial parameter}
 \item{fn}{Function}
 \item{grad}{Gradient function}
 \item{method}{Optimization method}
 \item{hessian}{Logical}
+\item{control}{Control list for R optimizers}
 \item{\ldots}{Further arguments to be passed}
 \item{obji}{Data frame}
 \item{from}{Integer}

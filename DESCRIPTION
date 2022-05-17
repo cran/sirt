@@ -1,8 +1,8 @@
 Package: sirt
 Type: Package
 Title: Supplementary Item Response Theory Models
-Version: 3.11-21
-Date: 2021-12-09 11:21:10
+Version: 3.12-66
+Date: 2022-05-16 12:27:54
 Author: Alexander Robitzsch [aut,cre] (<https://orcid.org/0000-0002-8226-3132>)
 Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 Description: 
@@ -22,16 +22,16 @@ Description:
     <doi:10.1177/014662169602000403>), local structural equation modeling 
     (LSEM; Hildebrandt, Luedtke, Robitzsch, Sommer & Wilhelm, 2016,
     <doi:10.1080/00273171.2016.1142856>).
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.5)
 Imports: CDM, graphics, methods, Rcpp, stats, TAM, utils
 Suggests: coda, igraph, lavaan, lavaan.survey, MASS, Matrix, miceadds,
-        mirt, mvtnorm, pbivnorm, pbv, psych, sfsmisc, sm, survey
-Enhances: immer
+        minqa, mirt, mvtnorm, nloptr, optimx, pbivnorm, pbv, psych,
+        sfsmisc, sm, survey
 LinkingTo: pbv, Rcpp, RcppArmadillo
 URL: https://github.com/alexanderrobitzsch/sirt,
         https://sites.google.com/site/alexanderrobitzsch2/software
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2021-12-09 10:26:15 UTC; sunpn563
+Packaged: 2022-05-16 10:37:36 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2021-12-09 15:40:02 UTC
+Date/Publication: 2022-05-17 09:10:05 UTC

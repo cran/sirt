@@ -1,5 +1,5 @@
 %% File Name: invariance.alignment.Rd
-%% File Version: 1.654
+%% File Version: 1.672
 
 \name{invariance.alignment}
 \alias{invariance.alignment}
@@ -52,9 +52,10 @@ invariance_alignment_constraints(model, lambda_parm_tol, nu_parm_tol )
 
 \method{summary}{invariance_alignment_constraints}(object, digits=3, file=NULL, ...)
 
-invariance_alignment_simulate(nu, lambda, err_var, mu, sigma, N)
+invariance_alignment_simulate(nu, lambda, err_var, mu, sigma, N, output="data",
+     groupwise=FALSE, exact=FALSE)
 
-invariance_alignment_cfa_config(dat, group, weights=NULL, verbose=FALSE, ...)
+invariance_alignment_cfa_config(dat, group, weights=NULL, model="2PM", verbose=FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -105,14 +106,22 @@ Object of class \code{invariance.alignment}
 \item{file}{Optional file name in which summary should be sunk}
   \item{\dots}{
 Further optional arguments to be passed}
-\item{model}{Model of class \code{invariance.alignment}}
+\item{model}{Model of class \code{invariance.alignment}.
+For \code{invariance_alignment_cfa_config}: Model type: \code{"2PM"} for two-parameter
+model with unequal loadings
+and \code{"1PM"} with equal loadings and equal residual variances}
 \item{lambda_parm_tol}{Parameter tolerance for \eqn{\lambda} parameters}
 \item{nu_parm_tol}{Parameter tolerance for \eqn{\nu} parameters}
 \item{err_var}{Error variance}
 \item{mu}{Vector of means}
 \item{sigma}{Vector of standard deviations}
 \item{N}{Vector of sample sizes per group}
-\item{dat}{Dataset with items}
+\item{output}{Specifies output type: \code{"data"} for dataset and \code{"suffstat"}
+for sufficient statistics (i.e., means and covariance matrices)}
+\item{groupwise}{Logical indicating whether group-wise output is requested}
+\item{exact}{Logical indicating whether distributions should be exactly preserved in
+simulated data}
+\item{dat}{Dataset with items or a list containing sufficient statistics}
 \item{group}{Vector containing group indicators}
 \item{weights}{Optional vector of sampling weights}
 \item{verbose}{Logical indicating whether progress should be printed}
@@ -663,6 +672,10 @@ weights <- stats::runif(sum(N), 0, 2)
 pars2 <- sirt::invariance_alignment_cfa_config(dat[,-1], group=dat$group, weights=weights)
 print(pars2$nu)
 print(pars$nu)
+
+#--- estimate one-parameter model
+pars <- sirt::invariance_alignment_cfa_config(dat[,-1], group=dat$group, model="1PM")
+print(pars)
 }
 }
 
