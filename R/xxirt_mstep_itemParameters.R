@@ -1,5 +1,5 @@
 ## File Name: xxirt_mstep_itemParameters.R
-## File Version: 0.373
+## File Version: 0.399
 
 
 #--- M-step item parameters
@@ -10,10 +10,12 @@ xxirt_mstep_itemParameters <- function( partable, item_list, items, Theta,
 {
     #-------------------------------------------------
     #**** define likelihood function
-    like_items <- function( x, ... ){
+    like_items1 <- function( x, ... )
+    {
         partable <- xxirt_partable_include_freeParameters( partable=partable, x=x )
-        probs1 <- xxirt_compute_itemprobs( item_list=item_list, items=items, Theta=Theta, ncat=ncat,
-                            partable=partable, partable_index=partable_index )
+        probs1 <- xxirt_compute_itemprobs( item_list=item_list, items=items,
+                            Theta=Theta, ncat=ncat, partable=partable,
+                            partable_index=partable_index )
         log_probs1 <- log( probs1 + eps )
         # log likelihood value
         ll <- - sum( N.ik * log_probs1 )
@@ -32,11 +34,12 @@ xxirt_mstep_itemParameters <- function( partable, item_list, items, Theta,
 
     #-------------------------------------------------
     #*** define gradient here
-    #### x <- partable[ partable$parfree==1, "value"]
-    grad_items <- function(x, ...){
+    #### x <- partable[ partable$parfree==1, 'value']
+    grad_items1 <- function(x, ...){
         partable0 <- xxirt_partable_include_freeParameters( partable=partable, x=x )
-        probs1 <- xxirt_compute_itemprobs( item_list=item_list, items=items, Theta=Theta, ncat=ncat,
-                            partable=partable0, partable_index=partable_index )
+        probs1 <- xxirt_compute_itemprobs( item_list=item_list, items=items,
+                            Theta=Theta, ncat=ncat, partable=partable0,
+                            partable_index=partable_index )
         NP <- sum( partable$parfree==1)
         pen1 <- grad1 <- rep(0,NP)
         pen0 <- 0
@@ -45,9 +48,12 @@ xxirt_mstep_itemParameters <- function( partable, item_list, items, Theta,
             xh <- x
             xh[pp] <- xh[pp] + h
             N.ik_pp <- N.ik[item_index_pp,,, drop=FALSE ]
-            partable_h <- xxirt_partable_include_freeParameters( partable=partable0, x=xh )
-            probs1h <- xxirt_compute_itemprobs( item_list=item_list, items=items, Theta=Theta, ncat=ncat,
-                                partable=partable_h, partable_index=partable_index, item_index=item_index_pp )
+            partable_h <- xxirt_partable_include_freeParameters( partable=partable0,
+                                    x=xh )
+            probs1h <- xxirt_compute_itemprobs( item_list=item_list, items=items,
+                                    Theta=Theta, ncat=ncat, partable=partable_h,
+                                    partable_index=partable_index,
+                                    item_index=item_index_pp)
             ll0 <- - sum( N.ik_pp * log( probs1[ item_index_pp,,,drop=FALSE] + eps ) )
             ll1 <- - sum( N.ik_pp * log( probs1h + eps ) )
             grad1[pp] <- ( ll1 - ll0 )
@@ -70,32 +76,76 @@ xxirt_mstep_itemParameters <- function( partable, item_list, items, Theta,
     #**** end definition gradient
     #-------------------------------------------------
 
-    # method <- "BFGS"
-    arg_control <- list(maxit=mstep_iter)
-    if ( mstep_method=="BFGS"){
-        arg_control$reltol <- mstep_reltol
+    opt_fun <- stats::optim
+
+    like_items <- function(x)
+    {
+        like_items1(x=x)
     }
-    if ( mstep_method=="L-BFGS-B"){
-        arg_control$factr <- mstep_reltol
+    grad_items <- function(x)
+    {
+        grad_items1(x=x)
+    }
+
+    # mstep_method <- 'nloptr'
+    use_nloptr <- mstep_method=='nloptr'
+    if (use_nloptr){
+        requireNamespace('nloptr')
+        opt_fun <- nloptr::nloptr
+    }
+
+    if (use_nloptr){
+        arg_control <- list(maxeval=mstep_iter)
+    } else {
+        arg_control <- list(maxit=mstep_iter)
+    }
+    if (! use_nloptr){
+        if ( mstep_method=='BFGS'){
+            arg_control$reltol <- mstep_reltol
+        }
+        if ( mstep_method=='L-BFGS-B'){
+            arg_control$factr <- mstep_reltol
+        }
+    } else {
+        arg_control <- list(ftol_rel=mstep_reltol, algorithm='NLOPT_LD_LBFGS')
     }
     # method L-BFGS-B uses 'factr' (and 'pgtol') instead of 'reltol' and 'abstol'
-    arg_list <- list( par=par0, fn=like_items, method=mstep_method,
+    if (use_nloptr){
+        arg_list <- list(x0=par0, eval_f=like_items, opts=arg_control)
+    } else {
+        arg_list <- list( par=par0, fn=like_items, method=mstep_method,
                         control=arg_control)
+    }
     if (use_grad){
-        arg_list$gr <- grad_items
+        if (use_nloptr){
+            arg_list$eval_grad_f <- grad_items
+        } else {
+            arg_list$gr <- grad_items
+        }
     }
-    if ( mstep_method=="L-BFGS-B"){
-        arg_list$lower <- partable[ partable$parfree==1, "lower"]
-        arg_list$upper <- partable[ partable$parfree==1, "upper"]
+    lb <- partable[ partable$parfree==1, 'lower']
+    ub <- partable[ partable$parfree==1, 'upper']
+    if ( mstep_method=='L-BFGS-B'){
+        arg_list$lower <- lb
+        arg_list$upper <- ub
     }
-    mod <- do.call( what=stats::optim, args=arg_list )
+    if (use_nloptr){
+        arg_list$lb <- lb
+        arg_list$ub <- ub
+    }
+
+
+    mod <- do.call( what=opt_fun, args=arg_list )
+
     partable <- xxirt_partable_include_freeParameters( partable=partable, x=mod$par )
     pen_val <- 0
     if (!is.null(penalty_fun_item)){
         pen_val <- penalty_fun_item(x=mod$par)
     }
+    prior_par <- sum( xxirt_mstep_itemParameters_evalPrior(partable=partable, h=0) )
 
     #-- output
-    res <- list( ll1=mod$value, partable=partable, par0=mod$par, pen_val=pen_val )
+    res <- list( ll1=mod$value, partable=partable, par0=mod$par, pen_val=pen_val,
+                    prior_par=prior_par)
     return(res)
 }

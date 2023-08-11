@@ -1,5 +1,5 @@
 ## File Name: linking_haberman_als.R
-## File Version: 0.654
+## File Version: 0.658
 
 
 
@@ -28,10 +28,10 @@ linking_haberman_als <- function(logaM, wgtM, maxiter, conv,
     logaAt_M <- sirt_matrix2( x=logaAt, nrow=NI)
     logaM_adj1 <- logaM - logaAt_M
     logaj <- weighted_rowMeans( mat=logaM_adj1, wgt=wgtM )
-    if (! ( estimation %in% c("L0","BSQ","HUB") ) ) {
+    if (! ( estimation %in% c('L0','BSQ','HUB') ) ) {
         cutoff <- Inf
     }
-    if (estimation=="L0"){
+    if (estimation=='L0'){
         res1 <- L0_polish(x=logaM, tol=cutoff, type=1)
         wgtM0 <- wgtM <- res1$wgt
         logaM1 <- res1$x_update
@@ -56,26 +56,27 @@ linking_haberman_als <- function(logaM, wgtM, maxiter, conv,
         logaAt_M <- sirt_matrix2( x=logaAt, nrow=NI)
         logaM_adj1 <- logaM - logaAt_M
         logaj <- rep(NA,I)
-        if (estimation %in% c("OLS","BSQ","HUB")){
+        if (estimation %in% c('OLS','BSQ','HUB')){
             logaj <- weighted_rowMeans( mat=logaM_adj1, wgt=wgtM )
         }
-        if (estimation %in% c("MED")){
+        if (estimation %in% c('MED')){
             for (ii in 1:I){
-                logaj[ii] <- linking_haberman_compute_median(x=logaM_adj1[ii,], w=wgtM[ii,])
+                logaj[ii] <- linking_haberman_compute_median(x=logaM_adj1[ii,],
+                                            w=wgtM[ii,])
             }
         }
-        if (estimation %in% c("L0","L1")){
-            if (estimation=="L1"){
+        if (estimation %in% c('L0','L1')){
+            if (estimation=='L1'){
                 logaM1 <- logaM
             }
             res1 <- L1_polish(x=logaM1, type=1)
             logaj <- res1$row
             logaAt <- res1$col
         }
-        if (estimation %in% c("LTS")){
+        if (estimation %in% c('LTS')){
             for (ii in 1:I){
-                logaj[ii] <- linking_haberman_compute_lts_mean(x=logaM_adj1[ii,], w=wgtM[ii,],
-                                    lts_prop=lts_prop)
+                logaj[ii] <- linking_haberman_compute_lts_mean(x=logaM_adj1[ii,],
+                                        w=wgtM[ii,], lts_prop=lts_prop)
             }
         }
 
@@ -91,12 +92,13 @@ linking_haberman_als <- function(logaM, wgtM, maxiter, conv,
         k_estimate <- res$k_estimate
 
         #* estimation of parameters
-        if (estimation %in% c("OLS","BSQ","LTS","HUB")){
+        if (estimation %in% c('OLS','BSQ','LTS','HUB')){
             logaAt <- weighted_colMeans( mat=logaMadj, wgt=wgtM )
         }
-        if (estimation %in% c("MED")){
+        if (estimation %in% c('MED')){
             for (ss in 1:NS){
-                logaAt[ss] <- linking_haberman_compute_median(x=logaMadj[,ss], w=wgtM[,ss])
+                logaAt[ss] <- linking_haberman_compute_median(x=logaMadj[,ss],
+                                            w=wgtM[,ss])
             }
         }
         if ( ! adjust_main_effects){
@@ -110,26 +112,27 @@ linking_haberman_als <- function(logaM, wgtM, maxiter, conv,
         #- stabilize convergence
         if (iter>50){
             if (max(abs(a_change)) >=abs_a_change ){
-                a_change <- ifelse( abs(a_change) >=abs_a_change, .95*abs_a_change, a_change )
+                a_change <- ifelse( abs(a_change) >=abs_a_change, .95*abs_a_change,
+                                        a_change )
                 logaAt <- logaAt0 + a_change
             }
         }
         parchange <- abs_a_change <- max(abs(a_change))
         if (progress){
-            cat( paste0( "** ", est.type, " estimation | Iteration ", iter+1, " | ",
-                "Max. parameter change=", round( parchange, 6 ) ), "\n")
+            cat( paste0( '** ', est.type, ' estimation | Iteration ', iter+1, ' | ',
+                'Max. parameter change=', round( parchange, 6 ) ), '\n')
             utils::flush.console()
         }
         iter <- iter + 1
 
         #-- stop iterations
-        if (estimation %in% c("L0","L1")){
+        if (estimation %in% c('L0','L1')){
             break
         }
 
     }
     if (progress){
-        cat("\n")
+        cat('\n')
     }
 
     #------- summary of regression
@@ -150,14 +153,14 @@ linking_haberman_als <- function(logaM, wgtM, maxiter, conv,
     item_stat <- data.frame( study=colnames(wgtM0) )
     item_stat$N_items <- colSums( wgtM0 > 0, na.rm=TRUE)
     item_stat$sumwgt_items <- colSums( (wgtM0 > 0)*wgt_adj, na.rm=TRUE )
-    if (estimation!="LTS"){
+    if (estimation!='LTS'){
         lts_prop <- 1
     }
     #*** end algorithm
     res <- list( logaAt=logaAt, logaj=logaj, loga_resid=loga_resid, loga_wgt=wgtM,
                 loga_wgt_adj=wgt_adj, vcov=res$vcov, se=c(NA, res$se),
-                item_stat=item_stat, iter=iter, cutoff=cutoff_used, estimation=estimation,
-                k_estimate=k_estimate, lts_prop=lts_prop)
+                item_stat=item_stat, iter=iter, cutoff=cutoff_used,
+                estimation=estimation, k_estimate=k_estimate, lts_prop=lts_prop)
     return(res)
 }
 

@@ -1,9 +1,9 @@
 ## File Name: sirt_dmvnorm.R
-## File Version: 0.113
+## File Version: 0.114
 
 sirt_dmvnorm <- function(x, mean=NULL, sigma=NULL, ... )
 {
-    TAM::require_namespace_msg("mvtnorm")
+    TAM::require_namespace_msg('mvtnorm')
     if (is.matrix(x)){
         p <- ncol(x)
     } else {

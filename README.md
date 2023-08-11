@@ -2,11 +2,11 @@
 #### Supplementary Item Response Theory Models
 
 
-If you use `sirt` and have suggestions for improvement or have found bugs, please email me at robitzsch@ipn.uni-kiel.de.
+If you use `sirt` and have suggestions for improvement or have found bugs, please email me at robitzsch@leibniz-ipn.de.
+Please always provide a minimal dataset, necessary to demonstrate the problem, 
+a minimal runnable code necessary to reproduce the issue, which can be run on the given dataset, and
+all necessary information on the used librarys, the R version, and the OS it is run on, perhaps a sessionInfo().
 
-#### Manual
-
-The manual may be found here [https://alexanderrobitzsch.github.io/sirt/](https://alexanderrobitzsch.github.io/sirt/) 
 
 #### CRAN version
 

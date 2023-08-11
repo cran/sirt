@@ -1,5 +1,5 @@
 ## File Name: xxirt_createDiscItem.R
-## File Version: 0.16
+## File Version: 0.171
 
 xxirt_createDiscItem <- function( name, par, est, P, lower=-Inf,
             upper=Inf, prior=NULL, prior_par1=NULL, prior_par2=NULL)
@@ -14,6 +14,6 @@ xxirt_createDiscItem <- function( name, par, est, P, lower=-Inf,
     res$prior <- prior
     res$prior_par1 <- prior_par1
     res$prior_par2 <- prior_par2
-    class(res) <- "DiscItem"
+    class(res) <- 'DiscItem'
     return(res)
 }

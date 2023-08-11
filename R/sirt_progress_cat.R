@@ -1,9 +1,9 @@
 ## File Name: sirt_progress_cat.R
-## File Version: 0.03
+## File Version: 0.04
 
 sirt_progress_cat <- function(progress)
 {
     if (progress){
-        cat("\n")
+        cat('\n')
     }
 }

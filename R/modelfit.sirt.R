@@ -1,5 +1,5 @@
 ## File Name: modelfit.sirt.R
-## File Version: 1.135
+## File Version: 1.138
 
 
 # model fit in sirt
@@ -67,7 +67,7 @@ modelfit.sirt <- function( object )
     }
 
     #--- rm.facets
-#    if (class(object) %in% c("rm.facets") ){
+#    if (inherits(object,"rm.facets") ){
 #        mod <- object
 #        probs <- mod$probs
 #        posterior <- mod$f.qk.yi
@@ -75,7 +75,7 @@ modelfit.sirt <- function( object )
 #    }
 
     #--- mirt
-    if (inherits(object, c("ConfirmatoryClass","ExploratoryClass","SingleGroupClass")) ){
+    if (inherits(object, c("ConfirmatoryClass","ExploratoryClass","SingleGroupClass"))){
         mod <- object
         mod <- mirt.wrapper.posterior(mod)
         probs <- mod$probs
@@ -91,7 +91,8 @@ modelfit.sirt <- function( object )
                 stop("Model fit cannot be calculated because of correlated residuals")
             }
             if ( ! ( object$wgtm.default ) ){
-                stop("Model fit cannot be calculated because not all item pairs are used for estimation")
+                stop( paste0( "Model fit cannot be calculated because not all",
+                                    "item pairs are used for estimation") )
             }
         }
         # evaluation of posterior

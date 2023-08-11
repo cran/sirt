@@ -1,6 +1,5 @@
 ## File Name: truescore_irt_irf.R
-## File Version: 0.01
-
+## File Version: 0.03
 
 
 #---- true score IRT - item response function
@@ -22,7 +21,8 @@ truescore_irt_irf <- function( A, B, c, d, theta )
         if ( ( maxK[ii]==1 ) & ( abs(c[ii])+abs(1-d[ii]) > 0 ) ){
             prob.ii <- c[ii] + ( d[ii] - c[ii] ) * prob.ii
         }
-        truescore <- truescore + rowSums( prob.ii * scoreM[, seq( 1, maxK[ii] ), drop=FALSE] )
+        truescore <- truescore + rowSums( prob.ii * scoreM[, seq( 1, maxK[ii] ),
+                            drop=FALSE] )
     }
     return(truescore)
 }

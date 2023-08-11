@@ -1,11 +1,11 @@
 ## File Name: mgsem_test_fun.R
-## File Version: 0.11
+## File Version: 0.161
 
 
 mgsem_test_fun <- function(test, coef, opt_fun_args)
 {
     if (test){
-        requireNamespace("miceadds")
+        requireNamespace('miceadds')
         #- function evaluation
         ll <- mgsem_opt_fun(x=coef, opt_fun_args=opt_fun_args)
         #- numerical gradient
@@ -13,8 +13,12 @@ mgsem_test_fun <- function(test, coef, opt_fun_args)
         #- analytical gradient
         args <- list(x=coef, opt_fun_args=opt_fun_args)
         grad <- do.call( what=mgsem_grad_fun, args=args)
+
+        # dfr <- cbind( grad, grad1)
+
         #- print
-        miceadds::Revalpr("ll")
-        miceadds::Revalpr_maxabs("grad","grad1")
+        miceadds::Revalpr('ll')
+        miceadds::Revalpr_maxabs('grad','grad1')
+        stop()
     }
 }

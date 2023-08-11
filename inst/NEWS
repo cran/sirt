@@ -34,6 +34,57 @@ CHANGELOG sirt
 
 
 
+------------------------------------------------------------------------
+VERSIONS sirt 3.13  |  2023-08-11  |  Last: sirt 3.13-228
+------------------------------------------------------------------------
+
+NOTE  * included arguments 'pw_linear', 'pw_quadratic' that allow 
+        piecewise linear or quadratric parameter functions
+NOTE  * included argument 'pd' in lsem.estimate() that performs
+        estimation of a positive definite covariance matrix if
+        sufficient statistics are used
+NOTE  * changed defaults to 'loc_linear_smooth=TRUE' and 'pd=TRUE'
+        in lsem.estimate()
+NOTE  * included argument 'est_DIF' in lsem.estimate() that also
+        assesses parameter heterogeneity for parameters that are
+        assumed to be invariant
+NOTE  * included argument 'use_starting_values' in lsem.bootstrap()
+NOTE  * included argument 'np_fun_item' in xxirt() that counts the
+        number of item parameters
+FIXED * fixed a bug in cfa_meas_inv() (thanks to @mbluemke,
+        https://github.com/alexanderrobitzsch/sirt/issues/19)
+FIXED * fixed a bug in rm.sdt() caused by numeric instabilities in
+        deviance computation (thanks to Yusuke Shono)
+NOTE  * removed argument 'seed' from lsem.bootstrap()
+NOTE  * changed default in lsem.estimate() to
+        'sufficient_statistics=TRUE'
+NOTE  * included utility function move_variables_df() that reorders
+        variables in a data frame
+NOTE  * included argument 'cv_kfold' in xxirt() for computing
+        cross-validated log-likelihood values
+ADDED * included function lsem.test() for testing of no parameter change
+        based on a fitted bootstrap object
+NOTE  * included utility function print_digits() that prints a data frame
+        with a fixed number of digits
+FIXED * corrected a bug in stratified.cronbach.alpha()
+NOTE  * replaced L0 penalty in invariance.alignment() of Oelker and 
+        Tutz (2017) with the O'Neill and Burke (2023) penalty
+ADDED * included variance matrix estimation (i.e., standard errors) in
+        invariance.alignment() if variance matrix of model parameters
+        in provided as the argument 'vcov'
+NOTE  * disabled argument 'use_lavaan_survey' in lsem.estimate()
+        because lavaan.survey package has been removed from CRAN
+ADDED * exported mgsem() function for estimating multiple-group SEMs
+ADDED * included option for parallel computing in lsem.permutationTest()
+        and lsem.bootstrap() using the arguments 'n.core' and 'cl.type'
+        (suggested by Eunike Wetzel)
+ADDED * included option for using Newton-Raphson algorithm to estimate
+        item response models in xxirt(). This option can be requested
+        by the argument 'maxit_nr'.
+      
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: lsem.test (1), invariance.alignment (8),
+        mgsem (1), lsem.estimate (1), xxirt (1)
 
 ------------------------------------------------------------------------
 VERSIONS sirt 3.12  |  2022-05-16  |  Last: sirt 3.12-66
@@ -82,7 +133,7 @@ DATA  * included/modified datasets: data.lsem02, data.lsem03
 EXAMP * included/modified examples: ---
 
 ------------------------------------------------------------------------
-VERSIONS sirt 3.10  |  2021-09-23  |  Last: sirt 3.10-119
+VERSIONS sirt 3.10  |  2021-09-23  |  Last: sirt 3.10-118
 ------------------------------------------------------------------------
 
 ADDED * included option for regularization penalties in xxirt()

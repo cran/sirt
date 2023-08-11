@@ -1,14 +1,15 @@
 ## File Name: xxirt_mstep_ThetaParameters.R
-## File Version: 0.15
+## File Version: 0.189
 
-#######################################################################
+
 xxirt_mstep_ThetaParameters <- function( customTheta, G, eps,
             mstep_iter, N.k, par1, mstep_reltol, Theta )
 {
-    like_Theta <- function( x, ... ){
+    like_Theta <- function( x, ... )
+    {
         par1 <- customTheta$par
         par1[ customTheta$est ] <- x
-        arg_list <- list( "par"=par1, "Theta"=Theta, "G"=G )
+        arg_list <- list( par=par1, Theta=Theta, G=G )
         mod1 <- do.call( customTheta$P, arg_list )
         ll2 <- - sum( N.k * log( mod1 + eps ) )
         NP <- length(customTheta$prior)
@@ -17,7 +18,8 @@ xxirt_mstep_ThetaParameters <- function( customTheta, G, eps,
             for (pp in 1:NP){
                 if ( ! is.na( customTheta$prior[pp] ) ) {
                     prior_pp <- customTheta$prior[pp]
-                    val <- par1[ names(customTheta$prior) ]
+                    # val <- par1[ names(customTheta$prior) ]
+                    val <- par1[pp]
                     arg_list <- list( val,customTheta$prior_par1[pp],
                                                 customTheta$prior_par2[pp]  )
                     prior_val <- do.call( prior_pp, arg_list )
@@ -30,9 +32,9 @@ xxirt_mstep_ThetaParameters <- function( customTheta, G, eps,
     }
     #----- end definition likelihood function
 
-    mstep_method <- "BFGS"
+    mstep_method <- 'BFGS'
     arg_control <- list(maxit=mstep_iter)
-    if ( mstep_method=="BFGS"){
+    if ( mstep_method=='BFGS'){
         arg_control$reltol <- mstep_reltol
     }
     # method L-BFGS-B uses 'factr' (and 'pgtol') instead of 'reltol' and 'abstol'
@@ -45,4 +47,3 @@ xxirt_mstep_ThetaParameters <- function( customTheta, G, eps,
     res <- list( par1=par1, ll2=ll2, customTheta=customTheta)
     return(res)
 }
-#######################################################################

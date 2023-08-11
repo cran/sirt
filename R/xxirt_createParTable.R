@@ -1,8 +1,7 @@
 ## File Name: xxirt_createParTable.R
-## File Version: 0.23
+## File Version: 0.258
 
-##################################################
-# create parameter table
+#*** create parameter table
 xxirt_createParTable <- function( dat, itemtype, customItems=NULL )
 {
     I <- ncol(dat)
@@ -23,10 +22,10 @@ xxirt_createParTable <- function( dat, itemtype, customItems=NULL )
             }
         }
         if ( is.null(item_ii) ){
-                stop( paste0( "Item type ", type_ii, " not found!") )
+            stop( paste0( 'Item type ', type_ii, ' not found!') )
         }
         NP <- length( item_ii$par )
-        dfr1 <- data.frame( "item"=rep( items[ii], NP ) )
+        dfr1 <- data.frame( 'item'=rep( items[ii], NP ) )
         dfr1$itemnr <- ii
         dfr1$ncat <- ncat1[ii]
         dfr1$class <- class(item_ii)
@@ -42,9 +41,9 @@ xxirt_createParTable <- function( dat, itemtype, customItems=NULL )
         if ( ! is.null( item_ii$prior ) ){
             item_ii_prior <- names(item_ii$prior)
             ind_ii <- match( item_ii_prior, dfr1$parname )
-            dfr1[ ind_ii, "prior" ] <- item_ii$prior
-            dfr1[ ind_ii, "prior_par1" ] <- item_ii$prior_par1
-            dfr1[ ind_ii, "prior_par2" ] <-     item_ii$prior_par2
+            dfr1[ ind_ii, 'prior' ] <- item_ii$prior
+            dfr1[ ind_ii, 'prior_par1' ] <- item_ii$prior_par1
+            dfr1[ ind_ii, 'prior_par2' ] <- item_ii$prior_par2
         }
         dfr <- rbind( dfr, dfr1 )
     }
@@ -54,9 +53,8 @@ xxirt_createParTable <- function( dat, itemtype, customItems=NULL )
     # parameter index
     dfr$parindex <- cumsum( dfr$est )
     #*** parameter label
-    dfr$parlabel <- paste0( dfr$item, "_", dfr$parname )
-    attr(dfr, "ncat" ) <- ncat1
-    attr(dfr, "items" ) <- items
+    dfr$parlabel <- paste0( dfr$item, '_', dfr$parname )
+    attr(dfr, 'ncat' ) <- ncat1
+    attr(dfr, 'items' ) <- items
     return(dfr)
 }
-##################################################

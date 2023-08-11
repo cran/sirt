@@ -1,5 +1,5 @@
 %% File Name: lsem.estimate.Rd
-%% File Version: 0.744
+%% File Version: 0.769
 
 \name{lsem.estimate}
 \alias{lsem.estimate}
@@ -16,8 +16,7 @@ Local Structural Equation Models (LSEM)
 \description{
 Local structural equation models (LSEM) are structural equation models (SEM)
 which are evaluated for each value of a pre-defined moderator variable
-(Hildebrandt, Wilhelm, & Robitzsch, 2009; Hildebrandt, Luedtke, Robitzsch,
-Sommer & Wilhelm, 2016).
+(Hildebrandt et al., 2009, 2016).
 As in nonparametric regression models, observations near a focal point - at
 which the model is evaluated - obtain higher weights, far distant observations
 obtain lower weights. The LSEM can be specified by making use of \pkg{lavaan} syntax.
@@ -47,9 +46,10 @@ Bootstrap at the level of a cluster identifier is allowed (argument \code{cluste
 lsem.estimate(data, moderator, moderator.grid, lavmodel, type="LSEM", h=1.1, bw=NULL,
     residualize=TRUE, fit_measures=c("rmsea", "cfi", "tli", "gfi", "srmr"),
     standardized=FALSE, standardized_type="std.all", lavaan_fct="sem",
-    sufficient_statistics=FALSE, use_lavaan_survey=FALSE, pseudo_weights=0,
-    sampling_weights=NULL, loc_linear_smooth=FALSE, est_joint=FALSE, par_invariant=NULL,
-    par_linear=NULL, par_quadratic=NULL, partable_joint=NULL, se=NULL, kernel="gaussian",
+    sufficient_statistics=TRUE, pseudo_weights=0,
+    sampling_weights=NULL, loc_linear_smooth=TRUE, est_joint=FALSE, par_invariant=NULL,
+    par_linear=NULL, par_quadratic=NULL, partable_joint=NULL, pw_linear=1,
+    pw_quadratic=1, pd=TRUE, est_DIF=FALSE, se=NULL, kernel="gaussian",
     eps=1e-08, verbose=TRUE, ...)
 
 \method{summary}{lsem}(object, file=NULL, digits=3, ...)
@@ -64,8 +64,9 @@ lsem.MGM.stepfunctions( object, moderator.grid )
 lsem_local_weights(data.mod, moderator.grid, h, sampling_weights=NULL,  bw=NULL,
      kernel="gaussian")
 
-lsem.bootstrap(object, R=100, verbose=TRUE, cluster=NULL, seed=1,
-     repl_design=NULL, repl_factor=NULL)
+lsem.bootstrap(object, R=100, verbose=TRUE, cluster=NULL,
+     repl_design=NULL, repl_factor=NULL, use_starting_values=TRUE,
+     n.core=1, cl.type="PSOCK")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -116,11 +117,11 @@ should be used.
 }
 \item{sufficient_statistics}{Logical whether sufficient statistics of weighted
 means and covariances should be used for model fitting. This option
-must be used if the data contain missing values. Note that this approach is
-only valid for missing completely at random (MCAR) data.
+can be set to \code{sufficient_statistics=FALSE}
+if the data contain missing values. Note that the option
+\code{sufficient_statistics=TRUE} is
+only valid for (approximate) missing completely at random (MCAR) data.
 The option can only be used for continuous data.}
-\item{use_lavaan_survey}{Logical indicating whether estimation should be
-conducted with \pkg{lavaan.survey} package.}
 \item{pseudo_weights}{Integer defining a target sample size. Local weights
 are multiplied by a factor which is rounded to integers.
 This approach is referred as a pseudo weighting approach.
@@ -139,6 +140,14 @@ sufficient statistics.}
 \item{par_quadratic}{Vector of parameters with quadratic function}
 \item{partable_joint}{User-defined parameter table if joint estimation is
 used (\code{est_joint=TRUE}).}
+\item{pw_linear}{Number of segments if piecewise linear estimation of parameters is used}
+\item{pw_quadratic}{Number of segments if piecewise quadratic estimation of parameters
+is used}
+\item{pd}{Logical indicating whether nearest positive definite covariance matrix
+should be computed if sufficient statistics are used}
+\item{est_DIF}{Logical indicating whether parameters under differential
+item functioning (DIF) should be additionally
+computed for invariant item parameters}
 \item{se}{Type of standard error used in \code{lavaan::lavaan}. If \code{NULL},
 the \pkg{lavaan} default is used.}
 \item{kernel}{Type of kernel function. Can be \code{"gaussian"},
@@ -166,14 +175,18 @@ Further arguments to be passed to \code{\link[lavaan:sem]{lavaan::sem}} or
 \item{data.mod}{Observed values of the moderator}
 \item{R}{Number of bootstrap samples}
 \item{cluster}{Optional variable name for bootstrap at the level of a cluster identifier}
-\item{seed}{Used random seed in bootstrap. Note that the seed is only
-defined locally in this function, it does not affect the seed in the global
-R environment.}
 \item{repl_design}{Optional matrix containing replication weights for computation of
 standard errors. Note that sampling weights have to be already included in
 \code{repl_design}.}
 \item{repl_factor}{Replication factor in variance formula for statistical
 inference, e.g., 0.05 in PISA.}
+\item{use_starting_values}{Logical indicating whether starting values should be
+used from the original sample}
+\item{n.core}{A scalar indicating the number of cores that should be used.}
+\item{cl.type}{The cluster type.
+Default value is \code{"PSOCK"}. Posix machines (Linux, Mac) generally benefit
+from much faster cluster computation if type is set to \code{type="FORK"}.
+}
 }
 
 %\details{
@@ -208,6 +221,7 @@ residualization.}
 (for \code{lsem.bootstrap})}
 \item{fitstats_joint_boot}{Fit statistics in each bootstrap sample
 (for \code{lsem.bootstrap})}
+\item{dif_effects}{Estimated item parameters under DIF}
 }
 
 
@@ -238,7 +252,8 @@ Alexander Robitzsch, Oliver Luedtke, Andrea Hildebrandt
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{lsem.permutationTest}}
+See \code{\link{lsem.permutationTest}} for conducting a permutation test
+and \code{\link{lsem.test}} for applying a Wald test to a bootstrapped LSEM model.
 }
 
 \examples{
@@ -271,6 +286,10 @@ pmod1 <- sirt::lsem.permutationTest( mod1, B=10 )
           # to a low number of 10
 summary(pmod1)
 plot(pmod1, type="global")
+
+#* perform permutation test with parallel computation
+pmod1a <- sirt::lsem.permutationTest( mod1, B=10, n.core=3 )
+summary(pmod1a)
 
 #** estimate Model 1 based on pseudo weights
 mod1b <- sirt::lsem.estimate( dat, moderator="age", moderator.grid=moderator.grid,
@@ -366,6 +385,9 @@ bmod5b <- sirt::lsem.bootstrap(mod5b, R=100)
 # inspect parameter values and standard errors
 bmod5b$parameters
 
+#- bootstrap using parallel computing (i.e., multiple cores)
+bmod5ba <- sirt::lsem.bootstrap(mod5b, R=100, n.core=3)
+
 #- user-defined replication design
 R <- 100    # bootstrap samples
 N <- nrow(dat)
@@ -416,8 +438,8 @@ data(data.lsem01)
 dat <- data.lsem01
 # induce artifical missing values
 set.seed(98)
-dat[ runif(nrow(dat)) < .5, c("v1")] <- NA
-dat[ runif(nrow(dat)) < .25, c("v2")] <- NA
+dat[ stats::runif(nrow(dat)) < .5, c("v1")] <- NA
+dat[ stats::runif(nrow(dat)) < .25, c("v2")] <- NA
 
 # specify lavaan model
 lavmodel1 <- "
