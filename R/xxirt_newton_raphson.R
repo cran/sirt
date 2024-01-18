@@ -1,5 +1,5 @@
 ## File Name: xxirt_newton_raphson.R
-## File Version: 0.191
+## File Version: 0.208
 
 
 xxirt_newton_raphson <- function(em_out, em_args, maxit_nr, optimizer_nr,
@@ -29,6 +29,9 @@ xxirt_newton_raphson <- function(em_out, em_args, maxit_nr, optimizer_nr,
     NP <- NPI+NPT
 
     em_args$parindex_items <- 1:NPI
+    if (NPI==0){
+        em_args$parindex_items <- NULL
+    }
     em_args$parindex_Theta <- (NPI+1):(NPI+NPT)
     x <- par0
 
@@ -56,11 +59,15 @@ xxirt_newton_raphson <- function(em_out, em_args, maxit_nr, optimizer_nr,
     i1 <- stats::aggregate(partable$itemnr, list(partable$parindex), min )
     i2 <- stats::aggregate(partable$itemnr, list(partable$parindex), max )
 
-    free_pars_design <- data.frame( pid=1:NPI, type='item', parlabel=names(par1) )
-    free_pars_design$one_item <- i1[,2]==i2[,2]
-    free_pars_design$itemnr <- ifelse(free_pars_design$one_item, i1[,2], -9 )
-    partable_free <- partable[ partable$parfree==1 & partable$est, ]
-    free_pars_design$item_group_comp <- partable_free$item_group_comp
+    if (NPI>0){
+        free_pars_design <- data.frame( pid=1:NPI, type='item', parlabel=names(par1) )
+        free_pars_design$one_item <- i1[,2]==i2[,2]
+        free_pars_design$itemnr <- ifelse(free_pars_design$one_item, i1[,2], -9 )
+        partable_free <- partable[ partable$parfree==1 & partable$est, ]
+        free_pars_design$item_group_comp <- partable_free$item_group_comp
+    } else {
+        free_pars_design <- NULL
+    }
 
     em_args$free_pars_design <- free_pars_design
     em_args$group0 <- em_args$group - 1
@@ -76,6 +83,11 @@ xxirt_newton_raphson <- function(em_out, em_args, maxit_nr, optimizer_nr,
 
     #-- optimize
     control_nr$maxit <- maxit_nr
+    partable_free <- partable[ partable$parfree==1, ]
+    lower <- c( partable_free$lower, customTheta$lower )
+    upper <- c( partable_free$upper, customTheta$upper )
+    names(upper) <- names(lower) <- names(x)
+
     if (verbose){
         cat( paste0('****** Newton-Raphson Optimization ********\n'))
         utils::flush.console()
@@ -83,7 +95,8 @@ xxirt_newton_raphson <- function(em_out, em_args, maxit_nr, optimizer_nr,
     res_opt_nr <- sirt_optimizer(optimizer=optimizer_nr,
                             par=x, fn=xxirt_nr_optim_fun,
                             grad=xxirt_nr_grad_fun_Rcpp, hessian=FALSE,
-                            control=control_nr, em_args=em_args )
+                            control=control_nr, em_args=em_args,
+                            lower=lower, upper=upper )
 
     #-- collect output
     x <- res_opt_nr$par
