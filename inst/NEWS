@@ -37,6 +37,16 @@ CHANGELOG sirt
 
 
 ------------------------------------------------------------------------
+VERSIONS sirt 4.1  |  2024-02-06  |  Last: sirt 4.1-15
+------------------------------------------------------------------------
+
+NOTE  * included method 'meth=3' and 'meth=4' in invariance.alignment()
+        to mimic Mplus solutions
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: ---
+
+------------------------------------------------------------------------
 VERSIONS sirt 4.0  |  2024-01-17  |  Last: sirt 4.0-32
 ------------------------------------------------------------------------
 
